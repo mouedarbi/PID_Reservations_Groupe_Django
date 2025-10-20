@@ -4,6 +4,10 @@
 
 {% block content %}
     <h2>{{ title }}</h2>
+    <ul>
+        <li><a href="{% url 'catalogue:artist-create' %}">Ajouter</a></li>
+    </ul>
+
     <table>
         <thead>
             <tr>
