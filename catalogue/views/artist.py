@@ -24,15 +24,30 @@ def show(request, artist_id):
 		'artist':artist,
 	})
 
+
 def edit(request, artist_id):
+    # fetch the object related to passed id
     artist = Artist.objects.get(id=artist_id)
 
-    form = ArtistForm(request.POST or None, instance =artist)
-    if request.method =='POST':
-        if form.is_valid():
-            form.save()
+    # pass the object as instance in form
+    form = ArtistForm(request.POST or None, instance=artist)
 
-            return render(request, "artist/show.html", {'artist' : artist,})
+    if request.method == 'POST':
+        method = request.POST.get('_method', '').upper()
 
-    return render(request, 'artist/edit.html', { 'form' : form, 'artist' : artist,})
+        if method == 'PUT':
+            # save the data from the form and
+            # redirect to detail_view
+            if form.is_valid():
+                form.save()
+
+                return render(request, "artist/show.html", {
+                    'artist': artist,
+                })
+
+    return render(request, 'artist/edit.html', {
+        'form': form,
+        'artist': artist,
+    })
+
 
