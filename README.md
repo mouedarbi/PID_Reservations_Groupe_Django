@@ -1,6 +1,6 @@
 # Projet Réservations – Django 5
 
-## 👥 Équipe de développement
+##  Équipe de développement
 
 * **Mohamed Ouedarbi**
 * *(+ ajouter les autres membres du groupe)*
@@ -108,7 +108,7 @@ Cela évite de recréer un environnement virtuel et garantit que tous les membre
 
 ---
 
-## 🧠 Technologies utilisées
+##  Technologies utilisées
 
 * Python **3.11+**
 * Django **5.0.14**
