@@ -1,4 +1,4 @@
-# 🎭 Projet Réservations – Django 5
+# Projet Réservations – Django 5
 
 ## 👥 Équipe de développement
 
@@ -7,7 +7,7 @@
 
 ---
 
-## 🧩 Description du projet
+## Description du projet
 
 L’application **Projet Réservations** permet de gérer les réservations de spectacles pour une société de production.
 Elle comprend :
@@ -23,7 +23,7 @@ Il fait suite au *Starter Kit Django 5* (Itération 2 du PID).
 
 ---
 
-## 🏗️ Objectifs pédagogiques
+## Objectifs pédagogiques
 
 * Apprendre à structurer un projet Django complet.
 * Travailler collaborativement via GitHub (versioning).
@@ -32,7 +32,7 @@ Il fait suite au *Starter Kit Django 5* (Itération 2 du PID).
 
 ---
 
-## 🧱 Structure du projet
+## Structure du projet
 
 ```
 reservations/               # Projet principal Django
@@ -45,9 +45,9 @@ README.md                   # Documentation du projet
 
 ---
 
-## ⚙️ Installation et configuration
+## ⚙Installation et configuration
 
-### 🅰️ Installation complète (environnement propre)
+###  Installation complète (environnement propre)
 
 Pour une installation depuis zéro :
 
@@ -68,7 +68,7 @@ L’application est ensuite accessible sur :
 
 ---
 
-### 🅱️ Réutilisation de l’environnement du Starter Kit
+### Réutilisation de l’environnement du Starter Kit
 
 Si vous avez déjà installé le **Starter Kit Django 5** du PID :
 vous pouvez simplement **réutiliser le même environnement virtuel**.
@@ -104,7 +104,7 @@ vous pouvez simplement **réutiliser le même environnement virtuel**.
    python manage.py runserver
    ```
 
-💡 Cela évite de recréer un environnement virtuel et garantit que tous les membres du groupe utilisent les **mêmes versions de paquets**.
+Cela évite de recréer un environnement virtuel et garantit que tous les membres du groupe utilisent les **mêmes versions de paquets**.
 
 ---
 
@@ -119,7 +119,7 @@ vous pouvez simplement **réutiliser le même environnement virtuel**.
 
 ---
 
-## 📆 Itérations prévues
+##  Itérations prévues
 
 | N° | Intitulé                   | Objectif                               |
 | -- | -------------------------- | -------------------------------------- |
