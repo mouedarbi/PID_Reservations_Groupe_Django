@@ -37,7 +37,6 @@ Il fait suite au *Starter Kit Django 5* (Itération 2 du PID).
 ```
 reservations/               # Projet principal Django
 catalogue/                  # Application interne
-templates/                  # Fichiers HTML
 requirements.txt            # Liste des dépendances Python
 manage.py                   # Commandes Django
 README.md                   # Documentation du projet
