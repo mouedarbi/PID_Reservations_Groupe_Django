@@ -3,7 +3,7 @@
 ##  Équipe de développement
 
 * **Mohamed Ouedarbi**
-* *(+ ajouter les autres membres du groupe)*
+* **Younes El-Mallahi**
 
 ---
 
