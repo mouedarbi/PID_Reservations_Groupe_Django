@@ -256,7 +256,9 @@ Problème rencontré : Erreur Unexpected UTF-8 BOM lors de la désérialisation 
 Résolution : Suppression du BOM depuis PyCharm → import relancé avec succès.
 Résultat : Fixtures installées correctement, 2 objets importés pour chaque fichier, aucune erreur restante.
 
-
+📅 26/10/2025 – Erreur d’accès à la langue utilisateur dans le profil
+Problème : L’utilisateur n’avait pas d’entrée associée dans la table UserMeta.
+Résolution : Création manuelle de l’objet UserMeta via l’admin Django pour cet utilisateur.
 
 
 
