@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.contrib import messages #chapitre 3
 
+
 from catalogue.forms.ArtistForm import ArtistForm
 from catalogue.models import Artist
-
+from django.conf import settings
 
 
 # Create your views here.
@@ -55,6 +56,9 @@ def edit(request, artist_id):
 
 
 def create (request):
+    if not request.user.is_authenticated or not request.user.has_perm('add_artist'):
+        return redirect(f"{settings.LOGIN_URL}?next={request.path}")
+
     form = ArtistForm(request.POST or None)
 
     if request.method == 'POST' and form.is_valid():
