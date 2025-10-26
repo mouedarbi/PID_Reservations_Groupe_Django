@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 from .forms import UserSignUpForm
 from .forms import UserUpdateForm
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
@@ -50,3 +51,26 @@ def profile(request):
     return render(request, 'user/profile.html', {
         "user_language" : languages[request.user.usermeta.langue],
     })
+
+
+@login_required
+def delete(request, pk):
+    if request.method == 'POST':
+        method = request.POST.get('_method', '').upper()
+
+        if method == 'DELETE':
+            if request.user and request.user.id == pk:
+                user = User.objects.get(id=request.user.id)
+                user.delete()
+
+                messages.success(request, "Utilisateur supprimé avec succès.")
+                logout(request)
+            else:
+                messages.error(request,
+                               "Suppression d'un autre compte interdite!")
+
+            return redirect('home')
+
+    messages.error(request, "Suppression interdite (méthode incorrecte)!")
+
+    return redirect('home')

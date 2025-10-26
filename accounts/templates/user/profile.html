@@ -13,6 +13,16 @@
     <ul>
         <li><a href="{% url 'accounts:user-update' request.user.id %}">Modifier</a></li>
         <li><a href="{% url 'password_change' %}">Modifier le mot de passe</a></li>
+        <li>
+            <form method="post"
+            action="{% url 'accounts:user-delete' request.user.id %}"
+            onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')">
+                {% csrf_token %}
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="submit" value="Supprimer son compte">
+            </form>
+        </li>
+
     </ul>
 
 {% endblock content %}
