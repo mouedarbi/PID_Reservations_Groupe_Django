@@ -250,7 +250,11 @@ Résolution : Correction du template avec la boucle {% for message in messages %
 État : Fusion effectuée, aucun changement supplémentaire détecté.
 Résultat : Branche main à jour avec dev_mohamed.
 
-
+📅 26/10/2025 – Import des fixtures auth_user et user_meta
+Action : Chargement des données utilisateurs via loaddata.
+Problème rencontré : Erreur Unexpected UTF-8 BOM lors de la désérialisation JSON.
+Résolution : Suppression du BOM depuis PyCharm → import relancé avec succès.
+Résultat : Fixtures installées correctement, 2 objets importés pour chaque fichier, aucune erreur restante.
 
 
 
