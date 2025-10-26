@@ -7,8 +7,6 @@ from .models import Artist
 
 app_name='catalogue'
 
-admin.site.register(Artist)
-
 urlpatterns = [
     path('artist/', views.index, name='artist-index'),
     path('artist/<int:artist_id>', views.show, name='artist-show'),
