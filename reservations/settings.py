@@ -65,6 +65,7 @@ LOGOUT_REDIRECT_URL = 'home'
 # https://docs.djangoproject.com/fr/5.2/topics/email/#smtp-backend
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
