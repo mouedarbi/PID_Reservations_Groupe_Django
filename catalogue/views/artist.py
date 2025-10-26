@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
+from django.contrib import messages #chapitre 3
 
 from catalogue.forms.ArtistForm import ArtistForm
 from catalogue.models import Artist
@@ -40,11 +41,13 @@ def edit(request, artist_id):
             # redirect to detail_view
             if form.is_valid():
                 form.save()
+                messages.add_message(request, messages.SUCCESS, "Artiste modifié avec succès.")
 
                 return render(request, "artist/show.html", {
                     'artist': artist,
                 })
-
+            else:
+                messages.add_message(request, messages.ERROR, "Échec de la modification de l'artiste.")
     return render(request, 'artist/edit.html', {
         'form': form,
         'artist': artist,
@@ -56,8 +59,12 @@ def create (request):
 
     if request.method == 'POST' and form.is_valid():
         form.save()
+        messages.add_message(request, messages.SUCCESS, "Nouvel artiste créer avec succès.")
 
         return redirect('catalogue:artist-index')
+    else :
+        messages.add_message(request, messages.ERROR, "Echec de l'ajout d'un nouvel artiste !")
+
     return render(request, 'artist/create.html', {'form' : form,})
 
 def delete(request, artist_id):
@@ -66,6 +73,8 @@ def delete(request, artist_id):
         method = request.POST.get('_method', '').upper()
         if method =='DELETE':
             artist.delete()
+            messages.add_message(request, messages.SUCCESS, "Artiste supprimer avec succès.")
 
             return redirect('catalogue:artist-index')
+    messages.add_message(request, messages.ERROR, "Échec de la suppression de l'artiste !")
     return render(request, 'artist/show.html', {'artist': artist,})
