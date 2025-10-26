@@ -1,9 +1,13 @@
 """reservations.catalogue URL Configuration
 """
 from django.urls import path
+from django.contrib import admin
 from . import views
+from .models import Artist
 
 app_name='catalogue'
+
+admin.site.register(Artist)
 
 urlpatterns = [
     path('artist/', views.index, name='artist-index'),

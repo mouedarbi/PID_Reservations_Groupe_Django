@@ -246,6 +246,18 @@ Version actuelle testée localement et fonctionnement confirmé.
 Problème : Utilisation incorrecte de {{messages}} dans le template HTML au lieu de {{message}} dans la boucle.
 Résolution : Correction du template avec la boucle {% for message in messages %} et affichage de {{ message }}.
 
+📅 26/10/2025 – Merge branche dev_mohamed vers main
+État : Fusion effectuée, aucun changement supplémentaire détecté.
+Résultat : Branche main à jour avec dev_mohamed.
+
+
+
+
+
+
+
+
+
 ## 🧩 Résumé général
 
 | Étape | Type d’erreur | Origine | Statut |
