@@ -6,6 +6,7 @@ from django.contrib import messages #chapitre 3
 from catalogue.forms.ArtistForm import ArtistForm
 from catalogue.models import Artist
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -26,7 +27,7 @@ def show(request, artist_id):
 		'artist':artist,
 	})
 
-
+@login_required
 def edit(request, artist_id):
     # fetch the object related to passed id
     artist = Artist.objects.get(id=artist_id)
