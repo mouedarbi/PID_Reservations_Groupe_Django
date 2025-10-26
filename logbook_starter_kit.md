@@ -188,6 +188,64 @@ Ajout manuel de l’interpréteur Python depuis le chemin :
 
 ---
 
+📅 26/10/2025 – Gestion des branches et synchronisation Git
+Problème rencontré :
+Travail effectué sur la branche main au lieu de la branche de développement brouillon.
+
+Résolution :
+
+git checkout brouillon
+git merge main
+
+
+Résultat :
+Les modifications ont été transférées dans la bonne branche sans perte de données.
+
+📅 26/10/2025 – Conflits Git liés aux fichiers cache Python
+Problème rencontré :
+Conflits lors d’un rebase causés par des fichiers __pycache__ (.pyc) suivis par Git.
+
+Résolution :
+
+Ajout de règles dans .gitignore :
+
+__pycache__/
+*.pyc
+
+
+Suppression des fichiers cache du dépôt :
+
+git rm -r --cached .
+git add .
+git commit -m "Clean cache files and update gitignore"
+
+
+Résultat :
+Nettoyage effectué avec succès. Les fichiers cache ne seront plus suivis.
+
+📅 26/10/2025 – Synchronisation avec la branche principale
+Message affiché :
+“This branch is 2 commits ahead, 1 commit behind main.”
+
+Résolution :
+
+git pull origin main --rebase
+
+
+Résultat :
+Historique synchronisé proprement avec la branche distante.
+
+📅 26/10/2025 – Test local du projet Django
+Action réalisée :
+Activation de l’environnement virtuel dans PyCharm et lancement du serveur.
+
+Résultat :
+Version actuelle testée localement et fonctionnement confirmé.
+
+📅 26/10/2025 – Erreur d’affichage des notifications Django
+Problème : Utilisation incorrecte de {{messages}} dans le template HTML au lieu de {{message}} dans la boucle.
+Résolution : Correction du template avec la boucle {% for message in messages %} et affichage de {{ message }}.
+
 ## 🧩 Résumé général
 
 | Étape | Type d’erreur | Origine | Statut |

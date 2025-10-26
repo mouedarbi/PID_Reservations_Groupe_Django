@@ -6,6 +6,17 @@
 </head>
 <body>
 <div class="container">
+    <div id="notification">
+        {% if messages %}
+        <ul class="messages">
+            {%for message in messages %}
+            <li{%if message.tag %} class={{message.tag}}" {%endif %}>
+            {{message}}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
         {% block content %}{% endblock %}
 </div>
 </body>
