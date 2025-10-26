@@ -8,8 +8,19 @@
 <div class="container">
         <header>
         <div style="float:right">
+            {% if request.user.is_authenticated %}
+            <p>Bonjour {{ request.user.username }}!</p>
+            <p><a href="{% url 'password_change' %}">Modifier le mot de passe</a></p>
+
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Se déconnecter</button>
+            </form>
+            {% else %}
             <p>Vous n'êtes pas connecté.</p>
             <p><a href="{% url 'login' %}">Se connecter</a></p>
+            {% endif %}
+
         </div>
     </header>
     <main>
