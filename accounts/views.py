@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import redirect
 from django.contrib import messages
 
+from .forms import UserSignUpForm
 
 class UserSignUpView(UserPassesTestMixin, CreateView):
     form_class = UserCreationForm
