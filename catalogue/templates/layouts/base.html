@@ -19,6 +19,7 @@
             {% else %}
             <p>Vous n'êtes pas connecté.</p>
             <p><a href="{% url 'login' %}">Se connecter</a></p>
+            <p><a href="{% url 'accounts:user-signup' %}">S'inscrire</a></p>
             {% endif %}
 
         </div>
