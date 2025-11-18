@@ -16,7 +16,7 @@ def show(request, type_id):
     except Type.DoesNotExist:
         raise Http404('Type inexistant')
 
-    title = 'Fiche d\'un type'
+    title = "Fiche d\'un type"
 
     return render(request, 'type/show.html', {
         'type': type,

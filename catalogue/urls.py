@@ -16,5 +16,7 @@ urlpatterns = [
     path('type/', views.type.index, name='type-index'),
     path('type/<int:type_id>' , views.type.show, name='type-show'),
     path('price/', views.price.index, name='price-index'),
-    path('price/<int:type_id>', views.price.show, name='price-show'),
+    path('price/<int:price_id>', views.price.show, name='price-show'),
+    path('locality/', views.locality.index, name='locality-index'),
+    path('locality/<int:locality_id>', views.locality.show, name='locality-show'),
 ]
