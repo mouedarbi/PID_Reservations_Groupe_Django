@@ -7,7 +7,6 @@ def index (request):
     localities = Locality.objects.all()
     title = 'Liste des localitées'
 
-
     return render (request, 'locality/index.html', {'localities' : localities, 'title' : title})
 
 def show(request, locality_id):

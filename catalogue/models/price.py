@@ -11,7 +11,7 @@ class Price(models.Model):
 
 
     def __str__(self):
-        return self.price
+        return f"{self.type} : {self.price} €"
 
     class Meta:
         db_table = "prices"
