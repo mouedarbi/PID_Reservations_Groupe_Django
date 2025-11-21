@@ -3,3 +3,4 @@ from .user_meta import *
 from .type import *
 from .price import *
 from .locality import *
+from .location import *
