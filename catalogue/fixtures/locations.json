@@ -6,7 +6,10 @@
     "slug": "art-center",
     "designation": "Art Center",
     "address": "",
-    "locality": 1,
+    "locality": [
+      "1000",
+      "Bruxelles"
+    ],
     "website": null,
     "phone": null
   }
@@ -18,69 +21,87 @@
     "slug": "atrium",
     "designation": "Atrium",
     "address": "",
-    "locality": 1,
+    "locality": [
+      "1000",
+      "Bruxelles"
+    ],
     "website": null,
     "phone": null
   }
 },
 {
   "model": "catalogue.location",
-  "pk": 3,
+  "pk": 11,
   "fields": {
     "slug": "opera-house",
     "designation": "Opera House",
     "address": "",
-    "locality": 2,
+    "locality": [
+      "1040",
+      "Etterbeek"
+    ],
     "website": null,
     "phone": null
   }
 },
 {
   "model": "catalogue.location",
-  "pk": 4,
+  "pk": 12,
   "fields": {
     "slug": "espace-delvaux-la-venerie",
-    "designation": "Espace Delvaux / La Vénerie",
-    "address": "3 rue Gratès",
-    "locality": 4,
-    "website": "https://www.lavenerie.be",
-    "phone": "+32 (0)2/663.85.50"
-  }
-},
-{
-  "model": "catalogue.location",
-  "pk": 5,
-  "fields": {
-    "slug": "dexia-art-center",
-    "designation": "Dexia Art Center",
-    "address": "50 rue de l'Ecuyer",
-    "locality": 1,
+    "designation": "",
+    "address": "",
+    "locality": [
+      "1170",
+      "Watermael-Boitsfort"
+    ],
     "website": null,
     "phone": null
   }
 },
 {
   "model": "catalogue.location",
-  "pk": 6,
+  "pk": 13,
   "fields": {
-    "slug": "la-samaritaine",
-    "designation": "La Samaritaine",
-    "address": "16 rue de la samaritaine",
-    "locality": 1,
-    "website": "http://www.lasamaritaine.be/",
+    "slug": "dexia-art-center",
+    "designation": "",
+    "address": "",
+    "locality": [
+      "1000",
+      "Bruxelles"
+    ],
+    "website": null,
     "phone": null
   }
 },
 {
   "model": "catalogue.location",
-  "pk": 7,
+  "pk": 14,
+  "fields": {
+    "slug": "la-samaritaine",
+    "designation": "",
+    "address": "",
+    "locality": [
+      "1000",
+      "Bruxelles"
+    ],
+    "website": null,
+    "phone": null
+  }
+},
+{
+  "model": "catalogue.location",
+  "pk": 15,
   "fields": {
     "slug": "espace-magh",
-    "designation": "Espace Magh",
-    "address": "17 rue du Poinçon",
-    "locality": 1,
-    "website": "http://www.espacemagh.be",
-    "phone": "+32 (0)2/274.05.10"
+    "designation": "",
+    "address": "",
+    "locality": [
+      "1000",
+      "Bruxelles"
+    ],
+    "website": null,
+    "phone": null
   }
 }
 ]
