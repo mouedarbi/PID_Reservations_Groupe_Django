@@ -1,0 +1,35 @@
+[
+{
+  "model": "catalogue.reservation",
+  "pk": 1,
+  "fields": {
+    "booking_date": "2025-11-21T21:11:36.732Z",
+    "status": "pay├®e",
+    "user": [
+      "anna"
+    ]
+  }
+},
+{
+  "model": "catalogue.reservation",
+  "pk": 2,
+  "fields": {
+    "booking_date": "2025-11-21T22:15:23.688Z",
+    "status": "pay├®e",
+    "user": [
+      "Jordan"
+    ]
+  }
+},
+{
+  "model": "catalogue.reservation",
+  "pk": 3,
+  "fields": {
+    "booking_date": "2025-11-21T22:15:23.700Z",
+    "status": "en attente",
+    "user": [
+      "anna"
+    ]
+  }
+}
+]
