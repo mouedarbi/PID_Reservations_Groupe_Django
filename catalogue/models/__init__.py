@@ -5,3 +5,4 @@ from .price import *
 from .locality import *
 from .location import *
 from .reservation import *
+from .show import *
