@@ -4,4 +4,11 @@
 
 {% block content %}
     <h1>{{ type.type|title }}</h1>
+
+    <h2>Liste des artistes</h2>
+    <ul>
+    {% for artist_type in type.t_artistTypes.all %}
+        <li>{{ artist_type.artist.firstname }} {{ artist_type.artist.lastname }}</li>
+    {% endfor %}
+    </ul>
 {% endblock %}

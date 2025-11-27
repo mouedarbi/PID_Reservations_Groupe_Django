@@ -76,14 +76,6 @@ Plusieurs erreurs `IntegrityError` et `DeserializationError` sont survenues lors
 
 ---
 
-## ✅ État final du projet (27/11/2025)
-- Modèles `Representation`, `Review`, `ArtistType` et `ArtistTypeShow` implémentés et migrés. ✔️  
-- Base de données MySQL nettoyée et entièrement peuplée avec toutes les fixtures corrigées. ✔️  
-- Le projet est maintenant à jour avec la roadmap jusqu'à la fin de la modélisation des relations complexes. ✔️  
-- L'historique Git est propre et les fichiers de documentation sont ignorés. ✔️  
-
----
-
 ### ✅ Vues, Templates et Routes (Location, Show, Representation)
 
 **Contexte :**
@@ -101,8 +93,18 @@ Plusieurs erreurs `IntegrityError` et `DeserializationError` sont survenues lors
     - Création de `index.html` et `show.html` pour chaque répertoire de template.
     - Correction d'une erreur de déplacement de `location/show.html` vers le répertoire `show`, puis remise à sa place correcte.
 4.  **Menu de navigation :** Ajout des liens de navigation vers les vues `index` de `Type`, `Locality`, `Price`, `Location`, `Show`, et `Representation` dans `catalogue/templates/layouts/base.html`.
+5.  **Mise à jour des templates `artist/show.html` et `type/show.html`:** Adaptation de l'affichage des relations ManyToMany pour utiliser les modèles intermédiaires (`artist.a_artistTypes.all` et `type.t_artistTypes.all`).
 
 **Statut :** ✅ Complet
+
+---
+
+## ✅ État final du projet (27/11/2025)
+- Modèles `Representation`, `Review`, `ArtistType` et `ArtistTypeShow` implémentés et migrés. ✔️  
+- Base de données MySQL nettoyée et entièrement peuplée avec toutes les fixtures corrigées. ✔️  
+- Le projet est maintenant à jour avec la roadmap jusqu'à la fin de la modélisation des relations complexes. ✔️  
+- L'historique Git est propre et les fichiers de documentation sont ignorés. ✔️  
+- Toutes les vues, templates et routes pour les modèles implémentés sont en place et fonctionnels. ✔️  
 
 ---
 
