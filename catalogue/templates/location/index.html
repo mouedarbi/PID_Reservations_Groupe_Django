@@ -1,0 +1,18 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Liste des lieux de spectacle{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <ul>
+    {% for location in locations %}
+        <li>
+		<a href="{% url 'catalogue:location-show' location.id %}"> 				{{ location.designation }}
+		</a>
+        	{% if location.website %}
+         	 - <a href="{{ location.website }}">{{ location.website }}</a>
+        	{% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}
