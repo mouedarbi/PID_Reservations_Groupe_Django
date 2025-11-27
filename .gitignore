@@ -1,4 +1,8 @@
 .env
 .virtualenvs/
 __pycache__/
-*.pycgit add .gitignore
+*.pyc
+gemini.md
+Roadmap-Django5_Mapping .txt
+database_structure.txt
+git add .gitignore
