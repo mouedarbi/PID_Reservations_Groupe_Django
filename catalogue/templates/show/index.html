@@ -1,0 +1,18 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Liste des spectacles{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <ul>
+    {% for show in shows %}
+        <li>
+		<a href="{% url 'catalogue:show-show' show.id %}"> 				  {{ show.title }}
+		</a>
+        	{% if not show.bookable %}
+            <em>Réservation indisponible</em>
+        	{% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

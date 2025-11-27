@@ -1,0 +1,22 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<article>
+    <h1>Représentation du {{ rep_date }} à {{ rep_time }}</h1>
+    <p><strong>Spectacle:</strong> {{ representation.show.title }}</p>
+
+    <p><strong>Lieu:</strong>
+    {% if representation.location %}
+    {{ representation.location.designation }}
+    {% elif representation.show.location %}
+    {{ representation.show.location.designation }}
+    {% else %}
+    <em>à déterminer</em>
+    {% endif %}
+    </p>
+</article>
+
+<nav><a href="{% url 'catalogue:representation-index' %}">Retour à l'index</a></nav>
+{% endblock %}
