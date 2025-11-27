@@ -1,0 +1,266 @@
+SCHÉMA RELATIONNEL – VERSION TEXTE POUR LLM
+1. Table : artists
+
+Représente les artistes.
+
+Champ	Type	Notes
+id	int(11)	PK
+firstname	varchar(60)	
+lastname	varchar(60)	
+
+Relations :
+
+OneToMany avec artiste_type (un artiste peut avoir plusieurs types)
+
+2. Table : types
+
+Décrit les types d’artistes (ex : comédien, auteur).
+
+Champ	Type	Notes
+id	int(11)	PK
+type	varchar(60)	
+
+Relations :
+
+OneToMany avec artiste_type
+
+3. Table : artiste_type
+
+Table de jointure ManyToMany entre artists et types.
+
+Champ	Type	Notes
+id	int(11)	PK
+artist_id	int(11)	FK → artists.id
+type_id	int(11)	FK → types.id
+
+Relations :
+
+ManyToOne → artists
+
+ManyToOne → types
+
+OneToMany → artiste_type_show (liaison artiste-type → spectacles)
+
+4. Table : artiste_type_show
+
+Deuxième table de jointure, reliant artiste + type à un spectacle.
+
+Champ	Type	Notes
+id	int(11)	PK
+artiste_type_id	int(11)	FK → artiste_type.id
+show_id	int(11)	FK → shows.id
+5. Table : shows
+
+Représente un spectacle.
+
+Champ	Type	Notes
+id	int(11)	PK
+slug	varchar(60)	unique
+title	varchar(255)	
+poster_url	varchar(255)	nullable
+duration	smallint(5)	minutes
+created_in	year(4)	année de création
+location_id	int(11)	FK → locations.id
+bookable	tinyint(1)	booléen
+
+Relations :
+
+ManyToOne → locations
+
+OneToMany → representations
+
+OneToMany → reviews
+
+ManyToMany → artiste_type via artiste_type_show
+
+6. Table : locations
+
+Représente un lieu de spectacle.
+
+Champ	Type	Notes
+id	int(11)	PK
+slug	varchar(60)	unique
+designation	varchar(60)	nom du lieu
+address	varchar(255)	
+locality_id	int(11)	FK → localities.id
+website	varchar(255)	nullable
+phone	varchar(30)	nullable
+
+Relations :
+
+ManyToOne → localities
+
+OneToMany → shows
+
+OneToMany → representations
+
+7. Table : localities
+
+Représente les localités (communes).
+
+Champ	Type	Notes
+id	int(11)	PK
+postal_code	varchar(6)	
+locality	varchar(60)	
+
+Relations :
+
+OneToMany → locations
+
+8. Table : representations
+
+Une représentation d’un spectacle (date + lieu).
+
+Champ	Type	Notes
+id	int(11)	PK
+show_id	int(11)	FK → shows.id
+schedule	datetime	date/heure
+location_id	int(11)	FK → locations.id
+
+Relations :
+
+ManyToOne → shows
+
+ManyToOne → locations
+
+OneToMany → representation_reservation
+
+9. Table : prices
+
+Tarifs applicables.
+
+Champ	Type	Notes
+id	int(11)	PK
+type	varchar(30)	ex : enfant, senior
+price	decimal(10,2)	
+start_date	date	
+end_date	date	
+
+Relations :
+
+OneToMany → representation_reservation
+
+10. Table : reservations
+
+Réservations effectuées par les utilisateurs.
+
+Champ	Type	Notes
+id	int(11)	PK
+user_id	int(11)	FK → users.id
+booking_date	datetime	
+status	varchar(60)	
+
+Relations :
+
+ManyToOne → users
+
+OneToMany → representation_reservation
+
+OneToMany → reviews
+
+11. Table : representation_reservation
+
+Liaison entre une réservation et une représentation (quantité + prix).
+
+Champ	Type	Notes
+id	int(11)	PK
+representation_id	int(11)	FK → representations.id
+reservation_id	int(11)	FK → reservations.id
+price_id	int(11)	FK → prices.id
+quantity	tinyint(4)	
+
+Relations :
+
+ManyToOne → representations
+
+ManyToOne → reservations
+
+ManyToOne → prices
+
+12. Table : reviews
+
+Avis laissés par un utilisateur sur un spectacle.
+
+Champ	Type	Notes
+id	int(11)	PK
+user_id	int(11)	FK → users.id
+show_id	int(11)	FK → shows.id
+review	text	commentaire
+stars	tinyint(5)	0–5
+validated	tinyint(1)	booléen
+created_at	datetime	
+updated_at	datetime	
+
+Relations :
+
+ManyToOne → users
+
+ManyToOne → shows
+
+13. Table : users
+
+Représente les comptes utilisateurs.
+
+Champ	Type	Notes
+id	int(11)	PK
+login	varchar(30)	
+password	varchar(255)	
+firstname	varchar(60)	
+lastname	varchar(60)	
+email	varchar(255)	
+language	varchar(2)	langue
+
+Relations :
+
+OneToMany → reservations
+
+OneToMany → reviews
+
+ManyToMany → roles via role_user
+
+14. Table : roles
+
+Rôles d’utilisateur.
+
+Champ	Type	Notes
+id	int(11)	PK
+role	varchar(30)	
+15. Table : role_user
+
+Jointure ManyToMany entre users et roles.
+
+Champ	Type	Notes
+id	int(11)	PK
+role_id	int(11)	FK → roles.id
+user_id	int(11)	FK → users.id
+⭐ Résumé des relations principales (pour LLM)
+
+Artist 1–N ArtisteType
+
+Type 1–N ArtisteType
+
+ArtisteType 1–N ArtisteTypeShow
+
+Show 1–N Representations
+
+Show 1–N Reviews
+
+Show N–N Artistes via ArtisteType + ArtisteTypeShow
+
+Location 1–N Shows
+
+Location 1–N Representations
+
+Locality 1–N Locations
+
+Representation 1–N RepresentationReservation
+
+Reservation 1–N RepresentationReservation
+
+Price 1–N RepresentationReservation
+
+User 1–N Reservations
+
+User 1–N Reviews
+
+User N–N Roles via role_user

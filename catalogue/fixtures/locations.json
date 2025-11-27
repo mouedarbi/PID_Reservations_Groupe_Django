@@ -51,11 +51,7 @@
     "slug": "espace-delvaux-la-venerie",
     "designation": "",
     "address": "",
-    "locality": [
-      "1170",
-      "Watermael-Boitsfort"
-    ],
-    "website": null,
+    "website": "https://www.lavenerie.be",
     "phone": null
   }
 },
@@ -77,18 +73,17 @@
 {
   "model": "catalogue.location",
   "pk": 14,
-  "fields": {
-    "slug": "la-samaritaine",
-    "designation": "",
-    "address": "",
-    "locality": [
-      "1000",
-      "Bruxelles"
-    ],
-    "website": null,
-    "phone": null
-  }
-},
+      "fields": {
+        "slug": "la-samaritaine",
+        "designation": "",
+        "address": "",
+        "locality": [
+          "1000",
+          "Bruxelles"
+        ],
+        "website": "http://www.lasamaritaine.be/",
+        "phone": null
+      }},
 {
   "model": "catalogue.location",
   "pk": 15,

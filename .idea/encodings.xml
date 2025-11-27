@@ -3,5 +3,6 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/catalogue/fixtures/locations.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/catalogue/fixtures/reservations.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/catalogue/fixtures/shows.json" charset="UTF-8" />
   </component>
 </project>
