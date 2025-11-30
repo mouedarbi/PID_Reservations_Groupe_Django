@@ -1,0 +1,13 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Create Show{% endblock %}
+
+{% block content %}
+    <h1>Créer un spectacle</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sauvegarder</button>
+    </form>
+    <a href="{% url 'catalogue:show-index' %}">Retour à la liste</a>
+{% endblock %}

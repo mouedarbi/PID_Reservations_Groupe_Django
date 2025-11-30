@@ -4,15 +4,29 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
-    <ul>
-    {% for show in shows %}
-        <li>
-		<a href="{% url 'catalogue:show-show' show.id %}"> 				  {{ show.title }}
-		</a>
-        	{% if not show.bookable %}
-            <em>Réservation indisponible</em>
-        	{% endif %}
-        </li>
-    {% endfor %}
-    </ul>
+
+    {% if perms.catalogue.add_show %}
+        <a href="{% url 'catalogue:show-create' %}" class="btn btn-primary">Créer un spectacle</a>
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Lieu</th>
+                <th>Bookable</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for show in shows %}
+            <tr>
+                <td><a href="{% url 'catalogue:show-show' show.id %}">{{ show.title }}</a></td>
+                <td>{{ show.description|default:"-" }}</td>
+                <td>{{ show.location.designation|default:"-" }}</td>
+                <td>{{ show.bookable|yesno:"Yes,No" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

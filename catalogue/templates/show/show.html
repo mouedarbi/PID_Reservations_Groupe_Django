@@ -26,5 +26,15 @@
     <p><em>Non réservable</em></p>
     {% endif %}
 
+    {% if perms.catalogue.change_show %}
+        <a href="{% url 'catalogue:show-edit' show.id %}" class="btn btn-warning">Modifier</a>
+    {% endif %}
+    {% if perms.catalogue.delete_show %}
+        <form action="{% url 'catalogue:show-delete' show.id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form>
+    {% endif %}
+
     <nav><a href="{% url 'catalogue:show-index' %}">Retour à l'index</a></nav>
 {% endblock %}
