@@ -4,14 +4,27 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
+
+    {% if perms.catalogue.add_price %}
+        <a href="{% url 'catalogue:price-create' %}" class="btn btn-primary">Créer un prix</a>
+    {% endif %}
+
     <table>
-        <th> type</th>
-        <th> description</th>
-        <th> price</th>
-    {% for price in prices %}
-        <tr><td>{{ price.type }}</td>
-        <td>{{ price.description }}</td>
-            <td>{{ price.price }}</td></tr>
-    {% endfor %}
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for price in prices %}
+            <tr>
+                <td><a href="{% url 'catalogue:price-show' price.id %}">{{ price.type }}</a></td>
+                <td>{{ price.description }}</td>
+                <td>{{ price.price }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
 {% endblock %}
