@@ -12,14 +12,17 @@
     {% endfor %}
     </ul>
 
-    <div><a href="{% url 'catalogue:artist-edit' artist.id %}">Modifier</a></div>
+    {% if perms.catalogue.change_artist %}
+        <div><a href="{% url 'catalogue:artist-edit' artist.id %}">Modifier</a></div>
+    {% endif %}
     
-    <form method="post" action="{% url 'catalogue:artist-delete' artist.id %}" 
-        onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ?')">
-        {% csrf_token %}
-        <input type="hidden" name="_method" value="DELETE">
-        <button>Supprimer</button>
-    </form>
+    {% if perms.catalogue.delete_artist %}
+        <form method="post" action="{% url 'catalogue:artist-delete' artist.id %}" 
+            onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ?')">
+            {% csrf_token %}
+            <button>Supprimer</button>
+        </form>
+    {% endif %}
     
     <nav><a href="{% url 'catalogue:artist-index' %}">Retour à l'index</a></nav>
 {% endblock %}

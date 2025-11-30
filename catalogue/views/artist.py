@@ -29,38 +29,31 @@ def show(request, artist_id):
 	})
 
 @login_required
+@permission_required('catalogue.change_artist', raise_exception=True)
 def edit(request, artist_id):
     # fetch the object related to passed id
-    artist = Artist.objects.get(id=artist_id)
+    artist = get_object_or_404(Artist, id=artist_id)
 
     # pass the object as instance in form
     form = ArtistForm(request.POST or None, instance=artist)
 
     if request.method == 'POST':
-        method = request.POST.get('_method', '').upper()
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "Artiste modifié avec succès.")
 
-        if method == 'PUT':
-            # save the data from the form and
-            # redirect to detail_view
-            if form.is_valid():
-                form.save()
-                messages.add_message(request, messages.SUCCESS, "Artiste modifié avec succès.")
-
-                return render(request, "artist/show.html", {
-                    'artist': artist,
-                })
-            else:
-                messages.add_message(request, messages.ERROR, "Échec de la modification de l'artiste.")
+            return redirect('catalogue:artist-show', artist.id)
+        else:
+            messages.add_message(request, messages.ERROR, "Échec de la modification de l'artiste.")
     return render(request, 'artist/edit.html', {
         'form': form,
         'artist': artist,
     })
 
 
+@login_required
+@permission_required('catalogue.add_artist', raise_exception=True)
 def create (request):
-    if not request.user.is_authenticated or not request.user.has_perm('add_artist'):
-        return redirect(f"{settings.LOGIN_URL}?next={request.path}")
-
     form = ArtistForm(request.POST or None)
 
     if request.method == 'POST' and form.is_valid():
@@ -74,15 +67,13 @@ def create (request):
     return render(request, 'artist/create.html', {'form' : form,})
 
 @login_required
-@permission_required('catalog.can_delete', raise_exception=True)
+@permission_required('catalogue.delete_artist', raise_exception=True)
 def delete(request, artist_id):
     artist = get_object_or_404(Artist, id =artist_id)
     if request.method =="POST":
-        method = request.POST.get('_method', '').upper()
-        if method =='DELETE':
-            artist.delete()
-            messages.add_message(request, messages.SUCCESS, "Artiste supprimer avec succès.")
+        artist.delete()
+        messages.add_message(request, messages.SUCCESS, "Artiste supprimer avec succès.")
 
-            return redirect('catalogue:artist-index')
+        return redirect('catalogue:artist-index')
     messages.add_message(request, messages.ERROR, "Échec de la suppression de l'artiste !")
     return render(request, 'artist/show.html', {'artist': artist,})

@@ -4,9 +4,11 @@
 
 {% block content %}
     <h2>{{ title }}</h2>
+    {% if perms.catalogue.add_artist %}
     <ul>
         <li><a href="{% url 'catalogue:artist-create' %}">Ajouter</a></li>
     </ul>
+    {% endif %}
 
     <table>
         <thead>
