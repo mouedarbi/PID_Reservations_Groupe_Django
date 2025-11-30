@@ -5,30 +5,33 @@
 {% block content %}
     <h1>{{ location.designation }}</h1>
     
-        <address>
-            <p>{{ location.address }}</p>
-            <p>{{ location.locality.postal_code }} {{ location.locality.locality }}</p>
+    <address>
+        <p>{{ location.address }}</p>
+        <p>{{ location.locality.postal_code }} {{ location.locality.locality }}</p>
 
-            {% if location.website %}
-            <p><a href="{{ location.website }}" target="_blank">{{ location.website }}</a></p>
-            {% else %}
-            <p>Pas de site web</p>
-            {% endif %}
-            
-            {% if location.phone %}
-            <p><a href="tel:{{ location.phone }}">{{ location.phone }}</a></p>
-            {% else %}
-            <p>Pas de téléphone</p>
-            {% endif %}
-        </address>
+        {% if location.website %}
+        <p><a href="{{ location.website }}" target="_blank">{{ location.website }}</a></p>
+        {% else %}
+        <p>Pas de site web</p>
+        {% endif %}
         
-        <h2>Liste des spectacles</h2>
-        <ul>
-        {% for show in location.shows.all %}
-            <li>{{ show.title }}</li>
-        {% endfor %}
-        </ul>
+        {% if location.phone %}
+        <p><a href="tel:{{ location.phone }}">{{ location.phone }}</a></p>
+        {% else %}
+        <p>Pas de téléphone</p>
+        {% endif %}
+    </address>
 
-        <nav><a href="{% url 'catalogue:location-index' %}">Retour à l'index</a></nav>
+    {% if perms.catalogue.change_location %}
+        <a href="{% url 'catalogue:location-edit' location.id %}" class="btn btn-warning">Modifier</a>
+    {% endif %}
+    {% if perms.catalogue.delete_location %}
+        <form action="{% url 'catalogue:location-delete' location.id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form>
+    {% endif %}
+
+    <nav><a href="{% url 'catalogue:location-index' %}">Retour à l'index</a></nav>
 
 {% endblock %}

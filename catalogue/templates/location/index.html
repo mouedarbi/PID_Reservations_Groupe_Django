@@ -4,15 +4,29 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
-    <ul>
-    {% for location in locations %}
-        <li>
-		<a href="{% url 'catalogue:location-show' location.id %}"> 				{{ location.designation }}
-		</a>
-        	{% if location.website %}
-         	 - <a href="{{ location.website }}">{{ location.website }}</a>
-        	{% endif %}
-        </li>
-    {% endfor %}
-    </ul>
+
+    {% if perms.catalogue.add_location %}
+        <a href="{% url 'catalogue:location-create' %}" class="btn btn-primary">Créer un lieu</a>
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Designation</th>
+                <th>Website</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for location in locations %}
+            <tr>
+                <td><a href="{% url 'catalogue:location-show' location.id %}">{{ location.designation }}</a></td>
+                <td>
+                    {% if location.website %}
+                        <a href="{{ location.website }}">{{ location.website }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
