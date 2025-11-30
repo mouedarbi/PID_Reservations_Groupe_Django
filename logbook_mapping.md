@@ -130,6 +130,109 @@ Plusieurs erreurs `IntegrityError` et `DeserializationError` sont survenues lors
 - L'historique Git est propre et les fichiers de documentation sont ignorés. ✔️  
 - Toutes les vues, templates et routes pour les modèles implémentés sont en place et fonctionnels. ✔️
 - CRUD complet pour le modèle `Review`. ✔️  
+- CRUD complet pour le modèle `Locality`. ✔️
+- CRUD complet pour le modèle `Location`. ✔️
+- CRUD complet pour le modèle `Price`. ✔️
+- CRUD complet pour le modèle `Representation`. ✔️
+- CRUD complet pour le modèle `Show`. ✔️
+- CRUD complet pour le modèle `Type`. ✔️
+- Gestion des permissions et droits d'accès affinée et corrigée. ✔️
+
+---
+
+**Auteur :**  
+Mohamed Ouedarbi – Bachelier en Informatique de gestion  
+📅 Dernière mise à jour : 30/11/2025
+
+---
+## 📅 30/11/2025 – CRUD pour le modèle Locality
+
+**Contexte :**
+- Implémentation des fonctionnalités CRUD pour le modèle `Locality`.
+
+**Actions réalisées :**
+1.  **Formulaire :** Création de `catalogue/forms/LocalityForm.py`.
+2.  **Vues :** Ajout des vues `create`, `edit`, et `delete` dans `catalogue/views/locality.py`, avec gestion des permissions.
+3.  **Templates :** Création de `catalogue/templates/locality/create.html` et `catalogue/templates/locality/edit.html`.
+4.  **Routes URL :** Ajout des routes correspondantes dans `catalogue/urls.py`.
+5.  **Templates `index` et `show` :** Mise à jour des templates `locality/index.html` et `locality/show.html` pour inclure des liens vers les actions CRUD.
+
+**Statut :** ✅ Complet
+
+---
+## 📅 30/11/2025 – CRUD pour le modèle Location
+
+**Contexte :**
+- Implémentation des fonctionnalités CRUD pour le modèle `Location`.
+
+**Actions réalisées :**
+1.  **Formulaire :** Création de `catalogue/forms/LocationForm.py`.
+2.  **Vues :** Ajout des vues `create`, `edit`, et `delete` dans `catalogue/views/location.py`, avec gestion des permissions.
+3.  **Templates :** Création de `catalogue/templates/location/create.html` et `catalogue/templates/location/edit.html`.
+4.  **Routes URL :** Ajout des routes correspondantes dans `catalogue/urls.py`.
+5.  **Templates `index` et `show` :** Mise à jour des templates `location/index.html` et `location/show.html` pour inclure des liens vers les actions CRUD.
+
+**Statut :** ✅ Complet
+
+---
+## 📅 30/11/2025 – CRUD pour le modèle Price
+
+**Contexte :**
+- Implémentation des fonctionnalités CRUD pour le modèle `Price`.
+
+**Actions réalisées :**
+1.  **Formulaire :** Création de `catalogue/forms/PriceForm.py`.
+2.  **Vues :** Ajout des vues `create`, `edit`, et `delete` dans `catalogue/views/price.py`, avec gestion des permissions.
+3.  **Templates :** Création de `catalogue/templates/price/create.html` et `catalogue/templates/price/edit.html`.
+4.  **Routes URL :** Ajout des routes correspondantes dans `catalogue/urls.py`.
+5.  **Templates `index` et `show` :** Mise à jour des templates `price/index.html` et `price/show.html` pour inclure des liens vers les actions CRUD.
+
+**Statut :** ✅ Complet
+
+---
+## 📅 30/11/2025 – CRUD pour le modèle Representation
+
+**Contexte :**
+- Implémentation des fonctionnalités CRUD pour le modèle `Representation`.
+
+**Actions réalisées :**
+1.  **Formulaire :** Création de `catalogue/forms/RepresentationForm.py`.
+2.  **Vues :** Ajout des vues `create`, `edit`, et `delete` dans `catalogue/views/representation.py`, avec gestion des permissions.
+3.  **Templates :** Création de `catalogue/templates/representation/create.html` et `catalogue/templates/representation/edit.html`.
+4.  **Routes URL :** Ajout des routes correspondantes dans `catalogue/urls.py`.
+5.  **Templates `index` et `show` :** Mise à jour des templates `representation/index.html` et `representation/show.html` pour inclure des liens vers les actions CRUD.
+
+**Statut :** ✅ Complet
+
+---
+## 📅 30/11/2025 – CRUD pour le modèle Show
+
+**Contexte :**
+- Implémentation des fonctionnalités CRUD pour le modèle `Show`.
+
+**Actions réalisées :**
+1.  **Formulaire :** Création de `catalogue/forms/ShowForm.py`.
+2.  **Vues :** Ajout des vues `create`, `edit`, et `delete` dans `catalogue/views/show_.py`, avec gestion des permissions.
+3.  **Templates :** Création de `catalogue/templates/show/create.html` et `catalogue/templates/show/edit.html`.
+4.  **Routes URL :** Ajout des routes correspondantes dans `catalogue/urls.py`.
+5.  **Templates `index` et `show` :** Mise à jour des templates `show/index.html` et `show/show.html` pour inclure des liens vers les actions CRUD.
+
+**Statut :** ✅ Complet
+
+---
+## 📅 30/11/2025 – CRUD pour le modèle Type
+
+**Contexte :**
+- Implémentation des fonctionnalités CRUD pour le modèle `Type`.
+
+**Actions réalisées :**
+1.  **Formulaire :** Création de `catalogue/forms/TypeForm.py`.
+2.  **Vues :** Ajout des vues `create`, `edit`, et `delete` dans `catalogue/views/type.py`, avec gestion des permissions.
+3.  **Templates :** Création de `catalogue/templates/type/create.html` et `catalogue/templates/type/edit.html`.
+4.  **Routes URL :** Ajout des routes correspondantes dans `catalogue/urls.py`.
+5.  **Templates `index` et `show` :** Mise à jour des templates `type/index.html` et `type/show.html` pour inclure des liens vers les actions CRUD.
+
+**Statut :** ✅ Complet
 
 ---
 
