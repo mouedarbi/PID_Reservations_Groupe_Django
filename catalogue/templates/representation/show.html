@@ -18,5 +18,15 @@
     </p>
 </article>
 
+{% if perms.catalogue.change_representation %}
+    <a href="{% url 'catalogue:representation-edit' representation.id %}" class="btn btn-warning">Modifier</a>
+{% endif %}
+{% if perms.catalogue.delete_representation %}
+    <form action="{% url 'catalogue:representation-delete' representation.id %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Supprimer</button>
+    </form>
+{% endif %}
+
 <nav><a href="{% url 'catalogue:representation-index' %}">Retour à l'index</a></nav>
 {% endblock %}

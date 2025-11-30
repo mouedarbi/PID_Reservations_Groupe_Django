@@ -4,21 +4,37 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
-    <ul>
-    {% for representation in representations %}
-        <li><datetime>{{ representation.schedule|date:'Y-m-d' }}</datetime>
-            - {{ representation.show.title }}
-        
-            {% if representation.location %}
-             - <span>{{ representation.location.designation }}</span>
-            {% elif representation.show.location %}
-             - <span>{{ representation.show.location.designation }}</span>
-            {% else %}
-             - <em>Pas de lieu</em>
-            {% endif %}
 
-            <a href="{% url 'catalogue:representation-show' representation.id %}">&#128065;</a>
-        </li>
-    {% endfor %}
-    </ul>
+    {% if perms.catalogue.add_representation %}
+        <a href="{% url 'catalogue:representation-create' %}" class="btn btn-primary">Créer une représentation</a>
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Heure</th>
+                <th>Spectacle</th>
+                <th>Lieu</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for representation in representations %}
+            <tr>
+                <td>{{ representation.schedule|date:'Y-m-d' }}</td>
+                <td>{{ representation.schedule|date:'H:i' }}</td>
+                <td><a href="{% url 'catalogue:representation-show' representation.id %}">{{ representation.show.title }}</a></td>
+                <td>
+                    {% if representation.location %}
+                        {{ representation.location.designation }}
+                    {% elif representation.show.location %}
+                        {{ representation.show.location.designation }}
+                    {% else %}
+                        <em>Pas de lieu</em>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

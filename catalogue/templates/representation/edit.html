@@ -1,0 +1,13 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Edit Representation{% endblock %}
+
+{% block content %}
+    <h1>Modifier la représentation</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sauvegarder</button>
+    </form>
+    <a href="{% url 'catalogue:representation-show' representation.id %}">Annuler</a>
+{% endblock %}
