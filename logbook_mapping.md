@@ -107,7 +107,32 @@ Plusieurs erreurs `IntegrityError` et `DeserializationError` sont survenues lors
 - Toutes les vues, templates et routes pour les modèles implémentés sont en place et fonctionnels. ✔️  
 
 ---
+## 📅 30/11/2025 – CRUD pour le modèle Review
+
+**Contexte :**
+- Finalisation des fonctionnalités CRUD pour les modèles restants.
+
+**Actions réalisées :**
+1.  **Formulaire :** Création de `catalogue/forms/ReviewForm.py` pour gérer la création et la modification des critiques.
+2.  **Vues :** Implémentation des vues `index`, `show`, `create`, `edit`, et `delete` dans `catalogue/views/review.py`, avec gestion des permissions.
+3.  **Templates :** Création des templates `index.html`, `show.html`, `create.html`, et `edit.html` dans `catalogue/templates/review/`.
+4.  **Routes URL :** Ajout des routes correspondantes dans `catalogue/urls.py`.
+5.  **Menu de navigation :** Ajout d'un lien vers la liste des critiques dans `catalogue/templates/layouts/base.html`.
+
+**Statut :** ✅ Complet
+
+---
+
+## ✅ État final du projet (30/11/2025)
+- Modèles `Representation`, `Review`, `ArtistType` et `ArtistTypeShow` implémentés et migrés. ✔️  
+- Base de données MySQL nettoyée et entièrement peuplée avec toutes les fixtures corrigées. ✔️  
+- Le projet est maintenant à jour avec la roadmap jusqu'à la fin de la modélisation des relations complexes. ✔️  
+- L'historique Git est propre et les fichiers de documentation sont ignorés. ✔️  
+- Toutes les vues, templates et routes pour les modèles implémentés sont en place et fonctionnels. ✔️
+- CRUD complet pour le modèle `Review`. ✔️  
+
+---
 
 **Auteur :**  
 Mohamed Ouedarbi – Bachelier en Informatique de gestion  
-📅 Dernière mise à jour : 27/11/2025
+📅 Dernière mise à jour : 30/11/2025

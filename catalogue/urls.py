@@ -24,4 +24,9 @@ urlpatterns = [
     path('show/<int:show_id>', views.show_.show, name='show-show'),
     path('representation/', views.representation.index, name='representation-index'),
     path('representation/<int:representation_id>', views.representation.show, name='representation-show'),
+    path('review/', views.review.index, name='review-index'),
+    path('review/<int:review_id>', views.review.show, name='review-show'),
+    path('review/create', views.review.create, name='review-create'),
+    path('review/edit/<int:review_id>', views.review.edit, name='review-edit'),
+    path('review/delete/<int:review_id>', views.review.delete, name='review-delete'),
 ]

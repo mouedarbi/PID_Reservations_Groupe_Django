@@ -5,3 +5,4 @@ from .price import *
 from .location import *
 from .show_ import *
 from .representation import *
+from .review import *
