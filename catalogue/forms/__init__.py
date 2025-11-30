@@ -5,3 +5,4 @@ from .LocationForm import *
 from .PriceForm import *
 from .RepresentationForm import *
 from .ShowForm import *
+from .TypeForm import *

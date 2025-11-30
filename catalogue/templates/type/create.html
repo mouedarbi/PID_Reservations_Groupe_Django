@@ -1,0 +1,13 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Create Type{% endblock %}
+
+{% block content %}
+    <h1>Créer un type</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sauvegarder</button>
+    </form>
+    <a href="{% url 'catalogue:type-index' %}">Retour à la liste</a>
+{% endblock %}

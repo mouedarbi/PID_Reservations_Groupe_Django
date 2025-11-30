@@ -4,9 +4,23 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
-    <ul>
-    {% for type in types %}
-        <li>{{ type.type }}</li>
-    {% endfor %}
-    </ul>
+
+    {% if perms.catalogue.add_type %}
+        <a href="{% url 'catalogue:type-create' %}" class="btn btn-primary">Créer un type</a>
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for type in types %}
+            <tr>
+                <td><a href="{% url 'catalogue:type-show' type.id %}">{{ type.type }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
