@@ -27,15 +27,17 @@
             <ul>
                 <li><a href="{% url 'home' %}">Accueil</a></li>
                 <li><a href="{% url 'catalogue:artist-index' %}">Nos artistes</a></li>
-                <li><a href="{% url 'catalogue:type-index' %}">Types</a></li>
-                <li><a href="{% url 'catalogue:locality-index' %}">Localités</a></li>
-                <li><a href="{% url 'catalogue:price-index' %}">Prix</a></li>
-                <li><a href="{% url 'catalogue:location-index' %}">Lieux</a></li>
                 <li><a href="{% url 'catalogue:show-index' %}">Spectacles</a></li>
-                <li><a href="{% url 'catalogue:representation-index' %}">Représentations</a></li>
                 <li><a href="{% url 'catalogue:review-index' %}">Critiques</a></li>
+                {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'catalogue:type-index' %}">Types</a></li>
+                    <li><a href="{% url 'catalogue:locality-index' %}">Localités</a></li>
+                    <li><a href="{% url 'catalogue:price-index' %}">Prix</a></li>
+                    <li><a href="{% url 'catalogue:location-index' %}">Lieux</a></li>
+                    <li><a href="{% url 'catalogue:representation-index' %}">Représentations</a></li>
+                {% endif %}
                 {% if request.user.is_superuser %}
-                <li><a href="{% url 'admin:index' %}">Administration</a></li>
+                    <li><a href="{% url 'admin:index' %}">Administration</a></li>
                 {% endif %}
             </ul>
         </nav>
