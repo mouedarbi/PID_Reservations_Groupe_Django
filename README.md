@@ -3,6 +3,7 @@
 ##  Équipe de développement
 
 * **Mohamed Ouedarbi**
+* Morad El Halimi
 * *(+ ajouter les autres membres du groupe)*
 
 ---
