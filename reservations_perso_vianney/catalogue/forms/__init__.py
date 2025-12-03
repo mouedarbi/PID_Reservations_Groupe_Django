@@ -1,0 +1,1 @@
+from .ArtistForm import *

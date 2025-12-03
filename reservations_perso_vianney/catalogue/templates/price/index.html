@@ -1,0 +1,15 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Liste des tarifs{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <ul>
+    {% for price in prices %}
+        <li>
+            <a href="{% url 'catalogue:price-show' price.id %}">{{ price.type }}</a>
+            : {{ price.price|floatformat:2 }} €
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

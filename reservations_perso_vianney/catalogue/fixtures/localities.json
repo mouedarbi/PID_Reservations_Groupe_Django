@@ -1,0 +1,43 @@
+[
+  {
+    "model": "catalogue.locality",
+    "pk": 1,
+    "fields": {
+      "postal_code": "1000",
+      "locality": "Bruxelles"
+    }
+  },
+  {
+    "model": "catalogue.locality",
+    "pk": 2,
+    "fields": {
+      "postal_code": "1040",
+      "locality": "Etterbeek"
+    }
+  },
+  {
+    "model": "catalogue.locality",
+    "pk": 3,
+    "fields": {
+      "postal_code": "1050",
+      "locality": "Ixelles"
+    }
+  },
+  {
+    "model": "catalogue.locality",
+    "pk": 4,
+    "fields": {
+      "postal_code": "1170",
+      "locality": "Watermael-Boistfort"
+    }
+  },
+  {
+    "model": "catalogue.locality",
+    "pk": 5,
+    "fields": {
+      "postal_code": "4000",
+      "locality": "Namur"
+    }
+  }
+]
+

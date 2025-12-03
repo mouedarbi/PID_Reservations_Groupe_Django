@@ -1,0 +1,106 @@
+[
+    {
+        "model": "catalogue.artist",
+        "pk": 1,
+        "fields": {
+            "firstname": "Daniel",
+            "lastname": "Marcelin"
+        }
+    },
+    {
+        "model": "catalogue.artist",
+        "pk": 2,
+        "fields": {
+            "firstname": "Philippe",
+            "lastname": "Laurent"
+        }
+    },
+    {
+        "model": "catalogue.artist",
+        "pk": 3,
+        "fields": {
+            "firstname": "Marius",
+            "lastname": "Von Mayenburg"
+        }
+    },
+    {
+        "model": "catalogue.artist",
+        "pk": 4,
+        "fields": {
+            "firstname": "Olivier",
+            "lastname": "Boudon"
+        }
+    },
+    {
+        "model": "catalogue.artist",
+        "pk": 5,
+        "fields": {
+            "firstname": "Anne Marie",
+            "lastname": "Loop"
+        }
+    },
+    {
+        "model": "catalogue.artist",
+        "pk": 6,
+        "fields": {
+            "firstname": "Pietro",
+            "lastname": "Varasso"
+        }
+    },
+    {
+        "model": "catalogue.artist",
+        "pk": 7,
+        "fields": {
+            "firstname": "Laurent",
+            "lastname": "Caron"
+        }
+    },
+    {
+        "model": "catalogue.artist",
+        "pk": 8,
+        "fields": {
+            "firstname": "Élena",
+            "lastname": "Perez"
+        }
+    },
+    {
+        "model": "catalogue.artist",
+        "pk": 9,
+        "fields": {
+            "firstname": "Guillaume",
+            "lastname": "Alexandre"
+        }
+    },
+    {
+        "model": "catalogue.artist",
+        "pk": 10,
+        "fields": {
+            "firstname": "Claude",
+            "lastname": "Semal"
+        }
+    },
+    {
+        "model": "catalogue.artist",
+        "pk": 11,
+        "fields": {
+            "firstname": "Laurence",
+            "lastname": "Warin"
+        }
+    },
+    {
+        "model": "catalogue.artist",
+        "pk": 12,
+        "fields": {
+            "firstname": "Pierre",
+            "lastname": "Wayburn"
+        }
+    },
+    {
+        "model": "catalogue.artist",
+        "pk": 13,
+        "fields": {
+            "firstname": "Gwendoline",
+            "lastname": "Gauthier"
+        }
+    }
+]

@@ -1,0 +1,79 @@
+[
+{
+  "model": "catalogue.reservation",
+  "pk": 1,
+  "fields": {
+    "booking_date": "2025-11-25T18:03:32.976Z",
+    "status": "en attente",
+    "user": [
+      "bob"
+    ]
+  }
+},
+{
+  "model": "catalogue.reservation",
+  "pk": 2,
+  "fields": {
+    "booking_date": "2025-11-25T18:11:26.131Z",
+    "status": "en attente",
+    "user": [
+      "bob"
+    ]
+  }
+},
+{
+  "model": "catalogue.reservation",
+  "pk": 3,
+  "fields": {
+    "booking_date": "2025-11-25T18:11:40.272Z",
+    "status": "annulee",
+    "user": [
+      "bob"
+    ]
+  }
+},
+{
+  "model": "catalogue.reservation",
+  "pk": 4,
+  "fields": {
+    "booking_date": "2025-11-25T18:11:55.466Z",
+    "status": "payee",
+    "user": [
+      "bob"
+    ]
+  }
+},
+{
+  "model": "catalogue.reservation",
+  "pk": 5,
+  "fields": {
+    "booking_date": "2025-11-25T18:12:08.778Z",
+    "status": "payee",
+    "user": [
+      "anna"
+    ]
+  }
+},
+{
+  "model": "catalogue.reservation",
+  "pk": 6,
+  "fields": {
+    "booking_date": "2025-11-27T14:24:20.830Z",
+    "status": "payée",
+    "user": [
+      "bob"
+    ]
+  }
+},
+{
+  "model": "catalogue.reservation",
+  "pk": 7,
+  "fields": {
+    "booking_date": "2025-11-27T14:24:33.970Z",
+    "status": "en attente",
+    "user": [
+      "anna"
+    ]
+  }
+}
+]

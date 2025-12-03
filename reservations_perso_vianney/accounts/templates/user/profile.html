@@ -1,0 +1,48 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Profil{% endblock title %}
+
+{% block content %}
+    <div>
+        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+        <p>Login : {{ user.username }}</p>
+        <p>Email : {{ user.email }}</p>
+        <p>Langue : {{ user_language }}</p>
+    </div>
+
+    <ul>
+        <li><a href="{% url 'accounts:user-update' request.user.id %}">Modifier</a></li>
+        <li><a href="{% url 'password_change' %}">Modifier le mot de passe</a></li>
+        <li>
+            <form method="post" action="{% url 'accounts:user-delete' request.user.id %}"
+                  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')">
+                {% csrf_token %}
+                <input type="submit" value="Supprimer son compte">
+            </form>
+        </li>
+    </ul>
+
+    <h3>Mes réservations</h3>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Statut</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reservation in user.reservations.all %}
+            <tr>
+                <td>{{ reservation.id }}</td>
+                <td>{{ reservation.booking_date|date:"d/m/Y" }}</td>
+                <td>{{ reservation.status }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <p><code>{{ user.reservations.all }}</code></p>
+
+{% endblock content %}

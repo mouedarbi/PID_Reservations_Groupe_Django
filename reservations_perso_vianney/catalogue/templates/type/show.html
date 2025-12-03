@@ -1,0 +1,14 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ type.type|title }}</h1>
+
+    <h2>Liste des artistes</h2>
+    <ul>
+    {% for at in type.t_artistTypes.all %}
+        <li>{{ at.artist.firstname }} {{ at.artist.lastname }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

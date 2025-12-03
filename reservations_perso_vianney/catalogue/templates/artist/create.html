@@ -1,0 +1,18 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Ajouter un artiste{% endblock %}
+
+{% block content %}
+    <h2>Ajouter un artiste</h2>
+
+    <form action="{% url 'catalogue:artist-create' %}" method="post">
+        {% csrf_token %}
+
+        {{ form }}
+
+        <button type="submit">Ajouter</button>
+        <a href="{% url 'catalogue:artist-index' %}">Annuler</a>
+    </form>
+
+    <nav><a href="{% url 'catalogue:artist-index' %}">Retour à l'index</a></nav>
+{% endblock %}

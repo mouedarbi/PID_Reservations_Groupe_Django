@@ -1,0 +1,12 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>Tarif {{ price.type|title }}</h1>
+    <p>{{ price.description }}</p>
+    <p>{{ price.price }} €</p>
+    <p>Validité : du {{ price.start_date }} au {{ price.end_date }}</p>
+
+    <nav><a href="{% url 'catalogue:price-index' %}">Retour à l'index</a></nav>
+{% endblock %}
