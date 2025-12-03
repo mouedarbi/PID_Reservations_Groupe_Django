@@ -136,3 +136,5 @@ Cela évite de recréer un environnement virtuel et garantit que tous les membre
 
 Projet académique – **Bachelier en Informatique de Gestion (PID)**
 © 2025 – Tous droits réservés.
+
+<!-- Test comment for CI/CD -->
