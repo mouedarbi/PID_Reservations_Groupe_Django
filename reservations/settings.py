@@ -40,13 +40,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
+
     #ajout de catalogue
     "catalogue",
-<<<<<<< HEAD
-=======
     "accounts",
->>>>>>> c9ae4db4ee72dcad93f88e8a92c3e9a936cc3925
 ]
 
 MIDDLEWARE = [
