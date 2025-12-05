@@ -1,0 +1,102 @@
+[
+{
+  "model": "catalogue.location",
+  "pk": 1,
+  "fields": {
+    "slug": "art-center",
+    "designation": "Art Center",
+    "address": "",
+    "locality": [
+      "1000",
+      "Bruxelles"
+    ],
+    "website": null,
+    "phone": null
+  }
+},
+{
+  "model": "catalogue.location",
+  "pk": 2,
+  "fields": {
+    "slug": "atrium",
+    "designation": "Atrium",
+    "address": "",
+    "locality": [
+      "1000",
+      "Bruxelles"
+    ],
+    "website": null,
+    "phone": null
+  }
+},
+{
+  "model": "catalogue.location",
+  "pk": 11,
+  "fields": {
+    "slug": "opera-house",
+    "designation": "Opera House",
+    "address": "",
+    "locality": [
+      "1040",
+      "Etterbeek"
+    ],
+    "website": null,
+    "phone": null
+  }
+},
+{
+  "model": "catalogue.location",
+  "pk": 12,
+  "fields": {
+    "slug": "espace-delvaux-la-venerie",
+    "designation": "",
+    "address": "",
+    "website": "https://www.lavenerie.be",
+    "phone": null
+  }
+},
+{
+  "model": "catalogue.location",
+  "pk": 13,
+  "fields": {
+    "slug": "dexia-art-center",
+    "designation": "",
+    "address": "",
+    "locality": [
+      "1000",
+      "Bruxelles"
+    ],
+    "website": null,
+    "phone": null
+  }
+},
+{
+  "model": "catalogue.location",
+  "pk": 14,
+      "fields": {
+        "slug": "la-samaritaine",
+        "designation": "",
+        "address": "",
+        "locality": [
+          "1000",
+          "Bruxelles"
+        ],
+        "website": "http://www.lasamaritaine.be/",
+        "phone": null
+      }},
+{
+  "model": "catalogue.location",
+  "pk": 15,
+  "fields": {
+    "slug": "espace-magh",
+    "designation": "",
+    "address": "",
+    "locality": [
+      "1000",
+      "Bruxelles"
+    ],
+    "website": null,
+    "phone": null
+  }
+}
+]

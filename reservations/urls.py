@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+<<<<<<< HEAD
 
 # from django.views.generic import RedirectView
 from django.contrib import admin
@@ -24,6 +25,55 @@ urlpatterns = [
     path("catalogue/", include("catalogue.urls")),
     path("admin/", admin.site.urls),
 ]
+=======
+#from django.views.generic import RedirectView
+from django.contrib import admin
+from django.urls import include, path
+
+from django.contrib.auth import views as auth_views
+from django.views.generic.base import TemplateView
+
+urlpatterns = [
+    #path('', RedirectView.as_view(url='/artist/', permanent=False)),
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('catalogue/', include('catalogue.urls')),
+    path(
+        "admin/password_reset/",
+        auth_views.PasswordResetView.as_view(
+            extra_context={"site_header": admin.site.site_header}
+        ),
+        name="admin_password_reset",
+    ),
+    path(
+        "admin/password_reset/done/",
+        auth_views.PasswordResetDoneView.as_view(
+            extra_context={"site_header": admin.site.site_header}
+        ),
+        name="password_reset_done",
+    ),
+    path(
+        "reset/<uidb64>/<token>/",
+        auth_views.PasswordResetConfirmView.as_view(
+            extra_context={"site_header": admin.site.site_header}
+        ),
+        name="password_reset_confirm",
+    ),
+    path(
+        "reset/done/",
+        auth_views.PasswordResetCompleteView.as_view(
+            extra_context={"site_header": admin.site.site_header}
+        ),
+        name="password_reset_complete",
+    ),
+
+    path('admin/', admin.site.urls),
+
+]
+
+>>>>>>> c9ae4db4ee72dcad93f88e8a92c3e9a936cc3925
 admin.site.index_title = "Projet Réservations"
 admin.site.index_header = "Projet Réservations HEADER"
 admin.site.site_title = "Spectacles"

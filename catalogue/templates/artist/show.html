@@ -4,6 +4,7 @@
 
 {% block content %}
     <h2>{{ artist.firstname }} {{ artist.lastname }}</h2>
+<<<<<<< HEAD
     <div><a href="{% url 'catalogue:artist-edit' artist.id %}">Modifier</a></div>
     <form method="post" action="{% url 'catalogue:artist-delete' artist.id %}"
         onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ?')">
@@ -14,5 +15,27 @@
         <button>Supprimer</button>
     </form>
 
+=======
+
+    <h2>Liste des types</h2>
+    <ul>
+    {% for artist_type in artist.a_artistTypes.all %}
+        <li>{{ artist_type.type.type }}</li>
+    {% endfor %}
+    </ul>
+
+    {% if perms.catalogue.change_artist %}
+        <div><a href="{% url 'catalogue:artist-edit' artist.id %}">Modifier</a></div>
+    {% endif %}
+    
+    {% if perms.catalogue.delete_artist %}
+        <form method="post" action="{% url 'catalogue:artist-delete' artist.id %}" 
+            onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ?')">
+            {% csrf_token %}
+            <button>Supprimer</button>
+        </form>
+    {% endif %}
+    
+>>>>>>> c9ae4db4ee72dcad93f88e8a92c3e9a936cc3925
     <nav><a href="{% url 'catalogue:artist-index' %}">Retour à l'index</a></nav>
 {% endblock %}

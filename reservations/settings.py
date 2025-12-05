@@ -43,6 +43,10 @@ INSTALLED_APPS = [
     
     #ajout de catalogue
     "catalogue",
+<<<<<<< HEAD
+=======
+    "accounts",
+>>>>>>> c9ae4db4ee72dcad93f88e8a92c3e9a936cc3925
 ]
 
 MIDDLEWARE = [
@@ -57,6 +61,18 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "reservations.urls"
 
+<<<<<<< HEAD
+=======
+LOGIN_URL = '/accounts/login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+
+# Email configuration
+# https://docs.djangoproject.com/fr/5.2/topics/email/#smtp-backend
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+>>>>>>> c9ae4db4ee72dcad93f88e8a92c3e9a936cc3925
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",

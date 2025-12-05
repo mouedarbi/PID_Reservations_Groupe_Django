@@ -1,0 +1,56 @@
+[
+{
+  "model": "catalogue.representation",
+  "pk": 1,
+  "fields": {
+    "show": [
+      "ayiti",
+      2010
+    ],
+    "schedule": "2012-10-12T13:30:00Z",
+    "location": [
+      "espace-delvaux-la-venerie",
+      "https://www.lavenerie.be"
+    ]
+  }
+},
+{
+  "model": "catalogue.representation",
+  "pk": 2,
+  "fields": {
+    "show": [
+      "ayiti",
+      2010
+    ],
+    "schedule": "2012-10-12T20:30:00Z",
+    "location": [
+      "dexia-art-center",
+      null
+    ]
+  }
+},
+{
+  "model": "catalogue.representation",
+  "pk": 3,
+  "fields": {
+    "show": [
+      "cible-mouvante",
+      2012
+    ],
+    "schedule": "2012-10-02T20:30:00Z",
+    "location": null
+  }
+},
+{
+  "model": "catalogue.representation",
+  "pk": 4,
+  "fields": {
+    "show": [
+      "ceci-nest-pas-un-chanteur-belge",
+      2014
+    ],
+    "schedule": "2012-10-16T20:30:00Z",
+    "location": null
+  }
+}
+]
