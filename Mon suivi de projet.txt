@@ -1,0 +1,9 @@
+
+# Mapping :
+
+- Erreur indentation, à régler pour le fonctionnement du projet (type.py)
+- Répétition pour les entités :
+        Liens de vérification : http://localhost:8000/catalogue/locality/
+                                http://localhost:8000/catalogue/price/
+- Erreur dans le lien donné dans le fichier price/index.html 
+- 

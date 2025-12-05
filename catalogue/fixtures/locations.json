@@ -1,0 +1,107 @@
+[
+{
+  "model": "catalogue.location",
+  "pk": 1,
+  "fields": {
+    "slug": "art-center",
+    "designation": "Art Center",
+    "address": "",
+    "locality": [
+      "1000",
+      "Bruxelles"
+    ],
+    "website": null,
+    "phone": null
+  }
+},
+{
+  "model": "catalogue.location",
+  "pk": 2,
+  "fields": {
+    "slug": "atrium",
+    "designation": "Atrium",
+    "address": "",
+    "locality": [
+      "1000",
+      "Bruxelles"
+    ],
+    "website": null,
+    "phone": null
+  }
+},
+{
+  "model": "catalogue.location",
+  "pk": 3,
+  "fields": {
+    "slug": "opera-house",
+    "designation": "Opera House",
+    "address": "",
+    "locality": [
+      "1040",
+      "Etterbeek"
+    ],
+    "website": null,
+    "phone": null
+  }
+},
+{
+  "model": "catalogue.location",
+  "pk": 4,
+  "fields": {
+    "slug": "espace-delvaux-la-venerie",
+    "designation": "Espace Delvaux / La Vénerie",
+    "address": "",
+    "locality": [
+      "1170",
+      "Watermael-Boistfort"
+    ],
+    "website": null,
+    "phone": null
+  }
+},
+{
+  "model": "catalogue.location",
+  "pk": 5,
+  "fields": {
+    "slug": "dexia-art-center",
+    "designation": "Dexia Art Center",
+    "address": "",
+    "locality": [
+      "1000",
+      "Bruxelles"
+    ],
+    "website": null,
+    "phone": null
+  }
+},
+{
+  "model": "catalogue.location",
+  "pk": 6,
+  "fields": {
+    "slug": "la-samaritaine",
+    "designation": "La Samaritaine",
+    "address": "",
+    "locality": [
+      "1000",
+      "Bruxelles"
+    ],
+    "website": null,
+    "phone": null
+  }
+},
+{
+  "model": "catalogue.location",
+  "pk": 7,
+  "fields": {
+    "slug": "espace-magh",
+    "designation": "Espace Magh",
+    "address": "",
+    "locality": [
+      "1000",
+      "Bruxelles"
+    ],
+    "website": null,
+    "phone": null
+  }
+}
+]
