@@ -1,0 +1,110 @@
+[
+{
+  "model": "catalogue.review",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "bob"
+    ],
+    "show": [
+      "ayiti",
+      2010
+    ],
+    "review": "Excellent.",
+    "stars": 5,
+    "validated": true,
+    "created_at": "2025-12-02T22:28:36.077Z",
+    "updated_at": null
+  }
+},
+{
+  "model": "catalogue.review",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "bob"
+    ],
+    "show": [
+      "cible-mouvante",
+      2012
+    ],
+    "review": "Pas mal.",
+    "stars": 3,
+    "validated": false,
+    "created_at": "2025-12-02T22:29:06.963Z",
+    "updated_at": null
+  }
+},
+{
+  "model": "catalogue.review",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "anna"
+    ],
+    "show": [
+      "ayiti",
+      2010
+    ],
+    "review": "Magnifique!",
+    "stars": 5,
+    "validated": true,
+    "created_at": "2025-12-02T22:29:32.082Z",
+    "updated_at": null
+  }
+},
+{
+  "model": "catalogue.review",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "bob"
+    ],
+    "show": [
+      "ayiti",
+      2010
+    ],
+    "review": "Excellent.",
+    "stars": 5,
+    "validated": true,
+    "created_at": "2025-12-02T22:37:14.956Z",
+    "updated_at": null
+  }
+},
+{
+  "model": "catalogue.review",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "bob"
+    ],
+    "show": [
+      "cible-mouvante",
+      2012
+    ],
+    "review": "Pas mal.",
+    "stars": 3,
+    "validated": false,
+    "created_at": "2025-12-02T22:37:26.882Z",
+    "updated_at": null
+  }
+},
+{
+  "model": "catalogue.review",
+  "pk": 6,
+  "fields": {
+    "user": [
+      "anna"
+    ],
+    "show": [
+      "ayiti",
+      2010
+    ],
+    "review": "Magnifique!",
+    "stars": 5,
+    "validated": true,
+    "created_at": "2025-12-02T22:38:07.524Z",
+    "updated_at": null
+  }
+}
+]

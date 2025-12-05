@@ -1,0 +1,25 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Liste des représentations{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <ul>
+    {% for representation in representations %}
+        <li>
+            <datetime>{{ representation.schedule|date:'Y-m-d' }}</datetime>
+            - {{ representation.show.title }}
+            
+            {% if representation.location %}
+                - <span>{{ representation.location.designation }}</span>
+            {% elif representation.show.location %}
+                - <span>{{ representation.show.location.designation }}</span>
+            {% else %}
+                - <em>Pas de lieu</em>
+            {% endif %}
+
+            <a href="{% url 'catalogue:representation-show' representation.id %}">&#128065;</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

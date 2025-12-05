@@ -1,0 +1,12 @@
+[
+{
+  "model": "catalogue.representationreservation",
+  "pk": 1,
+  "fields": {
+    "representation": 1,
+    "reservation": 1,
+    "price": "15.00",
+    "quantity": 2
+  }
+}
+]

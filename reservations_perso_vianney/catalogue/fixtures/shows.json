@@ -1,0 +1,75 @@
+[
+  {
+    "model": "catalogue.show",
+    "pk": 1,
+    "fields": {
+      "slug": "ayiti",
+      "title": "Ayiti",
+      "description": "Un homme est bloqué à l'aéroport.\n Questionné par les douaniers, il doit alors justifier son identité, et surtout prouver qu'il est haïtien - Qu'est-ce qu'être haïtien ?",
+      "poster_url": "ayiti.jpg",
+      "duration": 90,
+      "created_in": 2010,
+      "location": [
+        "espace-delvaux-la-venerie",
+        "https://www.lavenerie.be"
+      ],
+      "bookable": true,
+      "created_at": "2025-01-07T17:41:03.509Z",
+      "updated_at": null
+    }
+  },
+  {
+    "model": "catalogue.show",
+    "pk": 2,
+    "fields": {
+      "slug": "cible-mouvante",
+      "title": "Cible mouvante",
+      "description": "Dans ce « thriller d'anticipation », des adultes semblent alimenter et véhiculer une crainte féroce envers les enfants âgés entre 10 et 12 ans.",
+      "poster_url": "cible.jpg",
+      "duration": 90,
+      "created_in": 2012,
+      "location": [
+        "dexia-art-center",
+        null
+      ],
+      "bookable": true,
+      "created_at": "2025-01-07T17:41:15.554Z",
+      "updated_at": null
+    }
+  },
+  {
+    "model": "catalogue.show",
+    "pk": 3,
+    "fields": {
+      "slug": "ceci-nest-pas-un-chanteur-belge",
+      "title": "Ceci n'est pas un chanteur belge",
+      "description": "Non peut-être ?!\nEntre Magritte (pour le surréalisme comique) et Maigret (pour le réalisme mélancolique), ce dixième opus semalien propose quatorze nouvelles chansons mêlées à de petits textes humoristiques et à quelques fortes images poétiques.",
+      "poster_url": "ceci-nest-pas-un-chanteur-belge.jpg",
+      "duration": 90,
+      "created_in": 2014,
+      "location": null,
+      "bookable": false,
+      "created_at": "2025-01-07T17:41:15.585Z",
+      "updated_at": null
+    }
+  },
+  {
+    "model": "catalogue.show",
+    "pk": 4,
+    "fields": {
+      "slug": "manneke",
+      "title": "Manneke… !",
+      "description": "A tour de rôle, Pierre se joue de ses oncles, tantes, grands-parents et surtout de sa mère.",
+      "poster_url": "manneke.jpg",
+      "duration": 90,
+      "created_in": 2011,
+      "location": [
+        "la-samaritaine",
+        "http://www.lasamaritaine.be/"
+      ],
+      "bookable": true,
+      "created_at": "2025-01-07T17:41:40.894Z",
+      "updated_at": null
+    }
+  }
+]

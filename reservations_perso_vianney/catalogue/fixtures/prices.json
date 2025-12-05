@@ -1,0 +1,47 @@
+[
+  {
+    "model": "catalogue.price",
+    "pk": 1,
+    "fields": {
+      "type": "children",
+      "price": 5.00,
+      "description": "Price for children under 12.",
+      "start_date": "2025-12-01",
+      "end_date": "2026-12-31"
+    }
+  },
+  {
+    "model": "catalogue.price",
+    "pk": 2,
+    "fields": {
+      "type": "senior",
+      "price": 8.00,
+      "description": "Price for adult over 65.",
+      "start_date": "2025-12-01",
+      "end_date": "2026-12-31"
+    }
+  },
+  {
+    "model": "catalogue.price",
+    "pk": 3,
+    "fields": {
+      "type": "article 27",
+      "price": 0.00,
+      "description": "Price for people who receive assistance from the local CPAS.",
+      "start_date": "2025-12-01",
+      "end_date": "2026-12-31"
+    }
+  },
+  {
+    "model": "catalogue.price",
+    "pk": 4,
+    "fields": {
+      "type": "VIP",
+      "price": 15.00,
+      "description": "Price for special guest.",
+      "start_date": "2025-12-01",
+      "end_date": "2026-12-31"
+    }
+  }
+]
+

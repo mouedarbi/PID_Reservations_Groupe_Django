@@ -1,0 +1,34 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ location.designation }}</h1>
+
+    <address>
+        <p>{{ location.address }}</p>
+        <p>{{ location.locality.postal_code }} {{ location.locality.locality }}</p>
+
+        {% if location.website %}
+        <p><a href="{{ location.website }}" target="_blank">{{ location.website }}</a></p>
+        {% else %}
+        <p>Pas de site web</p>
+        {% endif %}
+
+        {% if location.phone %}
+        <p><a href="tel:{{ location.phone }}">{{ location.phone }}</a></p>
+        {% else %}
+        <p>Pas de téléphone</p>
+        {% endif %}
+    </address>
+
+    <h2>Liste des spectacles</h2>
+    <ul>
+    {% for show in location.shows.all %}
+        <li>{{ show.title }}</li>
+    {% endfor %}
+    </ul>
+
+    <nav><a href="{% url 'catalogue:location-index' %}">Retour à l'index</a></nav>
+
+{% endblock %}
