@@ -58,8 +58,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "reservations.urls"
 
-<<<<<<< HEAD
-=======
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
@@ -69,7 +67,6 @@ LOGOUT_REDIRECT_URL = 'home'
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
->>>>>>> c9ae4db4ee72dcad93f88e8a92c3e9a936cc3925
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
