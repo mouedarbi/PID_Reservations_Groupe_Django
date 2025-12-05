@@ -1,0 +1,32 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    {% if perms.catalogue.add_review %}
+        <a href="{% url 'catalogue:review-create' %}" class="btn btn-primary">Créer une critique</a>
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Show</th>
+                <th>User</th>
+                <th>Stars</th>
+                <th>Validated</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for review in reviews %}
+            <tr>
+                <td><a href="{% url 'catalogue:review-show' review.id %}">{{ review.show.title }}</a></td>
+                <td>{{ review.user.username }}</td>
+                <td>{{ review.stars }}</td>
+                <td>{{ review.validated|yesno:"Yes,No" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

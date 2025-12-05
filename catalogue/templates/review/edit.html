@@ -1,0 +1,13 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Edit Review{% endblock %}
+
+{% block content %}
+    <h1>Modifier la critique</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sauvegarder</button>
+    </form>
+    <a href="{% url 'catalogue:review-show' review.id %}">Annuler</a>
+{% endblock %}

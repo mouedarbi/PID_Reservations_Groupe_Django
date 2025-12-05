@@ -1,0 +1,68 @@
+[
+  {
+    "model": "catalogue.price",
+    "pk": 1,
+    "fields": {
+      "type": "children",
+      "price": 6.00,
+      "description": "Tarif enfant (-12 ans), applicable dans les centres culturels.",
+      "start_date": "2024-01-01",
+      "end_date": "2024-12-31"
+    }
+  },
+  {
+    "model": "catalogue.price",
+    "pk": 2,
+    "fields": {
+      "type": "student",
+      "price": 8.50,
+      "description": "Tarif étudiant (carte valide), similaire aux réductions théâtres/cinémas.",
+      "start_date": "2024-01-01",
+      "end_date": "2024-12-31"
+    }
+  },
+  {
+    "model": "catalogue.price",
+    "pk": 3,
+    "fields": {
+      "type": "senior",
+      "price": 10.00,
+      "description": "Tarif senior (+65), aligné sur les réductions en salles bruxelloises.",
+      "start_date": "2024-01-01",
+      "end_date": "2024-12-31"
+    }
+  },
+  {
+    "model": "catalogue.price",
+    "pk": 4,
+    "fields": {
+      "type": "article 27",
+      "price": 1.25,
+      "description": "Tarif Article 27 pour bénéficiaires CPAS.",
+      "start_date": "2024-01-01",
+      "end_date": "2024-12-31"
+    }
+  },
+  {
+    "model": "catalogue.price",
+    "pk": 5,
+    "fields": {
+      "type": "adult",
+      "price": 15.00,
+      "description": "Tarif standard adulte.",
+      "start_date": "2024-01-01",
+      "end_date": "2024-12-31"
+    }
+  },
+  {
+    "model": "catalogue.price",
+    "pk": 6,
+    "fields": {
+      "type": "VIP",
+      "price": 30.00,
+      "description": "Tarif VIP incluant placement privilégié.",
+      "start_date": "2024-01-01",
+      "end_date": "2024-12-31"
+    }
+  }
+]
