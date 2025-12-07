@@ -1,0 +1,13 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Create Review{% endblock %}
+
+{% block content %}
+    <h1>Créer une critique</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sauvegarder</button>
+    </form>
+    <a href="{% url 'catalogue:review-index' %}">Retour à la liste</a>
+{% endblock %}

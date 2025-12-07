@@ -37,7 +37,6 @@ Il fait suite au *Starter Kit Django 5* (Itération 2 du PID).
 ```
 reservations/               # Projet principal Django
 catalogue/                  # Application interne
-templates/                  # Fichiers HTML
 requirements.txt            # Liste des dépendances Python
 manage.py                   # Commandes Django
 README.md                   # Documentation du projet
@@ -137,3 +136,5 @@ Cela évite de recréer un environnement virtuel et garantit que tous les membre
 
 Projet académique – **Bachelier en Informatique de Gestion (PID)**
 © 2025 – Tous droits réservés.
+
+<!-- Test comment for CI/CD -->

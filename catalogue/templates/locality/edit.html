@@ -1,0 +1,13 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Edit Locality{% endblock %}
+
+{% block content %}
+    <h1>Modifier la localité</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sauvegarder</button>
+    </form>
+    <a href="{% url 'catalogue:locality-show' locality.id %}">Annuler</a>
+{% endblock %}
