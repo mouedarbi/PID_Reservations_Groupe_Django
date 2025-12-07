@@ -1,7 +1,12 @@
-from django.forms import ModelForm
-from catalogue.models import Review
+from django import forms
+from catalogue.models.review import Review
 
-class ReviewForm(ModelForm):
+
+class ReviewForm(forms.ModelForm):
+    """
+    Formulaire pour créer / modifier un avis (Review).
+    """
+
     class Meta:
         model = Review
-        fields = ['show', 'review', 'stars']
+        fields = "__all__"

@@ -1,28 +1,22 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework import generics
+from catalogue.models.price import Price
+from api.serializers.prices import PriceSerializer
 
-class PricesView(APIView):
-    def get(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
-    
-    def post(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
-    
-    def put(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
-    
-    def delete(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
 
-class PricesDetailView(APIView):
-    def get(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
-    
-    def post(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
-    
-    def put(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
-    
-    def delete(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
+class PricesView(generics.ListCreateAPIView):
+    """
+    GET  /api/prices/  -> liste des prix
+    POST /api/prices/  -> créer un prix
+    """
+    queryset = Price.objects.all()
+    serializer_class = PriceSerializer
+
+
+class PricesDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    GET    /api/prices/<id>/ -> détail d'un prix
+    PUT    /api/prices/<id>/ -> modifier un prix
+    DELETE /api/prices/<id>/ -> supprimer un prix
+    """
+    queryset = Price.objects.all()
+    serializer_class = PriceSerializer

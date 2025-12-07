@@ -1,7 +1,13 @@
-from django.forms import ModelForm
-from catalogue.models import Location
 
-class LocationForm(ModelForm):
+from django import forms
+from catalogue.models.locality import Locality
+
+
+class LocalityForm(forms.ModelForm):
+    """
+    Formulaire pour créer / modifier une Locality.
+    """
+
     class Meta:
-        model = Location
-        fields = ['slug', 'designation', 'address', 'locality', 'website', 'phone']
+        model = Locality
+        fields = "__all__"

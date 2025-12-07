@@ -1,7 +1,15 @@
 from rest_framework import serializers
+from catalogue.models.price import Price
 
-class PriceSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    price = serializers.DecimalField(max_digits=10, decimal_places=2)
-    show_id = serializers.IntegerField()
-    # Ajoutez d'autres champs selon le modèle Price
+
+class PriceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Price
+        fields = [
+            "id",
+            "type",
+            "price",
+            "description",
+            "start_date",
+            "end_date",
+        ]
