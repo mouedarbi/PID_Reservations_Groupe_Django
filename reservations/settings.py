@@ -46,6 +46,8 @@ INSTALLED_APPS = [
 
     # ajout de api
     "api",
+    # ajout de rest_framework
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
