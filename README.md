@@ -3,6 +3,7 @@
 ##  Équipe de développement
 
 * **Mohamed Ouedarbi**
+* **Mpindu Mukandila Jean-Paul**
 * *(+ ajouter les autres membres du groupe)*
 
 ---
