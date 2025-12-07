@@ -1,7 +1,17 @@
-.env
+# Virtual environment
+.venv/
 .virtualenvs/
+
+# Environment variables
+.env
+
+# Database files
+*.sqlite3
+
+# PyCharm / VSCode
+.idea/
+.vscode/
+
+# __pycache__
 __pycache__/
-*.pyc
-gemini.md
-Roadmap-Django5_Mapping .txt
-database_structure.txt
+*.py[cod]
