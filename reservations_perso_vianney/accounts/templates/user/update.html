@@ -1,0 +1,12 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Mise à jour du profil{% endblock %}
+
+{% block content %}
+<h2>Modifier</h2>
+<form method="post" action="{% url 'accounts:user-update' request.user.id %}">
+  {% csrf_token %}
+  {{ form }}
+  <button type="submit">Modifier</button>
+</form>
+{% endblock %}

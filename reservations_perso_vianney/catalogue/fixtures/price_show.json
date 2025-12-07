@@ -1,0 +1,54 @@
+[
+{
+  "model": "catalogue.priceshow",
+  "pk": 1,
+  "fields": {
+    "show": [
+      "ayiti",
+      2010
+    ],
+    "price": [
+      "children"
+    ]
+  }
+},
+{
+  "model": "catalogue.priceshow",
+  "pk": 2,
+  "fields": {
+    "show": [
+      "ayiti",
+      2010
+    ],
+    "price": [
+      "senior"
+    ]
+  }
+},
+{
+  "model": "catalogue.priceshow",
+  "pk": 3,
+  "fields": {
+    "show": [
+      "cible-mouvante",
+      2012
+    ],
+    "price": [
+      "senior"
+    ]
+  }
+},
+{
+  "model": "catalogue.priceshow",
+  "pk": 4,
+  "fields": {
+    "show": [
+      "cible-mouvante",
+      2012
+    ],
+    "price": [
+      "VIP"
+    ]
+  }
+}
+]
