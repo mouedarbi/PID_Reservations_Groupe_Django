@@ -1,8 +1,7 @@
 from rest_framework import serializers
+from catalogue.models import Representation
 
-class RepresentationSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    show_id = serializers.IntegerField()
-    location_id = serializers.IntegerField()
-    when = serializers.DateTimeField()
-    # Ajoutez d'autres champs selon le modèle Representation
+class RepresentationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Representation
+        fields = '__all__'

@@ -46,7 +46,7 @@ def edit(request, show_id):
         if form.is_valid():
             form.save()
             messages.success(request, "Spectacle modifié avec succès.")
-            return redirect('catalogue:show-show', show_instance.id)
+            return redirect('catalogue:show-show', show_id=show_instance.id)
         else:
             messages.error(request, "Veuillez corriger les erreurs ci-dessous.")
     else:
@@ -64,4 +64,4 @@ def delete(request, show_id):
         messages.success(request, "Spectacle supprimé avec succès.")
         return redirect('catalogue:show-index')
     
-    return redirect('catalogue:show-show', show_instance.id)
+    return redirect('catalogue:show-show', show_id=show_instance.id)
