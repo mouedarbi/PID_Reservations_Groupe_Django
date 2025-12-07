@@ -21,5 +21,6 @@ from django.urls import include, path
 urlpatterns = [
     #path('', RedirectView.as_view(url='/artist/', permanent=False)),
     path('catalogue/', include('catalogue.urls')),
+    path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
 ]

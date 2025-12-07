@@ -40,9 +40,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
+
     #ajout de catalogue
     "catalogue",
+
+    # ajout de api
+    "api",
 ]
 
 MIDDLEWARE = [
