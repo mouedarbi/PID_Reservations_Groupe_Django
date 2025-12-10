@@ -18,8 +18,8 @@ urlpatterns = [
 
     # ARTISTS & CATEGORIES
     path('artists/', artists.ArtistsView.as_view(), name='artists-list-create'),
-    path('artists/', artists.ArtistsView.as_view(), name='artists-update'),
-    path('artists/<int:id>/', artists.ArtistsDetailView.as_view(), name='artists-detail'),
+    #path('artists/', artists.ArtistsView.as_view(), name='artists-update'),
+    path('artists/<int:pk>/', artists.ArtistsDetailView.as_view(), name='artists-detail'),
     path('types/', types.TypesView.as_view(), name='types-list-create'),
     path('types/', types.TypesView.as_view(), name='types-update'),
     path('types/<int:id>/', types.TypesDetailView.as_view(), name='types-detail'),
