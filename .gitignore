@@ -1,6 +1,10 @@
 # Virtual environment
+djangodev/
+venv/
 .venv/
-.virtualenvs/
+env/
+ENV/
+__pycache__/
 
 # Environment variables
 .env
