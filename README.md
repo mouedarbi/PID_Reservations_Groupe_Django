@@ -67,6 +67,20 @@ L’application est ensuite accessible sur :
 
 ---
 
+### Chargement des données de test
+
+Après avoir exécuté les migrations (`python manage.py migrate`), vous pouvez peupler la base de données avec un jeu de données de test complet.
+
+Utilisez la commande de gestion personnalisée suivante :
+
+```bash
+python manage.py load_all_fixtures
+```
+
+Cette commande exécute une série de `loaddata` dans le bon ordre pour garantir l'intégrité des relations entre les modèles.
+
+---
+
 ### Réutilisation de l’environnement du Starter Kit
 
 Si vous avez déjà installé le **Starter Kit Django 5** du PID :
