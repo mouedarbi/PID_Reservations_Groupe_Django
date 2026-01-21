@@ -1,0 +1,179 @@
+Objectif : liste exhaustive des fonctionnalités à classifier en issues GitHub, directement exploitable pour ta Phase 1 (review/classification), sans interprétation ni surplus.
+
+1. Fonctionnalités FRONTEND (utilisateur)
+Accès public (Internaute)
+
+Consultation du catalogue de spectacles
+
+Pagination du catalogue
+
+Recherche de spectacles (mot-clé)
+
+Tri des spectacles (date, prix, popularité…)
+
+Filtrage des spectacles (type, lieu, date…)
+
+Affichage du détail d’un spectacle
+
+Consultation des critiques / avis
+
+Consultation des lieux
+
+Inscription (création de compte)
+
+Utilisateur enregistré (Membre)
+
+Connexion / déconnexion
+
+Réservation de places
+
+Choix des quantités
+
+Consultation de ses réservations
+
+Statut des réservations
+
+Paiement via service externe
+
+Modification du profil utilisateur
+
+Gestion de la langue / préférences d’affichage
+
+2. Fonctionnalités BACKEND USER (logique métier côté utilisateur)
+
+Gestion des utilisateurs (User, Roles)
+
+Authentification
+
+Autorisation par rôles (public / membre / admin)
+
+Gestion des réservations
+
+Vérification de disponibilité (bookable, quantités)
+
+Gestion des prix (par période, type)
+
+Gestion des avis (reviews)
+
+Liaison utilisateur ↔ réservation
+
+Sécurisation des endpoints utilisateur
+
+Gestion des erreurs métier (réservation invalide, paiement échoué)
+
+3. Fonctionnalités BACKEND ADMIN (back-office)
+Catalogue
+
+CRUD spectacles
+
+CRUD représentations
+
+CRUD artistes
+
+CRUD types de spectacles
+
+CRUD lieux et localités
+
+Gestion des affiches / médias
+
+Activation / désactivation d’un spectacle
+
+Données
+
+Import du catalogue via CSV
+
+Export du catalogue via CSV
+
+Mise à jour du catalogue via API externe
+
+Gestion des prix (création, modification, périodes)
+
+Gestion des stocks / capacités
+
+Administration
+
+Gestion des utilisateurs
+
+Attribution des rôles
+
+Consultation des réservations globales
+
+Modération des avis
+
+Paramétrage de l’interface (affichage, options)
+
+4. API / SERVICES EXTERNES
+
+Intégration API fournisseur de spectacles
+
+Web service REST (exposition du catalogue)
+
+Flux RSS
+
+Consommation par sites affiliés
+
+Service de paiement externe
+
+Gestion des retours API / erreurs réseau
+
+5. FRONTEND ADMIN
+
+Interface admin sécurisée
+
+CRUD via interface graphique
+
+Tableaux paginés (spectacles, réservations, utilisateurs)
+
+Actions groupées (supprimer, activer, exporter)
+
+Upload de fichiers (CSV, images)
+
+Feedback utilisateur (messages succès/erreur)
+
+6. ASYNCHRONE / PERFORMANCE
+
+Chargement asynchrone du catalogue (AJAX)
+
+Recherche sans rechargement de page
+
+Mise à jour dynamique des disponibilités
+
+Optimisation requêtes DB
+
+Mise en cache des lectures fréquentes
+
+7. SÉCURITÉ (transverse)
+
+Protection contre SQL Injection
+
+Protection XSS
+
+Protection CSRF
+
+Gestion sécurisée des sessions
+
+Sécurisation des cookies
+
+Validation des entrées utilisateur
+
+Restrictions d’accès serveur
+
+Réécriture d’URL
+
+Gestion des erreurs sans fuite d’information
+
+8. TECHNIQUE / INFRA
+
+Structure Django apps (catalogue, accounts, reservations, admin)
+
+Modèles ORM
+
+Relations entre entités
+
+Migrations
+
+Gestion des logs
+
+Debugging / gestion des exceptions
+
+Documentation technique minimale

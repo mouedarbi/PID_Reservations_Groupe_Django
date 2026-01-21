@@ -46,7 +46,7 @@ urlpatterns = [
 
     # PRICES
     path('prices/', prices.PricesView.as_view(), name='prices-list-create'),
-    path('prices/', prices.PricesView.as_view(), name='prices-update'),
+
     path('prices/<int:id>/', prices.PricesDetailView.as_view(), name='prices-detail'),
 
     # CART
