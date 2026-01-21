@@ -239,3 +239,22 @@ Mohamed Ouedarbi – Bachelier en Informatique de gestion
 **Auteur :**  
 Mohamed Ouedarbi – Bachelier en Informatique de gestion  
 📅 Dernière mise à jour : 30/11/2025
+
+---
+## 📅 14/01/2026 – Organisation et Structuration des Issues GitHub
+
+**Contexte :**
+- Mise en place d'une organisation claire des tâches du projet via les issues GitHub.
+
+**Actions réalisées :**
+1.  **Création du système de labellisation :** Mise en place de labels catégorisés pour les Composants (`C:`), les Applications Django (`A:`), les Types de tâches (`T:`), et les Itérations du projet (`I:`), basés sur le `README.md`.
+2.  **Labellisation des issues existantes :** Les 14 issues GitHub préexistantes ont été analysées et labellisées selon le nouveau système.
+3.  **Création des nouvelles issues :** 59 nouvelles issues GitHub ont été créées à partir de la liste exhaustive des fonctionnalités fournies par l'utilisateur, chacune avec un titre descriptif et les labels appropriés.
+
+**Statut :** ✅ Complet
+
+---
+
+**Auteur :**  
+Mohamed Ouedarbi – Bachelier en Informatique de gestion  
+📅 Dernière mise à jour : 14/01/2026
