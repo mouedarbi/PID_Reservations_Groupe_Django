@@ -46,6 +46,9 @@ INSTALLED_APPS = [
 
     # ajout de api
     "api",
+    # ajout de rest_framework
+    'rest_framework',
+    "rest_framework.authtoken",
 ]
 
 MIDDLEWARE = [
@@ -134,3 +137,21 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# REST Framework authentications & parmissions
+# https://www.django-rest-framework.org/api-guide/authentication/
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # Pour l'authentification basée sur la session
+        'rest_framework.authentication.SessionAuthentication',
+        # Pour l'authentification de base (utile pour Postman/cURL)
+        'rest_framework.authentication.BasicAuthentication',
+        # Pour l'authentification via Token
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        # Exige l'authentification pour toutes les requêtes
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
