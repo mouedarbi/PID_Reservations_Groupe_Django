@@ -1,12 +1,13 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status
+from rest_framework import status, permissions
 from django.http import Http404
 
 from catalogue.models.price import Price
 from ..serializers.prices import PriceSerializer
 
 class PricesView(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     """
     List all prices, or create a new price.
     """
@@ -23,6 +24,7 @@ class PricesView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PricesDetailView(APIView):
+    permission_classes = [permissions.IsAdminUser]
     """
     Retrieve, update or delete a price instance.
     """
