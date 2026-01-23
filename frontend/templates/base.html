@@ -18,7 +18,7 @@
             <ul class="nav-links">
                 <li><a href="{% url 'frontend:home' %}">Accueil</a></li>
                 {# Kept as example, will need a 'catalogue' url #}
-                <li><a href="#">Spectacles</a></li> 
+                <li><a href="{% url 'frontend:show_list' %}">Spectacles</a></li> 
                 <li><a href="#">Lieux</a></li>
                 <li><a href="#">À propos</a></li>
                 {% if user.is_authenticated %}
@@ -47,7 +47,7 @@
                 <h4>Navigation</h4>
                 <ul>
                     <li><a href="{% url 'frontend:home' %}">Accueil</a></li>
-                    <li><a href="#">Spectacles</a></li>
+                    <li><a href="{% url 'frontend:show_list' %}">Spectacles</a></li>
                     <li><a href="#">Lieux</a></li>
                     <li><a href="#">À propos</a></li>
                 </ul>

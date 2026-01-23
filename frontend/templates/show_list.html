@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    <!-- Hero Section - Compact (optional, for visual consistency) -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>{{ page_title }}</h1>
+                <p>Découvrez tous nos événements passionnants.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories - Quick Filters (optional, for visual consistency) -->
+    <section class="categories-section">
+        <div class="categories-container">
+            <div class="categories-grid">
+                <div class="category-pill active">
+                    <span>🎫</span>
+                    <span>Tous les événements</span>
+                </div>
+                <div class="category-pill">
+                    <span>🎸</span>
+                    <span>Concerts</span>
+                </div>
+                <div class="category-pill">
+                    <span>🎭</span>
+                    <span>Théâtre</span>
+                </div>
+                <div class="category-pill">
+                    <span>💃</span>
+                    <span>Danse</span>
+                </div>
+                <div class="category-pill">
+                    <span>😂</span>
+                    <span>Comédie</span>
+                </div>
+                <div class="category-pill">
+                    <span>🎪</span>
+                    <span>Festivals</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shows Grid - DYNAMIC CONTENT -->
+    <section class="shows-section">
+        <div class="section-header">
+            <h2>Nos Spectacles</h2>
+            <p>Explorez les événements à venir et réservez vos billets.</p>
+        </div>
+        <div class="shows-grid">
+            {% if shows %}
+                {% for show in shows %}
+                <div class="show-card">
+                    <div class="show-image">
+                        <img src="{{ show.poster_url|default:'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&h=400&fit=crop' }}" 
+                             alt="{{ show.title }}">
+                        {% if show.bookable %}
+                        <span class="show-badge">Disponible</span>
+                        {% else %}
+                        <span class="show-badge" style="background: #666;">Complet</span>
+                        {% endif %}
+                    </div>
+                    <div class="show-info">
+                        <div class="show-category">{{ show.category|default:'Non catégorisé' }}</div>
+                        <h3 class="show-title">{{ show.title }}</h3>
+                        <div class="show-location">
+                            <span>📍</span>
+                            <span>{{ show.location.designation|default:'Lieu inconnu' }}</span>
+                        </div>
+                        <div class="show-meta">
+                            <div>
+                                <div class="show-date">{{ show.next_representation_date|date:"d M Y"|default:'Date inconnue' }}</div>
+                            </div>
+                            <div class="show-price">{{ show.price|default:'N/A' }}€</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>Aucun spectacle disponible pour le moment.</p>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}
