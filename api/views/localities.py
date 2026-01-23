@@ -1,28 +1,20 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework import generics
+from catalogue.models.locality import Locality
+from ..serializers.localities import LocalitySerializer
 
-class LocalitiesView(APIView):
-    def get(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
-    
-    def post(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
-    
-    def put(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
-    
-    def delete(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
 
-class LocalitiesDetailView(APIView):
-    def get(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
-    
-    def post(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
-    
-    def put(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
-    
-    def delete(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
+class LocalitiesView(generics.ListAPIView):
+    """
+    API view to retrieve a list of localities.
+    """
+    queryset = Locality.objects.all()
+    serializer_class = LocalitySerializer
+
+
+class LocalitiesDetailView(generics.RetrieveAPIView):
+    """
+    API view to retrieve a single locality.
+    """
+    queryset = Locality.objects.all()
+    serializer_class = LocalitySerializer
+    lookup_field = 'id'
