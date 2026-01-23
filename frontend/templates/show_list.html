@@ -66,11 +66,25 @@
                         {% endif %}
                     </div>
                     <div class="show-info">
-                        <div class="show-category">{{ show.category|default:'Non catégorisé' }}</div>
+                        <div class="show-category">
+                            {% if show.artist_types %}
+                                {% for artist_type in show.artist_types %}
+                                    {{ artist_type.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                Non catégorisé
+                            {% endif %}
+                        </div>
                         <h3 class="show-title">{{ show.title }}</h3>
                         <div class="show-location">
                             <span>📍</span>
-                            <span>{{ show.location.designation|default:'Lieu inconnu' }}</span>
+                            <span>
+                                {% if show.location %}
+                                    {{ show.location.designation|default:show.location.address|default:show.location.slug }}
+                                {% else %}
+                                    Lieu inconnu
+                                {% endif %}
+                            </span>
                         </div>
                         <div class="show-meta">
                             <div>

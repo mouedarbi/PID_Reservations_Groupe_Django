@@ -76,138 +76,51 @@
             <p>Réservez vos billets dès maintenant</p>
         </div>
         <div class="shows-grid">
-            <!-- STATIC: Placeholder cards for alpha version -->
-            <div class="show-card">
-                <div class="show-image">
-                    <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&h=400&fit=crop" 
-                         alt="Concert Rock">
-                    <span class="show-badge">Disponible</span>
-                </div>
-                <div class="show-info">
-                    <div class="show-category">Concert</div>
-                    <h3 class="show-title">Nuit du Rock Alternatif</h3>
-                    <div class="show-location">
-                        <span>📍</span>
-                        <span>Ancienne Belgique, Bruxelles</span>
+            {% if shows %}
+                {% for show in shows %}
+                <div class="show-card">
+                    <div class="show-image">
+                        <img src="{{ show.poster_url|default:'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&h=400&fit=crop' }}" 
+                             alt="{{ show.title }}">
+                        {% if show.bookable %}
+                        <span class="show-badge">Disponible</span>
+                        {% else %}
+                        <span class="show-badge" style="background: #666;">Complet</span>
+                        {% endif %}
                     </div>
-                    <div class="show-meta">
-                        <div>
-                            <div class="show-date">15 Fév 2026</div>
+                    <div class="show-info">
+                        <div class="show-category">
+                            {% if show.artist_types %}
+                                {% for artist_type in show.artist_types %}
+                                    {{ artist_type.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                Non catégorisé
+                            {% endif %}
                         </div>
-                        <div class="show-price">35€</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="show-card">
-                <div class="show-image">
-                    <img src="https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=600&h=400&fit=crop" 
-                         alt="Théâtre">
-                    <span class="show-badge">Disponible</span>
-                </div>
-                <div class="show-info">
-                    <div class="show-category">Théâtre</div>
-                    <h3 class="show-title">Hamlet Revisité</h3>
-                    <div class="show-location">
-                        <span>📍</span>
-                        <span>Théâtre National, Bruxelles</span>
-                    </div>
-                    <div class="show-meta">
-                        <div>
-                            <div class="show-date">18 Fév 2026</div>
+                        <h3 class="show-title">{{ show.title }}</h3>
+                        <div class="show-location">
+                            <span>📍</span>
+                            <span>
+                                {% if show.location %}
+                                    {{ show.location.designation|default:show.location.address|default:show.location.slug }}
+                                {% else %}
+                                    Lieu inconnu
+                                {% endif %}
+                            </span>
                         </div>
-                        <div class="show-price">28€</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="show-card">
-                <div class="show-image">
-                    <img src="https://images.unsplash.com/photo-1598387181032-a3103a2db5b3?w=600&h=400&fit=crop" 
-                         alt="Danse">
-                    <span class="show-badge">Disponible</span>
-                </div>
-                <div class="show-info">
-                    <div class="show-category">Danse</div>
-                    <h3 class="show-title">Ballet Moderne - Éclipse</h3>
-                    <div class="show-location">
-                        <span>📍</span>
-                        <span>Opéra Royal de Wallonie</span>
-                    </div>
-                    <div class="show-meta">
-                        <div>
-                            <div class="show-date">20 Fév 2026</div>
+                        <div class="show-meta">
+                            <div>
+                                <div class="show-date">{{ show.next_representation_date|date:"d M Y"|default:'Date inconnue' }}</div>
+                            </div>
+                            <div class="show-price">{{ show.price|default:'N/A' }}€</div>
                         </div>
-                        <div class="show-price">42€</div>
                     </div>
                 </div>
-            </div>
-
-            <div class="show-card">
-                <div class="show-image">
-                    <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&h=400&fit=crop" 
-                         alt="Jazz">
-                    <span class="show-badge">Disponible</span>
-                </div>
-                <div class="show-info">
-                    <div class="show-category">Concert</div>
-                    <h3 class="show-title">Jazz Fusion Night</h3>
-                    <div class="show-location">
-                        <span>📍</span>
-                        <span>Sounds Jazz Club, Bruxelles</span>
-                    </div>
-                    <div class="show-meta">
-                        <div>
-                            <div class="show-date">22 Fév 2026</div>
-                        </div>
-                        <div class="show-price">25€</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="show-card">
-                <div class="show-image">
-                    <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&h=400&fit=crop" 
-                         alt="Comédie">
-                    <span class="show-badge">Presque complet</span>
-                </div>
-                <div class="show-info">
-                    <div class="show-category">Comédie</div>
-                    <h3 class="show-title">Stand-Up Comedy Show</h3>
-                    <div class="show-location">
-                        <span>📍</span>
-                        <span>Comedy Club Brussels</span>
-                    </div>
-                    <div class="show-meta">
-                        <div>
-                            <div class="show-date">25 Fév 2026</div>
-                        </div>
-                        <div class="show-price">20€</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="show-card">
-                <div class="show-image">
-                    <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=400&fit=crop" 
-                         alt="Festival">
-                    <span class="show-badge">Disponible</span>
-                </div>
-                <div class="show-info">
-                    <div class="show-category">Festival</div>
-                    <h3 class="show-title">Festival de Musique Électro</h3>
-                    <div class="show-location">
-                        <span>📍</span>
-                        <span>Brussels Expo</span>
-                    </div>
-                    <div class="show-meta">
-                        <div>
-                            <div class="show-date">28 Fév 2026</div>
-                        </div>
-                        <div class="show-price">55€</div>
-                    </div>
-                </div>
-            </div>
+                {% endfor %}
+            {% else %}
+                <p>Aucun spectacle disponible pour le moment.</p>
+            {% endif %}
         </div>
     </section>
 {% endblock %}
