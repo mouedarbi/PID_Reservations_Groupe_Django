@@ -17,3 +17,4 @@ class LocalitiesDetailView(generics.RetrieveAPIView):
     """
     queryset = Locality.objects.all()
     serializer_class = LocalitySerializer
+    lookup_field = 'id'
