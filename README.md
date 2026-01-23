@@ -4,6 +4,7 @@
 
 * **Mohamed Ouedarbi**
 * **Mpindu Mukandila Jean-Paul**
+* **Slavic Veaceslav Lisa**
 * *(+ ajouter les autres membres du groupe)*
 
 ---
@@ -65,6 +66,20 @@ python manage.py runserver
 
 L’application est ensuite accessible sur :
 👉 [http://localhost:8000](http://localhost:8000)
+
+---
+
+### Chargement des données de test
+
+Après avoir exécuté les migrations (`python manage.py migrate`), vous pouvez peupler la base de données avec un jeu de données de test complet.
+
+Utilisez la commande de gestion personnalisée suivante :
+
+```bash
+python manage.py load_all_fixtures
+```
+
+Cette commande exécute une série de `loaddata` dans le bon ordre pour garantir l'intégrité des relations entre les modèles.
 
 ---
 

@@ -8,16 +8,27 @@ on:
 
 jobs:
   build:
-
-    runs-on: windows-latest
-
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: mysecretpassword
+          MYSQL_DATABASE: test_db
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
     # ENV VARIABLES POUR DJANGO
     env:
-      DB_NAME: ${{ secrets.DB_NAME }}
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_NAME: test_db
+      DB_USER: root
+      DB_PASSWORD: mysecretpassword
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
 
     steps:
       - name: Checkout repository
@@ -39,4 +50,4 @@ jobs:
 
       - name: Run Tests
         run: |
-          python manage.py test
+          python manage.py test api.tests

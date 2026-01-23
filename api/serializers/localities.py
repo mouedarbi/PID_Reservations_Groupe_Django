@@ -1,7 +1,8 @@
 from rest_framework import serializers
+from catalogue.models.locality import Locality
 
-class LocalitySerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    name = serializers.CharField(max_length=255)
-    zip_code = serializers.CharField(max_length=10)
-    # Ajoutez d'autres champs selon le modèle Locality
+
+class LocalitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Locality
+        fields = ['id', 'postal_code', 'locality']
