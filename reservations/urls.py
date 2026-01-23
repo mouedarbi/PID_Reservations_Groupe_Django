@@ -20,6 +20,7 @@ from django.urls import include, path
 
 urlpatterns = [
     #path('', RedirectView.as_view(url='/artist/', permanent=False)),
+    path('', include('frontend.urls')), # Added for frontend app
     path('catalogue/', include('catalogue.urls')),
     path('api/', include('api.urls')),
     path('admin/', admin.site.urls),

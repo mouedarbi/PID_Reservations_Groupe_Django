@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     # ajout de api
     "api",
+    "frontend", # Ajout de l'application frontend
     # ajout de rest_framework
     'rest_framework',
     "rest_framework.authtoken",
