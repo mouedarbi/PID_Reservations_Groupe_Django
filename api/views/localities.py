@@ -1,20 +1,86 @@
-from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status, permissions
+from django.http import Http404
+
 from catalogue.models.locality import Locality
 from ..serializers.localities import LocalitySerializer
 
 
-class LocalitiesView(generics.ListAPIView):
+class LocalitiesView(APIView):
     """
-    API view to retrieve a list of localities.
+    List all localities (public) or create a new locality (superuser only).
     """
-    queryset = Locality.objects.all()
-    serializer_class = LocalitySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get(self, request, format=None):
+        queryset = Locality.objects.all()
+        serializer = LocalitySerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        if not request.user.is_superuser:
+            return Response(
+                {"detail": "Vous n'avez pas la permission d'effectuer cette action."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        serializer = LocalitySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class LocalitiesDetailView(generics.RetrieveAPIView):
+class LocalitiesDetailView(APIView):
     """
-    API view to retrieve a single locality.
+    Retrieve, update, or delete a locality instance.
+    GET is public.
+    PUT, PATCH, DELETE are restricted to superuser.
     """
-    queryset = Locality.objects.all()
-    serializer_class = LocalitySerializer
-    lookup_field = 'id'
+
+    def get_object(self, id):
+        try:
+            return Locality.objects.get(id=id)
+        except Locality.DoesNotExist:
+            raise Http404
+
+    def get(self, request, id, format=None):
+        locality = self.get_object(id)
+        serializer = LocalitySerializer(locality)
+        return Response(serializer.data)
+
+    def put(self, request, id, format=None):
+        if not request.user.is_superuser:
+            return Response(
+                {"detail": "Vous n'avez pas la permission d'effectuer cette action."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        locality = self.get_object(id)
+        serializer = LocalitySerializer(locality, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, id, format=None):
+        if not request.user.is_superuser:
+            return Response(
+                {"detail": "Vous n'avez pas la permission d'effectuer cette action."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        locality = self.get_object(id)
+        serializer = LocalitySerializer(locality, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, id, format=None):
+        if not request.user.is_superuser:
+            return Response(
+                {"detail": "Vous n'avez pas la permission d'effectuer cette action."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        locality = self.get_object(id)
+        locality.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
