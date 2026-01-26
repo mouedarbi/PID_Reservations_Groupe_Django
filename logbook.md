@@ -43,3 +43,35 @@ This session focused on analyzing the project's current state, setting up a deve
 -   **Git Commit**: As requested, the new test file was committed with the message "AssertionError, use pk instead of id" before the fix was applied.
 -   **The Fix**: The issue was resolved by adding `lookup_field = 'id'` to the `LocalitiesDetailView` in `api/views/localities.py`. This change aligns the view with the project's URL convention of using `id` as the lookup key.
 -   **Successful Test Run**: After applying the fix, the tests in `api.tests.test_localities` were run again and all passed successfully.
+
+## Date: Mon Jan 26 2026
+
+### Progress Summary
+
+This session focused on implementing a complete authentication API, including user signup, login, and logout. This involved creating new serializers, views, and a comprehensive test suite. A summary of the user's recent commits was also added to this logbook.
+
+#### 1. User Commits Summary
+
+A summary of the user's last four commits was added to the logbook:
+
+-   **`78368558c6ce615395bba300862e3dd8a441542c`**: API test locations v.0
+-   **`aaed9597e3ac9470396930d819e92cf30eff092e`**: feat(api): Implement staff-only CRUD for Locations and Localities & Update test\_localities.py
+-   **`9d5abe05892d9c19868320faa466466dd8c0cd03`**: API locations & localities modified v2
+-   **`47dafe721c6b019c812e70d457c32408b197b942`**: API locations & localities modified
+
+#### 2. Authentication API Implementation
+
+-   **Analysis**: Analyzed the project to determine the correct approach for implementing token-based authentication using Django REST Framework's built-in `TokenAuthentication`.
+-   **Serializers**:
+    -   Created `api/serializers/signup.py` with a `SignUpSerializer` for user registration. The serializer handles `username`, `password`, `email`, `first_name`, `last_name`, and `langue`. It also adds new users to the `MEMBER` group and creates a `UserMeta` object.
+    -   Updated `api/serializers/auth.py` to use DRF's `AuthTokenSerializer` for the login view.
+-   **Views**:
+    -   Implemented `AuthSignupView`, `AuthLoginView`, and `AuthLogoutView` in `api/views/auth.py`.
+    -   `AuthSignupView` (`generics.CreateAPIView`) uses the `SignUpSerializer` to create new users and returns an auth token upon successful registration.
+    -   `AuthLoginView` (subclass of `ObtainAuthToken`) handles user login and returns a token.
+    -   `AuthLogoutView` (`APIView`) deletes the user's token to log them out.
+-   **Testing**:
+    -   Created `api/tests/test_auth.py` with a comprehensive test suite.
+    -   Tests cover successful and unsuccessful signup (e.g., missing fields, existing username), login (correct and incorrect credentials), and logout (authenticated and unauthenticated users).
+    -   Debugged and fixed initial test failures, including a 403 vs. 401 status code issue for unauthenticated logout and ensuring required fields in the signup serializer were enforced.
+-   **File Management**: Accidentally deleted and then restored the `api/serializers/signup.py` file, confirming the fix by re-running the test suite.
