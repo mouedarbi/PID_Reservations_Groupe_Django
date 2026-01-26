@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # ajout de api
     "frontend", # Ajout de l'application frontend
     "api",
+    "accounts",
     #ajout de catalogue
     "catalogue",
     # ajout de rest_framework
@@ -161,3 +162,6 @@ REST_FRAMEWORK = {
     ],
 }
 
+
+LOGIN_REDIRECT_URL = 'frontend:home'
+LOGOUT_REDIRECT_URL = 'frontend:home'

@@ -17,15 +17,19 @@
             <div class="logo">ThéâtrePlus</div>
             <ul class="nav-links">
                 <li><a href="{% url 'frontend:home' %}">Accueil</a></li>
-                {# Kept as example, will need a 'catalogue' url #}
                 <li><a href="{% url 'frontend:show_list' %}">Spectacles</a></li> 
-                <li><a href="#">Lieux</a></li>
+                <li><a href="{% url 'catalogue:locality-index' %}">Lieux</a></li>
                 <li><a href="#">À propos</a></li>
                 {% if user.is_authenticated %}
-                    <li><a href="#">Mon compte</a></li>
-                    <li><a href="#" class="btn-primary">Déconnexion</a></li>
+                    <li><a href="{% url 'accounts:user-profile' %}">Mon compte</a></li>
+                    <li>
+                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                            {% csrf_token %}
+                        </form>
+                        <a href="javascript:document.getElementById('logout-form').submit();" class="btn-primary">Déconnexion</a>
+                    </li>
                 {% else %}
-                    <li><a href="#" class="btn-primary">Connexion</a></li>
+                    <li><a href="{% url 'login' %}" class="btn-primary">Connexion</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -55,10 +59,18 @@
             <div class="footer-links">
                 <h4>Compte</h4>
                 <ul>
-                    <li><a href="#">Connexion</a></li>
-                    <li><a href="#">Inscription</a></li>
-                    <li><a href="#">Mon profil</a></li>
-                    <li><a href="#">Mes réservations</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'accounts:user-profile' %}">Mon profil</a></li>
+                        <li>
+                             <form id="logout-form-footer" action="{% url 'logout' %}" method="post" style="display: none;">
+                                {% csrf_token %}
+                            </form>
+                            <a href="javascript:document.getElementById('logout-form-footer').submit();">Déconnexion</a>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Connexion</a></li>
+                        <li><a href="{% url 'accounts:user-signup' %}">Inscription</a></li>
+                    {% endif %}
                 </ul>
             </div>
             <div class="footer-links">
