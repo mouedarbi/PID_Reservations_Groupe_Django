@@ -1,7 +1,8 @@
 from rest_framework import serializers
+from catalogue.models.artist_type import ArtistType
 
-class ArtistTypeSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    artist_id = serializers.IntegerField()
-    type_id = serializers.IntegerField()
-    # Ajoutez d'autres champs selon le modèle ArtistType
+
+class ArtistTypeSerializer(serializers.ModelSerializer):
+class Meta:
+model = ArtistType
+fields = "__all__"
