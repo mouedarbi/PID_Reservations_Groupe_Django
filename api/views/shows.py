@@ -30,8 +30,23 @@ class ShowsView(APIView):
         return Response({"detail": "Placeholder for deleting shows"}, status=501)
 
 class ShowsDetailView(APIView):
-    def get(self, request, *args, **kwargs):
-        return Response({"detail": "Placeholder"}, status=501)
+    """
+    API view to get details of a single show.
+    """
+    authentication_classes = [] # Temporarily disable authentication
+    permission_classes = [AllowAny] # Temporarily allow any user
+
+    def get(self, request, pk, *args, **kwargs):
+        """
+        Return details for a single show identified by primary key (pk).
+        """
+        try:
+            show = Show.objects.get(pk=pk)
+        except Show.DoesNotExist:
+            return Response({'error': 'Show not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = ShowSerializer(show, context={'request': request})
+        return Response(serializer.data)
     
     def post(self, request, *args, **kwargs):
         return Response({"detail": "Placeholder"}, status=501)
