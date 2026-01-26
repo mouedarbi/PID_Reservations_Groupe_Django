@@ -1,24 +1,7 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{{ Price }}{% endblock %}
 
 {% block content %}
-    <h1>{{ title }}</h1>
-    <p><strong>Type:</strong> {{ price.type }}</p>
-    <p><strong>Price:</strong> {{ price.price }} €</p>
-    <p><strong>Description:</strong> {{ price.description }}</p>
-    <p><strong>Start Date:</strong> {{ price.start_date }}</p>
-    <p><strong>End Date:</strong> {{ price.end_date }}</p>
-
-    {% if perms.catalogue.change_price %}
-        <a href="{% url 'catalogue:price-edit' price.id %}" class="btn btn-warning">Modifier</a>
-    {% endif %}
-    {% if perms.catalogue.delete_price %}
-        <form action="{% url 'catalogue:price-delete' price.id %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Supprimer</button>
-        </form>
-    {% endif %}
-
-    <a href="{% url 'catalogue:price-index' %}">Retour à la liste</a>
+    <h1>{{ price.price|title }}</h1>
 {% endblock %}

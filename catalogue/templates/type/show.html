@@ -4,16 +4,4 @@
 
 {% block content %}
     <h1>{{ type.type|title }}</h1>
-
-    {% if perms.catalogue.change_type %}
-        <a href="{% url 'catalogue:type-edit' type.id %}" class="btn btn-warning">Modifier</a>
-    {% endif %}
-    {% if perms.catalogue.delete_type %}
-        <form action="{% url 'catalogue:type-delete' type.id %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Supprimer</button>
-        </form>
-    {% endif %}
-
-    <nav><a href="{% url 'catalogue:type-index' %}">Retour à la liste</a></nav>
 {% endblock %}
