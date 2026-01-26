@@ -3,6 +3,6 @@ from catalogue.models.artist_type import ArtistType
 
 
 class ArtistTypeSerializer(serializers.ModelSerializer):
-class Meta:
-model = ArtistType
-fields = "__all__"
+    class Meta:
+        model = ArtistType
+        fields = "__all__"
