@@ -1,10 +1,13 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny # Added import
+from rest_framework import permissions
+from rest_framework import status
 from catalogue.models import Show
 from api.serializers.shows import ShowSerializer
 
 class ShowsView(APIView):
+    """
+    API view for listing and creating shows.
     """
     def get_permissions(self):
         if self.request.method in ['POST', 'PUT', 'DELETE']:
@@ -16,7 +19,6 @@ class ShowsView(APIView):
         Return a list of all shows.
         """
         shows = Show.objects.all()
-        # Passing context is good practice for serializers that use it (e.g., for hyperlinks)
         serializer = ShowSerializer(shows, many=True, context={'request': request})
         return Response(serializer.data)
     
@@ -31,7 +33,7 @@ class ShowsView(APIView):
 
 class ShowsDetailView(APIView):
     """
-    API view to get details of a single show.
+    API view to retrieve, update or delete a show instance.
     """
     def get_permissions(self):
         if self.request.method in ['POST', 'PUT', 'DELETE']:
