@@ -41,11 +41,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    # ajout de api
+    "frontend", # Ajout de l'application frontend
+    "api",
     #ajout de catalogue
     "catalogue",
-
-    # ajout de api
-    "api",
     # ajout de rest_framework
     'rest_framework',
     "rest_framework.authtoken",
@@ -132,6 +132,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'frontend/static',
+]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

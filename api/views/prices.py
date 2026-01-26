@@ -7,7 +7,10 @@ from catalogue.models.price import Price
 from ..serializers.prices import PriceSerializer
 
 class PricesView(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [permissions.IsAdminUser()]
+        return [permissions.AllowAny()]
     """
     List all prices, or create a new price.
     """

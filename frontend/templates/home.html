@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <!-- Hero Section - Compact -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Réservez vos billets pour les meilleurs événements</h1>
+                <p>Concerts, théâtre, spectacles et bien plus encore</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Rechercher un spectacle, artiste ou lieu...">
+                <div class="search-filters">
+                    <select class="filter-select">
+                        <option>Tous les genres</option>
+                        <option>Concert</option>
+                        <option>Théâtre</option>
+                        <option>Danse</option>
+                        <option>Comédie</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>Toutes les dates</option>
+                        <option>Ce week-end</option>
+                        <option>Cette semaine</option>
+                        <option>Ce mois-ci</option>
+                    </select>
+                    <button class="btn-primary">Rechercher</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories - Quick Filters -->
+    <section class="categories-section">
+        <div class="categories-container">
+            <div class="categories-grid">
+                <div class="category-pill active">
+                    <span>🎫</span>
+                    <span>Tous les événements</span>
+                </div>
+                <div class="category-pill">
+                    <span>🎸</span>
+                    <span>Concerts</span>
+                </div>
+                <div class="category-pill">
+                    <span>🎭</span>
+                    <span>Théâtre</span>
+                </div>
+                <div class="category-pill">
+                    <span>💃</span>
+                    <span>Danse</span>
+                </div>
+                <div class="category-pill">
+                    <span>😂</span>
+                    <span>Comédie</span>
+                </div>
+                <div class="category-pill">
+                    <span>🎪</span>
+                    <span>Festivals</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shows Grid - DYNAMIC CONTENT -->
+    <section class="shows-section">
+        <div class="section-header">
+            <h2>Événements à venir</h2>
+            <p>Réservez vos billets dès maintenant</p>
+        </div>
+        <div class="shows-grid">
+            {% if shows %}
+                {% for show in shows %}
+                <div class="show-card">
+                    <div class="show-image">
+                        <img src="{{ show.poster_url|default:'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&h=400&fit=crop' }}" 
+                             alt="{{ show.title }}">
+                        {% if show.bookable %}
+                        <span class="show-badge">Disponible</span>
+                        {% else %}
+                        <span class="show-badge" style="background: #666;">Complet</span>
+                        {% endif %}
+                    </div>
+                    <div class="show-info">
+                        <div class="show-category">
+                            {% if show.artist_types %}
+                                {% for artist_type in show.artist_types %}
+                                    {{ artist_type.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                Non catégorisé
+                            {% endif %}
+                        </div>
+                        <h3 class="show-title">{{ show.title }}</h3>
+                        <div class="show-location">
+                            <span>📍</span>
+                            <span>
+                                {% if show.location %}
+                                    {{ show.location.designation|default:show.location.address|default:show.location.slug }}
+                                {% else %}
+                                    Lieu inconnu
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="show-meta">
+                            <div>
+                                <div class="show-date">{{ show.next_representation_date|date:"d M Y"|default:'Date inconnue' }}</div>
+                            </div>
+                            <div class="show-price">{{ show.price|default:'N/A' }}€</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>Aucun spectacle disponible pour le moment.</p>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}
