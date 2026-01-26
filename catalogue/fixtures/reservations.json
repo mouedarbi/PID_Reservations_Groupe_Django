@@ -4,10 +4,12 @@
   "pk": 1,
   "fields": {
     "booking_date": "2025-11-21T21:11:36.732Z",
-    "status": "pay├®e",
+    "status": "payée",
     "user": [
       "anna"
-    ]
+    ],
+    "quantity": 1,
+    "representation": 1
   }
 },
 {
@@ -15,10 +17,12 @@
   "pk": 2,
   "fields": {
     "booking_date": "2025-11-21T22:15:23.688Z",
-    "status": "pay├®e",
+    "status": "payée",
     "user": [
       "anna"
-    ]
+    ],
+    "quantity": 1,
+    "representation": 1
   }
 },
 {
@@ -29,7 +33,9 @@
     "status": "en attente",
     "user": [
       "anna"
-    ]
+    ],
+    "quantity": 1,
+    "representation": 1
   }
 }
 ]
