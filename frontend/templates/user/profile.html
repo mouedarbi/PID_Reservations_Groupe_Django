@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block content %}
+<section class="profile-section" style="padding: 50px 0; background: #f9fafb; min-height: 80vh;">
+    <div class="container" style="max-width: 800px; margin: 0 auto; padding: 0 20px;">
+        <div style="background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="font-family: 'Playfair Display', serif; margin: 0;">{{ user.first_name }} {{ user.last_name }}</h2>
+                <div style="display: flex; gap: 10px;">
+                    <a href="{% url 'accounts:user-update' user.id %}" class="btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">Modifier</a>
+                    <a href="{% url 'password_change' %}" style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem; color: #666;">Sécurité</a>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+                <div>
+                    <p style="color: #666; margin-bottom: 5px; font-size: 0.85rem;">Nom d'utilisateur</p>
+                    <p style="font-weight: 500;">{{ user.username }}</p>
+                </div>
+                <div>
+                    <p style="color: #666; margin-bottom: 5px; font-size: 0.85rem;">Email</p>
+                    <p style="font-weight: 500;">{{ user.email }}</p>
+                </div>
+                <div>
+                    <p style="color: #666; margin-bottom: 5px; font-size: 0.85rem;">Langue préférée</p>
+                    <p style="font-weight: 500;">{{ user_language }}</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+                <form method="post" action="{% url 'accounts:user-delete' user.id %}"
+                    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')">
+                    {% csrf_token %}
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" style="background: none; border: none; color: #dc2626; cursor: pointer; font-size: 0.9rem; padding: 0;">Supprimer mon compte</button>
+                </form>
+            </div>
+        </div>
+
+        <div style="background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px;">Mes réservations</h3>
+            
+            {% if user.reservations.all %}
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 2px solid #eee;">
+                            <th style="padding: 12px 0;">ID</th>
+                            <th style="padding: 12px 0;">Date</th>
+                            <th style="padding: 12px 0;">Spectacle</th>
+                            <th style="padding: 12px 0;">Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for reservation in user.reservations.all %}
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 12px 0;">#{{ reservation.id }}</td>
+                            <td style="padding: 12px 0;">{{ reservation.booking_date|date:"d/m/Y" }}</td>
+                            <td style="padding: 12px 0;">
+                                {% if reservation.representation %}
+                                    {{ reservation.representation.show.title }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td style="padding: 12px 0;">
+                                <span style="background: #e0f2fe; color: #0369a1; padding: 4px 8px; border-radius: 999px; font-size: 0.8rem;">
+                                    {{ reservation.status }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p style="color: #666; font-style: italic;">Vous n'avez pas encore de réservations.</p>
+                <a href="{% url 'frontend:show_list' %}" style="color: #6366f1; font-weight: 500;">Découvrir les spectacles</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
