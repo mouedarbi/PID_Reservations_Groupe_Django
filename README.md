@@ -4,6 +4,7 @@
 
 * **Mohamed Ouedarbi**
 * **Mpindu Mukandila Jean-Paul**
+* **YALAOUI Ghiles**
 * **Slavic Veaceslav Lisa**
 * *(+ ajouter les autres membres du groupe)*
 
