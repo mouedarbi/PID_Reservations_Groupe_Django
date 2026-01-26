@@ -46,11 +46,11 @@ class LocationAPITests(APITestCase):
         cls.list_url = reverse('api:locations-list-create')
         cls.detail_url = reverse(
             'api:locations-detail',
-            kwargs={'id': cls.location1.id}
+            kwargs={'pk': cls.location1.id}
         )
         cls.invalid_detail_url = reverse(
             'api:locations-detail',
-            kwargs={'id': 9999}
+            kwargs={'pk': 9999}
         )
 
     # ---------- LIST ----------

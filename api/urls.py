@@ -14,8 +14,8 @@ urlpatterns = [
     path('auth/logout/', auth.AuthLogoutView.as_view(), name='auth-logout'),
 
     # USERS
-    path('users/', users.UserListCreateView.as_view(), name='users-list-create'),
-    path('users/<int:pk>/', users.UserRetrieveUpdateDestroyView.as_view(), name='users-detail'),
+    # path('users/', users.UserListCreateView.as_view(), name='users-list-create'),
+    # path('users/<int:pk>/', users.UserRetrieveUpdateDestroyView.as_view(), name='users-detail'),
     # path('users/me/', users.UsersMeView.as_view(), name='users-me'),
     # path('users/me/roles/', users.UsersRolesView.as_view(), name='users-roles'),
     # path('admin/users/<int:pk>/roles/', users.AdminUsersRolesView.as_view(), name='admin-users-roles'),
@@ -24,8 +24,8 @@ urlpatterns = [
     path('artists/', artists.ArtistsView.as_view(), name='artists-list-create'),
     path('artists/<int:pk>/', artists.ArtistsDetailView.as_view(), name='artists-detail'),
 
-    path('types/', types.TypeListCreateView.as_view(), name='types-list-create'),
-    path('types/<int:pk>/', types.TypeRetrieveUpdateDestroyView.as_view(), name='types-detail'),
+    path('types/', types.TypesView.as_view(), name='types-list-create'),
+    path('types/<int:pk>/', types.TypesDetailView.as_view(), name='types-detail'),
 
     path('artist-types/', artist_types.ArtistTypesView.as_view(), name='artist-types-list-create'),
     # (si cette vue gère aussi DELETE via la méthode delete(), pas besoin d'une 2e route identique)
@@ -38,13 +38,13 @@ urlpatterns = [
     path('locations/<int:pk>/', locations.LocationsDetailView.as_view(), name='locations-detail'),
 
     # SHOWS
-    path('shows/', shows.ShowListCreateView.as_view(), name='shows-list-create'),
-    path('shows/<int:pk>/', shows.ShowRetrieveUpdateDestroyView.as_view(), name='shows-detail'),
+    path('shows/', shows.ShowsView.as_view(), name='shows-list-create'),
+    path('shows/<int:pk>/', shows.ShowsDetailView.as_view(), name='shows-detail'),
     # path('shows/search/', shows.ShowsSearchView.as_view(), name='shows-search'),
 
    # REPRESENTATIONS
-   path('representations/', representations.RepresentationListCreateView.as_view(), name='representations-list-create'),
-   path('representations/<int:pk>/', representations.RepresentationRetrieveUpdateDestroyView.as_view(), name='representations-detail'),
+   path('representations/', representations.RepresentationsView.as_view(), name='representations-list-create'),
+   path('representations/<int:pk>/', representations.RepresentationsDetailView.as_view(), name='representations-detail'),
    path('representations/calendar/', representations.RepresentationsCalendarView.as_view(), name='representations-calendar'),
    path('representations/<int:pk>/availability/', representations.RepresentationsAvailabilityView.as_view(), name='representations-availability'),
 
@@ -72,8 +72,8 @@ urlpatterns = [
     path('reservations/<int:pk>/ticket/', tickets.TicketsView.as_view(), name='reservations-ticket'),
 
     # REVIEWS
-    path('reviews/', reviews.ReviewListCreateView.as_view(), name='reviews-list-create'),
-    path('reviews/<int:pk>/', reviews.ReviewRetrieveUpdateDestroyView.as_view(), name='reviews-detail'),
+    path('reviews/', reviews.ReviewsView.as_view(), name='reviews-list-create'),
+    path('reviews/<int:pk>/', reviews.ReviewsDetailView.as_view(), name='reviews-detail'),
     # path('reviews/<int:pk>/validate/', reviews.ReviewsValidateView.as_view(), name='reviews-validate'),
     # path('reviews/<int:pk>/reject/', reviews.ReviewsRejectView.as_view(), name='reviews-reject'),
 
