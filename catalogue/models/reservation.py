@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from .representation import Representation
 
 
 class Reservation(models.Model):
@@ -7,6 +8,9 @@ class Reservation(models.Model):
     status = models.CharField(max_length=60)
     user = models.ForeignKey(User, on_delete=models.RESTRICT,
                              null=False, related_name='reservations')
+    quantity = models.PositiveIntegerField(default=1)
+    representation = models.ForeignKey(Representation, on_delete=models.RESTRICT, 
+                                      related_name='reservations')
 
     def __str__(self):
         return f"{self.user} - {self.booking_date}"

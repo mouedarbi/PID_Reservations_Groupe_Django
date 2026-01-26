@@ -10,11 +10,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name="show",
-            name="created_in",
-            field=models.PositiveSmallIntegerField(),
-        ),
         migrations.AddConstraint(
             model_name="location",
             constraint=models.UniqueConstraint(

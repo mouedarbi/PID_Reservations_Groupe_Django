@@ -6,7 +6,50 @@
 </head>
 <body>
 <div class="container">
-        {% block content %}{% endblock %}
+        <header>
+        <div style="float:right">
+            {% if request.user.is_authenticated %}
+            <p>Bonjour {{ request.user.username }}!</p>
+            <p><a href="{% url 'accounts:user-profile' %}">Mon profil</a></p>
+
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Se déconnecter</button>
+            </form>
+            {% else %}
+            <p>Vous n'êtes pas connecté.</p>
+            <p><a href="{% url 'login' %}">Se connecter</a></p>
+            <p><a href="{% url 'accounts:user-signup' %}">S'inscrire</a></p>
+            {% endif %}
+
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Accueil</a></li>
+                <li><a href="{% url 'catalogue:artist-index' %}">Nos artistes</a></li>
+                {% if request.user.is_superuser %}
+                <li><a href="{% url 'admin:index' %}">Administration</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+
+    </header>
+    <main>
+        <div id="notification">
+            {% if messages %}
+            <ul class="messages">
+                {%for message in messages %}
+                <li{%if message.tag %} class={{message.tag}}" {%endif %}>
+                {{message}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+
+            {% block content %}{% endblock %}
+    </main>
+    <footer>&copy; Projet Réservations - EPFC / ICC</footer>
+
 </div>
 </body>
 </html>

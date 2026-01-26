@@ -42,19 +42,19 @@ class LocalitiesDetailView(APIView):
             return [AllowAny()]
         return [IsAdminUser()]
 
-    def get_object(self, id):
+    def get_object(self, pk):
         try:
-            return Locality.objects.get(id=id)
+            return Locality.objects.get(id=pk)
         except Locality.DoesNotExist:
             raise Http404
 
-    def get(self, request, id, format=None):
-        locality = self.get_object(id)
+    def get(self, request, pk, format=None):
+        locality = self.get_object(pk)
         serializer = LocalitySerializer(locality)
         return Response(serializer.data)
 
-    def put(self, request, id, format=None):
-        locality = self.get_object(id)
+    def put(self, request, pk, format=None):
+        locality = self.get_object(pk)
         serializer = LocalitySerializer(locality, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -62,8 +62,8 @@ class LocalitiesDetailView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request, id, format=None):
-        locality = self.get_object(id)
+    def patch(self, request, pk, format=None):
+        locality = self.get_object(pk)
         serializer = LocalitySerializer(locality, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -71,7 +71,7 @@ class LocalitiesDetailView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, id, format=None):
-        locality = self.get_object(id)
+    def delete(self, request, pk, format=None):
+        locality = self.get_object(pk)
         locality.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

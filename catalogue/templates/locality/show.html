@@ -3,19 +3,17 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ title }}</h1>
-    <p><strong>Code Postal:</strong> {{ locality.postal_code }}</p>
-    <p><strong>Localité:</strong> {{ locality.locality }}</p>
+    <h2>{{ locality.postal_code }} {{ locality.locality|title }}</h2>
 
-    {% if perms.catalogue.change_locality %}
-        <a href="{% url 'catalogue:locality-edit' locality.id %}" class="btn btn-warning">Modifier</a>
-    {% endif %}
-    {% if perms.catalogue.delete_locality %}
-        <form action="{% url 'catalogue:locality-delete' locality.id %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Supprimer</button>
-        </form>
-    {% endif %}
+    <h3>Lieux de spectacle</h3>
 
-    <a href="{% url 'catalogue:locality-index' %}">Retour à la liste</a>
+    <ul>
+    {% for location in locality.locations.all %}
+        <li><a href="#">{{ location.designation }}</a></li>
+    {% endfor %}
+    </ul>
+
+    <p><code>{{ locality.locations.all }}</code></p>
+
+    <nav><a href="{% url 'catalogue:locality-index' %}">Retour à l'index</a></nav>
 {% endblock %}

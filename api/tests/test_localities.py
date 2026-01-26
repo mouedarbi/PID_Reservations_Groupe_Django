@@ -37,11 +37,11 @@ class LocalityAPITests(APITestCase):
         cls.list_url = reverse('api:localities-list')
         cls.detail_url = reverse(
             'api:localities-detail',
-            kwargs={'id': cls.locality1.id}
+            kwargs={'pk': cls.locality1.id}
         )
         cls.invalid_detail_url = reverse(
             'api:localities-detail',
-            kwargs={'id': 9999}
+            kwargs={'pk': 9999}
         )
 
     # ---------- LIST ----------

@@ -1,28 +1,12 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}Liste des types{% endblock %}
 
 {% block content %}
     <h1>{{ title }}</h1>
-
-    {% if perms.catalogue.add_locality %}
-        <a href="{% url 'catalogue:locality-create' %}" class="btn btn-primary">Créer une localité</a>
-    {% endif %}
-
-    <table>
-        <thead>
-            <tr>
-                <th>Code Postal</th>
-                <th>Localité</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for locality in localities %}
-            <tr>
-                <td><a href="{% url 'catalogue:locality-show' locality.id %}">{{ locality.postal_code }}</a></td>
-                <td>{{ locality.locality }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <ul>
+    {% for locality in localities %}
+        <li>{{ locality.locality }} - {{ locality.postcode }}</li>
+    {% endfor %}
+    </ul>
 {% endblock %}
