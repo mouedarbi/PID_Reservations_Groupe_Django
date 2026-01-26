@@ -6,10 +6,10 @@ from api.serializers.shows import ShowSerializer
 
 class ShowsView(APIView):
     """
-    API view to get a list of all shows.
-    """
-    authentication_classes = [] # Temporarily disable authentication
-    permission_classes = [AllowAny] # Temporarily allow any user
+    def get_permissions(self):
+        if self.request.method in ['POST', 'PUT', 'DELETE']:
+            return [permissions.IsAdminUser()]
+        return [permissions.AllowAny()]
 
     def get(self, request, *args, **kwargs):
         """
@@ -33,8 +33,10 @@ class ShowsDetailView(APIView):
     """
     API view to get details of a single show.
     """
-    authentication_classes = [] # Temporarily disable authentication
-    permission_classes = [AllowAny] # Temporarily allow any user
+    def get_permissions(self):
+        if self.request.method in ['POST', 'PUT', 'DELETE']:
+            return [permissions.IsAdminUser()]
+        return [permissions.AllowAny()]
 
     def get(self, request, pk, *args, **kwargs):
         """
