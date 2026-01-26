@@ -107,3 +107,29 @@ This session focused on fixing a critical `IndentationError` in `api/views/shows
     -   Added missing imports for `permissions` and `status` from `rest_framework` to resolve `NameError` issues.
 -   **Verification**: After refactoring, the application's test suite was run. It passed without any syntax or indentation errors, confirming that the file is now correctly formatted and loadable by Django.
 -   **Version Control**: The corrected file was committed to the `feature/frontend-mvp` branch and pushed to the remote repository.
+
+## Date: Mon Jan 26 2026
+
+### Progress Summary
+
+This session involved comparing the `dev_noureddine` branch with the `pre-production` branch and then merging `dev_noureddine` into `feature/frontend-mvp`.
+
+#### 1. Branch Comparison
+
+-   **`dev_noureddine` vs. `pre-production`**:
+    -   **Commits unique to `dev_noureddine`**:
+        -   `aa34ad7`: Implementation of the `ticket`, `checkout`, and `rss` API endpoints.
+        -   `546bede`: Implementation of the `artist-types` API (linking Artist and Type).
+        -   `34249cc`: Correction of the reservation API, including security and tests.
+    -   **Commits unique to `pre-production`**: (representing work from other developers and merged features)
+        -   Significant frontend implementation (Django `frontend` app, templates, static files, views).
+        -   API fixes and features: Syntax correction in `api/views/shows.py`, re-authentication for `Show` views, `PricesAPI` test updates, `requirements.txt` correction, admin permissions for price creation in `PricesView`, and `.idea/` file ignoring.
+        -   CI/CD improvements (runner and MySQL service for tests).
+        -   Other API implementations for `Price` and `Localities`.
+
+#### 2. Merge `dev_noureddine` into `feature/frontend-mvp`
+
+-   **Merge Execution**: The `dev_noureddine` branch was merged into the current `feature/frontend-mvp` branch.
+-   **Conflicts**: As anticipated, conflicts arose in `api/test/test_reservation.py` (modify/delete) and `api/urls.py` (content).
+-   **Conflict Resolution**: The user indicated that they would manage the conflicts in PyCharm. After manual resolution, `git status` confirmed that all conflicts were resolved and staged.
+-   **Version Control**: The merge commit was created and pushed to the remote `feature/frontend-mvp` branch, integrating the changes from `dev_noureddine`.
