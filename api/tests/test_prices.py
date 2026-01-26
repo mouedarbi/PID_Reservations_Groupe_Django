@@ -71,7 +71,7 @@ class PriceAPITests(APITestCase):
 
     def test_create_price_authenticated_non_admin(self):
         """
-        Vérifie que les utilisateurs authentifiés non-admin peuvent créer des prix.
+        Vérifie que les utilisateurs authentifiés non-admin NE peuvent PAS créer de prix.
         """
         self.client.force_authenticate(user=self.user)
         data = {
@@ -79,8 +79,8 @@ class PriceAPITests(APITestCase):
             "start_date": "2026-01-01", "end_date": "2026-12-31"
         }
         response = self.client.post(self.list_url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Price.objects.count(), 3)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(Price.objects.count(), 2)
 
     def test_retrieve_price_unauthenticated(self):
         """
