@@ -75,3 +75,21 @@ A summary of the user's last four commits was added to the logbook:
     -   Tests cover successful and unsuccessful signup (e.g., missing fields, existing username), login (correct and incorrect credentials), and logout (authenticated and unauthenticated users).
     -   Debugged and fixed initial test failures, including a 403 vs. 401 status code issue for unauthenticated logout and ensuring required fields in the signup serializer were enforced.
 -   **File Management**: Accidentally deleted and then restored the `api/serializers/signup.py` file, confirming the fix by re-running the test suite.
+
+## Date: Mon Jan 26 2026
+
+### Progress Summary
+
+This session focused on fixing failing API tests for localities and locations to ensure a successful merge with the pre-production environment. The main problem was that unauthenticated access to these APIs was returning `403 Forbidden` instead of the expected `200 OK` for existing resources or `404 Not Found` for non-existent ones.
+
+#### 1. Fixes for Localities and Locations API Permissions
+
+-   **Problem Diagnosis**: Identified that several tests in `test_localities.py` and `test_locations.py` were failing due to `403 Forbidden` responses for unauthenticated `GET` requests, and `400 Bad Request` errors during location creation/update.
+-   **Permissions Refactoring**:
+    -   Implemented the `get_permissions` method in `api/views/localities.py` (`LocalitiesView`, `LocalitiesDetailView`) and `api/views/locations.py` (`LocationsView`, `LocationsDetailView`).
+    -   This method now dynamically assigns permissions: `[AllowAny()]` for `GET` requests (allowing public read access) and `[IsAdminUser()]` for `POST`, `PUT`, `PATCH`, and `DELETE` requests (restricting write operations to admin users).
+    -   Removed redundant manual `request.user.is_staff` checks within the view methods, promoting declarative permission handling.
+-   **Serializer Validation Fix**:
+    -   Addressed `400 Bad Request` errors during location creation and update by explicitly defining the `website` field in `api/serializers/locations.py` (`LocationSerializer`).
+    -   The `website` field was set with `required=False`, `allow_null=True`, and `default=None` to correctly handle its optional nature as defined in the `Location` model.
+-   **Verification**: All tests for `api.tests.test_localities` and `api.tests.test_locations` now pass successfully, confirming the resolution of the permission and validation issues.

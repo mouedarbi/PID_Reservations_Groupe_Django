@@ -1,7 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status, permissions
+from rest_framework import status
 from django.http import Http404
+from rest_framework.permissions import AllowAny, IsAdminUser
 
 from catalogue.models.location import Location
 from ..serializers.locations import LocationSerializer
@@ -12,7 +13,10 @@ class LocationsView(APIView):
     LIST  (GET)  : Public
     CREATE (POST): Admin uniquement
     """
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        return [IsAdminUser()]
 
     def get(self, request, format=None):
         locations = Location.objects.all()
@@ -25,12 +29,6 @@ class LocationsView(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        if not request.user.is_staff:
-            return Response(
-                {"detail": "Permission refusée."},
-                status=status.HTTP_403_FORBIDDEN
-            )
-
         serializer = LocationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -44,6 +42,10 @@ class LocationsDetailView(APIView):
     DETAIL (GET) : Public
     UPDATE / DELETE : Admin uniquement
     """
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        return [IsAdminUser()]
 
     def get_object(self, id):
         try:
@@ -57,12 +59,6 @@ class LocationsDetailView(APIView):
         return Response(serializer.data)
 
     def put(self, request, id, format=None):
-        if not request.user.is_staff:
-            return Response(
-                {"detail": "Permission refusée."},
-                status=status.HTTP_403_FORBIDDEN
-            )
-
         location = self.get_object(id)
         serializer = LocationSerializer(location, data=request.data)
         if serializer.is_valid():
@@ -72,12 +68,6 @@ class LocationsDetailView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, id, format=None):
-        if not request.user.is_staff:
-            return Response(
-                {"detail": "Permission refusée."},
-                status=status.HTTP_403_FORBIDDEN
-            )
-
         location = self.get_object(id)
         serializer = LocationSerializer(location, data=request.data, partial=True)
         if serializer.is_valid():
@@ -87,12 +77,6 @@ class LocationsDetailView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id, format=None):
-        if not request.user.is_staff:
-            return Response(
-                {"detail": "Permission refusée."},
-                status=status.HTTP_403_FORBIDDEN
-            )
-
         location = self.get_object(id)
         location.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
