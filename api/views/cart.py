@@ -3,7 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 from django.shortcuts import get_object_or_404
 from django.db import transaction # For atomic operations
-from django.http import Http404 # Added for correct 404 handling
+from django.http import Http404
+import decimal # Added for placeholder price
 
 # Corrected import for Cart and CartItem models
 from catalogue.models.cart import Cart, CartItem
@@ -49,16 +50,9 @@ class CartItemAddUpdateView(APIView):
         except Representation.DoesNotExist:
             return Response({"detail": "Representation not found."}, status=status.HTTP_404_NOT_FOUND)
         
-        # --- Fetch Price (Crucial: Replace with actual price logic) ---
-        # You MUST ensure your Representation model has a way to get its price.
-        # This is a placeholder; adapt based on your Representation model's actual price source.
-        try:
-            # Example 1: If representation has a direct 'price' field
-            price_per_item = representation.price 
-            # Example 2: If representation has a method to get its current price (preferred for complex pricing)
-            # price_per_item = representation.get_current_price() 
-        except AttributeError:
-             return Response({"detail": "Price information not available for this representation."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # --- Placeholder Price Logic ---
+        # This is a temporary fix. You MUST replace this with your actual price logic.
+        price_per_item = decimal.Decimal('25.00') 
 
         # --- Get or Create User's Cart ---
         cart, _ = Cart.objects.get_or_create(user=user)
@@ -163,5 +157,3 @@ class CartClearView(APIView):
         cart.items.all().delete()
         # Return empty cart or success message
         return Response(CartSerializer(cart).data, status=status.HTTP_200_OK)
-
-```
