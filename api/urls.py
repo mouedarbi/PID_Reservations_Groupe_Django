@@ -55,10 +55,10 @@ urlpatterns = [
     path('prices/<int:id>/', prices.PricesDetailView.as_view(), name='prices-detail'),
 
     # CART
-    path('cart/', cart.CartView.as_view(), name='cart'),
-    path('cart/add/', cart.CartAddView.as_view(), name='cart-add'),
-    path('cart/update/', cart.CartUpdateView.as_view(), name='cart-update'),
-    path('cart/remove/', cart.CartRemoveView.as_view(), name='cart-remove'),
+    path('cart/', cart.CartView.as_view(), name='cart-detail'),
+    path('cart/items/', cart.CartItemAddUpdateView.as_view(), name='cart-item-add-update'),
+    path('cart/items/<int:pk>/', cart.CartItemDetailView.as_view(), name='cart-item-detail'),
+    path('cart/clear/', cart.CartClearView.as_view(), name='cart-clear'),
 
     # CHECKOUT
     path('checkout/', checkout.CheckoutView.as_view(), name='checkout'),

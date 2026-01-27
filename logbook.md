@@ -137,3 +137,32 @@ Version Control: The merge commit was created and pushed to the remote feature/f
 7.  **Cart Models**:
     *   Created `Cart` and `CartItem` models in `catalogue/models/cart.py`.
     *   Updated `catalogue/models/__init__.py` to include cart models.
+
+---
+
+**Date:** Mardi 27 janvier 2026
+**Branch:** `dev_ghiles`
+**Developer:** `dev_ghiles`
+
+**Progress Summary:**
+
+This session focused on implementing a full-featured cart API, from models to views and URLs.
+
+1.  **Cart API Implementation**:
+    *   **Models**: Created `Cart` and `CartItem` models in `catalogue/models/cart.py`, establishing a one-to-one relationship between `User` and `Cart`, and linking `CartItem` to `catalogue.Representation` to track specific show instances.
+    *   **Migrations**: Created and applied database migrations for the new cart models.
+    *   **Serializers**: Implemented `CartSerializer` and `CartItemSerializer` in `api/serializers/cart.py` to handle data serialization, including nested items and calculated total fields.
+    *   **Views**: Developed a complete set of API views in `api/views/cart.py` for cart management:
+        *   `CartView`: Retrieve or create a cart for the authenticated user.
+        *   `CartItemAddUpdateView`: Add new items or update quantities of existing items, including inventory checks against `representation.available_seats`.
+        *   `CartItemDetailView`: Retrieve, update, or delete specific cart items, with ownership checks.
+        *   `CartClearView`: Clear all items from the cart.
+    *   **URLs**: Updated `api/urls.py` with endpoints for all the new cart views.
+
+2.  **Code Review and Correction**:
+    *   During the implementation of the cart views, a potential error was identified in the `get_object` method of `CartItemDetailView`.
+    *   As per your astute correction, this was fixed by changing the implementation to `raise Http404`, ensuring correct HTTP error handling. Your contribution was crucial to making the code more robust.
+
+3.  **Version Control**:
+    *   The new `cart.py` model was committed with the message "New model, cart.py" and pushed to `origin/dev_ghiles`.
+    *   The related serializer, view, and URL changes are staged and ready for the next commit.
