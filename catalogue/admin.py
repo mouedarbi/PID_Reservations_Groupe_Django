@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .models import (
     Artist, ArtistType, ArtistTypeShow, Locality, Location, 
-    Price, Representation, Reservation, Review, Show, Type, UserMeta
+    Price, Representation, Reservation, RepresentationReservation, Review, Show, Type, UserMeta
 )
 
 # Register your models here.
@@ -15,6 +15,7 @@ admin.site.register(Locality)
 admin.site.register(Location)
 admin.site.register(Price)
 admin.site.register(Representation)
+admin.site.register(RepresentationReservation)
 admin.site.register(Reservation)
 admin.site.register(Review)
 admin.site.register(Show)
