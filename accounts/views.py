@@ -29,7 +29,7 @@ class UserUpdateView(UserPassesTestMixin, UpdateView):
 
 
 class UserSignUpView(UserPassesTestMixin, CreateView):
-    form_class = UserCreationForm
+    form_class = UserSignUpForm
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
 
@@ -47,9 +47,16 @@ def profile(request):
         "en": "English",
         "nl": "Nederlands",
     }
+    
+    # Secure against missing usermeta
+    try:
+        user_lang = request.user.usermeta.langue
+        lang_display = languages.get(user_lang, "Non définie")
+    except Exception:
+        lang_display = "Non définie"
 
     return render(request, 'user/profile.html', {
-        "user_language" : languages[request.user.usermeta.langue],
+        "user_language" : lang_display,
     })
 
 
