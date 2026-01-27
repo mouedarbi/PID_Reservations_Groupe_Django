@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ location.designation|default:location.slug }}{% endblock %}
+
+{% block content %}
+    <section class="hero-small" style="padding: 40px 0; background: #f3f4f6; text-align: center;">
+        <div class="container">
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 10px;">{{ location.designation|default:location.slug }}</h1>
+            <p style="color: #666;">Détails du lieu</p>
+        </div>
+    </section>
+
+    <section class="location-details-section" style="padding: 60px 0;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div class="details-card" style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; padding: 30px;">
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 20px; color: #1f2937;">Informations sur le lieu</h2>
+                
+                <div style="margin-bottom: 15px; display: flex; align-items: flex-start; gap: 10px; color: #4b5563;">
+                    <span style="font-size: 1.2rem;">📍</span>
+                    <span>{{ location.address }} - {{ location.locality.postal_code }} {{ location.locality.locality }}</span>
+                </div>
+
+                {% if location.phone %}
+                <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: #4b5563;">
+                    <span style="font-size: 1.2rem;">📞</span>
+                    <span>{{ location.phone }}</span>
+                </div>
+                {% endif %}
+
+                {% if location.website %}
+                <div style="margin-bottom: 30px; display: flex; align-items: center; gap: 10px; color: #4b5563;">
+                    <span style="font-size: 1.2rem;">🌐</span>
+                    <a href="{{ location.website }}" target="_blank" style="color: #6366f1; text-decoration: none; font-weight: 500;">Visiter le site web</a>
+                </div>
+                {% endif %}
+
+                {% if next_representation %}
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-top: 40px; margin-bottom: 20px; color: #1f2937;">Prochain spectacle</h2>
+                <div class="next-show-card" style="background: #f8f9fa; border-radius: 10px; padding: 20px; border: 1px solid #e9ecef;">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 10px; color: #2b2d42;">{{ next_representation.show.title }}</h3>
+                    <p style="color: #6c757d; margin-bottom: 5px;">Date et heure: {{ next_representation.schedule|date:"d F Y H:i" }}</p>
+                    <p style="color: #6c757d;">Prix: {{ next_representation.show.price|default:'N/A' }}€</p>
+                    <a href="{% url 'frontend:show_list' %}" class="btn-primary" style="margin-top: 20px; display: inline-block; padding: 10px 20px; background-color: #e63946; color: white; text-decoration: none; border-radius: 5px;">Voir le spectacle</a>
+                </div>
+                {% else %}
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-top: 40px; margin-bottom: 20px; color: #1f2937;">Prochain spectacle</h2>
+                <p style="color: #666; font-style: italic;">Aucun spectacle à venir n'est planifié pour ce lieu.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

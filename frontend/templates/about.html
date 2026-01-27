@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}À propos de ThéâtrePlus{% endblock %}
+
+{% block content %}
+    <section class="hero-small" style="padding: 40px 0; background: #f3f4f6; text-align: center;">
+        <div class="container">
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 10px;">À propos de ThéâtrePlus</h1>
+            <p style="color: #666;">Découvrez notre mission et notre histoire</p>
+        </div>
+    </section>
+
+    <section class="about-section" style="padding: 60px 0;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div class="about-content" style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; padding: 30px;">
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 20px; color: #1f2937;">Notre Mission</h2>
+                <p style="color: #4b5563; line-height: 1.8; margin-bottom: 25px;">
+                    ThéâtrePlus a été créé dans le but de simplifier l'accès à la culture et aux arts de la scène. Notre objectif est de connecter les passionnés de théâtre, de danse, de musique et de tous les arts vivants avec les événements qui leur correspondent, en offrant une plateforme intuitive et fiable pour la découverte et la réservation.
+                </p>
+                
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-top: 40px; margin-bottom: 20px; color: #1f2937;">Notre Histoire</h2>
+                <p style="color: #4b5563; line-height: 1.8;">
+                    Né d'une passion commune pour le spectacle vivant, ThéâtrePlus est le fruit d'un projet étudiant visant à résoudre les difficultés rencontrées par les spectateurs pour trouver et réserver des places pour des événements. Nous aspirons à devenir la référence pour tous les amateurs de culture en Belgique.
+                </p>
+            </div>
+        </div>
+    </section>
+{% endblock %}
