@@ -148,12 +148,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://www.django-rest-framework.org/api-guide/authentication/
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # Pour l'authentification basée sur la session
-        'rest_framework.authentication.SessionAuthentication',
-        # Pour l'authentification de base (utile pour Postman/cURL)
-        'rest_framework.authentication.BasicAuthentication',
-        # Pour l'authentification via Token
+        # Prioritize TokenAuthentication for API requests
         'rest_framework.authentication.TokenAuthentication',
+        # SessionAuthentication for browsable API and regular sessions
+        'rest_framework.authentication.SessionAuthentication',
+        # BasicAuthentication for simple tools
+        'rest_framework.authentication.BasicAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         # Exige l'authentification pour toutes les requêtes
