@@ -1,0 +1,408 @@
+{% extends "admin/admin.html" %}
+{% load static %}
+
+{% block title %}{{ title|default:"Tableau de bord administration" }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-main-style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-1.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-2.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <!-- Quick Stats Banner -->
+    <div class="grid grid-cols-1 space-y-6 md:grid-cols-6 md:gap-6 md:space-y-0">
+        <div class="border-border relative col-span-4 flex flex-col gap-6 rounded-lg border bg-[#f2f6fa] p-6 lg:flex-row lg:items-start lg:justify-between dark:bg-[#040b1a]">
+            <!-- TEXT CONTENT -->
+            <div class="z-10">
+                <div class="flex flex-col sm:flex-row items-center gap-2">
+                    <img src="{% static 'admin/images/user-avatar.jpg' %}" alt="avatar" class="size-12 rounded-full object-cover">
+                    <div class="flex flex-col">
+                        <span class="text-text text-xl font-bold md:text-3xl">
+                            Bonjour, {{ user.first_name|default:user.username }}!
+                        </span>
+                        <p class="text-small mt-1">
+                            Bienvenue dans le système de gestion des réservations.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-4 sm:ml-12 flex gap-6">
+                    <div class="flex flex-col">
+                        <span class="text-text text-xl font-semibold md:text-2xl">{{ total_reservations }}</span>
+                        <span class="text-small">Réservations aujourd'hui</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-text text-xl font-semibold md:text-2xl">{{ total_revenue }}</span>
+                        <span class="text-small">Revenus aujourd'hui</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IMAGE -->
+            <div class="mx-auto mt-4 w-full max-w-55 sm:max-w-65 lg:absolute lg:right-0 lg:bottom-0 lg:mt-0 lg:w-75 lg:max-w-none">
+                <img src="{% static 'admin/images/hero.svg' %}" alt="" class="h-auto w-full object-contain">
+            </div>
+        </div>
+
+        <div class="border-border col-span-2 rounded-lg border bg-[#f2f6fa] p-3 md:p-6 dark:bg-[#040b1a]">
+            <h3>Votre Activité</h3>
+            <div class="max-max-h-100 mt-4 h-37.5 w-full">
+                <canvas id="activityChart" class="h-full w-full"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main KPI Cards -->
+    <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <!-- Total Revenue -->
+        <div class="card-event">
+            <div class="mb-4 flex items-center justify-between">
+                <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-600">
+                    <i class="ph ph-currency-dollar text-2xl text-white"></i>
+                </div>
+                <div class="text-right">
+                    <div class="text-text text-2xl font-bold">{{ total_revenue }}</div>
+                    <div class="flex items-center gap-1 text-sm text-green-600">
+                        <i class="ph ph-trend-up text-sm text-green-600"></i>
+                        +{{ revenue_growth }}%
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-muted text-sm font-medium">Revenu Total</h3>
+                <p class="text-muted mt-1 text-xs">par rapport au mois dernier</p>
+            </div>
+        </div>
+
+        <!-- Tickets Sold -->
+        <div class="card-event">
+            <div class="mb-4 flex items-center justify-between">
+                <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-green-600">
+                    <i class="ph ph-ticket text-2xl text-white"></i>
+                </div>
+                <div class="text-right">
+                    <div class="text-text text-2xl font-bold">{{ total_tickets_sold }}</div>
+                    <div class="flex items-center gap-1 text-sm text-green-600">
+                        <i class="ph ph-trend-up text-sm text-green-600"></i>
+                        +{{ tickets_growth }}%
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-muted text-sm font-medium">Billets Vendus</h3>
+                <p class="text-muted mt-1 text-xs">{{ tickets_today }} vendus aujourd'hui</p>
+            </div>
+        </div>
+
+        <!-- Active Shows -->
+        <div class="card-event">
+            <div class="mb-4 flex items-center justify-between">
+                <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-600">
+                    <i class="ph ph-calendar-dots text-2xl text-white"></i>
+                </div>
+                <div class="text-right">
+                    <div class="text-text text-2xl font-bold">{{ active_shows }}</div>
+                    <div class="flex items-center gap-1 text-sm text-blue-600">
+                        <i class="ph ph-calendar text-sm text-blue-600"></i>
+                        {{ upcoming_shows }} à venir
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-muted text-sm font-medium">Spectacles Actifs</h3>
+                <p class="text-muted mt-1 text-xs">{{ upcoming_shows }} programmés</p>
+            </div>
+        </div>
+
+        <!-- Total Customers -->
+        <div class="card-event">
+            <div class="mb-4 flex items-center justify-between">
+                <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-600">
+                    <i class="ph ph-users text-2xl text-white"></i>
+                </div>
+                <div class="text-right">
+                    <div class="text-text text-2xl font-bold">{{ total_customers }}</div>
+                    <div class="flex items-center gap-1 text-sm text-green-600">
+                        <i class="ph ph-trend-up text-sm text-green-600"></i>
+                        +{{ customers_growth }}%
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 class="font-medium text-muted text-sm">Clients Totals</h3>
+                <p class="text-muted mt-1 text-xs">{{ new_customers_month }} nouveaux ce mois</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Charts Section -->
+    <div class="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-3">
+        <!-- Sales Analytics Chart -->
+        <div class="bg-card border-border rounded-lg border p-6 xl:col-span-2">
+            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h3>Analyse des Ventes</h3>
+                    <p class="text-small">Revenus et ventes de billets dans le temps</p>
+                </div>
+                <div class="mt-4 flex items-center gap-3 sm:mt-0">
+                    <div class="select-dropdown">
+                        <button class="select-dropdown-button">
+                            <span>Derniers 30 jours</span>
+                            <i class="select-toggle-icon ph ph-caret-down"></i>
+                        </button>
+                        <div class="select-dropdown-menu">
+                            <div class="select-dropdown-item">Derniers 7 jours</div>
+                            <div class="select-dropdown-item">Derniers 30 jours</div>
+                            <div class="select-dropdown-item">Derniers 90 jours</div>
+                        </div>
+                    </div>
+                    <button class="btn-secondary flex items-center" title="Actualiser le graphique">
+                        <i class="ph ph-arrow-clockwise"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chart Legend -->
+            <div class="mb-6 flex items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <div class="h-3 w-3 rounded-full bg-blue-500"></div>
+                    <span class="text-text text-sm">Revenus</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="h-3 w-3 rounded-full bg-green-500"></div>
+                    <span class="text-text text-sm">Billets Vendus</span>
+                </div>
+            </div>
+
+            <!-- Chart Container -->
+            <div class="chart-container" style="height: 300px">
+                <canvas id="sales-chart-2"></canvas>
+            </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="space-y-6">
+            <!-- Conversion Rate -->
+            <div class="card-event bg-bg">
+                <div class="mb-4 flex items-center justify-between">
+                    <h3>Taux de Conversion</h3>
+                    <span class="text-text text-2xl font-bold">{{ conversion_rate }}%</span>
+                </div>
+
+                <!-- Pie Chart -->
+                <div class="mb-4 flex items-center justify-center">
+                    <canvas id="conversionPie"></canvas>
+                </div>
+
+                <p class="text-muted text-center text-sm">
+                    <span class="text-green-600">+{{ conversion_growth }}%</span> par rapport au mois dernier
+                </p>
+            </div>
+
+            <!-- Top Performing Shows -->
+            <div class="bg-card border-border rounded-lg border p-6">
+                <h3 class="text-text mb-4 text-lg font-semibold">Meilleurs Spectacles</h3>
+                <div class="space-y-4">
+                    {% for show in top_shows %}
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-400 text-sm font-bold text-white">
+                            {{ forloop.counter }}
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-text text-sm font-medium">
+                                {{ show.title }}
+                            </p>
+                            <p class="text-muted text-xs">{{ show.tickets_sold }} / {{ show.capacity }} vendus</p>
+                        </div>
+                        <p class="text-text text-sm font-semibold">{{ show.revenue }}€</p>
+                    </div>
+                    {% empty %}
+                    <div class="text-center text-muted py-4">
+                        Aucun spectacle trouvé
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Activity and Shows Section -->
+    <div class="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-3">
+        <!-- Recent Activity -->
+        <div class="card-event">
+            <div class="mb-6 flex items-center justify-between">
+                <h3 class="text-text text-lg font-semibold">Activité Récente</h3>
+                <a href="#" class="btn-sm flex items-center gap-1">
+                    Voir Tout
+                    <i class="ph ph-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="relative space-y-4">
+                <div class="bg-border absolute top-6 bottom-0 left-2 w-px"></div>
+
+                {% for activity in recent_activities %}
+                <div class="timeline-item {{ activity.status }} relative pl-8">
+                    <div class="timeline-line"></div>
+                    <div>
+                        <p class="text-text text-sm font-medium">
+                            {{ activity.title }}
+                        </p>
+                        <p class="text-muted text-xs">
+                            {{ activity.description }}
+                        </p>
+                        <p class="text-muted mt-1 text-xs">{{ activity.timestamp|timesince }} ago</p>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center text-muted py-4">
+                    Aucune activité récente
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Upcoming Shows -->
+        <div class="card-event xl:col-span-2">
+            <div class="mb-6 flex items-center justify-between">
+                <h3>Spectacles à Venir</h3>
+                <button class="btn-sm flex items-center gap-1">
+                    Voir Calendrier
+                    <i class="ph ph-calendar"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {% for show in upcoming_shows_list %}
+                <div class="card-event">
+                    <div class="mb-3 flex items-start justify-between">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-400">
+                            <i class="ph ph-music-notes-plus text-2xl text-white"></i>
+                        </div>
+                        <span class="rounded-full bg-green-100 px-2 py-1 text-xs text-green-600 dark:bg-green-900/20">En vente</span>
+                    </div>
+                    <h4 class="text-text mb-2 font-semibold">
+                        {{ show.title }}
+                    </h4>
+                    <p class="text-muted mb-3 text-sm">{{ show.date|date:"d M Y" }} • {{ show.time|time:"H:i" }}</p>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm">
+                            <span class="text-text font-medium">{{ show.tickets_sold }}</span>
+                            <span class="text-muted">/ {{ show.capacity }} vendus</span>
+                        </div>
+                        <div class="bg-muted/30 h-2 w-20 overflow-hidden rounded-full">
+                            <div class="h-full rounded-full bg-green-500" style="width: {{ show.sold_percentage }}%"></div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center text-muted py-8 col-span-2">
+                    Aucun spectacle à venir
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Initialize charts when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Activity chart
+    const activityCtx = document.getElementById('activityChart').getContext('2d');
+    new Chart(activityCtx, {
+        type: 'line',
+        data: {
+            labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+            datasets: [{
+                label: 'Activité',
+                data: [{{ activity_data|join:"," }}],
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    
+    // Sales chart
+    const salesCtx = document.getElementById('sales-chart-2').getContext('2d');
+    new Chart(salesCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
+            datasets: [
+                {
+                    label: 'Revenus',
+                    data: [{{ revenue_data|join:"," }}],
+                    backgroundColor: '#3b82f6',
+                    borderRadius: 4
+                },
+                {
+                    label: 'Billets Vendus',
+                    data: [{{ tickets_data|join:"," }}],
+                    backgroundColor: '#10b981',
+                    borderRadius: 4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    
+    // Conversion pie chart
+    const conversionCtx = document.getElementById('conversionPie').getContext('2d');
+    new Chart(conversionCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Convertis', 'Non Convertis'],
+            datasets: [{
+                data: [{{ conversion_rate }}, {{ remaining_conversion }}],
+                backgroundColor: ['#10b981', '#9ca3af'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            cutout: '70%',
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'admin/js/original-index.js' %}"></script>
+{% endblock %}

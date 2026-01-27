@@ -16,11 +16,13 @@ Including another URLconf
 from django.views.generic import RedirectView
 from django.contrib import admin
 from django.urls import include, path
+from catalogue.views.admin_dashboard import admin_dashboard
 
 
 urlpatterns = [
     #path('', RedirectView.as_view(url='/artist/', permanent=False)),
     path('', include('frontend.urls')), # Added for frontend app
+    path('admin-dashboard/', admin_dashboard, name='admin_dashboard'),
     path('accounts/', include('accounts.urls')), # All accounts/auth related URLs will be handled here
     
     path('catalogue/', include('catalogue.urls')),
