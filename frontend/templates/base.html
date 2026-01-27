@@ -23,13 +23,13 @@
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'accounts:user-profile' %}">Mon compte</a></li>
                     <li>
-                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                        <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display: none;">
                             {% csrf_token %}
                         </form>
                         <a href="javascript:document.getElementById('logout-form').submit();" class="btn-primary">Déconnexion</a>
                     </li>
                 {% else %}
-                    <li><a href="{% url 'login' %}" class="btn-primary">Connexion</a></li>
+                    <li><a href="{% url 'accounts:login' %}" class="btn-primary">Connexion</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -62,13 +62,13 @@
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'accounts:user-profile' %}">Mon profil</a></li>
                         <li>
-                             <form id="logout-form-footer" action="{% url 'logout' %}" method="post" style="display: none;">
+                             <form id="logout-form-footer" action="{% url 'accounts:logout' %}" method="post" style="display: none;">
                                 {% csrf_token %}
                             </form>
                             <a href="javascript:document.getElementById('logout-form-footer').submit();">Déconnexion</a>
                         </li>
                     {% else %}
-                        <li><a href="{% url 'login' %}">Connexion</a></li>
+                        <li><a href="{% url 'accounts:login' %}">Connexion</a></li>
                         <li><a href="{% url 'accounts:user-signup' %}">Inscription</a></li>
                     {% endif %}
                 </ul>

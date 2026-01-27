@@ -10,7 +10,7 @@
                 <h2 style="font-family: 'Playfair Display', serif; margin: 0;">{{ user.first_name }} {{ user.last_name }}</h2>
                 <div style="display: flex; gap: 10px;">
                     <a href="{% url 'accounts:user-update' user.id %}" class="btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">Modifier</a>
-                    <a href="{% url 'password_change' %}" style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem; color: #666;">Sécurité</a>
+                    <a href="{% url 'accounts:password_change' %}" style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem; color: #666;">Sécurité</a>
                 </div>
             </div>
 
