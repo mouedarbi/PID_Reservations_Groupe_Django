@@ -38,7 +38,7 @@ class UserSignUpView(UserPassesTestMixin, CreateView):
 
     def handle_no_permission(self):
         messages.error(self.request, "Vous êtes déjà inscrit!")
-        return redirect('home')
+        return redirect('frontend:home')
 
 @login_required
 def profile(request):
@@ -69,8 +69,8 @@ def delete(request, pk):
                 messages.error(request,
                                "Suppression d'un autre compte interdite!")
 
-            return redirect('home')
+            return redirect('frontend:home')
 
     messages.error(request, "Suppression interdite (méthode incorrecte)!")
 
-    return redirect('home')
+    return redirect('frontend:home')
