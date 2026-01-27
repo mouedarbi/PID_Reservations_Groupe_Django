@@ -26,10 +26,6 @@ class UserMetaInLine(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'User Meta'
 
-# Define a new User admin
-class UserMetaInline:
-    pass
-
 
 class UserAdmin(BaseUserAdmin):
     inlines = [UserMetaInLine]
