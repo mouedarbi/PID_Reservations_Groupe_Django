@@ -18,7 +18,7 @@
             <ul class="nav-links">
                 <li><a href="{% url 'frontend:home' %}">Accueil</a></li>
                 <li><a href="{% url 'frontend:show_list' %}">Spectacles</a></li> 
-                <li><a href="{% url 'catalogue:location-index' %}">Lieux</a></li>
+                <li><a href="{% url 'frontend:location_list' %}">Lieux</a></li>
                 <li><a href="#">À propos</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'accounts:user-profile' %}">Mon compte</a></li>

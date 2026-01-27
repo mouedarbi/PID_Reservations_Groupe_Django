@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Nos Lieux{% endblock %}
+
+{% block content %}
+    <section class="hero-small" style="padding: 40px 0; background: #f3f4f6; text-align: center;">
+        <div class="container">
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 10px;">Nos Lieux</h1>
+            <p style="color: #666;">Découvrez les salles qui accueillent nos événements</p>
+        </div>
+    </section>
+
+    <section class="locations-section" style="padding: 60px 0;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px;">
+                {% if locations %}
+                    {% for location in locations %}
+                    <div class="location-card" style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                        <div style="padding: 25px;">
+                            <h3 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 15px; color: #1f2937;">{{ location.designation }}</h3>
+                            
+                            <div style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px; color: #4b5563;">
+                                <span style="font-size: 1.2rem;">📍</span>
+                                <span>{{ location.address }}</span>
+                            </div>
+
+                            {% if location.phone %}
+                            <div style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px; color: #4b5563;">
+                                <span style="font-size: 1.2rem;">📞</span>
+                                <span>{{ location.phone }}</span>
+                            </div>
+                            {% endif %}
+
+                            {% if location.website %}
+                            <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: #4b5563;">
+                                <span style="font-size: 1.2rem;">🌐</span>
+                                <a href="{{ location.website }}" target="_blank" style="color: #6366f1; text-decoration: none; font-weight: 500;">Visiter le site web</a>
+                            </div>
+                            {% endif %}
+
+                            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #f3f4f6;">
+                                <a href="#" class="btn-secondary" style="color: #6366f1; font-weight: 600; text-decoration: none; font-size: 0.9rem;">Voir les spectacles dans ce lieu →</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="text-align: center; grid-column: 1 / -1; color: #666; font-style: italic;">Aucun lieu n'est répertorié pour le moment.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
