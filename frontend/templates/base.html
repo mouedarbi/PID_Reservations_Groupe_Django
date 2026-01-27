@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ThéâtrePlus{% endblock %} - Réservez vos spectacles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">ThéâtrePlus</div>
+            <ul class="nav-links">
+                <li><a href="{% url 'frontend:home' %}">Accueil</a></li>
+                <li><a href="{% url 'frontend:show_list' %}">Spectacles</a></li> 
+                <li><a href="{% url 'frontend:location_list' %}">Lieux</a></li>
+                <li><a href="#">À propos</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'accounts:user-profile' %}">Mon compte</a></li>
+                    <li>
+                        <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display: none;">
+                            {% csrf_token %}
+                        </form>
+                        <a href="javascript:document.getElementById('logout-form').submit();" class="btn-primary">Déconnexion</a>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'accounts:login' %}" class="btn-primary">Connexion</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>ThéâtrePlus</h3>
+                <p>Votre plateforme de référence pour réserver les meilleurs spectacles en Belgique. Vivez des moments inoubliables avec nous.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="{% url 'frontend:home' %}">Accueil</a></li>
+                    <li><a href="{% url 'frontend:show_list' %}">Spectacles</a></li>
+                    <li><a href="#">Lieux</a></li>
+                    <li><a href="#">À propos</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Compte</h4>
+                <ul>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'accounts:user-profile' %}">Mon profil</a></li>
+                        <li>
+                             <form id="logout-form-footer" action="{% url 'accounts:logout' %}" method="post" style="display: none;">
+                                {% csrf_token %}
+                            </form>
+                            <a href="javascript:document.getElementById('logout-form-footer').submit();">Déconnexion</a>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'accounts:login' %}">Connexion</a></li>
+                        <li><a href="{% url 'accounts:user-signup' %}">Inscription</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Aide</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Conditions</a></li>
+                    <li><a href="#">Confidentialité</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 ThéâtrePlus. Tous droits réservés. | Projet PID - Version Alpha</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

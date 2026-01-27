@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block content %}
+<section class="auth-section" style="padding: 50px 0; min-height: 60vh;">
+    <div class="container" style="max-width: 500px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; text-align: center;">Créer un compte</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div style="margin-bottom: 15px;">
+                    <label for="{{ field.id_for_label }}" style="display: block; margin-bottom: 5px; font-weight: 500;">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div style="color: #b91c1c; font-size: 0.8rem; margin-top: 5px;">
+                            {{ field.errors|striptags }}
+                        </div>
+                    {% endif %}
+                    {% if field.help_text %}
+                        <div style="color: #666; font-size: 0.75rem; margin-top: 5px;">
+                            {{ field.help_text|safe }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;">S'inscrire</button>
+        </form>
+
+        <div style="margin-top: 20px; text-align: center; font-size: 0.9rem;">
+            <p>Déjà un compte ? <a href="{% url 'accounts:login' %}" style="color: #6366f1; font-weight: 600;">Se connecter</a></p>
+        </div>
+    </div>
+</section>
+{% endblock %}

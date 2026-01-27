@@ -29,7 +29,7 @@ class UserUpdateView(UserPassesTestMixin, UpdateView):
 
 
 class UserSignUpView(UserPassesTestMixin, CreateView):
-    form_class = UserCreationForm
+    form_class = UserSignUpForm
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
 
@@ -38,7 +38,7 @@ class UserSignUpView(UserPassesTestMixin, CreateView):
 
     def handle_no_permission(self):
         messages.error(self.request, "Vous êtes déjà inscrit!")
-        return redirect('home')
+        return redirect('frontend:home')
 
 @login_required
 def profile(request):
@@ -47,9 +47,16 @@ def profile(request):
         "en": "English",
         "nl": "Nederlands",
     }
+    
+    # Secure against missing usermeta
+    try:
+        user_lang = request.user.usermeta.langue
+        lang_display = languages.get(user_lang, "Non définie")
+    except Exception:
+        lang_display = "Non définie"
 
     return render(request, 'user/profile.html', {
-        "user_language" : languages[request.user.usermeta.langue],
+        "user_language" : lang_display,
     })
 
 
@@ -69,8 +76,8 @@ def delete(request, pk):
                 messages.error(request,
                                "Suppression d'un autre compte interdite!")
 
-            return redirect('home')
+            return redirect('frontend:home')
 
     messages.error(request, "Suppression interdite (méthode incorrecte)!")
 
-    return redirect('home')
+    return redirect('frontend:home')

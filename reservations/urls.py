@@ -13,14 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-#from django.views.generic import RedirectView
+from django.views.generic import RedirectView
 from django.contrib import admin
 from django.urls import include, path
 
 
 urlpatterns = [
     #path('', RedirectView.as_view(url='/artist/', permanent=False)),
+    path('', include('frontend.urls')), # Added for frontend app
+    path('accounts/', include('accounts.urls')), # All accounts/auth related URLs will be handled here
+    
     path('catalogue/', include('catalogue.urls')),
     path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
 ]
+

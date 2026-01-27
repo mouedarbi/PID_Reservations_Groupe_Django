@@ -34,18 +34,18 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # ajout de api
+    "frontend", # Ajout de l'application frontend - Déplacé ici pour la priorité des templates
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
+    "api",
+    "accounts",
     #ajout de catalogue
     "catalogue",
-
-    # ajout de api
-    "api",
     # ajout de rest_framework
     'rest_framework',
     "rest_framework.authtoken",
@@ -133,6 +133,12 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+STATICFILES_DIRS = [
+    BASE_DIR / 'frontend/static',
+]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -154,4 +160,10 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+
+LOGIN_REDIRECT_URL = 'frontend:home'
+LOGOUT_REDIRECT_URL = 'frontend:home'
+
+PASSWORD_CHANGE_REDIRECT_URL = 'accounts:user-profile'
 

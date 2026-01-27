@@ -11,7 +11,8 @@
     "location": [
       "espace-delvaux-la-venerie",
       "https://www.lavenerie.be"
-    ]
+    ],
+    "available_seats": 100
   }
 },
 {
@@ -26,7 +27,8 @@
     "location": [
       "dexia-art-center",
       null
-    ]
+    ],
+    "available_seats": 100
   }
 },
 {
@@ -38,7 +40,8 @@
       2012
     ],
     "schedule": "2012-10-02T20:30:00Z",
-    "location": null
+    "location": null,
+    "available_seats": 100
   }
 },
 {
@@ -50,7 +53,8 @@
       2014
     ],
     "schedule": "2012-10-16T20:30:00Z",
-    "location": null
+    "location": null,
+    "available_seats": 100
   }
 }
 ]

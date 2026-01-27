@@ -34,6 +34,10 @@ class UserSignUpForm(UserCreationForm):
         self.fields['password1'].help_text = None
         self.fields['password2'].help_text = None
 
+        # Add CSS classes for styling
+        for field_name, field in self.fields.items():
+            field.widget.attrs['style'] = 'width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;'
+
     class Meta:
         model = User
 
@@ -49,19 +53,13 @@ class UserSignUpForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super(UserSignUpForm, self).save(commit=False)
-        user.save()
+        user.save() # User is saved here, triggering the signal
 
-        # Ajout de l'utilisateur au groupe MEMBER => rôle de membre
-        memberGroup = Group.objects.get(name='MEMBER')
-        memberGroup.user_set.add(user)
-
+        # UserMeta is now created by a signal. Update its language.
         if self.cleaned_data['langue']:
-            user_meta = UserMeta(**{
-                'langue': self.cleaned_data['langue'],
-            })
-
-            # Mise à jour de la relation one-to-one
-            user_meta.user = user
+            user_meta = UserMeta.objects.get_or_create(user=user)[0]
+            user_meta.langue = self.cleaned_data['langue']
             user_meta.save()
+            
         return user
 
