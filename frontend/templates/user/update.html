@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Inscription{% endblock %}
+{% block title %}Modifier le Profil{% endblock %}
 
 {% block content %}
-<section class="auth-section" style="padding: 50px 0; min-height: 60vh;">
-    <div class="container" style="max-width: 500px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-        <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; text-align: center;">Créer un compte</h2>
+<section class="auth-section" style="padding: 50px 0; min-height: 60vh; background: #f9fafb;">
+    <div class="container" style="max-width: 600px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 25px; text-align: center;">Modifier mon profil</h2>
 
         <form method="post">
             {% csrf_token %}
@@ -25,12 +25,11 @@
                     {% endif %}
                 </div>
             {% endfor %}
-
-            <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;">S'inscrire</button>
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; border: none; border-radius: 4px; cursor: pointer; margin-top: 20px;">Enregistrer les modifications</button>
         </form>
 
         <div style="margin-top: 20px; text-align: center; font-size: 0.9rem;">
-            <p>Déjà un compte ? <a href="{% url 'accounts:login' %}" style="color: #6366f1; font-weight: 600;">Se connecter</a></p>
+            <p><a href="{% url 'accounts:user-profile' %}" style="color: #6366f1; text-decoration: none;">Annuler et revenir au profil</a></p>
         </div>
     </div>
 </section>

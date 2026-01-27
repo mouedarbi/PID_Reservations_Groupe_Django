@@ -13,7 +13,7 @@
             </div>
         {% endif %}
 
-        <form method="post" action="{% url 'login' %}">
+        <form method="post" action="{% url 'accounts:login' %}">
             {% csrf_token %}
             <div style="margin-bottom: 15px;">
                 <label for="{{ form.username.id_for_label }}" style="display: block; margin-bottom: 5px; font-weight: 500;">Nom d'utilisateur</label>
@@ -29,7 +29,7 @@
         </form>
 
         <div style="margin-top: 20px; text-align: center; font-size: 0.9rem;">
-            <p><a href="{% url 'password_reset' %}" style="color: #666;">Mot de passe oublié ?</a></p>
+            <p><a href="{% url 'accounts:password_reset' %}" style="color: #666;">Mot de passe oublié ?</a></p>
             <p style="margin-top: 10px;">Pas encore de compte ? <a href="{% url 'accounts:user-signup' %}" style="color: #6366f1; font-weight: 600;">S'inscrire</a></p>
         </div>
     </div>

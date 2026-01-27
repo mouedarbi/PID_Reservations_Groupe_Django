@@ -7,8 +7,8 @@ from rest_framework.authtoken.models import Token
 class AuthAPITests(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        # Create user group
-        Group.objects.create(name='MEMBER')
+        # Create user group (or get if already exists from migration)
+        Group.objects.get_or_create(name='MEMBER')
 
         # URLs
         cls.signup_url = reverse('api:auth-signup')

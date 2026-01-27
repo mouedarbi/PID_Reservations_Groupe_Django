@@ -46,3 +46,22 @@ def show_list(request):
     }
     return render(request, 'show_list.html', context)
 
+def location_list(request):
+    """
+    View for displaying a list of locations fetched from the API.
+    """
+    api_url = "http://127.0.0.1:8000/api/locations/"
+    locations_data = []
+    try:
+        response = requests.get(api_url)
+        response.raise_for_status()
+        locations_data = response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching locations from API: {e}")
+
+    context = {
+        'locations': locations_data,
+        'page_title': 'Nos Lieux de Spectacles',
+    }
+    return render(request, 'location_list.html', context)
+

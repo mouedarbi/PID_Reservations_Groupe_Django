@@ -34,15 +34,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # ajout de api
+    "frontend", # Ajout de l'application frontend - Déplacé ici pour la priorité des templates
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
-    # ajout de api
-    "frontend", # Ajout de l'application frontend
     "api",
     "accounts",
     #ajout de catalogue
@@ -165,3 +164,6 @@ REST_FRAMEWORK = {
 
 LOGIN_REDIRECT_URL = 'frontend:home'
 LOGOUT_REDIRECT_URL = 'frontend:home'
+
+PASSWORD_CHANGE_REDIRECT_URL = 'accounts:user-profile'
+

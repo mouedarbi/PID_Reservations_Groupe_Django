@@ -31,6 +31,10 @@ class UserUpdateForm(UserChangeForm):
 
         self.fields['username'].help_text = None
 
+        # Add CSS classes for styling
+        for field_name, field in self.fields.items():
+            if field_name != 'password': # Password field is not displayed for update
+                field.widget.attrs['style'] = 'width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;'
 
         # Récupérer les metadonnées de l'utilisateur
         user = kwargs.get('instance')

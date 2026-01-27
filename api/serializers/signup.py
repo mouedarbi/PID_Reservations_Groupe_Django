@@ -13,13 +13,11 @@ class SignUpSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         langue = validated_data.pop('langue')
-        user = User.objects.create_user(**validated_data)
+        user = User.objects.create_user(**validated_data) # Signal will create UserMeta and assign to MEMBER group
         
-        # Add user to MEMBER group
-        member_group = Group.objects.get(name='MEMBER')
-        member_group.user_set.add(user)
-
-        # Create UserMeta
-        UserMeta.objects.create(user=user, langue=langue)
+        # Update UserMeta with the selected language from the form
+        user_meta = UserMeta.objects.get_or_create(user=user)[0]
+        user_meta.langue = langue
+        user_meta.save()
         
         return user
