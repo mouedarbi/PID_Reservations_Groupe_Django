@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ show.title }}{% endblock %}
+
+{% block content %}
+<section class="show-detail-section">
+    <div class="container">
+        {% if show %}
+        <div class="show-detail-grid">
+            <div class="show-detail-image">
+                <img src="{{ show.poster_url|default:'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&h=1200&fit=crop' }}" 
+                     alt="{{ show.title }}">
+            </div>
+            <div class="show-detail-content">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'frontend:show_list' %}">Spectacles</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ show.title }}</li>
+                    </ol>
+                </nav>
+                
+                <h1 class="show-title">{{ show.title }}</h1>
+                
+                <div class="show-badges mb-4">
+                    {% if show.bookable %}
+                    <span class="badge bg-success">Réservable</span>
+                    {% else %}
+                    <span class="badge bg-secondary">Non réservable</span>
+                    {% endif %}
+                    
+                    {% if show.artist_types %}
+                        {% for artist_type in show.artist_types %}
+                            <span class="badge bg-primary">{{ artist_type.name }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="show-description mb-4">
+                    <h3>Description</h3>
+                    <p>{{ show.description|default:"Aucune description disponible." }}</p>
+                </div>
+
+                <div class="show-info-list mb-4">
+                    <div class="info-item">
+                        <strong>📍 Lieu :</strong> 
+                        {% if show.location %}
+                            {{ show.location.designation }} ({{ show.location.locality.postal_code }} {{ show.location.locality.locality }})
+                        {% else %}
+                            Lieu non défini
+                        {% endif %}
+                    </div>
+                    <div class="info-item">
+                        <strong>⏱ Durée :</strong> {{ show.duration|default:"N/A" }} minutes
+                    </div>
+                    <div class="info-item">
+                        <strong>📅 Année de création :</strong> {{ show.created_in }}
+                    </div>
+                    <div class="info-item">
+                        <strong>💰 Prix à partir de :</strong> {{ show.price|default:"25.00" }}€
+                    </div>
+                </div>
+
+                <div class="show-actions mt-5">
+                    {% if show.bookable %}
+                        <a href="#" class="btn-primary btn-lg">Réserver mes places</a>
+                    {% else %}
+                        <button class="btn btn-secondary btn-lg" disabled>Complet</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section Représentations (si implémenté dans le futur) -->
+        <div class="representations-list mt-5">
+            <h3>Prochaines représentations</h3>
+            <p>Consultez les dates disponibles pour ce spectacle.</p>
+            <!-- Ici on pourrait boucler sur les représentations si elles étaient incluses -->
+            <div class="alert alert-info">
+                Les dates des représentations seront bientôt disponibles.
+            </div>
+        </div>
+
+        {% else %}
+        <div class="alert alert-danger">
+            <h2>Spectacle introuvable</h2>
+            <p>Désolé, nous n'avons pas pu trouver les détails de ce spectacle.</p>
+            <a href="{% url 'frontend:show_list' %}" class="btn-primary">Retour à la liste</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<style>
+    .show-detail-section { padding: 4rem 0; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+    .show-detail-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem; align-items: start; }
+    .show-detail-image img { width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    .breadcrumb { display: flex; list-style: none; padding: 0; margin-bottom: 1rem; color: #666; font-size: 0.9rem; }
+    .breadcrumb-item + .breadcrumb-item::before { content: "/"; padding: 0 0.5rem; }
+    .breadcrumb a { color: var(--primary-color, #ff4d4d); text-decoration: none; }
+    .show-title { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 1rem; }
+    .info-item { margin-bottom: 0.8rem; font-size: 1.1rem; }
+    .badge { display: inline-block; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-right: 0.5rem; }
+    .bg-success { background: #28a745; color: white; }
+    .bg-primary { background: #007bff; color: white; }
+    .bg-secondary { background: #6c757d; color: white; }
+    .btn-lg { padding: 1rem 2.5rem; font-size: 1.2rem; }
+    
+    @media (max-width: 992px) {
+        .show-detail-grid { grid-template-columns: 1fr; gap: 2rem; }
+        .show-detail-image { max-width: 500px; margin: 0 auto; }
+    }
+</style>
+{% endblock %}

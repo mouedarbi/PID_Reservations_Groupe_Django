@@ -1,4 +1,5 @@
 import requests
+import json
 from django.shortcuts import render
 
 def home(request):
@@ -45,6 +46,25 @@ def show_list(request):
         'page_title': 'Catalogue des Spectacles',
     }
     return render(request, 'show_list.html', context)
+
+def show_detail(request, pk):
+    """
+    View for displaying details of a single show fetched from the API.
+    """
+    api_url = f"http://127.0.0.1:8000/api/shows/{pk}/"
+    show_data = None
+    try:
+        response = requests.get(api_url)
+        response.raise_for_status()
+        show_data = response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching show detail from API: {e}")
+
+    context = {
+        'show': show_data,
+        'page_title': show_data.get('title', 'Détails du Spectacle') if show_data else 'Spectacle introuvable',
+    }
+    return render(request, 'show_detail.html', context)
 
 def location_list(request):
     """
