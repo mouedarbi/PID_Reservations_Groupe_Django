@@ -20,6 +20,7 @@ class Command(BaseCommand):
             'reviews.json',
             'user_meta.json',
             'reservations.json',
+            'representation_reservations.json',
         ]
 
         # Rename ArtistFixtures.json to artists.json for clarity
@@ -28,8 +29,11 @@ class Command(BaseCommand):
         new_artist_fixture_path = os.path.join(fixture_dir, 'artists.json')
 
         if os.path.exists(old_artist_fixture_path):
-            os.rename(old_artist_fixture_path, new_artist_fixture_path)
-            self.stdout.write(self.style.SUCCESS('Successfully renamed "ArtistFixtures.json" to "artists.json"'))
+            if not os.path.exists(new_artist_fixture_path):
+                os.rename(old_artist_fixture_path, new_artist_fixture_path)
+                self.stdout.write(self.style.SUCCESS('Successfully renamed "ArtistFixtures.json" to "artists.json"'))
+            else:
+                self.stdout.write(self.style.WARNING('"artists.json" already exists. Skipping rename.'))
 
         # Call loaddata for each fixture
         for fixture_file in fixture_files:

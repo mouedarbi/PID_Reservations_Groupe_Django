@@ -5,6 +5,9 @@ from catalogue.models import UserMeta
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
+    if kwargs.get('raw', False):
+        return
+        
     if created:
         # Créer UserMeta automatiquement
         UserMeta.objects.get_or_create(user=instance, defaults={'langue': 'fr'})

@@ -1,0 +1,32 @@
+[
+  {
+    "model": "catalogue.representationreservation",
+    "pk": 1,
+    "fields": {
+      "representation": 1,
+      "reservation": 1,
+      "price": 5,
+      "quantity": 1
+    }
+  },
+  {
+    "model": "catalogue.representationreservation",
+    "pk": 2,
+    "fields": {
+      "representation": 1,
+      "reservation": 2,
+      "price": 5,
+      "quantity": 1
+    }
+  },
+  {
+    "model": "catalogue.representationreservation",
+    "pk": 3,
+    "fields": {
+      "representation": 1,
+      "reservation": 3,
+      "price": 5,
+      "quantity": 1
+    }
+  }
+]

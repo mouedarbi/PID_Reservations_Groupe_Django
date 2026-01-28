@@ -7,9 +7,7 @@
     "status": "payée",
     "user": [
       "anna"
-    ],
-    "quantity": 1,
-    "representation": 1
+    ]
   }
 },
 {
@@ -20,9 +18,7 @@
     "status": "payée",
     "user": [
       "anna"
-    ],
-    "quantity": 1,
-    "representation": 1
+    ]
   }
 },
 {
@@ -33,9 +29,7 @@
     "status": "en attente",
     "user": [
       "anna"
-    ],
-    "quantity": 1,
-    "representation": 1
+    ]
   }
 }
 ]
