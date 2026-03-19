@@ -4,11 +4,10 @@ from .price import Price
 class ShowPrice(models.Model):
     show = models.ForeignKey('Show', on_delete=models.CASCADE)
     price = models.ForeignKey(Price, on_delete=models.CASCADE)
-    price_type = models.CharField(max_length=60, default='standard')
 
     class Meta:
         db_table = "show_prices"
-        unique_together = ('show', 'price', 'price_type')
+        unique_together = ('show', 'price')
 
     def __str__(self):
-        return f"{self.show.title} - {self.price.type} ({self.price_type})"
+        return f"{self.show.title} - {self.price.type}"
