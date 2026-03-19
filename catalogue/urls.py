@@ -3,7 +3,7 @@
 from django.urls import path
 from .views import artist, type, price, locality, location, representation, review
 from .views.show_ import index as show_index, show as show_detail, create as show_create, edit as show_edit, delete as show_delete
-from .views.admin_dashboard import admin_show_index
+from .views.admin_dashboard import admin_show_index, admin_representation_index
 
 app_name='catalogue'
 
@@ -45,8 +45,4 @@ urlpatterns = [
     # Review
     path('review/', review.index, name='review-index'),
     path('review/<int:review_id>', review.show, name='review-show'),
-
-    # Admin Dashboard Sections
-    path('admin/shows/', admin_show_index, name='admin_show_index'),
-]
-
+    ]
