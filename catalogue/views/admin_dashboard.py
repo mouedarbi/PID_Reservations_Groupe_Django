@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
-from catalogue.models import Reservation, Show, RepresentationReservation, Representation
+from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist
 from django.utils import timezone
 import datetime
 
@@ -133,3 +133,47 @@ def admin_show_index(request):
         'search_query': search_query,
     }
     return render(request, 'admin/show/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_representation_index(request):
+    """
+    View to list representations in the custom admin dashboard.
+    """
+    representations = Representation.objects.all().select_related('show', 'location').order_by('-schedule')
+
+    # Simple search by show title
+    search_query = request.GET.get('q')
+    if search_query:
+        representations = representations.filter(show__title__icontains=search_query)
+
+    context = {
+        'page_title': 'Gestion des Représentations',
+        'title': 'Représentations',
+        'representations': representations,
+        'search_query': search_query,
+    }
+    return render(request, 'admin/representation/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_artist_index(request):
+    """
+    View to list artists in the custom admin dashboard.
+    """
+    artists = Artist.objects.all().order_by('lastname')
+
+    # Search by firstname or lastname
+    search_query = request.GET.get('q')
+    if search_query:
+        from django.db.models import Q
+        artists = artists.filter(
+            Q(firstname__icontains=search_query) | 
+            Q(lastname__icontains=search_query)
+        )
+
+    context = {
+        'page_title': 'Gestion des Artistes',
+        'title': 'Artistes',
+        'artists': artists,
+        'search_query': search_query,
+    }
+    return render(request, 'admin/artist/index.html', context)
