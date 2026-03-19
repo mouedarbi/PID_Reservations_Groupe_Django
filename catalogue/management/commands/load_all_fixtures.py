@@ -16,6 +16,7 @@ class Command(BaseCommand):
             'artist_type.json',
             'locations.json',
             'shows.json',
+            'show_prices.json',
             'representations.json',
             'reviews.json',
             'user_meta.json',
