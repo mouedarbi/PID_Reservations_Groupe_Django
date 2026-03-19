@@ -16,7 +16,7 @@ Including another URLconf
 from django.views.generic import RedirectView
 from django.contrib import admin
 from django.urls import include, path
-from catalogue.views.admin_dashboard import admin_dashboard, admin_show_index, admin_representation_index, admin_artist_index, admin_type_index, admin_review_index
+from catalogue.views.admin_dashboard import admin_dashboard, admin_show_index, admin_representation_index, admin_artist_index, admin_type_index, admin_review_index, admin_location_index
 
 
 urlpatterns = [
@@ -30,6 +30,7 @@ urlpatterns = [
     path('admin-dashboard/artists/', admin_artist_index, name='admin_artist_index'),
     path('admin-dashboard/types/', admin_type_index, name='admin_type_index'),
     path('admin-dashboard/reviews/', admin_review_index, name='admin_review_index'),
+    path('admin-dashboard/locations/', admin_location_index, name='admin_location_index'),
 
     path('accounts/', include('accounts.urls')), # All accounts/auth related URLs will be handled here
     

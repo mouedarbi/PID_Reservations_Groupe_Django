@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
-from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review
+from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location
 from django.utils import timezone
 import datetime
 
@@ -221,3 +221,27 @@ def admin_review_index(request):
         'search_query': search_query,
     }
     return render(request, 'admin/review/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_location_index(request):
+    """
+    View to list locations in the custom admin dashboard.
+    """
+    locations = Location.objects.all().select_related('locality').order_by('designation')
+
+    # Search by designation or slug
+    search_query = request.GET.get('q')
+    if search_query:
+        from django.db.models import Q
+        locations = locations.filter(
+            Q(designation__icontains=search_query) | 
+            Q(slug__icontains=search_query)
+        )
+
+    context = {
+        'page_title': 'Gestion des Lieux',
+        'title': 'Lieux',
+        'locations': locations,
+        'search_query': search_query,
+    }
+    return render(request, 'admin/location/index.html', context)
