@@ -83,7 +83,7 @@ def admin_dashboard(request):
     context = {
         'page_title': 'Tableau de bord administration',
         'title': 'Tableau de bord',
-        
+
         # Stats
         'total_reservations': total_reservations,
         'total_revenue': round(total_revenue, 2),
@@ -91,7 +91,7 @@ def admin_dashboard(request):
         'active_shows': active_shows,
         'upcoming_shows': upcoming_reps_count,
         'total_customers': total_customers,
-        
+
         # Growth (Mocked)
         'revenue_growth': 12.5,
         'tickets_growth': 8.2,
@@ -101,15 +101,35 @@ def admin_dashboard(request):
         'conversion_rate': 3.2,
         'remaining_conversion': 96.8,
         'conversion_growth': 0.5,
-        
+
         # Lists
         'upcoming_shows_list': upcoming_shows_list,
         'recent_activities': recent_activities,
         'top_shows': top_shows,
-        
+
         # Charts Data (Lists for JS)
         'activity_data': [12, 19, 3, 5, 2, 3, 15],
         'revenue_data': [12000, 19000, 15000, 22000],
         'tickets_data': [400, 600, 500, 750],
     }
     return render(request, 'admin/dashboard.html', context)
+
+@user_passes_test(is_admin)
+def admin_show_index(request):
+    """
+    View to list shows in the custom admin dashboard.
+    """
+    shows = Show.objects.all().select_related('location').order_by('-created_at')
+
+    # Simple search
+    search_query = request.GET.get('q')
+    if search_query:
+        shows = shows.filter(title__icontains=search_query)
+
+    context = {
+        'page_title': 'Gestion des Spectacles',
+        'title': 'Spectacles',
+        'shows': shows,
+        'search_query': search_query,
+    }
+    return render(request, 'admin/show/index.html', context)
