@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
-from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type
+from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review
 from django.utils import timezone
 import datetime
 
@@ -197,3 +197,27 @@ def admin_type_index(request):
         'search_query': search_query,
     }
     return render(request, 'admin/type/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_review_index(request):
+    """
+    View to list reviews in the custom admin dashboard.
+    """
+    reviews = Review.objects.all().select_related('user', 'show').order_by('-created_at')
+
+    # Search by user or show title
+    search_query = request.GET.get('q')
+    if search_query:
+        from django.db.models import Q
+        reviews = reviews.filter(
+            Q(user__username__icontains=search_query) | 
+            Q(show__title__icontains=search_query)
+        )
+
+    context = {
+        'page_title': 'Gestion des Avis',
+        'title': 'Avis',
+        'reviews': reviews,
+        'search_query': search_query,
+    }
+    return render(request, 'admin/review/index.html', context)
