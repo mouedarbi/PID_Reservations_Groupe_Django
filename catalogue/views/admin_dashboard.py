@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
-from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist
+from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type
 from django.utils import timezone
 import datetime
 
@@ -177,3 +177,23 @@ def admin_artist_index(request):
         'search_query': search_query,
     }
     return render(request, 'admin/artist/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_type_index(request):
+    """
+    View to list types in the custom admin dashboard.
+    """
+    types = Type.objects.all().order_by('type')
+
+    # Search by type name
+    search_query = request.GET.get('q')
+    if search_query:
+        types = types.filter(type__icontains=search_query)
+
+    context = {
+        'page_title': 'Gestion des Types',
+        'title': 'Types',
+        'types': types,
+        'search_query': search_query,
+    }
+    return render(request, 'admin/type/index.html', context)
