@@ -370,3 +370,27 @@ def admin_group_index(request):
         'search_query': search_query,
     }
     return render(request, 'admin/user/group_index.html', context)
+
+@user_passes_test(is_admin)
+def admin_price_index(request):
+    """
+    Vue pour lister les prix dans le dashboard admin personnalisé.
+    """
+    prices = Price.objects.all().order_by('type', 'price')
+
+    # Recherche par type ou description
+    search_query = request.GET.get('q')
+    if search_query:
+        from django.db.models import Q
+        prices = prices.filter(
+            Q(type__icontains=search_query) | 
+            Q(description__icontains=search_query)
+        )
+
+    context = {
+        'page_title': 'Gestion des Prix',
+        'title': 'Prix',
+        'prices': prices,
+        'search_query': search_query,
+    }
+    return render(request, 'admin/price/index.html', context)

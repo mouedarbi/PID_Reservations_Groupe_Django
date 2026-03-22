@@ -1,0 +1,98 @@
+{% extends "admin/admin.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-main-style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-1.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-2.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
+            <p class="text-small mt-1">Gérez les différentes catégories de prix et leurs montants.</p>
+        </div>
+        <div>
+            <a href="#" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
+                <i class="ph ph-plus"></i>
+                <span>Ajouter un prix</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="border-border mb-6 rounded-lg border bg-bg p-4 dark:bg-[#040b1a]">
+        <form method="GET" class="flex flex-col gap-4 md:flex-row md:items-center">
+            <div class="relative flex-1">
+                <input type="text" name="q" value="{{ search_query|default:'' }}" placeholder="Rechercher par type ou description..." class="border-border bg-input focus:ring-primary w-full rounded-md border py-2 pr-4 pl-10 transition-colors duration-200 focus:ring-2 focus:outline-none">
+                <i class="ph ph-magnifying-glass text-xl text-muted absolute top-1/2 left-3 -translate-y-1/2 transform"></i>
+            </div>
+            <button type="submit" class="rounded-lg bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300 transition dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700">
+                Filtrer
+            </button>
+            {% if search_query %}
+            <a href="{% url 'admin_price_index' %}" class="text-blue-600 hover:underline text-sm">Réinitialiser</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- Prices Table -->
+    <div class="border-border overflow-hidden rounded-lg border bg-bg dark:bg-[#040b1a]">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 dark:bg-gray-900/50">
+                    <tr>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Type</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Prix</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Description</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Période de validité</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+                    {% for price in prices %}
+                    <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition">
+                        <td class="px-6 py-4">
+                            <div class="text-text font-medium">{{ price.type }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-text">{{ price.price }} €</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-text">{{ price.description|default:"-" }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-text">{{ price.start_date|date:"d/m/Y" }} - {{ price.end_date|date:"d/m/Y" }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <a href="#" class="text-blue-600 hover:text-blue-800 transition" title="Voir">
+                                    <i class="ph ph-eye text-xl"></i>
+                                </a>
+                                <a href="#" class="text-amber-600 hover:text-amber-800 transition" title="Modifier">
+                                    <i class="ph ph-pencil-simple text-xl"></i>
+                                </a>
+                                <a href="#" class="text-red-600 hover:text-red-800 transition" title="Supprimer">
+                                    <i class="ph ph-trash text-xl"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-10 text-center text-muted italic">
+                            Aucun prix trouvé.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
