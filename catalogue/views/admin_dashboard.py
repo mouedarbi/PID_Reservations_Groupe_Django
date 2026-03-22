@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
-from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location
+from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price
 from django.utils import timezone
 import datetime
 
