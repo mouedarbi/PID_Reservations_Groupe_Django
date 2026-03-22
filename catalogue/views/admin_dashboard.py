@@ -400,9 +400,27 @@ def admin_show_detail(request, pk):
     """
     Vue pour afficher les détails d'un spectacle et gérer ses prix.
     """
-    from django.shortcuts import get_object_or_404
-    show = get_object_or_404(Show.objects.select_related('location'), pk=pk)
+    from django.shortcuts import get_object_or_404, redirect
+    from .models import ShowPrice
     
+    show = get_object_or_404(Show.objects.select_related('location'), pk=pk)
+
+    if request.method == 'POST':
+        # Gérer l'ajout d'un prix
+        price_id = request.POST.get('price_id')
+        if price_id:
+            price = get_object_or_404(Price, id=price_id)
+            ShowPrice.objects.get_or_create(show=show, price=price)
+        
+        # Gérer la suppression d'un prix
+        delete_price_id = request.POST.get('delete_price_id')
+        if delete_price_id:
+            show_price_to_delete = get_object_or_404(ShowPrice, pk=delete_price_id)
+            if show_price_to_delete.show == show: # Sécurité
+                show_price_to_delete.delete()
+
+        return redirect('admin_show_detail', pk=show.id)
+
     # Récupérer les prix associés à ce spectacle via le modèle ShowPrice
     show_prices = show.showprice_set.select_related('price').all()
     
