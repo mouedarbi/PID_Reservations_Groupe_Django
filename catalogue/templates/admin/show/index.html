@@ -106,8 +106,8 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <a href="{% url 'catalogue:show-show' show.id %}" class="text-blue-600 hover:text-blue-800 transition" title="Voir">
-                                    <i class="ph ph-eye text-xl"></i>
+                                <a href="{% url 'admin_show_detail' show.id %}" class="text-blue-600 hover:text-blue-800 transition" title="Gérer les prix">
+                                    <i class="ph ph-currency-circle-dollar text-xl"></i>
                                 </a>
                                 <a href="{% url 'catalogue:show-edit' show.id %}" class="text-amber-600 hover:text-amber-800 transition" title="Modifier">
                                     <i class="ph ph-pencil-simple text-xl"></i>
@@ -115,8 +115,8 @@
                                 <a href="{% url 'catalogue:show-delete' show.id %}" class="text-red-600 hover:text-red-800 transition" title="Supprimer">
                                     <i class="ph ph-trash text-xl"></i>
                                 </a>
-                            </div>
-                        </td>
+                                </div>
+                                </td>
                     </tr>
                     {% empty %}
                     <tr>

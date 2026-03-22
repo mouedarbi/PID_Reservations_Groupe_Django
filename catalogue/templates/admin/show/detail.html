@@ -1,0 +1,123 @@
+{% extends "admin/admin.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-main-style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-1.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-2.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content max-w-5xl mx-auto">
+    
+    <!-- En-tête de la page avec bouton retour -->
+    <div class="mb-6 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <a href="{% url 'admin_show_index' %}" class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300">
+                <i class="ph ph-arrow-left text-xl"></i>
+            </a>
+            <div>
+                <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
+                <p class="text-small mt-1">Créé le {{ show.created_at|date:"d/m/Y" }}</p>
+            </div>
+        </div>
+        
+        <div class="flex gap-2">
+            <button class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
+                <i class="ph ph-pencil-simple"></i>
+                <span class="hidden sm:inline">Modifier</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Informations Spectacle & Statut -->
+        <div class="md:col-span-1 space-y-6">
+            <!-- Carte Spectacle -->
+            <div class="border-border rounded-xl border bg-bg p-6 dark:bg-[#040b1a]">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <i class="ph ph-info text-blue-500"></i>
+                    Informations
+                </h3>
+                <div class="space-y-3">
+                    <div>
+                        <p class="text-xs text-muted uppercase tracking-wider">Titre</p>
+                        <p class="font-medium">{{ show.title }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-muted uppercase tracking-wider">Slug</p>
+                        <p class="font-mono text-xs">{{ show.slug }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-muted uppercase tracking-wider">Lieu de création</p>
+                        <p class="font-medium">{{ show.location.designation }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-muted uppercase tracking-wider">Réservable</p>
+                        <p class="font-medium">{% if show.bookable %}Oui{% else %}Non{% endif %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Détails des prix -->
+        <div class="md:col-span-2 space-y-6">
+            <div class="border-border rounded-xl border bg-bg dark:bg-[#040b1a]">
+                <div class="p-6 border-b border-border bg-gray-50/50 dark:bg-gray-900/50 flex justify-between items-center">
+                    <h3 class="text-lg font-bold flex items-center gap-2">
+                        <i class="ph ph-currency-circle-dollar text-blue-500"></i>
+                        Tarifs Associés
+                    </h3>
+                </div>
+                
+                <div class="divide-y divide-gray-200 dark:divide-gray-800">
+                    {% for sp in show_prices %}
+                    <div class="p-4 hover:bg-gray-50/30 transition dark:hover:bg-gray-800/30 flex justify-between items-center">
+                        <div>
+                            <p class="font-bold">{{ sp.price.type }}</p>
+                            <p class="text-sm text-muted">{{ sp.price.description }}</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <p class="font-bold text-lg text-blue-600">{{ sp.price.price }} €</p>
+                            <button class="text-red-500 hover:text-red-700">
+                                <i class="ph ph-trash text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="p-10 text-center text-muted italic">
+                        Aucun tarif associé à ce spectacle.
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="border-border rounded-xl border bg-bg dark:bg-[#040b1a]">
+                <div class="p-6 border-b border-border bg-gray-50/50 dark:bg-gray-900/50">
+                    <h3 class="text-lg font-bold flex items-center gap-2">
+                        <i class="ph ph-plus-circle text-blue-500"></i>
+                        Ajouter un tarif
+                    </h3>
+                </div>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="p-6 space-y-4">
+                        <select name="price_id" class="border-border bg-input focus:ring-primary w-full rounded-md border py-2 px-3 transition-colors duration-200 focus:ring-2 focus:outline-none">
+                            <option value="">Sélectionner un tarif à ajouter...</option>
+                            {% for price in available_prices %}
+                            <option value="{{ price.id }}">{{ price.type }} - {{ price.price }} €</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="w-full rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
+                            Associer ce tarif
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

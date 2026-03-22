@@ -394,3 +394,27 @@ def admin_price_index(request):
         'search_query': search_query,
     }
     return render(request, 'admin/price/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_show_detail(request, pk):
+    """
+    Vue pour afficher les détails d'un spectacle et gérer ses prix.
+    """
+    from django.shortcuts import get_object_or_404
+    show = get_object_or_404(Show.objects.select_related('location'), pk=pk)
+    
+    # Récupérer les prix associés à ce spectacle via le modèle ShowPrice
+    show_prices = show.showprice_set.select_related('price').all()
+    
+    # Récupérer tous les prix qui ne sont pas encore associés à ce spectacle
+    existing_price_ids = [sp.price.id for sp in show_prices]
+    available_prices = Price.objects.exclude(id__in=existing_price_ids)
+
+    context = {
+        'page_title': f'Détails : {show.title}',
+        'title': show.title,
+        'show': show,
+        'show_prices': show_prices,
+        'available_prices': available_prices,
+    }
+    return render(request, 'admin/show/detail.html', context)
