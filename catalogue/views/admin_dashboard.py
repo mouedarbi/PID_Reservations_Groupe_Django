@@ -270,3 +270,56 @@ def admin_locality_index(request):
         'search_query': search_query,
     }
     return render(request, 'admin/locality/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_reservation_index(request):
+    """
+    Vue pour lister les réservations dans le dashboard admin personnalisé.
+    """
+    from django.db.models import Sum, F
+    reservations = Reservation.objects.all().select_related('user').annotate(
+        total_amount=Sum(F('representation_reservations__price__price') * F('representation_reservations__quantity')),
+        total_tickets=Sum('representation_reservations__quantity')
+    ).order_by('-booking_date')
+
+    # Recherche par nom d'utilisateur ou statut
+    search_query = request.GET.get('q')
+    if search_query:
+        from django.db.models import Q
+        reservations = reservations.filter(
+            Q(user__username__icontains=search_query) | 
+            Q(status__icontains=search_query)
+        )
+
+    context = {
+        'page_title': 'Gestion des Réservations',
+        'title': 'Réservations',
+        'reservations': reservations,
+        'search_query': search_query,
+    }
+    return render(request, 'admin/reservation/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_reservation_detail(request, pk):
+    """
+    Vue pour afficher les détails d'une réservation.
+    """
+    from django.shortcuts import get_object_or_404
+    from django.db.models import Sum, F
+    reservation = get_object_or_404(
+        Reservation.objects.select_related('user').annotate(
+            total_amount=Sum(F('representation_reservations__price__price') * F('representation_reservations__quantity')),
+            total_tickets=Sum('representation_reservations__quantity')
+        ), 
+        pk=pk
+    )
+
+    items = reservation.representation_reservations.all().select_related('representation__show', 'price')
+
+    context = {
+        'page_title': f'Détails Réservation #{reservation.id}',
+        'title': f'Réservation #{reservation.id}',
+        'reservation': reservation,
+        'items': items,
+    }
+    return render(request, 'admin/reservation/detail.html', context)
