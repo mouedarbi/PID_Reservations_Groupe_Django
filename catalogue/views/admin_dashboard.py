@@ -323,3 +323,50 @@ def admin_reservation_detail(request, pk):
         'items': items,
     }
     return render(request, 'admin/reservation/detail.html', context)
+
+@user_passes_test(is_admin)
+def admin_user_index(request):
+    """
+    Vue pour lister les utilisateurs dans le dashboard admin personnalisé.
+    """
+    users = User.objects.all().order_by('-date_joined')
+
+    # Recherche par nom d'utilisateur ou email
+    search_query = request.GET.get('q')
+    if search_query:
+        from django.db.models import Q
+        users = users.filter(
+            Q(username__icontains=search_query) | 
+            Q(email__icontains=search_query) |
+            Q(first_name__icontains=search_query) |
+            Q(last_name__icontains=search_query)
+        )
+
+    context = {
+        'page_title': 'Gestion des Utilisateurs',
+        'title': 'Utilisateurs',
+        'users': users,
+        'search_query': search_query,
+    }
+    return render(request, 'admin/user/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_group_index(request):
+    """
+    Vue pour lister les groupes dans le dashboard admin personnalisé.
+    """
+    from django.contrib.auth.models import Group
+    groups = Group.objects.all().annotate(user_count=Count('user')).order_by('name')
+
+    # Recherche par nom de groupe
+    search_query = request.GET.get('q')
+    if search_query:
+        groups = groups.filter(name__icontains=search_query)
+
+    context = {
+        'page_title': 'Gestion des Groupes',
+        'title': 'Groupes',
+        'groups': groups,
+        'search_query': search_query,
+    }
+    return render(request, 'admin/user/group_index.html', context)

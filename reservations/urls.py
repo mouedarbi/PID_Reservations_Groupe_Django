@@ -20,7 +20,7 @@ from catalogue.views.admin_dashboard import (
     admin_dashboard, admin_show_index, admin_representation_index, 
     admin_artist_index, admin_type_index, admin_review_index, 
     admin_location_index, admin_locality_index, admin_reservation_index, 
-    admin_reservation_detail
+    admin_reservation_detail, admin_user_index, admin_group_index
 )
 
 
@@ -39,6 +39,8 @@ urlpatterns = [
     path('admin-dashboard/localities/', admin_locality_index, name='admin_locality_index'),
     path('admin-dashboard/reservations/', admin_reservation_index, name='admin_reservation_index'),
     path('admin-dashboard/reservations/<int:pk>/', admin_reservation_detail, name='admin_reservation_detail'),
+    path('admin-dashboard/users/', admin_user_index, name='admin_user_index'),
+    path('admin-dashboard/groups/', admin_group_index, name='admin_group_index'),
 
     path('accounts/', include('accounts.urls')), # All accounts/auth related URLs will be handled here
     
