@@ -245,3 +245,28 @@ def admin_location_index(request):
         'search_query': search_query,
     }
     return render(request, 'admin/location/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_locality_index(request):
+    """
+    Vue pour lister les localités dans le dashboard admin personnalisé.
+    """
+    from catalogue.models.locality import Locality
+    localities = Locality.objects.all().order_by('postal_code')
+
+    # Recherche simple par code postal ou nom de localité
+    search_query = request.GET.get('q')
+    if search_query:
+        from django.db.models import Q
+        localities = localities.filter(
+            Q(postal_code__icontains=search_query) | 
+            Q(locality__icontains=search_query)
+        )
+
+    context = {
+        'page_title': 'Gestion des Localités',
+        'title': 'Localités',
+        'localities': localities,
+        'search_query': search_query,
+    }
+    return render(request, 'admin/locality/index.html', context)
