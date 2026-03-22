@@ -401,7 +401,7 @@ def admin_show_detail(request, pk):
     Vue pour afficher les détails d'un spectacle et gérer ses prix.
     """
     from django.shortcuts import get_object_or_404, redirect
-    from .models import ShowPrice
+    from catalogue.models import ShowPrice
     
     show = get_object_or_404(Show.objects.select_related('location'), pk=pk)
 
