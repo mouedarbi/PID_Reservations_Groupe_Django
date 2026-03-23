@@ -21,7 +21,8 @@ from catalogue.views.admin_dashboard import (
     admin_artist_index, admin_type_index, admin_review_index, 
     admin_location_index, admin_locality_index, admin_reservation_index, 
     admin_reservation_detail, admin_user_index, admin_group_index,
-    admin_price_index, admin_show_detail
+    admin_price_index, admin_show_detail, admin_artist_create, admin_artist_edit,
+    admin_artist_detail
 )
 
 
@@ -35,6 +36,9 @@ urlpatterns = [
     path('admin-dashboard/shows/<int:pk>/', admin_show_detail, name='admin_show_detail'),
     path('admin-dashboard/representations/', admin_representation_index, name='admin_representation_index'),
     path('admin-dashboard/artists/', admin_artist_index, name='admin_artist_index'),
+    path('admin-dashboard/artists/<int:pk>/', admin_artist_detail, name='admin_artist_detail'),
+    path('admin-dashboard/artists/create/', admin_artist_create, name='admin_artist_create'),
+    path('admin-dashboard/artists/<int:pk>/edit/', admin_artist_edit, name='admin_artist_edit'),
     path('admin-dashboard/types/', admin_type_index, name='admin_type_index'),
     path('admin-dashboard/reviews/', admin_review_index, name='admin_review_index'),
     path('admin-dashboard/locations/', admin_location_index, name='admin_location_index'),

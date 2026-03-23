@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
 from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price
+from catalogue.forms.ArtistForm import ArtistForm
 from django.utils import timezone
 import datetime
 
@@ -436,3 +437,64 @@ def admin_show_detail(request, pk):
         'available_prices': available_prices,
     }
     return render(request, 'admin/show/detail.html', context)
+
+@user_passes_test(is_admin)
+def admin_artist_detail(request, pk):
+    """
+    View to display artist details in the custom admin dashboard.
+    """
+    artist = get_object_or_404(Artist, pk=pk)
+    
+    # Récupérer les types associés à cet artiste via ArtistType
+    artist_types = artist.a_artistTypes.all().select_related('type')
+    
+    context = {
+        'page_title': f'Détails Artiste : {artist.firstname} {artist.lastname}',
+        'title': f'{artist.firstname} {artist.lastname}',
+        'artist': artist,
+        'artist_types': artist_types,
+    }
+    return render(request, 'admin/artist/detail.html', context)
+
+@user_passes_test(is_admin)
+def admin_artist_create(request):
+    """
+    View to create a new artist in the custom admin dashboard.
+    """
+    if request.method == 'POST':
+        form = ArtistForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_artist_index')
+    else:
+        form = ArtistForm()
+
+    context = {
+        'page_title': 'Ajouter un Artiste',
+        'title': 'Ajouter un Artiste',
+        'form': form,
+    }
+    return render(request, 'admin/artist/create.html', context)
+
+@user_passes_test(is_admin)
+def admin_artist_edit(request, pk):
+    """
+    View to edit an existing artist in the custom admin dashboard.
+    """
+    artist = get_object_or_404(Artist, pk=pk)
+    
+    if request.method == 'POST':
+        form = ArtistForm(request.POST, instance=artist)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_artist_index')
+    else:
+        form = ArtistForm(instance=artist)
+
+    context = {
+        'page_title': f'Modifier Artiste : {artist.firstname} {artist.lastname}',
+        'title': 'Modifier l\'Artiste',
+        'artist': artist,
+        'form': form,
+    }
+    return render(request, 'admin/artist/edit.html', context)
