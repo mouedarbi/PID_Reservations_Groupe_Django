@@ -26,10 +26,10 @@
         </div>
         
         <div class="flex gap-2">
-            <button class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
+            <a href="{% url 'admin_show_edit' show.id %}" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
                 <i class="ph ph-pencil-simple"></i>
                 <span class="hidden sm:inline">Modifier</span>
-            </button>
+            </a>
         </div>
     </div>
 

@@ -22,7 +22,7 @@ from catalogue.views.admin_dashboard import (
     admin_location_index, admin_locality_index, admin_reservation_index, 
     admin_reservation_detail, admin_user_index, admin_group_index,
     admin_price_index, admin_show_detail, admin_artist_create, admin_artist_edit,
-    admin_artist_detail
+    admin_artist_detail, admin_show_create, admin_show_edit
 )
 
 
@@ -33,7 +33,9 @@ urlpatterns = [
     # Custom Admin Dashboard
     path('admin-dashboard/', admin_dashboard, name='admin_dashboard'),
     path('admin-dashboard/shows/', admin_show_index, name='admin_show_index'),
+    path('admin-dashboard/shows/create/', admin_show_create, name='admin_show_create'),
     path('admin-dashboard/shows/<int:pk>/', admin_show_detail, name='admin_show_detail'),
+    path('admin-dashboard/shows/<int:pk>/edit/', admin_show_edit, name='admin_show_edit'),
     path('admin-dashboard/representations/', admin_representation_index, name='admin_representation_index'),
     path('admin-dashboard/artists/', admin_artist_index, name='admin_artist_index'),
     path('admin-dashboard/artists/<int:pk>/', admin_artist_detail, name='admin_artist_detail'),

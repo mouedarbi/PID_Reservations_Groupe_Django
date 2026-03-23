@@ -4,6 +4,7 @@ from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
 from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price
 from catalogue.forms.ArtistForm import ArtistForm
+from catalogue.forms.ShowForm import ShowForm
 from django.utils import timezone
 import datetime
 
@@ -498,3 +499,46 @@ def admin_artist_edit(request, pk):
         'form': form,
     }
     return render(request, 'admin/artist/edit.html', context)
+
+@user_passes_test(is_admin)
+def admin_show_create(request):
+    """
+    View to create a new show in the custom admin dashboard.
+    """
+    if request.method == 'POST':
+        form = ShowForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_show_index')
+    else:
+        form = ShowForm()
+
+    context = {
+        'page_title': 'Ajouter un Spectacle',
+        'title': 'Ajouter un Spectacle',
+        'form': form,
+    }
+    return render(request, 'admin/show/create.html', context)
+
+@user_passes_test(is_admin)
+def admin_show_edit(request, pk):
+    """
+    View to edit an existing show in the custom admin dashboard.
+    """
+    show = get_object_or_404(Show, pk=pk)
+    
+    if request.method == 'POST':
+        form = ShowForm(request.POST, instance=show)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_show_index')
+    else:
+        form = ShowForm(instance=show)
+
+    context = {
+        'page_title': f'Modifier Spectacle : {show.title}',
+        'title': 'Modifier le Spectacle',
+        'show': show,
+        'form': form,
+    }
+    return render(request, 'admin/show/edit.html', context)
