@@ -1,6 +1,9 @@
 import requests
 import json
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from catalogue.models.location import Location
+from catalogue.models.representation import Representation
+from django.utils import timezone
 
 def home(request):
     """
@@ -84,4 +87,32 @@ def location_list(request):
         'page_title': 'Nos Lieux de Spectacles',
     }
     return render(request, 'location_list.html', context)
+
+def location_detail(request, pk):
+    """
+    View for displaying details of a single location and its next representation.
+    """
+    location = get_object_or_404(Location, pk=pk)
+    
+    # Get the next representation for this location
+    next_representation = Representation.objects.filter(
+        location=location,
+        schedule__gte=timezone.now()
+    ).order_by('schedule').first()
+    
+    context = {
+        'location': location,
+        'next_representation': next_representation,
+        'page_title': location.designation or location.slug,
+    }
+    return render(request, 'location_detail.html', context)
+
+def about(request):
+    """
+    View for the about page.
+    """
+    context = {
+        'page_title': 'À propos de ThéâtrePlus',
+    }
+    return render(request, 'about.html', context)
 

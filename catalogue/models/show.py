@@ -47,3 +47,12 @@ class Show(models.Model):
     def natural_key(self):
         return (self.slug, self.created_in)
 
+    @property
+    def price(self):
+        """
+        Return the minimum price among all associated prices for this show.
+        """
+        if self.prices.exists():
+            return min(p.price for p in self.prices.all())
+        return None
+
