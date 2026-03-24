@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'admin/css/admin-custom.css' %}">
     
     <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     
@@ -50,7 +51,7 @@
                                 </button>
                                 <ul class="sub-nav mt-1 ml-6 max-h-0 space-y-1 overflow-hidden transition-all duration-300">
                                     <li>
-                                        <a href="{% url 'admin:index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                        <a href="{% url 'admin_dashboard' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
                                             <i class="ph ph-house text-2xl"></i>
                                             <span>Accueil</span>
                                         </a>
@@ -66,13 +67,13 @@
                                 </button>
                                 <ul class="sub-nav mt-1 ml-6 max-h-0 space-y-1 overflow-hidden transition-all duration-300">
                                     <li>
-                                        <a href="{% url 'admin:catalogue_show_changelist' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                        <a href="{% url 'admin_show_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
                                             <i class="ph ph-calendar-dots text-2xl"></i>
                                             <span>Spectacles</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'admin:catalogue_representation_changelist' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                        <a href="{% url 'admin_representation_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
                                             <i class="ph ph-calendar-check text-2xl"></i>
                                             <span>Représentations</span>
                                         </a>
@@ -88,15 +89,9 @@
                                 </button>
                                 <ul class="sub-nav mt-1 ml-6 max-h-0 space-y-1 overflow-hidden transition-all duration-300">
                                     <li>
-                                        <a href="{% url 'admin:catalogue_reservation_changelist' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                        <a href="{% url 'admin_reservation_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
                                             <i class="ph ph-shopping-cart text-2xl"></i>
                                             <span>Réservations</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'admin:catalogue_representationreservation_changelist' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
-                                            <i class="ph ph-ticket text-2xl"></i>
-                                            <span>Détails des réservations</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -110,13 +105,13 @@
                                 </button>
                                 <ul class="sub-nav mt-1 ml-6 max-h-0 space-y-1 overflow-hidden transition-all duration-300">
                                     <li>
-                                        <a href="{% url 'admin:auth_user_changelist' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                        <a href="{% url 'admin_user_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
                                             <i class="ph ph-user text-2xl"></i>
                                             <span>Utilisateurs</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'admin:auth_group_changelist' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                        <a href="{% url 'admin_group_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
                                             <i class="ph ph-users-three text-2xl"></i>
                                             <span>Groupes</span>
                                         </a>
@@ -132,19 +127,19 @@
                                 </button>
                                 <ul class="sub-nav mt-1 ml-6 max-h-0 space-y-1 overflow-hidden transition-all duration-300">
                                     <li>
-                                        <a href="{% url 'admin:catalogue_artist_changelist' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                        <a href="{% url 'admin_artist_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
                                             <i class="ph ph-microphone-stage text-2xl"></i>
                                             <span>Artistes</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'admin:catalogue_type_changelist' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                        <a href="{% url 'admin_type_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
                                             <i class="ph ph-music-note text-2xl"></i>
                                             <span>Types</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'admin:catalogue_review_changelist' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                        <a href="{% url 'admin_review_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
                                             <i class="ph ph-chat-centered-dots text-2xl"></i>
                                             <span>Avis</span>
                                         </a>
@@ -160,13 +155,13 @@
                                 </button>
                                 <ul class="sub-nav mt-1 ml-6 max-h-0 space-y-1 overflow-hidden transition-all duration-300">
                                     <li>
-                                        <a href="{% url 'admin:catalogue_location_changelist' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                        <a href="{% url 'admin_location_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
                                             <i class="ph ph-map-pin-area text-2xl"></i>
                                             <span>Lieux</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'admin:catalogue_locality_changelist' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                        <a href="{% url 'admin_locality_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
                                             <i class="ph ph-map-trifold text-2xl"></i>
                                             <span>Localités</span>
                                         </a>
@@ -182,7 +177,7 @@
                                 </button>
                                 <ul class="sub-nav mt-1 ml-6 max-h-0 space-y-1 overflow-hidden transition-all duration-300">
                                     <li>
-                                        <a href="{% url 'admin:catalogue_price_changelist' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                        <a href="{% url 'admin_price_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
                                             <i class="ph ph-currency-circle-dollar text-2xl"></i>
                                             <span>Prix</span>
                                         </a>

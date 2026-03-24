@@ -16,13 +16,35 @@ Including another URLconf
 from django.views.generic import RedirectView
 from django.contrib import admin
 from django.urls import include, path
-from catalogue.views.admin_dashboard import admin_dashboard
+from catalogue.views.admin_dashboard import (
+    admin_dashboard, admin_show_index, admin_representation_index, 
+    admin_artist_index, admin_type_index, admin_review_index, 
+    admin_location_index, admin_locality_index, admin_reservation_index, 
+    admin_reservation_detail, admin_user_index, admin_group_index,
+    admin_price_index, admin_show_detail
+)
 
 
 urlpatterns = [
     #path('', RedirectView.as_view(url='/artist/', permanent=False)),
     path('', include('frontend.urls')), # Added for frontend app
+
+    # Custom Admin Dashboard
     path('admin-dashboard/', admin_dashboard, name='admin_dashboard'),
+    path('admin-dashboard/shows/', admin_show_index, name='admin_show_index'),
+    path('admin-dashboard/shows/<int:pk>/', admin_show_detail, name='admin_show_detail'),
+    path('admin-dashboard/representations/', admin_representation_index, name='admin_representation_index'),
+    path('admin-dashboard/artists/', admin_artist_index, name='admin_artist_index'),
+    path('admin-dashboard/types/', admin_type_index, name='admin_type_index'),
+    path('admin-dashboard/reviews/', admin_review_index, name='admin_review_index'),
+    path('admin-dashboard/locations/', admin_location_index, name='admin_location_index'),
+    path('admin-dashboard/localities/', admin_locality_index, name='admin_locality_index'),
+    path('admin-dashboard/reservations/', admin_reservation_index, name='admin_reservation_index'),
+    path('admin-dashboard/reservations/<int:pk>/', admin_reservation_detail, name='admin_reservation_detail'),
+    path('admin-dashboard/users/', admin_user_index, name='admin_user_index'),
+    path('admin-dashboard/groups/', admin_group_index, name='admin_group_index'),
+    path('admin-dashboard/prices/', admin_price_index, name='admin_price_index'),
+
     path('accounts/', include('accounts.urls')), # All accounts/auth related URLs will be handled here
     
     path('catalogue/', include('catalogue.urls')),

@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .models import (
     Artist, ArtistType, ArtistTypeShow, Locality, Location, 
-    Price, Representation, Reservation, RepresentationReservation, Review, Show, Type, UserMeta
+    Price, Representation, Reservation, RepresentationReservation, Review, Show, Type, UserMeta, ShowPrice
 )
 
 # Register your models here.
@@ -19,6 +19,7 @@ admin.site.register(RepresentationReservation)
 admin.site.register(Reservation)
 admin.site.register(Review)
 admin.site.register(Show)
+admin.site.register(ShowPrice)
 admin.site.register(Type)
 
 # UserMeta registration as inline with User
