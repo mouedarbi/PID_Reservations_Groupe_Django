@@ -107,3 +107,12 @@ def location_detail(request, pk):
     }
     return render(request, 'location_detail.html', context)
 
+def about(request):
+    """
+    View for the about page.
+    """
+    context = {
+        'page_title': 'À propos de ThéâtrePlus',
+    }
+    return render(request, 'about.html', context)
+

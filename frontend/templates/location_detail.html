@@ -4,13 +4,13 @@
 {% block title %}{{ location.designation|default:location.slug|capfirst }}{% endblock %}
 
 {% block content %}
-    <!-- Espacement pour compenser la navbar fixée -->
-    <section class="location-hero" style="margin-top: 100px; padding: 60px 0 40px; background: var(--bg-light, #f8f9fa); text-align: center; border-bottom: 1px solid var(--border-color, #e9ecef);">
-        <div class="container">
-            <h1 style="font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--secondary, #1d3557); margin-bottom: 10px;">
-                {{ location.designation|default:location.slug|capfirst }}
-            </h1>
-            <p style="color: var(--text-secondary, #6c757d); font-size: 1.1rem;">Détails et informations pratiques du lieu</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>{{ location.designation|default:location.slug|capfirst }}</h1>
+                <p>Détails et informations pratiques du lieu</p>
+            </div>
         </div>
     </section>
 
