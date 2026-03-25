@@ -18,7 +18,7 @@
             <p class="text-small mt-1">Gérez les lieux où se déroulent vos spectacles.</p>
         </div>
         <div>
-            <a href="#" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
+            <a href="{% url 'admin_location_create' %}" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
                 <i class="ph ph-plus"></i>
                 <span>Ajouter un lieu</span>
             </a>
@@ -86,13 +86,13 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <a href="{% url 'catalogue:location-show' loc.id %}" class="text-blue-600 hover:text-blue-800 transition" title="Voir">
+                                <a href="{% url 'admin_location_detail' loc.id %}" class="text-blue-600 hover:text-blue-800 transition" title="Voir">
                                     <i class="ph ph-eye text-xl"></i>
                                 </a>
-                                <a href="#" class="text-amber-600 hover:text-amber-800 transition" title="Modifier">
+                                <a href="{% url 'admin_location_edit' loc.id %}" class="text-amber-600 hover:text-amber-800 transition" title="Modifier">
                                     <i class="ph ph-pencil-simple text-xl"></i>
                                 </a>
-                                <a href="#" class="text-red-600 hover:text-red-800 transition" title="Supprimer">
+                                <a href="{% url 'admin_generic_delete' 'location' loc.id %}" class="text-red-600 hover:text-red-800 transition" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce lieu ?');">
                                     <i class="ph ph-trash text-xl"></i>
                                 </a>
                             </div>
