@@ -2,9 +2,18 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
-from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price
+from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality
 from catalogue.forms.ArtistForm import ArtistForm
 from catalogue.forms.ShowForm import ShowForm
+from catalogue.forms.LocationForm import LocationForm
+from catalogue.forms.LocalityForm import LocalityForm
+from catalogue.forms.PriceForm import PriceForm
+from catalogue.forms.TypeForm import TypeForm
+from catalogue.forms.ReviewForm import ReviewForm
+from catalogue.forms.RepresentationForm import RepresentationForm
+from django.contrib.auth.models import Group
+from accounts.forms.UserUpdateForm import UserUpdateForm
+from accounts.forms.UserSignUpForm import UserSignUpForm
 from django.utils import timezone
 import datetime
 
@@ -542,3 +551,287 @@ def admin_show_edit(request, pk):
         'form': form,
     }
     return render(request, 'admin/show/edit.html', context)
+
+# --- Locations CRUD ---
+
+@user_passes_test(is_admin)
+def admin_location_detail(request, pk):
+    location = get_object_or_404(Location, pk=pk)
+    context = {
+        'page_title': f'Détails Lieu : {location.designation}',
+        'title': location.designation,
+        'location': location,
+    }
+    return render(request, 'admin/location/detail.html', context)
+
+@user_passes_test(is_admin)
+def admin_location_create(request):
+    if request.method == 'POST':
+        form = LocationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_location_index')
+    else:
+        form = LocationForm()
+    context = {
+        'page_title': 'Ajouter un Lieu',
+        'title': 'Ajouter un Lieu',
+        'form': form,
+    }
+    return render(request, 'admin/location/create.html', context)
+
+@user_passes_test(is_admin)
+def admin_location_edit(request, pk):
+    location = get_object_or_404(Location, pk=pk)
+    if request.method == 'POST':
+        form = LocationForm(request.POST, instance=location)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_location_index')
+    else:
+        form = LocationForm(instance=location)
+    context = {
+        'page_title': f'Modifier Lieu : {location.designation}',
+        'title': 'Modifier le Lieu',
+        'location': location,
+        'form': form,
+    }
+    return render(request, 'admin/location/edit.html', context)
+
+# --- Localities CRUD ---
+
+@user_passes_test(is_admin)
+def admin_locality_create(request):
+    if request.method == 'POST':
+        form = LocalityForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_locality_index')
+    else:
+        form = LocalityForm()
+    context = {
+        'page_title': 'Ajouter une Localité',
+        'title': 'Ajouter une Localité',
+        'form': form,
+    }
+    return render(request, 'admin/locality/create.html', context)
+
+@user_passes_test(is_admin)
+def admin_locality_edit(request, pk):
+    locality = get_object_or_404(Locality, pk=pk)
+    if request.method == 'POST':
+        form = LocalityForm(request.POST, instance=locality)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_locality_index')
+    else:
+        form = LocalityForm(instance=locality)
+    context = {
+        'page_title': f'Modifier Localité : {locality.locality}',
+        'title': 'Modifier la Localité',
+        'locality': locality,
+        'form': form,
+    }
+    return render(request, 'admin/locality/edit.html', context)
+
+# --- Prices CRUD ---
+
+@user_passes_test(is_admin)
+def admin_price_create(request):
+    if request.method == 'POST':
+        form = PriceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_price_index')
+    else:
+        form = PriceForm()
+    context = {
+        'page_title': 'Ajouter un Prix',
+        'title': 'Ajouter un Prix',
+        'form': form,
+    }
+    return render(request, 'admin/price/create.html', context)
+
+@user_passes_test(is_admin)
+def admin_price_edit(request, pk):
+    price = get_object_or_404(Price, pk=pk)
+    if request.method == 'POST':
+        form = PriceForm(request.POST, instance=price)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_price_index')
+    else:
+        form = PriceForm(instance=price)
+    context = {
+        'page_title': f'Modifier Prix : {price.type}',
+        'title': 'Modifier le Prix',
+        'price': price,
+        'form': form,
+    }
+    return render(request, 'admin/price/edit.html', context)
+
+# --- Types CRUD ---
+
+@user_passes_test(is_admin)
+def admin_type_create(request):
+    if request.method == 'POST':
+        form = TypeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_type_index')
+    else:
+        form = TypeForm()
+    context = {
+        'page_title': 'Ajouter un Type',
+        'title': 'Ajouter un Type',
+        'form': form,
+    }
+    return render(request, 'admin/type/create.html', context)
+
+@user_passes_test(is_admin)
+def admin_type_edit(request, pk):
+    type_obj = get_object_or_404(Type, pk=pk)
+    if request.method == 'POST':
+        form = TypeForm(request.POST, instance=type_obj)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_type_index')
+    else:
+        form = TypeForm(instance=type_obj)
+    context = {
+        'page_title': f'Modifier Type : {type_obj.type}',
+        'title': 'Modifier le Type',
+        'type': type_obj,
+        'form': form,
+    }
+    return render(request, 'admin/type/edit.html', context)
+
+# --- Reviews CRUD ---
+
+@user_passes_test(is_admin)
+def admin_review_edit(request, pk):
+    review = get_object_or_404(Review, pk=pk)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_review_index')
+    else:
+        form = ReviewForm(instance=review)
+    context = {
+        'page_title': f'Modifier Avis : {review.id}',
+        'title': 'Modifier l\'Avis',
+        'review': review,
+        'form': form,
+    }
+    return render(request, 'admin/review/edit.html', context)
+
+# --- Representations CRUD ---
+
+@user_passes_test(is_admin)
+def admin_representation_create(request):
+    if request.method == 'POST':
+        form = RepresentationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_representation_index')
+    else:
+        form = RepresentationForm()
+    context = {
+        'page_title': 'Ajouter une Représentation',
+        'title': 'Ajouter une Représentation',
+        'form': form,
+    }
+    return render(request, 'admin/representation/create.html', context)
+
+@user_passes_test(is_admin)
+def admin_representation_edit(request, pk):
+    representation = get_object_or_404(Representation, pk=pk)
+    if request.method == 'POST':
+        form = RepresentationForm(request.POST, instance=representation)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_representation_index')
+    else:
+        form = RepresentationForm(instance=representation)
+    context = {
+        'page_title': f'Modifier Représentation : {representation.id}',
+        'title': 'Modifier la Représentation',
+        'representation': representation,
+        'form': form,
+    }
+    return render(request, 'admin/representation/edit.html', context)
+
+# --- Users & Groups CRUD ---
+
+@user_passes_test(is_admin)
+def admin_user_create(request):
+    if request.method == 'POST':
+        form = UserSignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_user_index')
+    else:
+        form = UserSignUpForm()
+    context = {
+        'page_title': 'Ajouter un Utilisateur',
+        'title': 'Ajouter un Utilisateur',
+        'form': form,
+    }
+    return render(request, 'admin/user/create.html', context)
+
+@user_passes_test(is_admin)
+def admin_user_edit(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_user_index')
+    else:
+        form = UserUpdateForm(instance=user)
+    context = {
+        'page_title': f'Modifier Utilisateur : {user.username}',
+        'title': 'Modifier l\'Utilisateur',
+        'user_obj': user,
+        'form': form,
+    }
+    return render(request, 'admin/user/edit.html', context)
+
+# --- Soft Delete Placeholder ---
+
+@user_passes_test(is_admin)
+def admin_generic_delete(request, model_name, pk):
+    """
+    Placeholder for soft delete.
+    In the future, this will set is_deleted=True instead of deleting.
+    """
+    model_map = {
+        'artist': Artist,
+        'show': Show,
+        'representation': Representation,
+        'location': Location,
+        'locality': Locality,
+        'price': Price,
+        'type': Type,
+        'review': Review,
+        'reservation': Reservation,
+        'user': User,
+        'group': Group,
+    }
+    
+    model = model_map.get(model_name)
+    if not model:
+        return redirect('admin_dashboard')
+        
+    obj = get_object_or_404(model, pk=pk)
+    
+    # Check if model has is_deleted field
+    if hasattr(obj, 'is_deleted'):
+        obj.is_deleted = True
+        obj.save()
+    else:
+        # For now, if no is_deleted field, just delete (to be changed when Soft Delete is implemented)
+        obj.delete()
+        
+    return redirect(f'admin_{model_name}_index')
