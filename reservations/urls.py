@@ -20,15 +20,15 @@ from catalogue.views.admin_dashboard import (
     admin_dashboard, admin_show_index, admin_representation_index, 
     admin_artist_index, admin_type_index, admin_review_index, 
     admin_location_index, admin_locality_index, admin_reservation_index, 
-    admin_reservation_detail, admin_user_index, admin_group_index,
+    admin_reservation_detail, admin_reservation_edit, admin_user_index, admin_group_index,
     admin_price_index, admin_show_detail, admin_artist_create, admin_artist_edit,
     admin_artist_detail, admin_show_create, admin_show_edit,
     admin_location_create, admin_location_edit, admin_location_detail,
-    admin_locality_create, admin_locality_edit,
-    admin_price_create, admin_price_edit,
-    admin_type_create, admin_type_edit,
+    admin_locality_create, admin_locality_edit, admin_locality_detail,
+    admin_price_create, admin_price_edit, admin_price_detail,
+    admin_type_create, admin_type_edit, admin_type_detail,
     admin_review_edit,
-    admin_representation_create, admin_representation_edit,
+    admin_representation_create, admin_representation_edit, admin_representation_detail,
     admin_user_create, admin_user_edit,
     admin_generic_delete
 )
@@ -50,6 +50,7 @@ urlpatterns = [
     # Representations
     path('admin-dashboard/representations/', admin_representation_index, name='admin_representation_index'),
     path('admin-dashboard/representations/create/', admin_representation_create, name='admin_representation_create'),
+    path('admin-dashboard/representations/<int:pk>/', admin_representation_detail, name='admin_representation_detail'),
     path('admin-dashboard/representations/<int:pk>/edit/', admin_representation_edit, name='admin_representation_edit'),
     
     # Artists
@@ -61,6 +62,7 @@ urlpatterns = [
     # Types
     path('admin-dashboard/types/', admin_type_index, name='admin_type_index'),
     path('admin-dashboard/types/create/', admin_type_create, name='admin_type_create'),
+    path('admin-dashboard/types/<int:pk>/', admin_type_detail, name='admin_type_detail'),
     path('admin-dashboard/types/<int:pk>/edit/', admin_type_edit, name='admin_type_edit'),
     
     # Reviews
@@ -76,11 +78,13 @@ urlpatterns = [
     # Localities
     path('admin-dashboard/localities/', admin_locality_index, name='admin_locality_index'),
     path('admin-dashboard/localities/create/', admin_locality_create, name='admin_locality_create'),
+    path('admin-dashboard/localities/<int:pk>/', admin_locality_detail, name='admin_locality_detail'),
     path('admin-dashboard/localities/<int:pk>/edit/', admin_locality_edit, name='admin_locality_edit'),
     
     # Reservations
     path('admin-dashboard/reservations/', admin_reservation_index, name='admin_reservation_index'),
     path('admin-dashboard/reservations/<int:pk>/', admin_reservation_detail, name='admin_reservation_detail'),
+    path('admin-dashboard/reservations/<int:pk>/edit/', admin_reservation_edit, name='admin_reservation_edit'),
     
     # Users & Groups
     path('admin-dashboard/users/', admin_user_index, name='admin_user_index'),
@@ -91,6 +95,7 @@ urlpatterns = [
     # Prices
     path('admin-dashboard/prices/', admin_price_index, name='admin_price_index'),
     path('admin-dashboard/prices/create/', admin_price_create, name='admin_price_create'),
+    path('admin-dashboard/prices/<int:pk>/', admin_price_detail, name='admin_price_detail'),
     path('admin-dashboard/prices/<int:pk>/edit/', admin_price_edit, name='admin_price_edit'),
 
     # Generic Delete (Soft Delete)

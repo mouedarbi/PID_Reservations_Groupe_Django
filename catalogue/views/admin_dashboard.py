@@ -11,6 +11,7 @@ from catalogue.forms.PriceForm import PriceForm
 from catalogue.forms.TypeForm import TypeForm
 from catalogue.forms.ReviewForm import ReviewForm
 from catalogue.forms.RepresentationForm import RepresentationForm
+from catalogue.forms.ReservationForm import ReservationForm
 from django.contrib.auth.models import Group
 from accounts.forms.UserUpdateForm import UserUpdateForm
 from accounts.forms.UserSignUpForm import UserSignUpForm
@@ -166,6 +167,24 @@ def admin_representation_index(request):
     return render(request, 'admin/representation/index.html', context)
 
 @user_passes_test(is_admin)
+def admin_representation_detail(request, pk):
+    """
+    Vue pour afficher les détails d'une représentation (incluant les réservations).
+    """
+    representation = get_object_or_404(Representation.objects.select_related('show', 'location'), pk=pk)
+    
+    # Récupérer les réservations pour cette représentation spécifique
+    reservations = RepresentationReservation.objects.filter(representation=representation).select_related('reservation__user', 'price')
+    
+    context = {
+        'page_title': f'Détails Représentation : {representation.show.title}',
+        'title': f'{representation.show.title} - {representation.schedule.strftime("%d/%m/%Y %H:%M")}',
+        'representation': representation,
+        'reservations': reservations,
+    }
+    return render(request, 'admin/representation/detail.html', context)
+
+@user_passes_test(is_admin)
 def admin_artist_index(request):
     """
     View to list artists in the custom admin dashboard.
@@ -208,6 +227,23 @@ def admin_type_index(request):
         'search_query': search_query,
     }
     return render(request, 'admin/type/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_type_detail(request, pk):
+    """
+    View to display type details (artists having this type).
+    """
+    type_obj = get_object_or_404(Type, pk=pk)
+    # Get artists having this type via ArtistType
+    artists = Artist.objects.filter(a_artistTypes__type=type_obj).distinct()
+    
+    context = {
+        'page_title': f'Détails Type : {type_obj.type}',
+        'title': type_obj.type,
+        'type': type_obj,
+        'artists': artists,
+    }
+    return render(request, 'admin/type/detail.html', context)
 
 @user_passes_test(is_admin)
 def admin_review_index(request):
@@ -281,6 +317,22 @@ def admin_locality_index(request):
         'search_query': search_query,
     }
     return render(request, 'admin/locality/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_locality_detail(request, pk):
+    """
+    Vue pour afficher les détails d'une localité (incluant les lieux associés).
+    """
+    locality = get_object_or_404(Locality, pk=pk)
+    locations = locality.locations.all()
+    
+    context = {
+        'page_title': f'Détails Localité : {locality.locality}',
+        'title': f'{locality.locality} ({locality.postal_code})',
+        'locality': locality,
+        'locations': locations,
+    }
+    return render(request, 'admin/locality/detail.html', context)
 
 @user_passes_test(is_admin)
 def admin_reservation_index(request):
@@ -405,6 +457,23 @@ def admin_price_index(request):
         'search_query': search_query,
     }
     return render(request, 'admin/price/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_price_detail(request, pk):
+    """
+    Vue pour afficher les détails d'un prix (spectacles associés).
+    """
+    price = get_object_or_404(Price, pk=pk)
+    # Get shows having this price via ShowPrice
+    shows = Show.objects.filter(showprice__price=price).distinct()
+    
+    context = {
+        'page_title': f'Détails Prix : {price.type}',
+        'title': f'{price.type} ({price.price} €)',
+        'price': price,
+        'shows': shows,
+    }
+    return render(request, 'admin/price/detail.html', context)
 
 @user_passes_test(is_admin)
 def admin_show_detail(request, pk):
@@ -761,6 +830,26 @@ def admin_representation_edit(request, pk):
         'form': form,
     }
     return render(request, 'admin/representation/edit.html', context)
+
+# --- Reservations CRUD ---
+
+@user_passes_test(is_admin)
+def admin_reservation_edit(request, pk):
+    reservation = get_object_or_404(Reservation, pk=pk)
+    if request.method == 'POST':
+        form = ReservationForm(request.POST, instance=reservation)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_reservation_index')
+    else:
+        form = ReservationForm(instance=reservation)
+    context = {
+        'page_title': f'Modifier Réservation : #{reservation.id}',
+        'title': 'Modifier la Réservation',
+        'reservation': reservation,
+        'form': form,
+    }
+    return render(request, 'admin/reservation/edit.html', context)
 
 # --- Users & Groups CRUD ---
 

@@ -84,12 +84,10 @@
                                 <a href="{% url 'catalogue:review-show' r.id %}" class="text-blue-600 hover:text-blue-800 transition" title="Voir">
                                     <i class="ph ph-eye text-xl"></i>
                                 </a>
-                                {% if not r.validated %}
-                                <a href="#" class="text-green-600 hover:text-green-800 transition" title="Valider">
-                                    <i class="ph ph-check-circle text-xl"></i>
+                                <a href="{% url 'admin_review_edit' r.id %}" class="text-amber-600 hover:text-amber-800 transition" title="Modifier">
+                                    <i class="ph ph-pencil-simple text-xl"></i>
                                 </a>
-                                {% endif %}
-                                <a href="#" class="text-red-600 hover:text-red-800 transition" title="Supprimer">
+                                <a href="{% url 'admin_generic_delete' 'review' r.id %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet avis ?')" class="text-red-600 hover:text-red-800 transition" title="Supprimer">
                                     <i class="ph ph-trash text-xl"></i>
                                 </a>
                             </div>

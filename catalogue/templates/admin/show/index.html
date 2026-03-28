@@ -113,7 +113,9 @@
                                 <a href="{% url 'admin_show_edit' show.id %}" class="text-amber-600 hover:text-amber-800 transition" title="Modifier">
                                     <i class="ph ph-pencil-simple text-xl"></i>
                                 </a>
-                                {# Suppression désactivée pour le moment #}
+                                <a href="{% url 'admin_generic_delete' 'show' show.id %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce spectacle ?')" class="text-red-600 hover:text-red-800 transition" title="Supprimer">
+                                    <i class="ph ph-trash text-xl"></i>
+                                </a>
                             </div>
                         </td>
                     </tr>
