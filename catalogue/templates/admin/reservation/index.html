@@ -101,6 +101,12 @@
                                 <a href="{% url 'admin_reservation_detail' res.id %}" class="text-blue-600 hover:text-blue-800 transition" title="Détails">
                                     <i class="ph ph-eye text-xl"></i>
                                 </a>
+                                <a href="{% url 'admin_reservation_edit' res.id %}" class="text-amber-600 hover:text-amber-800 transition" title="Modifier">
+                                    <i class="ph ph-pencil-simple text-xl"></i>
+                                </a>
+                                <a href="{% url 'admin_generic_delete' 'reservation' res.id %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?')" class="text-red-600 hover:text-red-800 transition" title="Supprimer">
+                                    <i class="ph ph-trash text-xl"></i>
+                                </a>
                             </div>
                         </td>
                     </tr>

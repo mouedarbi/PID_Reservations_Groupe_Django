@@ -18,12 +18,13 @@
             <p class="text-small mt-1">Gérez la liste de vos spectacles et leurs détails.</p>
         </div>
         <div>
-            <a href="{% url 'catalogue:show-create' %}" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
+            <a href="{% url 'admin_show_create' %}" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
                 <i class="ph ph-plus"></i>
                 <span>Ajouter un spectacle</span>
             </a>
         </div>
-    </div>
+        </div>
+
 
     <!-- Filters & Search -->
     <div class="border-border mb-6 rounded-lg border bg-bg p-4 dark:bg-[#040b1a]">
@@ -106,17 +107,17 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <a href="{% url 'admin_show_detail' show.id %}" class="text-blue-600 hover:text-blue-800 transition" title="Gérer les prix">
-                                    <i class="ph ph-currency-circle-dollar text-xl"></i>
+                                <a href="{% url 'admin_show_detail' show.id %}" class="text-blue-600 hover:text-blue-800 transition" title="Détails et Prix">
+                                    <i class="ph ph-eye text-xl"></i>
                                 </a>
-                                <a href="{% url 'catalogue:show-edit' show.id %}" class="text-amber-600 hover:text-amber-800 transition" title="Modifier">
+                                <a href="{% url 'admin_show_edit' show.id %}" class="text-amber-600 hover:text-amber-800 transition" title="Modifier">
                                     <i class="ph ph-pencil-simple text-xl"></i>
                                 </a>
-                                <a href="{% url 'catalogue:show-delete' show.id %}" class="text-red-600 hover:text-red-800 transition" title="Supprimer">
+                                <a href="{% url 'admin_generic_delete' 'show' show.id %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce spectacle ?')" class="text-red-600 hover:text-red-800 transition" title="Supprimer">
                                     <i class="ph ph-trash text-xl"></i>
                                 </a>
-                                </div>
-                                </td>
+                            </div>
+                        </td>
                     </tr>
                     {% empty %}
                     <tr>

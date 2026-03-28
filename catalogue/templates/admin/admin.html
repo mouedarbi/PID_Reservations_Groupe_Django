@@ -110,12 +110,6 @@
                                             <span>Utilisateurs</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="{% url 'admin_group_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
-                                            <i class="ph ph-users-three text-2xl"></i>
-                                            <span>Groupes</span>
-                                        </a>
-                                    </li>
                                 </ul>
                             </li>
                             
@@ -176,6 +170,12 @@
                                     <i class="ph ph-caret-down ml-auto transition-transform duration-300"></i>
                                 </button>
                                 <ul class="sub-nav mt-1 ml-6 max-h-0 space-y-1 overflow-hidden transition-all duration-300">
+                                    <li>
+                                        <a href="{% url 'admin_group_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                            <i class="ph ph-users-three text-2xl"></i>
+                                            <span>Groupes</span>
+                                        </a>
+                                    </li>
                                     <li>
                                         <a href="{% url 'admin_price_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
                                             <i class="ph ph-currency-circle-dollar text-2xl"></i>

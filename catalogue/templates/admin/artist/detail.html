@@ -1,0 +1,69 @@
+{% extends "admin/admin.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-main-style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-1.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-2.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
+            <p class="text-small mt-1">Fiche détaillée de l'artiste.</p>
+        </div>
+        <div class="flex gap-2">
+            <a href="{% url 'admin_artist_index' %}" class="flex items-center gap-2 rounded-lg bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300 transition dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700">
+                <i class="ph ph-arrow-left"></i>
+                <span>Retour</span>
+            </a>
+            <a href="{% url 'admin_artist_edit' artist.id %}" class="flex items-center gap-2 rounded-lg bg-amber-600 px-4 py-2 text-white hover:bg-amber-700 transition">
+                <i class="ph ph-pencil-simple"></i>
+                <span>Modifier</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Infos de base -->
+        <div class="md:col-span-1 space-y-6">
+            <div class="border-border overflow-hidden rounded-lg border bg-bg p-6 dark:bg-[#040b1a]">
+                <div class="flex flex-col items-center text-center">
+                    <div class="mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 text-3xl font-bold">
+                        {{ artist.firstname|slice:":1" }}{{ artist.lastname|slice:":1" }}
+                    </div>
+                    <h3 class="text-xl font-bold text-text">{{ artist.firstname }} {{ artist.lastname }}</h3>
+                    <p class="text-muted text-sm mt-1">ID: #{{ artist.id }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Détails et Relations -->
+        <div class="md:col-span-2 space-y-6">
+            <div class="border-border overflow-hidden rounded-lg border bg-bg dark:bg-[#040b1a]">
+                <div class="border-b border-border bg-gray-50/50 px-6 py-4 dark:bg-gray-900/50">
+                    <h4 class="font-bold text-text">Rôles / Types d'artiste</h4>
+                </div>
+                <div class="p-6">
+                    {% if artist_types %}
+                        <div class="flex flex-wrap gap-2">
+                            {% for at in artist_types %}
+                                <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+                                    {{ at.type.type }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted italic text-sm">Aucun rôle défini pour cet artiste.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
