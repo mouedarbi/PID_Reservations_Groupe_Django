@@ -15,6 +15,8 @@ from catalogue.forms.ReservationForm import ReservationForm
 from django.contrib.auth.models import Group
 from accounts.forms.UserUpdateForm import UserUpdateForm
 from accounts.forms.UserSignUpForm import UserSignUpForm
+from accounts.forms.AdminUserUpdateForm import AdminUserUpdateForm
+from accounts.forms.GroupForm import GroupForm
 from django.utils import timezone
 import datetime
 
@@ -873,12 +875,12 @@ def admin_user_create(request):
 def admin_user_edit(request, pk):
     user = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
-        form = UserUpdateForm(request.POST, instance=user)
+        form = AdminUserUpdateForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
             return redirect('admin_user_index')
     else:
-        form = UserUpdateForm(instance=user)
+        form = AdminUserUpdateForm(instance=user)
     context = {
         'page_title': f'Modifier Utilisateur : {user.username}',
         'title': 'Modifier l\'Utilisateur',
@@ -886,6 +888,83 @@ def admin_user_edit(request, pk):
         'form': form,
     }
     return render(request, 'admin/user/edit.html', context)
+
+@user_passes_test(is_admin)
+def admin_user_detail(request, pk):
+    """
+    Vue détaillée pour un utilisateur (réservations et avis).
+    """
+    user_obj = get_object_or_404(User, pk=pk)
+    
+    # Réservations de l'utilisateur
+    reservations = Reservation.objects.filter(user=user_obj).annotate(
+        total_amount=Sum(F('representation_reservations__price__price') * F('representation_reservations__quantity')),
+        total_tickets=Sum('representation_reservations__quantity')
+    ).order_by('-booking_date')
+    
+    # Avis de l'utilisateur
+    reviews = Review.objects.filter(user=user_obj).select_related('show').order_by('-created_at')
+    
+    context = {
+        'page_title': f'Détails Utilisateur : {user_obj.username}',
+        'title': user_obj.username,
+        'user_obj': user_obj,
+        'reservations': reservations,
+        'reviews': reviews,
+    }
+    return render(request, 'admin/user/detail.html', context)
+
+@user_passes_test(is_admin)
+def admin_group_create(request):
+    if request.method == 'POST':
+        form = GroupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_group_index')
+    else:
+        form = GroupForm()
+    context = {
+        'page_title': 'Ajouter un Groupe',
+        'title': 'Ajouter un Groupe',
+        'form': form,
+    }
+    return render(request, 'admin/user/group_create.html', context)
+
+@user_passes_test(is_admin)
+def admin_group_edit(request, pk):
+    group = get_object_or_404(Group, pk=pk)
+    if request.method == 'POST':
+        form = GroupForm(request.POST, instance=group)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_group_index')
+    else:
+        form = GroupForm(instance=group)
+    context = {
+        'page_title': f'Modifier Groupe : {group.name}',
+        'title': 'Modifier le Groupe',
+        'group': group,
+        'form': form,
+    }
+    return render(request, 'admin/user/group_edit.html', context)
+
+@user_passes_test(is_admin)
+def admin_group_detail(request, pk):
+    """
+    Vue détaillée pour un groupe (liste des membres et permissions).
+    """
+    group = get_object_or_404(Group, pk=pk)
+    users = group.user_set.all()
+    permissions = group.permissions.all().select_related('content_type').order_by('content_type__app_label', 'codename')
+    
+    context = {
+        'page_title': f'Détails Groupe : {group.name}',
+        'title': group.name,
+        'group': group,
+        'users': users,
+        'permissions': permissions,
+    }
+    return render(request, 'admin/user/group_detail.html', context)
 
 # --- Soft Delete Placeholder ---
 

@@ -29,7 +29,8 @@ from catalogue.views.admin_dashboard import (
     admin_type_create, admin_type_edit, admin_type_detail,
     admin_review_edit,
     admin_representation_create, admin_representation_edit, admin_representation_detail,
-    admin_user_create, admin_user_edit,
+    admin_user_create, admin_user_edit, admin_user_detail,
+    admin_group_index, admin_group_create, admin_group_edit, admin_group_detail,
     admin_generic_delete
 )
 
@@ -89,8 +90,12 @@ urlpatterns = [
     # Users & Groups
     path('admin-dashboard/users/', admin_user_index, name='admin_user_index'),
     path('admin-dashboard/users/create/', admin_user_create, name='admin_user_create'),
+    path('admin-dashboard/users/<int:pk>/', admin_user_detail, name='admin_user_detail'),
     path('admin-dashboard/users/<int:pk>/edit/', admin_user_edit, name='admin_user_edit'),
     path('admin-dashboard/groups/', admin_group_index, name='admin_group_index'),
+    path('admin-dashboard/groups/create/', admin_group_create, name='admin_group_create'),
+    path('admin-dashboard/groups/<int:pk>/', admin_group_detail, name='admin_group_detail'),
+    path('admin-dashboard/groups/<int:pk>/edit/', admin_group_edit, name='admin_group_edit'),
     
     # Prices
     path('admin-dashboard/prices/', admin_price_index, name='admin_price_index'),

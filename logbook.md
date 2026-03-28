@@ -98,3 +98,26 @@ Cette session a permis de finaliser l'implémentation des fonctionnalités CRUD 
 - Implémenter réellement le **Soft Delete** dans les modèles (ajout du champ `is_deleted` et filtrage automatique).
 - Améliorer la validation des formulaires côté client.
 - Ajouter des messages de succès (Django messages framework) après chaque action CRUD.
+
+## Roadmap : Module de Réservation & Paiement (Brainstorming du 28/03/2026)
+
+### 1. Architecture Applicative
+- **Création de l'application `cart` (ou `booking`)** : Isoler la logique de panier et de tunnel d'achat du reste du frontend.
+- **Gestion du Panier** : Utilisation des **Django Sessions** pour stocker temporairement les choix de l'utilisateur (Représentation, Type de Prix, Quantité) avant l'engagement en base de données.
+
+### 2. Évolution du Modèle de Données (Backend)
+- **Table `RepresentationReservation`** :
+    - Ajouter un champ `price_snapshot` (DecimalField) pour figer le prix au moment de l'achat et garantir l'intégrité comptable en cas de modification ultérieure des tarifs.
+- **Création du module `Payment`** :
+    - Nouveau modèle `PaymentTransaction` pour stocker les logs techniques (ID transaction, statut prestataire, réponse JSON complète).
+    - Permet de dissocier la "Réservation" (objet métier) de la "Tentative de paiement" (log technique).
+- **Statuts de Réservation** : Migration vers des constantes standardisées (`PENDING`, `PAID`, `CANCELED`, `FAILED`).
+
+### 3. Workflow Frontend (Tunnel d'achat)
+- **Étape 1 : Panier** -> Récapitulatif des séances choisies et calcul dynamique du total. Vérification des `available_seats` en temps réel.
+- **Étape 2 : Validation** -> Transformation du panier session en objet `Reservation` avec statut `PENDING`.
+- **Étape 3 : Paiement (Simulation)** -> Interface de test avec choix [Succès / Échec] pour valider le comportement du système avant l'intégration d'une API réelle (Stripe/PayPal).
+
+### 4. Admin Dashboard (Vues spécialisées)
+- **Gestion des Réservations** : Focus sur le manager (Qui a payé ? Qui faut-il relancer ?).
+- **Audit des Paiements** : Nouveau menu dans "Paramètres" pour consulter les logs techniques de `PaymentTransaction` (essentiel pour le support client).

@@ -49,6 +49,7 @@
                     <tr>
                         <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Utilisateur</th>
                         <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Email</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Groupes</th>
                         <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Statut</th>
                         <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Inscription</th>
                         <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Actions</th>
@@ -73,16 +74,22 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex flex-wrap gap-1">
-                                {% if user.is_superuser %}
-                                <span class="rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-medium text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">Superadmin</span>
-                                {% endif %}
-                                {% if user.is_staff %}
-                                <span class="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">Staff</span>
-                                {% endif %}
+                                {% for group in user.groups.all %}
+                                <span class="rounded bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-800 dark:bg-gray-800 dark:text-gray-300">{{ group.name }}</span>
+                                {% empty %}
+                                <span class="text-[10px] italic text-muted text-center w-full">Aucun groupe</span>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex flex-wrap gap-1">
                                 {% if user.is_active %}
                                 <span class="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-green-800 dark:bg-green-900/30 dark:text-green-300">Actif</span>
                                 {% else %}
                                 <span class="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-medium text-red-800 dark:bg-red-900/30 dark:text-red-300">Inactif</span>
+                                {% endif %}
+                                {% if user.is_staff %}
+                                <span class="rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-medium text-purple-800 dark:bg-purple-900/30 dark:text-purple-300" title="Accès administration">Admin</span>
                                 {% endif %}
                             </div>
                         </td>
@@ -91,6 +98,9 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
+                                <a href="{% url 'admin_user_detail' user.id %}" class="text-blue-600 hover:text-blue-800 transition" title="Voir profil">
+                                    <i class="ph ph-eye text-xl"></i>
+                                </a>
                                 <a href="{% url 'admin_user_edit' user.id %}" class="text-amber-600 hover:text-amber-800 transition" title="Modifier">
                                     <i class="ph ph-pencil-simple text-xl"></i>
                                 </a>
