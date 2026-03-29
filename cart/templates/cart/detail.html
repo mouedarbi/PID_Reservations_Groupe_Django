@@ -1,0 +1,66 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Votre Panier{% endblock %}
+
+{% block content %}
+<div class="cart-container" style="max-width: 900px; margin: 2rem auto; padding: 0 1rem;">
+    <h1>Votre Panier</h1>
+
+    {% if cart %}
+        <table class="cart-table" style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;">
+            <thead>
+                <tr style="border-bottom: 2px solid #333; text-align: left;">
+                    <th style="padding: 15px;">Spectacle / Séance</th>
+                    <th style="padding: 15px;">Tarif</th>
+                    <th style="padding: 15px;">Quantité</th>
+                    <th style="padding: 15px;">Prix Unitaire</th>
+                    <th style="padding: 15px;">Total</th>
+                    <th style="padding: 15px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 15px;">
+                        <strong>{{ item.representation.show.title }}</strong><br>
+                        <small>{{ item.representation.schedule|date:"d/m/Y H:i" }}</small>
+                    </td>
+                    <td style="padding: 15px;">{{ item.price_obj.type|title }}</td>
+                    <td style="padding: 15px; text-align: center;">{{ item.quantity }}</td>
+                    <td style="padding: 15px;">{{ item.price }} €</td>
+                    <td style="padding: 15px; font-weight: bold;">{{ item.total_price }} €</td>
+                    <td style="padding: 15px;">
+                        <a href="{% url 'cart:cart_remove' item.representation.id item.price_obj.id %}" style="color: #dc3545; text-decoration: none;">
+                            <i class="ph ph-trash"></i> Supprimer
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr style="background-color: #f8f9fa; font-size: 1.2rem;">
+                    <td colspan="4" style="padding: 15px; text-align: right; font-weight: bold;">TOTAL À PAYER :</td>
+                    <td colspan="2" style="padding: 15px; font-weight: bold; color: #28a745;">{{ cart.get_total_price }} €</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="cart-actions" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="{% url 'catalogue:show-index' %}" class="btn" style="padding: 10px 20px; border: 1px solid #007bff; color: #007bff; text-decoration: none; border-radius: 4px;">
+                Continuer mes achats
+            </a>
+            <a href="#" class="btn btn-success" style="padding: 12px 30px; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 1.1rem;">
+                Valider ma commande
+            </a>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 3rem; background-color: #f8f9fa; border-radius: 8px;">
+            <i class="ph ph-shopping-cart" style="font-size: 4rem; color: #ccc;"></i>
+            <p style="font-size: 1.2rem; margin-top: 1rem;">Votre panier est actuellement vide.</p>
+            <a href="{% url 'catalogue:show-index' %}" class="btn btn-primary" style="display: inline-block; margin-top: 1rem; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px;">
+                Voir les spectacles
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

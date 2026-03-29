@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     # ajout de rest_framework
     'rest_framework',
     "rest_framework.authtoken",
+    "cart",
 ]
 
 MIDDLEWARE = [
@@ -74,6 +75,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "cart.context_processors.cart",
             ],
         },
     },
@@ -143,6 +145,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Panier
+CART_SESSION_ID = 'cart'
 
 # REST Framework authentications & parmissions
 # https://www.django-rest-framework.org/api-guide/authentication/
