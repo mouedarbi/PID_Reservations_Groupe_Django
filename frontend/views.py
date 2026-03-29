@@ -60,6 +60,8 @@ def show_detail(request, pk):
         response = requests.get(api_url)
         response.raise_for_status()
         show_data = response.json()
+        print(f"DEBUG: Show data for ID {pk}: {list(show_data.keys())}")
+        print(f"DEBUG: Representations count: {len(show_data.get('representations', []))}")
     except requests.exceptions.RequestException as e:
         print(f"Error fetching show detail from API: {e}")
 
