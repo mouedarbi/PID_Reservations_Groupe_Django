@@ -1,9 +1,22 @@
-{% extends 'layouts/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<div class="booking-container" style="max-width: 800px; margin: 2rem auto; padding: 0 1rem;">
+<div class="booking-container" style="max-width: 800px; margin: 0 auto; padding: 140px 1rem 4rem;">
+    
+    <!-- Affichage des messages Flash -->
+    {% if messages %}
+    <div class="messages" style="margin-bottom: 2rem;">
+        {% for message in messages %}
+        <div style="padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem; background-color: {% if message.tags == 'success' %}#d4edda{% else %}#f8d7da{% endif %}; color: {% if message.tags == 'success' %}#155724{% else %}#721c24{% endif %}; border: 1px solid {% if message.tags == 'success' %}#c3e6cb{% else %}#f5c6cb{% endif %}; display: flex; justify-content: space-between; align-items: center;">
+            <span>{{ message }}</span>
+            <a href="{% url 'cart:cart_detail' %}" style="background: #155724; color: white; text-decoration: none; padding: 5px 15px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">VOIR LE PANIER</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <article>
         <header style="margin-bottom: 2rem; border-bottom: 2px solid #eee; padding-bottom: 1rem;">
             <h1 style="margin-bottom: 0.5rem;">{{ representation.show.title }}</h1>
@@ -48,7 +61,7 @@
                             </div>
                             
                             <div style="text-align: right; display: flex; align-items: center; gap: 1.5rem;">
-                                <span style="font-size: 1.2rem; font-weight: bold; color: #007bff;">{{ price.price }} €</span>
+                                <span style="font-size: 1.2rem; font-weight: bold; color: var(--primary, #e63946);">{{ price.price }} €</span>
                                 
                                 {% if representation.available_seats > 0 %}
                                 <form action="{% url 'cart:cart_add' representation.id %}" method="post" style="display: flex; align-items: center; gap: 10px;">
@@ -63,7 +76,7 @@
                                         {% endfor %}
                                         {% endwith %}
                                     </select>
-                                    <button type="submit" class="btn-add" style="background-color: #28a745; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: transform 0.1s;">
+                                    <button type="submit" class="btn-add" style="background-color: var(--secondary, #1d3557); color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s;">
                                         Réserver
                                     </button>
                                 </form>
@@ -86,10 +99,10 @@
         {% endif %}
 
         <nav style="margin-top: 3rem; display: flex; justify-content: space-between;">
-            <a href="{% url 'catalogue:show-show' representation.show.id %}" style="color: #666; text-decoration: none;">
+            <a href="{% url 'frontend:show_detail' representation.show.id %}" style="color: #666; text-decoration: none;">
                 <i class="ph ph-arrow-left"></i> Retour au spectacle
             </a>
-            <a href="{% url 'cart:cart_detail' %}" style="color: #007bff; text-decoration: none; font-weight: bold;">
+            <a href="{% url 'cart:cart_detail' %}" style="color: var(--primary, #e63946); text-decoration: none; font-weight: bold;">
                 Voir mon panier <i class="ph ph-shopping-cart"></i>
             </a>
         </nav>
@@ -99,7 +112,7 @@
 <style>
     @keyframes pulse {
         0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
+        50% { transform: scale(1.02); }
         100% { transform: scale(1); }
     }
     .price-item:hover {
@@ -107,11 +120,8 @@
         border-color: #ddd;
     }
     .btn-add:hover {
-        background-color: #218838 !important;
+        background-color: var(--primary, #e63946) !important;
         transform: translateY(-1px);
-    }
-    .btn-add:active {
-        transform: translateY(0);
     }
 </style>
 {% endblock %}
