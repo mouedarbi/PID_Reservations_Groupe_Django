@@ -30,7 +30,7 @@ class UserUpdateView(UserPassesTestMixin, UpdateView):
 
 class UserSignUpView(UserPassesTestMixin, CreateView):
     form_class = UserSignUpForm
-    success_url = reverse_lazy("login")
+    success_url = reverse_lazy("accounts:login")
     template_name = "registration/signup.html"
 
     def test_func(self):
