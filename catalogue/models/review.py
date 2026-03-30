@@ -6,7 +6,7 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.RESTRICT,
         null=False, related_name='user')
     show = models.ForeignKey(Show, on_delete=models.RESTRICT, 
-		null=False, related_name='show')
+		null=False, related_name='reviews')
     review = models.TextField()
     stars = models.PositiveSmallIntegerField()
     validated = models.BooleanField()

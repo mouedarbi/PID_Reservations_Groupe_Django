@@ -45,4 +45,7 @@ urlpatterns = [
     # Review
     path('review/', review.index, name='review-index'),
     path('review/<int:review_id>', review.show, name='review-show'),
+    path('review/create/', review.create, name='review-create'),
+    path('review/edit/<int:review_id>', review.edit, name='review-edit'),
+    path('review/delete/<int:review_id>', review.delete, name='review-delete'),
     ]
