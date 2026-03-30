@@ -110,6 +110,7 @@ urlpatterns = [
     
     path('catalogue/', include('catalogue.urls')),
     path('api/', include('api.urls')),
+    path('cart/', include('cart.urls', namespace='cart')),
     path('admin/', admin.site.urls),
 ]
 

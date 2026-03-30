@@ -63,7 +63,7 @@
 
                 <div class="show-actions mt-5">
                     {% if show.bookable %}
-                        <a href="#" class="btn-primary btn-lg">Réserver mes places</a>
+                        <a href="#seances" class="btn-primary btn-lg">Réserver mes places</a>
                     {% else %}
                         <button class="btn btn-secondary btn-lg" disabled>Complet</button>
                     {% endif %}
@@ -71,14 +71,52 @@
             </div>
         </div>
         
-        <!-- Section Représentations (si implémenté dans le futur) -->
-        <div class="representations-list mt-5">
+        <!-- Section Représentations -->
+        <div class="representations-list mt-5" id="seances">
             <h3>Prochaines représentations</h3>
-            <p>Consultez les dates disponibles pour ce spectacle.</p>
-            <!-- Ici on pourrait boucler sur les représentations si elles étaient incluses -->
-            <div class="alert alert-info">
-                Les dates des représentations seront bientôt disponibles.
-            </div>
+            {% if show.representations %}
+                <div class="rep-grid mt-4">
+                    {% for rep in show.representations %}
+                    <div class="rep-card">
+                        <div class="rep-info">
+                            <div class="rep-date">
+                                <i class="ph ph-calendar"></i> {{ rep.formatted_date }}
+                            </div>
+                            <div class="rep-location">
+                                <i class="ph ph-map-pin"></i> 
+                                {% if rep.location.designation %}
+                                    {{ rep.location.designation }}
+                                {% else %}
+                                    {{ show.location.designation }}
+                                {% endif %}
+                            </div>
+                            <div class="rep-seats">
+                                {% if rep.available_seats < 10 and rep.available_seats > 0 %}
+                                    <span style="color: #ff4d4d; font-weight: bold;">
+                                        <i class="ph ph-warning"></i> Dernières places : {{ rep.available_seats }} !
+                                    </span>
+                                {% elif rep.available_seats <= 0 %}
+                                    <span style="color: #666; font-weight: bold;">COMPLET</span>
+                                {% else %}
+                                    <i class="ph ph-users"></i> {{ rep.available_seats }} places disponibles
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="rep-action">
+                            {% if rep.available_seats > 0 %}
+                                <a href="{% url 'catalogue:representation-show' rep.id %}" class="btn-book">Réserver</a>
+                            {% else %}
+                                <button class="btn-book" style="background: #ccc; cursor: not-allowed;" disabled>Complet</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    Aucune représentation n'est prévue pour le moment.
+                </div>
+            {% endif %}
         </div>
 
         {% else %}
@@ -106,6 +144,31 @@
     .bg-primary { background: #007bff; color: white; }
     .bg-secondary { background: #6c757d; color: white; }
     .btn-lg { padding: 1rem 2.5rem; font-size: 1.2rem; }
+
+    .rep-grid { display: grid; gap: 1.5rem; }
+    .rep-card { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        padding: 1.5rem; 
+        background: #f8f9fa; 
+        border-radius: 10px; 
+        border: 1px solid #e9ecef;
+        transition: all 0.3s;
+    }
+    .rep-card:hover { border-color: #007bff; background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    .rep-date { font-weight: bold; font-size: 1.1rem; color: #333; margin-bottom: 0.3rem; }
+    .rep-location, .rep-seats { font-size: 0.95rem; color: #666; }
+    .btn-book { 
+        background: #28a745; 
+        color: white; 
+        padding: 0.8rem 2rem; 
+        border-radius: 5px; 
+        text-decoration: none; 
+        font-weight: bold;
+        transition: background 0.2s;
+    }
+    .btn-book:hover { background: #218838; }
     
     @media (max-width: 992px) {
         .show-detail-grid { grid-template-columns: 1fr; gap: 2rem; }

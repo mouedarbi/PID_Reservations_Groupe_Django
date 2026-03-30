@@ -23,26 +23,42 @@
     </div>
 
     <div class="max-w-2xl border-border overflow-hidden rounded-lg border bg-bg p-6 dark:bg-[#040b1a]">
+        {% if show %}
+            <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-800">
+                <p class="text-blue-800 dark:text-blue-300 text-sm">
+                    Ajout d'une séance pour : <strong>{{ show.title }}</strong><br>
+                    Lieu : <strong>{{ show.location.designation }}</strong>
+                </p>
+            </div>
+        {% endif %}
+
         <form method="POST" class="space-y-4">
             {% csrf_token %}
             
             {% for field in form %}
-            <div class="flex flex-col gap-1">
-                <label for="{{ field.id_for_label }}" class="text-text text-sm font-semibold">
-                    {{ field.label }}
-                </label>
-                {{ field }}
-                {% if field.errors %}
-                    {% for error in field.errors %}
-                        <p class="text-xs text-red-500">{{ error }}</p>
-                    {% endfor %}
+                {% if show and field.name == 'show' or show and field.name == 'location' %}
+                    <div style="display: none;">{{ field }}</div>
+                {% else %}
+                    <div class="flex flex-col gap-1">
+                        <label for="{{ field.id_for_label }}" class="text-text text-sm font-semibold">
+                            {{ field.label }}
+                        </label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <p class="text-[10px] text-muted">{{ field.help_text }}</p>
+                        {% endif %}
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <p class="text-xs text-red-500">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                 {% endif %}
-            </div>
             {% endfor %}
 
             <div class="pt-4">
                 <button type="submit" class="w-full rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700 transition">
-                    Enregistrer la représentation
+                    Enregistrer la séance
                 </button>
             </div>
         </form>

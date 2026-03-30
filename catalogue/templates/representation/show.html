@@ -1,32 +1,127 @@
-{% extends 'layouts/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<article>
-    <h1>Représentation du {{ rep_date }} à {{ rep_time }}</h1>
-    <p><strong>Spectacle:</strong> {{ representation.show.title }}</p>
-
-    <p><strong>Lieu:</strong>
-    {% if representation.location %}
-    {{ representation.location.designation }}
-    {% elif representation.show.location %}
-    {{ representation.show.location.designation }}
-    {% else %}
-    <em>à déterminer</em>
+<div class="booking-container" style="max-width: 800px; margin: 0 auto; padding: 140px 1rem 4rem;">
+    
+    <!-- Affichage des messages Flash -->
+    {% if messages %}
+    <div class="messages" style="margin-bottom: 2rem;">
+        {% for message in messages %}
+        <div style="padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem; background-color: {% if message.tags == 'success' %}#d4edda{% else %}#f8d7da{% endif %}; color: {% if message.tags == 'success' %}#155724{% else %}#721c24{% endif %}; border: 1px solid {% if message.tags == 'success' %}#c3e6cb{% else %}#f5c6cb{% endif %}; display: flex; justify-content: space-between; align-items: center;">
+            <span>{{ message }}</span>
+            <a href="{% url 'cart:cart_detail' %}" style="background: #155724; color: white; text-decoration: none; padding: 5px 15px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">VOIR LE PANIER</a>
+        </div>
+        {% endfor %}
+    </div>
     {% endif %}
-    </p>
-</article>
 
-{% if perms.catalogue.change_representation %}
-    <a href="{% url 'catalogue:representation-edit' representation.id %}" class="btn btn-warning">Modifier</a>
-{% endif %}
-{% if perms.catalogue.delete_representation %}
-    <form action="{% url 'catalogue:representation-delete' representation.id %}" method="post" style="display: inline;">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Supprimer</button>
-    </form>
-{% endif %}
+    <article>
+        <header style="margin-bottom: 2rem; border-bottom: 2px solid #eee; padding-bottom: 1rem;">
+            <h1 style="margin-bottom: 0.5rem;">{{ representation.show.title }}</h1>
+            <p style="font-size: 1.2rem; color: #555;">
+                <i class="ph ph-calendar"></i> {{ representation.schedule|date:"d F Y" }} à {{ representation.schedule|date:"H:i" }}
+            </p>
+            <p style="color: #777;">
+                <i class="ph ph-map-pin"></i> 
+                {% if representation.location %}
+                    {{ representation.location.designation }}
+                {% else %}
+                    {{ representation.show.location.designation }}
+                {% endif %}
+            </p>
+        </header>
 
-<nav><a href="{% url 'catalogue:representation-index' %}">Retour à l'index</a></nav>
+        <section class="booking-card" style="background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e1e1e1; overflow: hidden;">
+            <div style="padding: 1.5rem; background-color: #f8f9fa; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="margin: 0; font-size: 1.3rem;">Sélectionnez vos places</h2>
+                
+                {% if representation.available_seats <= 0 %}
+                    <span style="background-color: #dc3545; color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.8rem;">COMPLET</span>
+                {% elif representation.available_seats < 10 %}
+                    <span style="background-color: #ffc107; color: #000; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.8rem; animation: pulse 2s infinite;">
+                        DERNIÈRES PLACES : {{ representation.available_seats }}
+                    </span>
+                {% else %}
+                    <span style="color: #28a745; font-weight: bold; font-size: 0.9rem;">
+                        {{ representation.available_seats }} places disponibles
+                    </span>
+                {% endif %}
+            </div>
+
+            <div style="padding: 1.5rem;">
+                {% if representation.show.prices.all %}
+                    <div class="price-list" style="display: flex; flex-direction: column; gap: 1rem;">
+                        {% for price in representation.show.prices.all %}
+                        <div class="price-item" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border: 1px solid #f0f0f0; border-radius: 8px; transition: background 0.2s;">
+                            <div style="flex: 1;">
+                                <strong style="font-size: 1.1rem; display: block;">{{ price.type|title }}</strong>
+                                <small style="color: #666;">{{ price.description }}</small>
+                            </div>
+                            
+                            <div style="text-align: right; display: flex; align-items: center; gap: 1.5rem;">
+                                <span style="font-size: 1.2rem; font-weight: bold; color: var(--primary, #e63946);">{{ price.price }} €</span>
+                                
+                                {% if representation.available_seats > 0 %}
+                                <form action="{% url 'cart:cart_add' representation.id %}" method="post" style="display: flex; align-items: center; gap: 10px;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="price_id" value="{{ price.id }}">
+                                    <select name="quantity" style="padding: 8px; border-radius: 6px; border: 1px solid #ccc; background: white;">
+                                        {% with ''|center:10 as range %}
+                                        {% for _ in range %}
+                                            {% if forloop.counter <= representation.available_seats %}
+                                                <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% endwith %}
+                                    </select>
+                                    <button type="submit" class="btn-add" style="background-color: var(--secondary, #1d3557); color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s;">
+                                        Réserver
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p style="text-align: center; color: #666; padding: 2rem;">Aucun tarif n'est disponible pour ce spectacle.</p>
+                {% endif %}
+            </div>
+        </section>
+
+        {% if representation.available_seats < 10 and representation.available_seats > 0 %}
+        <div style="margin-top: 1rem; padding: 1rem; background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+            <i class="ph ph-warning-circle" style="font-size: 1.5rem;"></i>
+            <strong>Attention :</strong> Il ne reste que {{ representation.available_seats }} places pour cette séance. Ne tardez pas !
+        </div>
+        {% endif %}
+
+        <nav style="margin-top: 3rem; display: flex; justify-content: space-between;">
+            <a href="{% url 'frontend:show_detail' representation.show.id %}" style="color: #666; text-decoration: none;">
+                <i class="ph ph-arrow-left"></i> Retour au spectacle
+            </a>
+            <a href="{% url 'cart:cart_detail' %}" style="color: var(--primary, #e63946); text-decoration: none; font-weight: bold;">
+                Voir mon panier <i class="ph ph-shopping-cart"></i>
+            </a>
+        </nav>
+    </article>
+</div>
+
+<style>
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+    }
+    .price-item:hover {
+        background-color: #fcfcfc;
+        border-color: #ddd;
+    }
+    .btn-add:hover {
+        background-color: var(--primary, #e63946) !important;
+        transform: translateY(-1px);
+    }
+</style>
 {% endblock %}

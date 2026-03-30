@@ -1,9 +1,11 @@
 from rest_framework import serializers
 from catalogue.models import Show
 from catalogue.models.show_price import ShowPrice
+from api.serializers.representations import RepresentationSerializer
 
 class ShowSerializer(serializers.ModelSerializer):
     price = serializers.SerializerMethodField()
+    representations = RepresentationSerializer(many=True, read_only=True)
 
     class Meta:
         model = Show
