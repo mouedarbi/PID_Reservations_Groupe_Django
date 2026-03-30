@@ -1,11 +1,19 @@
 from rest_framework import serializers
-from catalogue.models import Show
+from catalogue.models import Show, Review
 from catalogue.models.show_price import ShowPrice
 from api.serializers.representations import RepresentationSerializer
+
+class ReviewSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = Review
+        fields = ['id', 'user_name', 'review', 'stars', 'validated', 'created_at']
 
 class ShowSerializer(serializers.ModelSerializer):
     price = serializers.SerializerMethodField()
     representations = RepresentationSerializer(many=True, read_only=True)
+    reviews = serializers.SerializerMethodField()
 
     class Meta:
         model = Show
@@ -24,3 +32,8 @@ class ShowSerializer(serializers.ModelSerializer):
             # Return the minimum price found
             return min(prices)
         return None # Or 0.0 if you prefer a default numeric value when no price is found
+
+    def get_reviews(self, obj):
+        # On ne retourne que les critiques validées pour le frontend
+        validated_reviews = obj.reviews.filter(validated=True)
+        return ReviewSerializer(validated_reviews, many=True).data

@@ -119,6 +119,56 @@
             {% endif %}
         </div>
 
+        <!-- Section Critiques & Avis -->
+        <div class="reviews-section mt-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3>Critiques & Avis</h3>
+                {% if user.is_authenticated %}
+                    {% if user.groups.all.0.name == 'PRESS_CRITIC' or user.is_superuser %}
+                        <a href="{% url 'catalogue:review-create' %}?show_id={{ show.id }}" class="btn-primary">Soumettre une critique</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            {% if show.reviews %}
+                <div class="reviews-list">
+                    {% for review in show.reviews %}
+                        <div class="review-card mb-3 p-3" style="background: #fdfdfd; border-left: 4px solid var(--primary-color, #ff4d4d); border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                            <div class="review-header d-flex justify-content-between">
+                                <strong>{{ review.user_name }}</strong>
+                                <div class="stars" style="color: #ffc107;">
+                                    {% for i in "12345" %}
+                                        <i class="ph-fill ph-star{% if forloop.counter > review.stars %}-none{% endif %}"></i>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <p class="review-text mt-2" style="font-style: italic;">"{{ review.review }}"</p>
+                            
+                            <div class="review-footer d-flex justify-content-between align-items-center mt-2">
+                                <small class="text-muted">{{ review.created_at|slice:":10" }}</small>
+                                
+                                <div class="review-actions">
+                                    {% if user.is_authenticated %}
+                                        {# Seul l'auteur peut éditer #}
+                                        {% if user.username == review.user_name %}
+                                            <a href="{% url 'catalogue:review-edit' review.id %}" class="btn-sm text-primary" title="Modifier"><i class="ph ph-note-pencil"></i></a>
+                                        {% endif %}
+                                        
+                                        {# L'auteur ou un modérateur peut supprimer #}
+                                        {% if user.username == review.user_name or user.is_superuser or user.groups.all.0.name == 'PRODUCER' or user.groups.all.0.name == 'ADMINISTRATOR' %}
+                                            <a href="{% url 'catalogue:review-delete' review.id %}" class="btn-sm text-danger ms-2" title="Supprimer"><i class="ph ph-trash"></i></a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted">Aucun avis pour le moment. Soyez le premier à partager votre critique !</p>
+            {% endif %}
+        </div>
+
         {% else %}
         <div class="alert alert-danger">
             <h2>Spectacle introuvable</h2>
