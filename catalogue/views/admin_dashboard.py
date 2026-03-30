@@ -272,6 +272,30 @@ def admin_review_index(request):
     return render(request, 'admin/review/index.html', context)
 
 @user_passes_test(is_admin)
+def admin_review_validate(request, pk):
+    """
+    Vue pour valider un avis.
+    """
+    review = get_object_or_404(Review, pk=pk)
+    review.validated = True
+    review.save()
+    from django.contrib import messages
+    messages.success(request, f"L'avis de {review.user.username} a été validé avec succès.")
+    return redirect('admin_review_index')
+
+@user_passes_test(is_admin)
+def admin_review_reject(request, pk):
+    """
+    Vue pour rejeter un avis (le dévalider sans le supprimer).
+    """
+    review = get_object_or_404(Review, pk=pk)
+    review.validated = False
+    review.save()
+    from django.contrib import messages
+    messages.info(request, f"L'avis de {review.user.username} a été mis en attente.")
+    return redirect('admin_review_index')
+
+@user_passes_test(is_admin)
 def admin_location_index(request):
     """
     View to list locations in the custom admin dashboard.

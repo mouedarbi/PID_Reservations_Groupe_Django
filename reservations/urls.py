@@ -27,7 +27,7 @@ from catalogue.views.admin_dashboard import (
     admin_locality_create, admin_locality_edit, admin_locality_detail,
     admin_price_create, admin_price_edit, admin_price_detail,
     admin_type_create, admin_type_edit, admin_type_detail,
-    admin_review_edit,
+    admin_review_edit, admin_review_validate, admin_review_reject,
     admin_representation_create, admin_representation_edit, admin_representation_detail,
     admin_user_create, admin_user_edit, admin_user_detail,
     admin_group_index, admin_group_create, admin_group_edit, admin_group_detail,
@@ -69,6 +69,8 @@ urlpatterns = [
     # Reviews
     path('admin-dashboard/reviews/', admin_review_index, name='admin_review_index'),
     path('admin-dashboard/reviews/<int:pk>/edit/', admin_review_edit, name='admin_review_edit'),
+    path('admin-dashboard/reviews/<int:pk>/validate/', admin_review_validate, name='admin_review_validate'),
+    path('admin-dashboard/reviews/<int:pk>/reject/', admin_review_reject, name='admin_review_reject'),
     
     # Locations
     path('admin-dashboard/locations/', admin_location_index, name='admin_location_index'),
