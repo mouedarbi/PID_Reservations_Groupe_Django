@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Confirmer la suppression - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="auth-section" style="padding: 100px 0; background: #f9fafb; min-height: 70vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6" style="max-width: 500px; margin: 0 auto;">
+                <div class="card text-center" style="background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #edf2f7;">
+                    <i class="ph ph-warning-circle" style="font-size: 4rem; color: #dc2626;"></i>
+                    <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-top: 1.5rem;">Supprimer cet avis ?</h2>
+                    <p class="text-muted mt-3">Cette action est irréversible. Êtes-vous sûr de vouloir supprimer votre critique pour le spectacle <strong>{{ review.show.title }}</strong> ?</p>
+                    
+                    <div class="review-preview mt-4 p-3" style="background: #f8f9fa; border-radius: 6px; font-style: italic; font-size: 0.95rem; text-align: left; border-left: 3px solid #ddd;">
+                        "{{ review.review|truncatewords:20 }}"
+                    </div>
+
+                    <form method="post" class="mt-5">
+                        {% csrf_token %}
+                        <div class="d-grid" style="display: grid; gap: 1rem;">
+                            <button type="submit" class="btn-danger" style="padding: 15px; font-weight: bold; cursor: pointer; border: none; border-radius: 8px; background: #dc2626; color: white;">Oui, supprimer définitivement</button>
+                            <a href="{% url 'frontend:show_detail' pk=review.show.id %}" class="btn-secondary" style="padding: 15px; font-weight: bold; text-decoration: none; color: #4a5568; background: #edf2f7; border-radius: 8px;">Non, garder mon avis</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
