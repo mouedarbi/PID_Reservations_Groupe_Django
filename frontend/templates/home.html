@@ -114,7 +114,17 @@
                                         <div>
                                             <div class="show-date">{{ show.next_representation_date|date:"d M Y"|default:'Date inconnue' }}</div>
                                         </div>
-                                        <div class="show-price">{{ show.price|default:'N/A' }}€</div>
+                                        <div class="show-price-types" style="text-align: right;">
+                                            {% if show.prices %}
+                                                <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.2;">
+                                                    {% for p in show.prices %}
+                                                        <div style="white-space: nowrap;">{{ p.type|title }}: <strong>{{ p.price }}€</strong></div>
+                                                    {% endfor %}
+                                                </div>
+                                            {% else %}
+                                                <div class="show-price">{{ show.price|default:'N/A' }}€</div>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
