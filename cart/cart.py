@@ -53,29 +53,65 @@ class Cart:
         """
         Boucle sur les articles du panier et récupération des objets de la DB.
         """
-        item_ids = self.cart.keys()
-        # On pourrait optimiser ici avec des requêtes groupées si nécessaire
-        
-        cart_copy = self.cart.copy()
+        # On crée une liste des clés pour pouvoir modifier le dictionnaire pendant l'itération si besoin
+        item_ids = list(self.cart.keys())
         
         for item_id in item_ids:
-            item = cart_copy[item_id]
-            item['representation'] = Representation.objects.get(id=item['representation_id'])
-            item['price_obj'] = Price.objects.get(id=item['price_id'])
-            item['total_price'] = Decimal(item['price']) * item['quantity']
-            yield item
+            item = self.cart.get(item_id)
+            if not item:
+                continue
+                
+            try:
+                # Vérification des clés essentielles
+                if 'representation_id' not in item or 'price_id' not in item or 'price' not in item or 'quantity' not in item:
+                    raise KeyError("Clés manquantes dans l'article du panier")
+
+                # Tentative de récupération des objets réels en DB
+                item['representation'] = Representation.objects.get(id=item['representation_id'])
+                item['price_obj'] = Price.objects.get(id=item['price_id'])
+                item['total_price'] = Decimal(item['price']) * item['quantity']
+                yield item
+            except (Representation.DoesNotExist, Price.DoesNotExist, KeyError, TypeError):
+                # Si l'objet n'existe plus en DB ou données corrompues, on le retire
+                self.remove_by_id(item_id)
+
+    def remove_by_id(self, item_id):
+        """
+        Supprimer un article du panier par sa clé 'repID_priceID'.
+        """
+        if item_id in self.cart:
+            del self.cart[item_id]
+            self.save()
 
     def __len__(self):
         """
         Compter le nombre total de tickets dans le panier.
+        Ignore les articles corrompus.
         """
-        return sum(item['quantity'] for item in self.cart.values())
+        count = 0
+        item_ids = list(self.cart.keys())
+        for item_id in item_ids:
+            item = self.cart[item_id]
+            try:
+                count += item['quantity']
+            except (KeyError, TypeError):
+                self.remove_by_id(item_id)
+        return count
 
     def get_total_price(self):
         """
         Calculer le montant total du panier.
+        Ignore les articles corrompus.
         """
-        return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+        total = Decimal('0')
+        item_ids = list(self.cart.keys())
+        for item_id in item_ids:
+            item = self.cart[item_id]
+            try:
+                total += Decimal(item['price']) * item['quantity']
+            except (KeyError, TypeError, Decimal.InvalidOperation):
+                self.remove_by_id(item_id)
+        return total
 
     def clear(self):
         """

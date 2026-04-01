@@ -21,7 +21,7 @@ def cart_add(request, representation_id):
     # Vérification des places disponibles
     if quantity > representation.available_seats:
         messages.error(request, f"Désolé, il ne reste que {representation.available_seats} places disponibles.")
-        return redirect('catalogue:representation-show', pk=representation.id)
+        return redirect('catalogue:representation-show', representation_id=representation.id)
 
     # Vérification : le prix appartient-il bien au spectacle de cette représentation ?
     if price in representation.show.prices.all():
