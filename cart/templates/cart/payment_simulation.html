@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Simulation de paiement{% endblock %}
+
+{% block content %}
+<div class="payment-wrapper" style="padding-top: 140px; padding-bottom: 4rem;">
+    <div class="payment-container" style="max-width: 600px; margin: 0 auto; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; border: 1px solid #eee;">
+    <div style="font-size: 3rem; color: #007bff; margin-bottom: 1.5rem;">
+        <i class="ph ph-bank"></i>
+    </div>
+    
+    <h1>Passerelle de Paiement</h1>
+    <p style="color: #666; margin-bottom: 2rem;">Simulation de la transaction pour la réservation <strong>#{{ reservation.id }}</strong></p>
+    
+    <div style="padding: 1.5rem; background-color: #f8f9fa; border-radius: 8px; margin-bottom: 2rem; border: 1px dashed #ccc;">
+        <span style="display: block; font-size: 0.9rem; text-transform: uppercase; color: #888; font-weight: bold;">Montant à débiter</span>
+        <span style="font-size: 2.5rem; font-weight: 900; color: #333;">{{ cart.get_total_price }} €</span>
+    </div>
+
+    <form method="post" style="display: flex; flex-direction: column; gap: 1rem;">
+        {% csrf_token %}
+        <button type="submit" name="action" value="success" class="btn-pay-success" style="padding: 1rem; background-color: #28a745; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: background 0.2s;">
+            Simuler un PAIEMENT RÉUSSI
+        </button>
+        
+        <button type="submit" name="action" value="failure" class="btn-pay-failure" style="padding: 1rem; background-color: #dc3545; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: background 0.2s;">
+            Simuler un ÉCHEC DE PAIEMENT
+        </button>
+    </form>
+
+    <p style="margin-top: 2rem; font-size: 0.8rem; color: #aaa;">
+        Note : Cette page est une simulation à but de test uniquement. Aucune transaction réelle ne sera effectuée.
+    </p>
+</div>
+
+<style>
+    .btn-pay-success:hover { background-color: #218838 !important; }
+    .btn-pay-failure:hover { background-color: #c82333 !important; }
+</style>
+{% endblock %}

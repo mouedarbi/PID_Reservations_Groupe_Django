@@ -1,0 +1,89 @@
+{% extends "admin/admin.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
+            <p class="text-small mt-1">Détails du type et artistes associés.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="{% url 'admin_type_edit' type.id %}" class="flex items-center gap-2 rounded-lg bg-amber-600 px-4 py-2 text-white hover:bg-amber-700 transition">
+                <i class="ph ph-pencil-simple"></i>
+                <span>Modifier</span>
+            </a>
+            <a href="{% url 'admin_type_index' %}" class="flex items-center gap-2 rounded-lg bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300 transition dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700">
+                <i class="ph ph-arrow-left"></i>
+                <span>Retour</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <!-- Type Info -->
+        <div class="lg:col-span-1">
+            <div class="border-border overflow-hidden rounded-lg border bg-bg p-6 dark:bg-[#040b1a]">
+                <h3 class="mb-4 text-lg font-bold">Informations</h3>
+                <div class="space-y-4">
+                    <div>
+                        <span class="text-muted block text-sm uppercase">Désignation</span>
+                        <span class="text-text font-medium">{{ type.type }}</span>
+                    </div>
+                    <div>
+                        <span class="text-muted block text-sm uppercase">ID</span>
+                        <span class="text-text font-medium">#{{ type.id }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Associated Artists -->
+        <div class="lg:col-span-2">
+            <div class="border-border overflow-hidden rounded-lg border bg-bg dark:bg-[#040b1a]">
+                <div class="border-b border-border p-4">
+                    <h3 class="text-lg font-bold">Artistes ayant ce type ({{ artists|length }})</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 dark:bg-gray-900/50">
+                            <tr>
+                                <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Nom</th>
+                                <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Prénom</th>
+                                <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+                            {% for artist in artists %}
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition">
+                                <td class="px-6 py-4">
+                                    <div class="text-text font-medium">{{ artist.lastname }}</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-text">{{ artist.firstname }}</div>
+                                </td>
+                                <td class="px-6 py-4 text-sm">
+                                    <a href="{% url 'admin_artist_detail' artist.id %}" class="text-blue-600 hover:underline">Voir l'artiste</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="px-6 py-10 text-center text-muted italic">
+                                    Aucun artiste associé à ce type.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
