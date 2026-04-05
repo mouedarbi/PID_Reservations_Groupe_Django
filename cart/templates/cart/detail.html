@@ -111,7 +111,7 @@
             checkoutButton.disabled = true;
             checkoutButton.innerText = "Chargement...";
 
-            fetch("{% url 'create-checkout-session' %}", {
+            fetch("{% url 'payments:create-checkout-session' %}", {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': '{{ csrf_token }}',

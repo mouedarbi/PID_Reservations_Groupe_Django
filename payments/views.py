@@ -2,45 +2,47 @@ import stripe
 import os
 from django.conf import settings
 from django.shortcuts import render
+from django.urls import reverse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from cart.cart import Cart  # Utiliser la classe Cart existante
 
 # Configuration de la clé Stripe
 stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 
 class CreateCheckoutSessionView(APIView):
     def post(self, request):
-        # 1. On récupère le panier (cart) depuis la session
-        cart = request.session.get('cart', {})
+        # 1. On initialise le panier via la classe Cart
+        cart = Cart(request)
         
-        if not cart:
+        if len(cart) == 0:
             return Response({'error': 'Votre panier est vide'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # 2. Calcul du total du panier
-        # Adapte 'price' et 'quantity' selon les noms dans ton application cart
-        total_amount = 0
-        for item in cart.values():
-            total_amount += float(item['price']) * int(item['quantity'])
+        # 2. Récupérer le total du panier
+        total_amount = cart.get_total_price()
 
         try:
+            # Construction de l'URL de base pour les retours
+            base_url = f"{request.scheme}://{request.get_host()}"
+
             # 3. Création de la session Stripe
+            # On ajoute 'bancontact' et 'sepa_debit' pour le paiement sans carte (en ligne)
             checkout_session = stripe.checkout.Session.create(
-                payment_method_types=['card'],
+                payment_method_types=['card', 'bancontact', 'sepa_debit'],
                 line_items=[{
                     'price_data': {
                         'currency': 'eur',
                         'product_data': {
-                            'name': 'Réservation d\'articles/salles',
+                            'name': 'Réservation de places de spectacle - ThéâtrePlus',
                         },
-                        'unit_amount': int(total_amount * 100), # Stripe veut des centimes (ex: 20€ = 2000)
+                        'unit_amount': int(total_amount * 100), # Stripe veut des centimes
                     },
                     'quantity': 1,
                 }],
                 mode='payment',
-                # Les URLs de retour vers ton site
-                success_url='http://127.0.0.1:8000/payments/success/',
-                cancel_url='http://127.0.0.1:8000/payments/cancel/',
+                success_url=base_url + reverse('payments:success'),
+                cancel_url=base_url + reverse('payments:cancel'),
             )
             return Response({'url': checkout_session.url})
         except Exception as e:
@@ -49,8 +51,8 @@ class CreateCheckoutSessionView(APIView):
 # Vues pour les pages de confirmation (HTML)
 def payment_success(request):
     # On vide le panier une fois payé
-    if 'cart' in request.session:
-        del request.session['cart']
+    cart = Cart(request)
+    cart.clear()
     return render(request, 'payments/success.html')
 
 def payment_cancel(request):

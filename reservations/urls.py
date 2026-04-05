@@ -26,6 +26,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')), # All accounts/auth related URLs will be handled here
     
     path('catalogue/', include('catalogue.urls')),
+    path('payments/', include('payments.urls')),
     path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
 ]

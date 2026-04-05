@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "accounts",
     #ajout de catalogue
     "catalogue",
+    "payments",
     # ajout de rest_framework
     'rest_framework',
     "rest_framework.authtoken",
@@ -167,3 +168,6 @@ LOGOUT_REDIRECT_URL = 'frontend:home'
 
 PASSWORD_CHANGE_REDIRECT_URL = 'accounts:user-profile'
 
+
+# Panier
+CART_SESSION_ID = 'cart'
