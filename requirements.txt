@@ -6,5 +6,5 @@ sqlparse==0.5.3
 tzdata==2025.2
 djangorestframework==3.15.2
 requests
-django-modeltranslation==0.18.0
+django-modeltranslation==0.18.11
 polib==1.2.0
