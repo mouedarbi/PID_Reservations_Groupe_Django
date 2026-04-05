@@ -1,14 +1,15 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Nos Lieux{% endblock %}
+{% block title %}{% trans "Nos Lieux" %}{% endblock %}
 
 {% block content %}
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1>Nos Lieux</h1>
-                <p>Découvrez les salles qui accueillent nos événements passionnants.</p>
+                <h1>{% trans "Nos Lieux" %}</h1>
+                <p>{% trans "Découvrez les salles qui accueillent nos événements passionnants." %}</p>
             </div>
         </div>
     </section>
@@ -34,14 +35,14 @@
                     {% endfor %}
                 {% else %}
                     <div style="padding: 40px; text-align: center; color: #a0aec0; background: #f8fafc; border-radius: 12px; border: 2px dashed #e2e8f0;">
-                        Aucun lieu n'est répertorié pour le moment.
+                        {% trans "Aucun lieu n'est répertorié pour le moment." %}
                     </div>
                 {% endif %}
             </div>
             
             <div style="margin-top: 50px; text-align: center;">
                 <a href="{% url 'frontend:home' %}" style="color: #a0aec0; text-decoration: none; font-size: 0.9rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em;">
-                    ← Retour à l'accueil
+                    ← {% trans "Retour à l'accueil" %}
                 </a>
             </div>
         </div>

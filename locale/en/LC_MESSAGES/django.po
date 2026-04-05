@@ -1,0 +1,385 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-01 18:41+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Réservez vos spectacles"
+msgstr "Book your shows"
+
+msgid "Accueil"
+msgstr "Home"
+
+msgid "Spectacles"
+msgstr "Shows"
+
+msgid "Lieux"
+msgstr "Locations"
+
+msgid "À propos"
+msgstr "About"
+
+msgid "Mon Panier"
+msgstr "My Cart"
+
+msgid "Mon compte"
+msgstr "My account"
+
+msgid "Déconnexion"
+msgstr "Logout"
+
+msgid "Connexion"
+msgstr "Login"
+
+msgid "Votre plateforme de référence pour réserver les meilleurs spectacles en Belgique. Vivez des moments inoubliables avec nous."
+msgstr "Your reference platform for booking the best shows in Belgium. Experience unforgettable moments with us."
+
+msgid "Navigation"
+msgstr "Navigation"
+
+msgid "Compte"
+msgstr "Account"
+
+msgid "Mon profil"
+msgstr "My profile"
+
+msgid "Inscription"
+msgstr "Sign up"
+
+msgid "Aide"
+msgstr "Help"
+
+msgid "FAQ"
+msgstr "FAQ"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Conditions"
+msgstr "Terms"
+
+msgid "Confidentialité"
+msgstr "Privacy"
+
+msgid "Tous droits réservés. | Projet PID - Version Alpha"
+msgstr "All rights reserved. | PID Project - Alpha Version"
+
+msgid "Réservez vos billets pour les meilleurs événements"
+msgstr "Book your tickets for the best events"
+
+msgid "Concerts, théâtre, spectacles et bien plus encore"
+msgstr "Concerts, theater, shows and much more"
+
+msgid "Rechercher un spectacle, artiste ou lieu..."
+msgstr "Search for a show, artist or location..."
+
+msgid "Tous les genres"
+msgstr "All genres"
+
+msgid "Concert"
+msgstr "Concert"
+
+msgid "Théâtre"
+msgstr "Theater"
+
+msgid "Danse"
+msgstr "Dance"
+
+msgid "Comédie"
+msgstr "Comedy"
+
+msgid "Toutes les dates"
+msgstr "All dates"
+
+msgid "Ce week-end"
+msgstr "This weekend"
+
+msgid "Cette semaine"
+msgstr "This week"
+
+msgid "Ce mois-ci"
+msgstr "This month"
+
+msgid "Rechercher"
+msgstr "Search"
+
+msgid "Tous les événements"
+msgstr "All events"
+
+msgid "Concerts"
+msgstr "Concerts"
+
+msgid "Théâtres"
+msgstr "Theaters"
+
+msgid "Festivals"
+msgstr "Festivals"
+
+msgid "Événements à venir"
+msgstr "Upcoming events"
+
+msgid "Réservez vos billets dès maintenant"
+msgstr "Book your tickets now"
+
+msgid "Disponible"
+msgstr "Available"
+
+msgid "Complet"
+msgstr "Sold out"
+
+msgid "Non catégorisé"
+msgstr "Uncategorized"
+
+msgid "Lieu inconnu"
+msgstr "Unknown location"
+
+msgid "Date inconnue"
+msgstr "Unknown date"
+
+msgid "Aucun spectacle disponible pour le moment."
+msgstr "No shows available at the moment."
+
+msgid "Découvrez tous nos événements passionnants."
+msgstr "Discover all our exciting events."
+
+msgid "Nos Spectacles"
+msgstr "Our Shows"
+
+msgid "Explorez les événements à venir et réservez vos billets."
+msgstr "Explore upcoming events and book your tickets."
+
+msgid "À propos de ThéâtrePlus"
+msgstr "About ThéâtrePlus"
+
+msgid "Découvrez notre mission et notre histoire"
+msgstr "Discover our mission and history"
+
+msgid "Notre Mission"
+msgstr "Our Mission"
+
+msgid "ThéâtrePlus a été créé dans le but de simplifier l'accès à la culture et aux arts de la scène. Notre objectif est de connecter les passionnés de théâtre, de danse, de musique et de tous les arts vivants avec les événements qui leur correspondent, en offrant une plateforme intuitive et fiable pour la découverte et la réservation."
+msgstr "ThéâtrePlus was created with the aim of simplifying access to culture and the performing arts. Our goal is to connect lovers of theater, dance, music, and all performing arts with the events that suit them, by offering an intuitive and reliable platform for discovery and booking."
+
+msgid "Notre Histoire"
+msgstr "Our History"
+
+msgid "Né d'une passion commune pour le spectacle vivant, ThéâtrePlus est le fruit d'un projet étudiant visant à résoudre les difficultés rencontrées par les spectateurs pour trouver et réserver des places pour des événements. Nous aspirons à devenir la référence pour tous les amateurs de culture en Belgique."
+msgstr "Born from a common passion for live performance, ThéâtrePlus is the result of a student project aimed at solving the difficulties encountered by spectators in finding and booking tickets for events. We aspire to become the reference for all culture lovers in Belgium."
+
+msgid "Vous n'avez pas l'autorisation d'accéder à cette page!"
+msgstr "You don't have permission to access this page!"
+
+msgid "Vous êtes déjà inscrit!"
+msgstr "You're already registered!"
+
+msgid "Français"
+msgstr "French"
+
+msgid "English"
+msgstr "English"
+
+msgid "Nederlands"
+msgstr "Dutch"
+
+msgid "Non définie"
+msgstr "Not defined"
+
+msgid "Utilisateur supprimé avec succès."
+msgstr "User successfully deleted."
+
+msgid "Suppression d'un autre compte interdite!"
+msgstr "Deleting another account is prohibited!"
+
+msgid "Suppression interdite (méthode incorrecte)!"
+msgstr "Deletion prohibited (incorrect method)!"
+
+msgid "Nos Lieux"
+msgstr "Our Locations"
+
+msgid "Découvrez les salles qui accueillent nos événements passionnants."
+msgstr "Discover the venues that host our exciting events."
+
+msgid "Aucun lieu n'est répertorié pour le moment."
+msgstr "No locations are listed at the moment."
+
+msgid "Retour à l'accueil"
+msgstr "Back to home"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Aucune description disponible."
+msgstr "No description available."
+
+msgid "Lieu :"
+msgstr "Venue :"
+
+msgid "Lieu non défini"
+msgstr "Venue not defined"
+
+msgid "Durée :"
+msgstr "Duration :"
+
+msgid "minutes"
+msgstr "minutes"
+
+msgid "Année de création :"
+msgstr "Year of creation :"
+
+msgid "Prix à partir de :"
+msgstr "Price from :"
+
+msgid "Réserver mes places"
+msgstr "Book my seats"
+
+msgid "Prochaines représentations"
+msgstr "Upcoming performances"
+
+msgid "Dernières places :"
+msgstr "Last seats :"
+
+msgid "COMPLET"
+msgstr "SOLD OUT"
+
+msgid "places disponibles"
+msgstr "available seats"
+
+msgid "Réserver"
+msgstr "Book"
+
+msgid "Aucune représentation n'est prévue pour le moment."
+msgstr "No performances scheduled for now."
+
+msgid "Critiques & Avis"
+msgstr "Reviews"
+
+msgid "Soumettre une critique"
+msgstr "Submit a review"
+
+msgid "Modifier"
+msgstr "Edit"
+
+msgid "Supprimer"
+msgstr "Delete"
+
+msgid "Aucun avis pour le moment. Soyez le premier à partager votre critique !"
+msgstr "No reviews yet. Be the first to share your review!"
+
+msgid "Spectacle introuvable"
+msgstr "Show not found"
+
+msgid "Liste des spectacles"
+msgstr "Shows List"
+
+msgid "Fiche d'un spectacle"
+msgstr "Show Profile"
+
+msgid "Spectacle créé avec succès."
+msgstr "Show successfully created."
+
+msgid "Veuillez corriger les erreurs ci-dessous."
+msgstr "Please correct the errors below."
+
+msgid "Spectacle modifié avec succès."
+msgstr "Show successfully modified."
+
+msgid "Spectacle supprimé avec succès."
+msgstr "Show successfully deleted."
+
+msgid "Liste des lieux de spectacle"
+msgstr "Venues List"
+
+msgid "Fiche d'un lieu de spectacle"
+msgstr "Venue Profile"
+
+msgid "Lieu créé avec succès."
+msgstr "Venue successfully created."
+
+msgid "Lieu modifié avec succès."
+msgstr "Venue successfully modified."
+
+msgid "Lieu supprimé avec succès."
+msgstr "Venue successfully deleted."
+
+msgid "Spectacle inexistant"
+msgstr "Show non-existent"
+
+msgid "Lieu inexistant"
+msgstr "Venue non-existent"
+
+msgid "Désolé, nous n'avons pas pu trouver les détails de ce spectacle."
+msgstr "Sorry, we couldn't find the details for this show."
+
+msgid "Retour à la liste"
+msgstr "Back to list"
+
+msgid "Réservable"
+msgstr "Bookable"
+
+msgid "Non réservable"
+msgstr "Not bookable"
+
+msgid "Catalogue des Spectacles"
+msgstr "Shows Catalog"
+
+msgid "Bienvenue à ThéâtrePlus"
+msgstr "Welcome to ThéâtrePlus"
+
+msgid "Nos Lieux de Spectacles"
+msgstr "Our Venues"
+
+msgid "À propos de ThéâtrePlus"
+msgstr "About ThéâtrePlus"
+
+msgid "Détails du Spectacle"
+msgstr "Show Details"
+
+msgid "Spectacle introuvable"
+msgstr "Show not found"
+
+msgid "Liste des spectacles"
+msgstr "Shows List"
+
+msgid "Fiche d'un spectacle"
+msgstr "Show Profile"
+
+msgid "Spectacle créé avec succès."
+msgstr "Show successfully created."
+
+msgid "Veuillez corriger les erreurs ci-dessous."
+msgstr "Please correct the errors below."
+
+msgid "Spectacle modifié avec succès."
+msgstr "Show successfully modified."
+
+msgid "Spectacle supprimé avec succès."
+msgstr "Show successfully deleted."
+
+msgid "Liste des lieux de spectacle"
+msgstr "Venues List"
+
+msgid "Fiche d'un lieu de spectacle"
+msgstr "Venue Profile"
+
+msgid "Lieu créé avec succès."
+msgstr "Venue successfully created."
+
+msgid "Lieu modifié avec succès."
+msgstr "Venue successfully modified."
+
+msgid "Lieu supprimé avec succès."
+msgstr "Venue successfully deleted."
+
+msgid "Spectacle inexistant"
+msgstr "Show non-existent"
+
+msgid "Lieu inexistant"
+msgstr "Venue non-existent"

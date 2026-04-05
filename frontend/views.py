@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from catalogue.models.location import Location
 from catalogue.models.representation import Representation
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 def home(request):
     """
@@ -24,7 +25,7 @@ def home(request):
 
     context = {
         'shows': shows_data,
-        'page_title': 'Bienvenue à ThéâtrePlus',
+        'page_title': _('Bienvenue à ThéâtrePlus'),
     }
     return render(request, 'home.html', context)
 
@@ -46,7 +47,7 @@ def show_list(request):
 
     context = {
         'shows': shows_data,
-        'page_title': 'Catalogue des Spectacles',
+        'page_title': _('Catalogue des Spectacles'),
     }
     return render(request, 'show_list.html', context)
 
@@ -67,7 +68,7 @@ def show_detail(request, pk):
 
     context = {
         'show': show_data,
-        'page_title': show_data.get('title', 'Détails du Spectacle') if show_data else 'Spectacle introuvable',
+        'page_title': show_data.get('title', _('Détails du Spectacle')) if show_data else _('Spectacle introuvable'),
     }
     return render(request, 'show_detail.html', context)
 
@@ -86,7 +87,7 @@ def location_list(request):
 
     context = {
         'locations': locations_data,
-        'page_title': 'Nos Lieux de Spectacles',
+        'page_title': _('Nos Lieux de Spectacles'),
     }
     return render(request, 'location_list.html', context)
 
@@ -114,7 +115,7 @@ def about(request):
     View for the about page.
     """
     context = {
-        'page_title': 'À propos de ThéâtrePlus',
+        'page_title': _('À propos de ThéâtrePlus'),
     }
     return render(request, 'about.html', context)
 
