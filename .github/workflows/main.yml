@@ -46,6 +46,7 @@ jobs:
 
       - name: Run Migrations (simulate migrations check)
         run: |
+          python manage.py migrate
           python manage.py makemigrations --check
 
       - name: Run Tests
