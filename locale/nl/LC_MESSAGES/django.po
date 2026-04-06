@@ -336,50 +336,267 @@ msgstr "Welkom bij ThéâtrePlus"
 msgid "Nos Lieux de Spectacles"
 msgstr "Onze Locaties"
 
-msgid "À propos de ThéâtrePlus"
-msgstr "Over ThéâtrePlus"
-
 msgid "Détails du Spectacle"
 msgstr "Details van de Voorstelling"
 
-msgid "Spectacle introuvable"
-msgstr "Voorstelling niet gevonden"
 
-msgid "Liste des spectacles"
-msgstr "Voorstellingen Lijst"
+msgid "PAYÉ"
+msgstr "BETAALD"
 
-msgid "Fiche d'un spectacle"
-msgstr "Voorstelling Profiel"
+msgid "EN ATTENTE"
+msgstr "IN AFWACHTING"
 
-msgid "Spectacle créé avec succès."
-msgstr "Voorstelling succesvol aangemaakt."
+msgid "ÉCHOUÉ"
+msgstr "MISLUKT"
 
-msgid "Veuillez corriger les erreurs ci-dessous."
-msgstr "Corrigeer de onderstaande fouten."
+msgid "Nom d'utilisateur"
+msgstr "Gebruikersnaam"
 
-msgid "Spectacle modifié avec succès."
-msgstr "Voorstelling succesvol gewijzigd."
+msgid "Email"
+msgstr "Email"
 
-msgid "Spectacle supprimé avec succès."
-msgstr "Voorstelling succesvol verwijderd."
+msgid "Langue préférée"
+msgstr "Voorkeurstaal"
 
-msgid "Liste des lieux de spectacle"
-msgstr "Locaties Lijst"
+msgid "Sécurité"
+msgstr "Beveiliging"
 
-msgid "Fiche d'un lieu de spectacle"
-msgstr "Locatie Profiel"
+msgid "Détails"
+msgstr "Details"
 
-msgid "Lieu créé avec succès."
-msgstr "Locatie succesvol aangemaakt."
+msgid "ATTENTE"
+msgstr "WACHTEN"
 
-msgid "Lieu modifié avec succès."
-msgstr "Locatie succesvol gewijzigd."
+msgid "Action"
+msgstr "Actie"
 
-msgid "Lieu supprimé avec succès."
-msgstr "Locatie succesvol verwijderd."
+msgid "Adresse :"
+msgstr "Adres:"
 
-msgid "Spectacle inexistant"
-msgstr "Voorstelling bestaat niet"
+msgid "Attention :"
+msgstr "Opgelet:"
 
-msgid "Lieu inexistant"
-msgstr "Locatie bestaat niet"
+msgid "Aucun spectacle trouvé"
+msgstr "Geen voorstelling gevonden"
+
+msgid "Aucun tarif n'est disponible pour ce spectacle."
+msgstr "Er is geen tarief beschikbaar voor deze voorstelling."
+
+msgid "Aucune représentation n'est prévue pour le moment dans ce lieu."
+msgstr "Er is momenteel geen voorstelling gepland op deze locatie."
+
+msgid "Bonjour,"
+msgstr "Hallo,"
+
+msgid "Confirmation de commande"
+msgstr "Bestellingsbevestiging"
+
+msgid "Confirmation de votre commande"
+msgstr "Bestellingsbevestiging"
+
+msgid "Confirmer et Payer"
+msgstr "Bevestigen en Betalen"
+
+msgid "Continuer mes achats"
+msgstr "Verder winkelen"
+
+msgid "DERNIÈRES PLACES :"
+msgstr "LAATSTE PLAATSEN:"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Date :"
+msgstr "Datum:"
+
+msgid "Découvrir les spectacles"
+msgstr "Ontdek de voorstellingen"
+
+msgid "Détails de votre réservation"
+msgstr "Details van uw reservatie"
+
+msgid "Détails et informations pratiques du lieu"
+msgstr "Details en praktische informatie van de locatie"
+
+msgid "Finalisez votre réservation et préparez-vous pour le spectacle."
+msgstr "Rond uw reservatie af en bereid u voor op de voorstelling."
+
+msgid "Frais de service"
+msgstr "Servicekosten"
+
+msgid "Gérez vos informations et consultez vos réservations."
+msgstr "Beheer uw informatie en bekijk uw reservaties."
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Il ne reste que {{ count }} places pour cette séance. Ne tardez pas !"
+msgstr "Er zijn nog maar {{ count }} plaatsen over voor deze sessie. Wacht niet te lang!"
+
+msgid "Il semble que vous n'ayez pas encore choisi de spectacle."
+msgstr "Het lijkt erop dat u nog geen voorstelling heeft gekozen."
+
+msgid "Imprimer mon billet"
+msgstr "Mijn ticket afdrukken"
+
+msgid "Informations"
+msgstr "Informatie"
+
+msgid "Mes Réservations"
+msgstr "Mijn Reservaties"
+
+msgid "Modifier le profil"
+msgstr "Profiel bewerken"
+
+msgid "Modifier mon panier"
+msgstr "Mijn winkelmandje bewerken"
+
+msgid "Mon Profil - ThéâtrePlus"
+msgstr "Mijn Profiel - ThéâtrePlus"
+
+msgid "Montant Total :"
+msgstr "Totaalbedrag:"
+
+msgid "Montant à débiter"
+msgstr "Te debiteren bedrag"
+
+msgid "Mot de passe"
+msgstr "Wachtwoord"
+
+msgid "Note : Cette page est une simulation à but de test uniquement. Aucune transaction réelle ne sera effectuée."
+msgstr "Opmerking: Deze pagina is alleen voor testdoeleinden gesimuleerd. Er wordt geen echte transactie uitgevoerd."
+
+msgid "OFFERT"
+msgstr "GRATIS"
+
+msgid "Paiement sécurisé via notre plateforme"
+msgstr "Veilige betaling via ons platform"
+
+msgid "Passerelle de Paiement"
+msgstr "Betalingsgateway"
+
+msgid "Places"
+msgstr "Plaatsen"
+
+msgid "Prix"
+msgstr "Prijs"
+
+msgid "Prix :"
+msgstr "Prijs:"
+
+msgid "Prochain spectacle"
+msgstr "Volgende voorstelling"
+
+msgid "Quantité"
+msgstr "Aantal"
+
+msgid "Retour au spectacle"
+msgstr "Terug naar voorstelling"
+
+msgid "Retour à la liste des lieux"
+msgstr "Terug naar locatielijst"
+
+msgid "Retour à mon profil"
+msgstr "Terug naar mijn profiel"
+
+msgid "Récapitulatif"
+msgstr "Overzicht"
+
+msgid "Récapitulatif des billets"
+msgstr "Overzicht van de tickets"
+
+msgid "Réservation"
+msgstr "Reservatie"
+
+msgid "Résumé"
+msgstr "Samenvatting"
+
+msgid "Simulation de la transaction pour la réservation"
+msgstr "Transactiesimulatie voor de reservatie"
+
+msgid "Simulation de paiement"
+msgstr "Betalingssimulatie"
+
+msgid "Simuler un PAIEMENT RÉUSSI"
+msgstr "Simuleer een GESLAAGDE BETALING"
+
+msgid "Simuler un ÉCHEC DE PAIEMENT"
+msgstr "Simuleer een MISLUKTE BETALING"
+
+msgid "Site Web :"
+msgstr "Website:"
+
+msgid "Sous-total"
+msgstr "Subtotaal"
+
+msgid "Spectacle / Séance"
+msgstr "Voorstelling / Sessie"
+
+msgid "Spectacle(s)"
+msgstr "Voorstelling(en)"
+
+msgid "Statut"
+msgstr "Status"
+
+msgid "Supprimer mon compte"
+msgstr "Mijn account verwijderen"
+
+msgid "Sélectionnez vos places"
+msgstr "Selecteer uw plaatsen"
+
+msgid "TOTAL À PAYER :"
+msgstr "TOTAAL TE BETALEN:"
+
+msgid "Tarif"
+msgstr "Tarief"
+
+msgid "Total"
+msgstr "Totaal"
+
+msgid "Téléphone :"
+msgstr "Telefoon:"
+
+msgid "VOIR LE PANIER"
+msgstr "WINKELMANDJE BEKIJKEN"
+
+msgid "Valider la commande"
+msgstr "Bestelling bevestigen"
+
+msgid "Veuillez vérifier les détails de votre réservation avant de procéder au paiement."
+msgstr "Controleer de details van uw reservatie voordat u doorgaat naar de betaling."
+
+msgid "Visiter le site officiel"
+msgstr "Bezoek de officiële website"
+
+msgid "Voir le spectacle"
+msgstr "Voorstelling bekijken"
+
+msgid "Voir mon panier"
+msgstr "Mijn winkelmandje bekijken"
+
+msgid "Votre Panier"
+msgstr "Uw Winkelmandje"
+
+msgid "Votre Panier - ThéâtrePlus"
+msgstr "Uw Winkelmandje - ThéâtrePlus"
+
+msgid "Votre panier est vide"
+msgstr "Uw winkelmandje is leeg"
+
+msgid "Vous n'avez pas encore effectué de réservation."
+msgstr "U heeft nog geen reservatie gemaakt."
+
+msgid "du"
+msgstr "van"
+
+msgid "place(s) à"
+msgstr "plaats(en) op"
+
+msgid "ÉCHEC"
+msgstr "MISLUKT"
+
+msgid "Événement"
+msgstr "Evenement"
+
+msgid "Êtes-vous sûr ?"
+msgstr "Bent u zeker?"

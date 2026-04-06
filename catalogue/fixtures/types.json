@@ -3,22 +3,27 @@
       "model": "catalogue.type",
       "pk": 1,
       "fields": {
-        "type": "auteur"
+        "type": "auteur",
+        "type_en": "author",
+        "type_nl": "auteur"
       }
     },
     {
       "model": "catalogue.type",
       "pk": 2,
       "fields": {
-        "type": "scénographe"
+        "type": "scénographe",
+        "type_en": "scenographer",
+        "type_nl": "scenograaf"
       }
     },
     {
       "model": "catalogue.type",
       "pk": 3,
       "fields": {
-        "type": "comédien"
+        "type": "comédien",
+        "type_en": "actor",
+        "type_nl": "acteur"
       }
     }
   ]
-

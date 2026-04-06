@@ -336,50 +336,267 @@ msgstr "Welcome to ThéâtrePlus"
 msgid "Nos Lieux de Spectacles"
 msgstr "Our Venues"
 
-msgid "À propos de ThéâtrePlus"
-msgstr "About ThéâtrePlus"
-
 msgid "Détails du Spectacle"
 msgstr "Show Details"
 
-msgid "Spectacle introuvable"
-msgstr "Show not found"
 
-msgid "Liste des spectacles"
-msgstr "Shows List"
+msgid "PAYÉ"
+msgstr "PAID"
 
-msgid "Fiche d'un spectacle"
-msgstr "Show Profile"
+msgid "EN ATTENTE"
+msgstr "PENDING"
 
-msgid "Spectacle créé avec succès."
-msgstr "Show successfully created."
+msgid "ÉCHOUÉ"
+msgstr "FAILED"
 
-msgid "Veuillez corriger les erreurs ci-dessous."
-msgstr "Please correct the errors below."
+msgid "Nom d'utilisateur"
+msgstr "Username"
 
-msgid "Spectacle modifié avec succès."
-msgstr "Show successfully modified."
+msgid "Email"
+msgstr "Email"
 
-msgid "Spectacle supprimé avec succès."
-msgstr "Show successfully deleted."
+msgid "Langue préférée"
+msgstr "Preferred language"
 
-msgid "Liste des lieux de spectacle"
-msgstr "Venues List"
+msgid "Sécurité"
+msgstr "Security"
 
-msgid "Fiche d'un lieu de spectacle"
-msgstr "Venue Profile"
+msgid "Détails"
+msgstr "Details"
 
-msgid "Lieu créé avec succès."
-msgstr "Venue successfully created."
+msgid "ATTENTE"
+msgstr "WAITING"
 
-msgid "Lieu modifié avec succès."
-msgstr "Venue successfully modified."
+msgid "Action"
+msgstr "Action"
 
-msgid "Lieu supprimé avec succès."
-msgstr "Venue successfully deleted."
+msgid "Adresse :"
+msgstr "Address:"
 
-msgid "Spectacle inexistant"
-msgstr "Show non-existent"
+msgid "Attention :"
+msgstr "Attention:"
 
-msgid "Lieu inexistant"
-msgstr "Venue non-existent"
+msgid "Aucun spectacle trouvé"
+msgstr "No show found"
+
+msgid "Aucun tarif n'est disponible pour ce spectacle."
+msgstr "No rate is available for this show."
+
+msgid "Aucune représentation n'est prévue pour le moment dans ce lieu."
+msgstr "No performance is scheduled at this location at the moment."
+
+msgid "Bonjour,"
+msgstr "Hello,"
+
+msgid "Confirmation de commande"
+msgstr "Order confirmation"
+
+msgid "Confirmation de votre commande"
+msgstr "Order confirmation"
+
+msgid "Confirmer et Payer"
+msgstr "Confirm and Pay"
+
+msgid "Continuer mes achats"
+msgstr "Continue shopping"
+
+msgid "DERNIÈRES PLACES :"
+msgstr "LAST SEATS:"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Date :"
+msgstr "Date:"
+
+msgid "Découvrir les spectacles"
+msgstr "Discover the shows"
+
+msgid "Détails de votre réservation"
+msgstr "Your reservation details"
+
+msgid "Détails et informations pratiques du lieu"
+msgstr "Location details and practical information"
+
+msgid "Finalisez votre réservation et préparez-vous pour le spectacle."
+msgstr "Finalize your reservation and get ready for the show."
+
+msgid "Frais de service"
+msgstr "Service fee"
+
+msgid "Gérez vos informations et consultez vos réservations."
+msgstr "Manage your information and view your reservations."
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Il ne reste que {{ count }} places pour cette séance. Ne tardez pas !"
+msgstr "Only {{ count }} seats left for this session. Don't delay!"
+
+msgid "Il semble que vous n'ayez pas encore choisi de spectacle."
+msgstr "It seems you haven't chosen a show yet."
+
+msgid "Imprimer mon billet"
+msgstr "Print my ticket"
+
+msgid "Informations"
+msgstr "Information"
+
+msgid "Mes Réservations"
+msgstr "My Reservations"
+
+msgid "Modifier le profil"
+msgstr "Edit profile"
+
+msgid "Modifier mon panier"
+msgstr "Edit my cart"
+
+msgid "Mon Profil - ThéâtrePlus"
+msgstr "My Profile - ThéâtrePlus"
+
+msgid "Montant Total :"
+msgstr "Total Amount:"
+
+msgid "Montant à débiter"
+msgstr "Amount to debit"
+
+msgid "Mot de passe"
+msgstr "Password"
+
+msgid "Note : Cette page est une simulation à but de test uniquement. Aucune transaction réelle ne sera effectuée."
+msgstr "Note: This page is a simulation for testing purposes only. No real transaction will be made."
+
+msgid "OFFERT"
+msgstr "FREE"
+
+msgid "Paiement sécurisé via notre plateforme"
+msgstr "Secure payment via our platform"
+
+msgid "Passerelle de Paiement"
+msgstr "Payment Gateway"
+
+msgid "Places"
+msgstr "Seats"
+
+msgid "Prix"
+msgstr "Price"
+
+msgid "Prix :"
+msgstr "Price:"
+
+msgid "Prochain spectacle"
+msgstr "Next show"
+
+msgid "Quantité"
+msgstr "Quantity"
+
+msgid "Retour au spectacle"
+msgstr "Back to show"
+
+msgid "Retour à la liste des lieux"
+msgstr "Back to venues list"
+
+msgid "Retour à mon profil"
+msgstr "Back to my profile"
+
+msgid "Récapitulatif"
+msgstr "Summary"
+
+msgid "Récapitulatif des billets"
+msgstr "Ticket summary"
+
+msgid "Réservation"
+msgstr "Reservation"
+
+msgid "Résumé"
+msgstr "Summary"
+
+msgid "Simulation de la transaction pour la réservation"
+msgstr "Transaction simulation for reservation"
+
+msgid "Simulation de paiement"
+msgstr "Payment simulation"
+
+msgid "Simuler un PAIEMENT RÉUSSI"
+msgstr "Simulate SUCCESSFUL PAYMENT"
+
+msgid "Simuler un ÉCHEC DE PAIEMENT"
+msgstr "Simulate PAYMENT FAILURE"
+
+msgid "Site Web :"
+msgstr "Website:"
+
+msgid "Sous-total"
+msgstr "Subtotal"
+
+msgid "Spectacle / Séance"
+msgstr "Show / Session"
+
+msgid "Spectacle(s)"
+msgstr "Show(s)"
+
+msgid "Statut"
+msgstr "Status"
+
+msgid "Supprimer mon compte"
+msgstr "Delete my account"
+
+msgid "Sélectionnez vos places"
+msgstr "Select your seats"
+
+msgid "TOTAL À PAYER :"
+msgstr "TOTAL TO PAY:"
+
+msgid "Tarif"
+msgstr "Rate"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Téléphone :"
+msgstr "Phone:"
+
+msgid "VOIR LE PANIER"
+msgstr "VIEW CART"
+
+msgid "Valider la commande"
+msgstr "Confirm order"
+
+msgid "Veuillez vérifier les détails de votre réservation avant de procéder au paiement."
+msgstr "Please check your reservation details before proceeding to payment."
+
+msgid "Visiter le site officiel"
+msgstr "Visit official website"
+
+msgid "Voir le spectacle"
+msgstr "View show"
+
+msgid "Voir mon panier"
+msgstr "View my cart"
+
+msgid "Votre Panier"
+msgstr "Your Cart"
+
+msgid "Votre Panier - ThéâtrePlus"
+msgstr "Your Cart - ThéâtrePlus"
+
+msgid "Votre panier est vide"
+msgstr "Your cart is empty"
+
+msgid "Vous n'avez pas encore effectué de réservation."
+msgstr "You haven't made a reservation yet."
+
+msgid "du"
+msgstr "of"
+
+msgid "place(s) à"
+msgstr "seat(s) at"
+
+msgid "ÉCHEC"
+msgstr "FAILURE"
+
+msgid "Événement"
+msgstr "Event"
+
+msgid "Êtes-vous sûr ?"
+msgstr "Are you sure?"

@@ -10,10 +10,12 @@ def home(request):
     """
     View for the home page, fetching show data from the API.
     """
-    api_url = "http://127.0.0.1:8000/api/shows/"
+    base_url = request.build_absolute_uri('/')[:-1]
+    api_url = f"{base_url}/api/shows/"
+    headers = {'Accept-Language': request.LANGUAGE_CODE}
     shows_data = []
     try:
-        response = requests.get(api_url)
+        response = requests.get(api_url, headers=headers)
         response.raise_for_status()
         shows_data = response.json()
     except requests.exceptions.RequestException as e:
@@ -33,10 +35,12 @@ def show_list(request):
     """
     View for displaying a list of shows fetched from the API.
     """
-    api_url = "http://127.0.0.1:8000/api/shows/"  # Adjust if API runs on a different port/host
+    base_url = request.build_absolute_uri('/')[:-1]
+    api_url = f"{base_url}/api/shows/"
+    headers = {'Accept-Language': request.LANGUAGE_CODE}
     shows_data = []
     try:
-        response = requests.get(api_url)
+        response = requests.get(api_url, headers=headers)
         response.raise_for_status()  # Raise an exception for HTTP errors
         shows_data = response.json()
     except requests.exceptions.RequestException as e:
@@ -55,10 +59,12 @@ def show_detail(request, pk):
     """
     View for displaying details of a single show fetched from the API.
     """
-    api_url = f"http://127.0.0.1:8000/api/shows/{pk}/"
+    base_url = request.build_absolute_uri('/')[:-1]
+    api_url = f"{base_url}/api/shows/{pk}/"
+    headers = {'Accept-Language': request.LANGUAGE_CODE}
     show_data = None
     try:
-        response = requests.get(api_url)
+        response = requests.get(api_url, headers=headers)
         response.raise_for_status()
         show_data = response.json()
         print(f"DEBUG: Show data for ID {pk}: {list(show_data.keys())}")
@@ -76,10 +82,12 @@ def location_list(request):
     """
     View for displaying a list of locations fetched from the API.
     """
-    api_url = "http://127.0.0.1:8000/api/locations/"
+    base_url = request.build_absolute_uri('/')[:-1]
+    api_url = f"{base_url}/api/locations/"
+    headers = {'Accept-Language': request.LANGUAGE_CODE}
     locations_data = []
     try:
-        response = requests.get(api_url)
+        response = requests.get(api_url, headers=headers)
         response.raise_for_status()
         locations_data = response.json()
     except requests.exceptions.RequestException as e:
