@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
-from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality
+from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting
 from catalogue.forms.ArtistForm import ArtistForm
 from catalogue.forms.ShowForm import ShowForm
 from catalogue.forms.LocationForm import LocationForm
@@ -12,6 +12,7 @@ from catalogue.forms.TypeForm import TypeForm
 from catalogue.forms.ReviewForm import ReviewForm
 from catalogue.forms.RepresentationForm import RepresentationForm
 from catalogue.forms.ReservationForm import ReservationForm
+from catalogue.forms.SettingForm import AppSettingForm
 from django.contrib.auth.models import Group
 from accounts.forms.UserUpdateForm import UserUpdateForm
 from accounts.forms.UserSignUpForm import UserSignUpForm
@@ -1043,3 +1044,50 @@ def admin_generic_delete(request, model_name, pk):
         obj.delete()
         
     return redirect(f'admin_{model_name}_index')
+
+@user_passes_test(is_admin)
+def admin_settings(request):
+    """
+    Vue pour gérer les paramètres de l'application (API Keys, etc.).
+    """
+    # Nettoyage : Supprimer l'ancienne clé Google si elle existe
+    AppSetting.objects.filter(key='GOOGLE_TRANSLATE_API_KEY').delete()
+
+    # S'assurer que les clés de base existent pour LibreTranslate
+    AppSetting.objects.get_or_create(
+        key='LIBRETRANSLATE_API_URL',
+        defaults={'value': 'http://localhost:5000', 'description': 'URL de l\'instance LibreTranslate (ex: http://localhost:5000)'}
+    )
+    AppSetting.objects.get_or_create(
+        key='LIBRETRANSLATE_API_KEY',
+        defaults={'value': '', 'description': 'Clé API LibreTranslate (laisser vide si auto-hébergé)'}
+    )
+    
+    settings = AppSetting.objects.all().order_by('key')
+    setting_forms = []
+    
+    # On initialise un formulaire soumis (s'il existe) et les autres avec leurs valeurs de BDD
+    for s in settings:
+        if request.method == 'POST' and str(s.id) == request.POST.get('setting_id'):
+            # Formulaire qui vient d'être soumis
+            form = AppSettingForm(request.POST, instance=s)
+            if form.is_valid():
+                form.save()
+                from django.contrib import messages
+                messages.success(request, f"Le paramètre {s.key} a été mis à jour.")
+                return redirect('admin_settings')
+            else:
+                from django.contrib import messages
+                messages.error(request, f"Erreur de validation pour {s.key}.")
+                setting_forms.append({'obj': s, 'form': form}) # On garde le form avec ses erreurs
+        else:
+            # Formulaires normaux
+            setting_forms.append({'obj': s, 'form': AppSettingForm(instance=s)})
+
+    context = {
+        'page_title': 'Paramètres de l\'application',
+        'title': 'Paramètres Système',
+        'settings': settings,
+        'setting_forms': setting_forms,
+    }
+    return render(request, 'admin/settings/index.html', context)

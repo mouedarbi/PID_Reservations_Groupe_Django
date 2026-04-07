@@ -1,0 +1,90 @@
+{% extends 'admin/admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-main-style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-1.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-2.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content" style="padding: 1rem;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 0.5rem;">{{ title }}</h2>
+            <p class="text-muted">Gérez les clés API et les configurations globales de l'application.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for item in setting_forms %}
+        <div class="col-md-6 mb-4">
+            <div class="card" style="border-radius: 12px; border: 1px solid #edf2f7; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
+                <div class="card-header" style="background: #f8fafc; border-bottom: 1px solid #edf2f7; padding: 1rem 1.5rem;">
+                    <h5 class="mb-0" style="font-weight: 600; color: #2d3748;">
+                        <i class="ph ph-key me-2" style="color: #ff4d4d;"></i> {{ item.obj.key }}
+                    </h5>
+                </div>
+                <div class="card-body" style="padding: 1.5rem;">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="setting_id" value="{{ item.obj.id }}">
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-muted small uppercase" style="font-weight: bold;">Description</label>
+                            {{ item.form.description }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small uppercase" style="font-weight: bold;">Valeur / Clé API</label>
+                            {{ item.form.value }}
+                            <div class="form-text small text-muted mt-1">
+                                <i class="ph ph-info me-1"></i> Cette valeur est utilisée pour les services tiers (Google Translate, etc.).
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="submit" class="btn btn-primary" style="background: #2d3748; border: none; padding: 8px 20px; border-radius: 6px; font-weight: 600;">
+                                Sauvegarder
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer" style="background: #fff; border-top: 1px solid #edf2f7; padding: 0.75rem 1.5rem;">
+                    <small class="text-muted">Dernière mise à jour : {{ item.obj.updated_at|date:"d/m/Y H:i" }}</small>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">Aucun paramètre configuré.</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Section Information LibreTranslate -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card" style="border-radius: 12px; border: 1px solid #bee3f8; background: #ebf8ff;">
+                <div class="card-body" style="padding: 1.5rem;">
+                    <h5 style="color: #2b6cb0; font-weight: 600;"><i class="ph ph-translate me-2"></i> Configuration LibreTranslate</h5>
+                    <p style="color: #2c5282; margin-bottom: 0;">
+                        La traduction automatique des avis utilise l'API <strong>LibreTranslate</strong>. 
+                        Vous pouvez utiliser l'instance publique ou héberger votre propre instance localement (ex: <code>http://localhost:5000</code>).
+                        Pour l'instance publique, une clé API peut être requise sur <a href="https://libretranslate.com" target="_blank" style="font-weight: bold; color: #2b6cb0; text-decoration: underline;">libretranslate.com</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus {
+        border-color: #ff4d4d;
+        box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.1);
+    }
+    .uppercase { text-transform: uppercase; letter-spacing: 0.05em; }
+</style>
+{% endblock %}
