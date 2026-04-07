@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block title %}{{ title }}{% endblock %}
 
@@ -11,7 +12,7 @@
         {% for message in messages %}
         <div style="padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem; background-color: {% if message.tags == 'success' %}#d4edda{% else %}#f8d7da{% endif %}; color: {% if message.tags == 'success' %}#155724{% else %}#721c24{% endif %}; border: 1px solid {% if message.tags == 'success' %}#c3e6cb{% else %}#f5c6cb{% endif %}; display: flex; justify-content: space-between; align-items: center;">
             <span>{{ message }}</span>
-            <a href="{% url 'cart:cart_detail' %}" style="background: #155724; color: white; text-decoration: none; padding: 5px 15px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">VOIR LE PANIER</a>
+            <a href="{% url 'cart:cart_detail' %}" style="background: #155724; color: white; text-decoration: none; padding: 5px 15px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">{% trans "VOIR LE PANIER" %}</a>
         </div>
         {% endfor %}
     </div>
@@ -35,17 +36,17 @@
 
         <section class="booking-card" style="background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e1e1e1; overflow: hidden;">
             <div style="padding: 1.5rem; background-color: #f8f9fa; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="margin: 0; font-size: 1.3rem;">Sélectionnez vos places</h2>
+                <h2 style="margin: 0; font-size: 1.3rem;">{% trans "Sélectionnez vos places" %}</h2>
                 
                 {% if representation.available_seats <= 0 %}
-                    <span style="background-color: #dc3545; color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.8rem;">COMPLET</span>
+                    <span style="background-color: #dc3545; color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.8rem;">{% trans "COMPLET" %}</span>
                 {% elif representation.available_seats < 10 %}
                     <span style="background-color: #ffc107; color: #000; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.8rem; animation: pulse 2s infinite;">
-                        DERNIÈRES PLACES : {{ representation.available_seats }}
+                        {% trans "DERNIÈRES PLACES :" %} {{ representation.available_seats }}
                     </span>
                 {% else %}
                     <span style="color: #28a745; font-weight: bold; font-size: 0.9rem;">
-                        {{ representation.available_seats }} places disponibles
+                        {{ representation.available_seats }} {% trans "places disponibles" %}
                     </span>
                 {% endif %}
             </div>
@@ -77,7 +78,7 @@
                                         {% endwith %}
                                     </select>
                                     <button type="submit" class="btn-add" style="background-color: var(--secondary, #1d3557); color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s;">
-                                        Réserver
+                                        {% trans "Réserver" %}
                                     </button>
                                 </form>
                                 {% endif %}
@@ -86,7 +87,7 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    <p style="text-align: center; color: #666; padding: 2rem;">Aucun tarif n'est disponible pour ce spectacle.</p>
+                    <p style="text-align: center; color: #666; padding: 2rem;">{% trans "Aucun tarif n'est disponible pour ce spectacle." %}</p>
                 {% endif %}
             </div>
         </section>
@@ -94,16 +95,16 @@
         {% if representation.available_seats < 10 and representation.available_seats > 0 %}
         <div style="margin-top: 1rem; padding: 1rem; background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
             <i class="ph ph-warning-circle" style="font-size: 1.5rem;"></i>
-            <strong>Attention :</strong> Il ne reste que {{ representation.available_seats }} places pour cette séance. Ne tardez pas !
+            <strong>{% trans "Attention :" %}</strong> {% blocktrans with count=representation.available_seats %}Il ne reste que {{ count }} places pour cette séance. Ne tardez pas !{% endblocktrans %}
         </div>
         {% endif %}
 
         <nav style="margin-top: 3rem; display: flex; justify-content: space-between;">
             <a href="{% url 'frontend:show_detail' representation.show.id %}" style="color: #666; text-decoration: none;">
-                <i class="ph ph-arrow-left"></i> Retour au spectacle
+                <i class="ph ph-arrow-left"></i> {% trans "Retour au spectacle" %}
             </a>
             <a href="{% url 'cart:cart_detail' %}" style="color: var(--primary, #e63946); text-decoration: none; font-weight: bold;">
-                Voir mon panier <i class="ph ph-shopping-cart"></i>
+                {% trans "Voir mon panier" %} <i class="ph ph-shopping-cart"></i>
             </a>
         </nav>
     </article>

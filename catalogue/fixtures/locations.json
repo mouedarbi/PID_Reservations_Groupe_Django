@@ -5,6 +5,8 @@
   "fields": {
     "slug": "art-center",
     "designation": "Art Center",
+    "designation_en": "Art Center",
+    "designation_nl": "Kunstcentrum",
     "address": "",
     "locality": [
       "1000",
@@ -20,6 +22,8 @@
   "fields": {
     "slug": "atrium",
     "designation": "Atrium",
+    "designation_en": "Atrium",
+    "designation_nl": "Atrium",
     "address": "",
     "locality": [
       "1000",
@@ -35,6 +39,8 @@
   "fields": {
     "slug": "opera-house",
     "designation": "Opera House",
+    "designation_en": "Opera House",
+    "designation_nl": "Operagebouw",
     "address": "",
     "locality": [
       "1040",
@@ -49,7 +55,9 @@
   "pk": 12,
   "fields": {
     "slug": "espace-delvaux-la-venerie",
-    "designation": "",
+    "designation": "Espace Delvaux",
+    "designation_en": "Espace Delvaux",
+    "designation_nl": "Espace Delvaux",
     "address": "",
     "website": "https://www.lavenerie.be",
     "phone": null
@@ -60,7 +68,9 @@
   "pk": 13,
   "fields": {
     "slug": "dexia-art-center",
-    "designation": "",
+    "designation": "Dexia Art Center",
+    "designation_en": "Dexia Art Center",
+    "designation_nl": "Dexia Art Center",
     "address": "",
     "locality": [
       "1000",
@@ -75,7 +85,9 @@
   "pk": 14,
       "fields": {
         "slug": "la-samaritaine",
-        "designation": "",
+        "designation": "La Samaritaine",
+        "designation_en": "La Samaritaine",
+        "designation_nl": "La Samaritaine",
         "address": "",
         "locality": [
           "1000",
@@ -89,7 +101,9 @@
   "pk": 15,
   "fields": {
     "slug": "espace-magh",
-    "designation": "",
+    "designation": "Espace Magh",
+    "designation_en": "Espace Magh",
+    "designation_nl": "Espace Magh",
     "address": "",
     "locality": [
       "1000",
