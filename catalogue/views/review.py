@@ -6,6 +6,7 @@ from django.utils.translation import gettext as _
 
 from catalogue.models import Review, Reservation, RepresentationReservation, Show
 from catalogue.forms.ReviewForm import ReviewForm
+from catalogue.utils.translation import translate_review
 
 def index(request):
     reviews = Review.objects.all()
@@ -57,6 +58,13 @@ def create(request):
             review.user = request.user
             review.validated = False
             review.save()
+            
+            # Traduction automatique
+            try:
+                translate_review(review)
+            except Exception as e:
+                print(f"Échec de la traduction automatique : {e}")
+                
             messages.success(request, _("Votre avis a été soumis avec succès et sera publié après validation."))
             return redirect('frontend:show_detail', pk=review.show.id)
         else:
@@ -78,7 +86,14 @@ def edit(request, review_id):
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
-            form.save()
+            review = form.save()
+            
+            # Mise à jour des traductions
+            try:
+                translate_review(review)
+            except Exception as e:
+                print(f"Échec de la traduction automatique lors de l'édition : {e}")
+                
             messages.success(request, _("Critique modifiée avec succès."))
             return redirect('frontend:show_detail', pk=review.show.id)
         else:
