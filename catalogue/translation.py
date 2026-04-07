@@ -4,6 +4,7 @@ from .models.type import Type
 from .models.location import Location
 from .models.price import Price
 from .models.locality import Locality
+from .models.review import Review
 
 @register(Show)
 class ShowTranslationOptions(TranslationOptions):
@@ -24,3 +25,7 @@ class PriceTranslationOptions(TranslationOptions):
 @register(Locality)
 class LocalityTranslationOptions(TranslationOptions):
     fields = ('locality',)
+
+@register(Review)
+class ReviewTranslationOptions(TranslationOptions):
+    fields = ('review',)
