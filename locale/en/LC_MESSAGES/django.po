@@ -600,3 +600,114 @@ msgstr "Event"
 
 msgid "Êtes-vous sûr ?"
 msgstr "Are you sure?"
+
+msgid "Ajouté : %(qty)s x %(type)s. Vous pouvez continuer vos achats ou aller au panier."
+msgstr ""
+
+msgid "Annuler et revenir"
+msgstr "Cancel and go back"
+
+msgid "Annuler et revenir au spectacle"
+msgstr "Cancel and return to show"
+
+msgid "Cette action est irréversible. Êtes-vous sûr de vouloir supprimer votre critique pour le spectacle"
+msgstr "This action is irreversible. Are you sure you want to delete your review for the show"
+
+msgid "Confirmer la suppression"
+msgstr "Confirm deletion"
+
+msgid "Critique inexistante"
+msgstr "Review does not exist"
+
+msgid "Critique modifiée avec succès."
+msgstr "Review successfully modified."
+
+msgid "Dutch"
+msgstr ""
+
+msgid "Désolé, il ne reste que %(seats)s places disponibles."
+msgstr ""
+
+msgid "Enregistrer les modifications"
+msgstr "Save changes"
+
+msgid "Fiche d\'une critique"
+msgstr ""
+
+msgid "French"
+msgstr ""
+
+msgid "Le paiement a échoué."
+msgstr "Payment failed."
+
+msgid "Liste des critiques"
+msgstr "Reviews List"
+
+msgid "Message supprimé avec succès."
+msgstr "Message successfully deleted."
+
+msgid "Mise à jour pour"
+msgstr "Update for"
+
+msgid "Modification de critique"
+msgstr "Review Edit"
+
+msgid "Modifier ma critique"
+msgstr "Edit my review"
+
+msgid "Modifier mon avis"
+msgstr "Edit my review"
+
+msgid "Non, garder mon avis"
+msgstr "No, keep my review"
+
+msgid "Note"
+msgstr "Rating"
+
+msgid "Oui, supprimer définitivement"
+msgstr "Yes, delete permanently"
+
+msgid "Paiement réussi ! %(count)s réservation(s) validée(s)."
+msgstr "Payment successful! %(count)s reservation(s) validated."
+
+msgid "Partagez votre avis sur"
+msgstr "Share your review on"
+
+msgid "Publier ma critique"
+msgstr "Publish my review"
+
+msgid "Quelle note donneriez-vous ?"
+msgstr "What rating would you give?"
+
+msgid "Seul l'auteur peut modifier son message."
+msgstr "Only the author can edit their message."
+
+msgid "Soumission de critique"
+msgstr "Review Submission"
+
+msgid "Supprimer cet avis ?"
+msgstr "Delete this review?"
+
+msgid "Veuillez choisir un spectacle pour laisser un commentaire."
+msgstr "Please choose a show to leave a comment."
+
+msgid "Veuillez choisir une note."
+msgstr "Please choose a rating."
+
+msgid "Votre Critique"
+msgstr "Your Review"
+
+msgid "Votre avis a été soumis avec succès et sera publié après validation."
+msgstr "Your review has been successfully submitted and will be published after validation."
+
+msgid "Votre commentaire"
+msgstr "Your comment"
+
+msgid "Votre panier est vide."
+msgstr "Your cart is empty."
+
+msgid "Vous n'êtes pas autorisé à supprimer ce message."
+msgstr "You are not authorized to delete this message."
+
+msgid "Vous ne pouvez commenter que les spectacles auxquels vous avez assisté."
+msgstr "You can only comment on shows you have attended."

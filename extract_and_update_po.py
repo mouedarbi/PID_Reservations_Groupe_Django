@@ -7,6 +7,8 @@ def extract_strings(directory):
     trans_pattern = re.compile(r'{%\s+trans\s+["\'](.*?)["\']\s+%}')
     # Pattern for {% blocktrans %}...{% endblocktrans %}
     blocktrans_pattern = re.compile(r'{%\s+blocktrans.*?%}(.*?){%\s+endblocktrans\s+%}', re.DOTALL)
+    # Pattern for _("...") or _('...') in Python files
+    py_trans_pattern = re.compile(r'_\(["\'](.*?)["\']\)')
     
     for root, dirs, files in os.walk(directory):
         for file in files:
@@ -15,8 +17,14 @@ def extract_strings(directory):
                     content = f.read()
                     strings.update(trans_pattern.findall(content))
                     for bt in blocktrans_pattern.findall(content):
-                        # Clean up blocktrans content (remove extra whitespace/newlines)
                         strings.add(bt.strip())
+            elif file.endswith('.py'):
+                try:
+                    with open(os.path.join(root, file), 'r', encoding='utf-8') as f:
+                        content = f.read()
+                        strings.update(py_trans_pattern.findall(content))
+                except Exception as e:
+                    print(f"Error reading {file}: {e}")
     return strings
 
 def update_po(file_path, new_strings):
@@ -29,6 +37,7 @@ def update_po(file_path, new_strings):
 
     existing_ids = set(re.findall(r'msgid "(.*?)"', content))
     
+    # Check if the last line is not empty
     with open(file_path, 'a', encoding='utf-8') as f:
         for s in sorted(new_strings):
             if s and s not in existing_ids:
@@ -38,7 +47,7 @@ def update_po(file_path, new_strings):
 
 # Scan multiple directories
 all_strings = set()
-for d in ['frontend/templates', 'catalogue/templates', 'cart/templates', 'accounts/templates', 'templates']:
+for d in ['frontend', 'catalogue', 'cart', 'accounts', 'reservations', 'templates']:
     if os.path.exists(d):
         all_strings.update(extract_strings(d))
 
