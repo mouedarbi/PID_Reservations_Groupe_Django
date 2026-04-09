@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block title %}{{ location.designation|default:location.slug|capfirst }}{% endblock %}
 
@@ -9,7 +10,7 @@
         <div class="hero-container">
             <div class="hero-content">
                 <h1>{{ location.designation|default:location.slug|capfirst }}</h1>
-                <p>Détails et informations pratiques du lieu</p>
+                <p>{% trans "Détails et informations pratiques du lieu" %}</p>
             </div>
         </div>
     </section>
@@ -22,13 +23,13 @@
                     <!-- Colonne Infos -->
                     <div>
                         <h2 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 25px; color: var(--secondary, #1d3557); border-bottom: 2px solid var(--primary, #e63946); display: inline-block;">
-                            Informations
+                            {% trans "Informations" %}
                         </h2>
                         
                         <div style="margin-bottom: 20px; display: flex; align-items: flex-start; gap: 15px; color: var(--text-primary, #2b2d42); font-size: 1.1rem;">
                             <span style="font-size: 1.5rem;">📍</span>
                             <span>
-                                <strong>Adresse :</strong><br>
+                                <strong>{% trans "Adresse :" %}</strong><br>
                                 {{ location.address }}<br>
                                 {{ location.locality.postal_code }} {{ location.locality.locality }}
                             </span>
@@ -37,14 +38,14 @@
                         {% if location.phone %}
                         <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 15px; color: var(--text-primary, #2b2d42); font-size: 1.1rem;">
                             <span style="font-size: 1.5rem;">📞</span>
-                            <span><strong>Téléphone :</strong> {{ location.phone }}</span>
+                            <span><strong>{% trans "Téléphone :" %}</strong> {{ location.phone }}</span>
                         </div>
                         {% endif %}
 
                         {% if location.website %}
                         <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 15px; color: var(--text-primary, #2b2d42); font-size: 1.1rem;">
                             <span style="font-size: 1.5rem;">🌐</span>
-                            <span><strong>Site Web :</strong> <a href="{{ location.website }}" target="_blank" style="color: var(--primary, #e63946); text-decoration: none; font-weight: 600;">Visiter le site officiel</a></span>
+                            <span><strong>{% trans "Site Web :" %}</strong> <a href="{{ location.website }}" target="_blank" style="color: var(--primary, #e63946); text-decoration: none; font-weight: 600;">{% trans "Visiter le site officiel" %}</a></span>
                         </div>
                         {% endif %}
                     </div>
@@ -52,31 +53,34 @@
                     <!-- Section Prochain Spectacle -->
                     <div style="background: var(--bg-light, #f8f9fa); border-radius: 12px; padding: 30px; border: 1px solid var(--border-color, #e9ecef);">
                         <h2 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 20px; color: var(--secondary, #1d3557);">
-                            Prochain spectacle
+                            {% trans "Prochain spectacle" %}
                         </h2>
                         
                         {% if next_representation %}
                         <div class="next-show-content">
                             <h3 style="font-size: 1.5rem; margin-bottom: 10px; color: var(--primary, #e63946);">{{ next_representation.show.title }}</h3>
                             <p style="color: var(--text-secondary, #6c757d); margin-bottom: 8px;">
-                                <strong>Date :</strong> {{ next_representation.schedule|date:"d F Y" }} à {{ next_representation.schedule|date:"H:i" }}
+                                <strong>{% trans "Date :" %}</strong> {{ next_representation.schedule|date:"d F Y" }} à {{ next_representation.schedule|date:"H:i" }}
+                            </p>
+                            <p style="color: var(--text-secondary, #6c757d); margin-bottom: 8px;">
+                                <strong>{% trans "Lieu :" %}</strong> {{ next_representation.location.designation }}
                             </p>
                             <p style="color: var(--text-secondary, #6c757d); margin-bottom: 20px;">
-                                <strong>Prix :</strong> {{ next_representation.show.price|default:'N/A' }}€
+                                <strong>{% trans "Prix :" %}</strong> {{ next_representation.show.price|default:'N/A' }}€
                             </p>
                             <a href="{% url 'frontend:show_detail' next_representation.show.id %}" class="btn-primary" style="padding: 12px 25px; background: var(--primary, #e63946); color: white; text-decoration: none; border-radius: 50px; font-weight: 600; display: inline-block;">
-                                Voir le spectacle
+                                {% trans "Voir le spectacle" %}
                             </a>
                         </div>
                         {% else %}
-                        <p style="color: var(--text-secondary, #6c757d); font-style: italic;">Aucune représentation n'est prévue pour le moment dans ce lieu.</p>
+                        <p style="color: var(--text-secondary, #6c757d); font-style: italic;">{% trans "Aucune représentation n'est prévue pour le moment dans ce lieu." %}</p>
                         {% endif %}
                     </div>
                 </div>
 
                 <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border-color, #e9ecef); text-align: center;">
                     <a href="{% url 'frontend:location_list' %}" style="color: var(--text-secondary, #6c757d); text-decoration: none; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.9rem;">
-                        ← Retour à la liste des lieux
+                        ← {% trans "Retour à la liste des lieux" %}
                     </a>
                 </div>
             </div>

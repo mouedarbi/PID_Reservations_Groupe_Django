@@ -1,10 +1,10 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}ThéâtrePlus{% endblock %} - Réservez vos spectacles</title>
+    <title>{% block title %}ThéâtrePlus{% endblock %} - {% trans "Réservez vos spectacles" %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -42,6 +42,20 @@
             justify-content: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
+        .lang-switcher {
+            margin-left: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .lang-switcher select {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color, #ccc);
+            background-color: transparent;
+            color: var(--text-secondary);
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -50,12 +64,12 @@
         <div class="nav-container">
             <div class="logo">ThéâtrePlus</div>
             <ul class="nav-links">
-                <li><a href="{% url 'frontend:home' %}">Accueil</a></li>
-                <li><a href="{% url 'frontend:show_list' %}">Spectacles</a></li> 
-                <li><a href="{% url 'frontend:location_list' %}">Lieux</a></li>
-                <li><a href="{% url 'frontend:about' %}">À propos</a></li>
+                <li><a href="{% url 'frontend:home' %}">{% trans "Accueil" %}</a></li>
+                <li><a href="{% url 'frontend:show_list' %}">{% trans "Spectacles" %}</a></li> 
+                <li><a href="{% url 'frontend:location_list' %}">{% trans "Lieux" %}</a></li>
+                <li><a href="{% url 'frontend:about' %}">{% trans "À propos" %}</a></li>
                 <li class="cart-nav-item">
-                    <a href="{% url 'cart:cart_detail' %}" class="nav-cart-link" title="Mon Panier">
+                    <a href="{% url 'cart:cart_detail' %}" class="nav-cart-link" title="{% trans 'Mon Panier' %}">
                         <i class="ph ph-shopping-cart-simple"></i>
                         {% if cart|length > 0 %}
                             <span class="cart-badge">{{ cart|length }}</span>
@@ -63,16 +77,32 @@
                     </a>
                 </li>
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'accounts:user-profile' %}">Mon compte</a></li>
+                    <li><a href="{% url 'accounts:user-profile' %}">{% trans "Mon compte" %}</a></li>
                     <li>
                         <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display: none;">
                             {% csrf_token %}
                         </form>
-                        <a href="javascript:document.getElementById('logout-form').submit();" class="btn-primary">Déconnexion</a>
+                        <a href="javascript:document.getElementById('logout-form').submit();" class="btn-primary">{% trans "Déconnexion" %}</a>
                     </li>
                 {% else %}
-                    <li><a href="{% url 'accounts:login' %}" class="btn-primary">Connexion</a></li>
+                    <li><a href="{% url 'accounts:login' %}" class="btn-primary">{% trans "Connexion" %}</a></li>
                 {% endif %}
+                <li class="lang-switcher">
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                        <select name="language" onchange="this.form.submit()">
+                            {% get_current_language as CURRENT_LANGUAGE %}
+                            {% get_available_languages as AVAILABLE_LANGUAGES %}
+                            {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
+                            {% for language in languages %}
+                                <option value="{{ language.code }}"{% if language.code == CURRENT_LANGUAGE %} selected{% endif %}>
+                                    {{ language.code|upper }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </li>
             </ul>
         </div>
     </nav>
@@ -87,46 +117,46 @@
         <div class="footer-container">
             <div class="footer-about">
                 <h3>ThéâtrePlus</h3>
-                <p>Votre plateforme de référence pour réserver les meilleurs spectacles en Belgique. Vivez des moments inoubliables avec nous.</p>
+                <p>{% trans "Votre plateforme de référence pour réserver les meilleurs spectacles en Belgique. Vivez des moments inoubliables avec nous." %}</p>
             </div>
             <div class="footer-links">
-                <h4>Navigation</h4>
+                <h4>{% trans "Navigation" %}</h4>
                 <ul>
-                    <li><a href="{% url 'frontend:home' %}">Accueil</a></li>
-                    <li><a href="{% url 'frontend:show_list' %}">Spectacles</a></li>
-                    <li><a href="#">Lieux</a></li>
-                    <li><a href="{% url 'frontend:about' %}">À propos</a></li>
+                    <li><a href="{% url 'frontend:home' %}">{% trans "Accueil" %}</a></li>
+                    <li><a href="{% url 'frontend:show_list' %}">{% trans "Spectacles" %}</a></li>
+                    <li><a href="#">{% trans "Lieux" %}</a></li>
+                    <li><a href="{% url 'frontend:about' %}">{% trans "À propos" %}</a></li>
                 </ul>
             </div>
             <div class="footer-links">
-                <h4>Compte</h4>
+                <h4>{% trans "Compte" %}</h4>
                 <ul>
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'accounts:user-profile' %}">Mon profil</a></li>
+                        <li><a href="{% url 'accounts:user-profile' %}">{% trans "Mon profil" %}</a></li>
                         <li>
                              <form id="logout-form-footer" action="{% url 'accounts:logout' %}" method="post" style="display: none;">
                                 {% csrf_token %}
                             </form>
-                            <a href="javascript:document.getElementById('logout-form-footer').submit();">Déconnexion</a>
+                            <a href="javascript:document.getElementById('logout-form-footer').submit();">{% trans "Déconnexion" %}</a>
                         </li>
                     {% else %}
-                        <li><a href="{% url 'accounts:login' %}">Connexion</a></li>
-                        <li><a href="{% url 'accounts:user-signup' %}">Inscription</a></li>
+                        <li><a href="{% url 'accounts:login' %}">{% trans "Connexion" %}</a></li>
+                        <li><a href="{% url 'accounts:user-signup' %}">{% trans "Inscription" %}</a></li>
                     {% endif %}
                 </ul>
             </div>
             <div class="footer-links">
-                <h4>Aide</h4>
+                <h4>{% trans "Aide" %}</h4>
                 <ul>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Conditions</a></li>
-                    <li><a href="#">Confidentialité</a></li>
+                    <li><a href="#">{% trans "FAQ" %}</a></li>
+                    <li><a href="#">{% trans "Contact" %}</a></li>
+                    <li><a href="#">{% trans "Conditions" %}</a></li>
+                    <li><a href="#">{% trans "Confidentialité" %}</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 ThéâtrePlus. Tous droits réservés. | Projet PID - Version Alpha</p>
+            <p>&copy; 2026 ThéâtrePlus. {% trans "Tous droits réservés. | Projet PID - Version Alpha" %}</p>
         </div>
     </footer>
 

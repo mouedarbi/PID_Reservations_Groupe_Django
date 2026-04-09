@@ -1,3 +1,4 @@
+from django.utils.translation import gettext as _
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
@@ -23,7 +24,7 @@ class UserUpdateView(UserPassesTestMixin, UpdateView):
         return self.request.user.is_authenticated and self.request.user.id==pkInURL or self.request.user.is_superuser
 
     def handle_no_permission(self):
-        messages.error(self.request, "Vous n'avez pas l'autorisation d'accéder à cette page!")
+        messages.error(self.request, _("Vous n'avez pas l'autorisation d'accéder à cette page!"))
         return redirect('accounts:user-profile')
 
 
@@ -37,23 +38,23 @@ class UserSignUpView(UserPassesTestMixin, CreateView):
         return self.request.user.is_anonymous or self.request.user.is_superuser
 
     def handle_no_permission(self):
-        messages.error(self.request, "Vous êtes déjà inscrit!")
+        messages.error(self.request, _("Vous êtes déjà inscrit!"))
         return redirect('frontend:home')
 
 @login_required
 def profile(request):
     languages = {
-        "fr": "Français",
-        "en": "English",
-        "nl": "Nederlands",
+        "fr": _("Français"),
+        "en": _("English"),
+        "nl": _("Nederlands"),
     }
     
     # Secure against missing usermeta
     try:
         user_lang = request.user.usermeta.langue
-        lang_display = languages.get(user_lang, "Non définie")
+        lang_display = languages.get(user_lang, _("Non définie"))
     except Exception:
-        lang_display = "Non définie"
+        lang_display = _("Non définie")
 
     return render(request, 'user/profile.html', {
         "user_language" : lang_display,
@@ -70,14 +71,14 @@ def delete(request, pk):
                 user = User.objects.get(id=request.user.id)
                 user.delete()
 
-                messages.success(request, "Utilisateur supprimé avec succès.")
+                messages.success(request, _("Utilisateur supprimé avec succès."))
                 logout(request)
             else:
                 messages.error(request,
-                               "Suppression d'un autre compte interdite!")
+                               _("Suppression d'un autre compte interdite!"))
 
             return redirect('frontend:home')
 
-    messages.error(request, "Suppression interdite (méthode incorrecte)!")
+    messages.error(request, _("Suppression interdite (méthode incorrecte)!"))
 
     return redirect('frontend:home')

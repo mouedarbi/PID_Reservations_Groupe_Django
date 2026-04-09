@@ -2,7 +2,12 @@ import requests
 import json
 
 pk = 1
-api_url = f"http://127.0.0.1:8000/api/shows/{pk}/"
+import os
+
+# Utilise une variable d'environnement pour l'URL de base, avec un défaut à 8000
+BASE_URL = os.getenv('API_BASE_URL', 'http://127.0.0.1:8000')
+api_url = f"{BASE_URL}/api/shows/{pk}/"
+
 
 try:
     response = requests.get(api_url)

@@ -5,6 +5,8 @@ from .cart import Cart
 
 from django.contrib import messages
 
+from django.utils.translation import gettext as _
+
 @require_POST
 def cart_add(request, representation_id):
     """
@@ -20,15 +22,15 @@ def cart_add(request, representation_id):
     
     # Vérification des places disponibles
     if quantity > representation.available_seats:
-        messages.error(request, f"Désolé, il ne reste que {representation.available_seats} places disponibles.")
-        return redirect('catalogue:representation-show', representation_id=representation.id)
+        messages.error(request, _("Désolé, il ne reste que %(seats)s places disponibles.") % {'seats': representation.available_seats})
+        return redirect('catalogue:representation-show', pk=representation.id)
 
     # Vérification : le prix appartient-il bien au spectacle de cette représentation ?
     if price in representation.show.prices.all():
         cart.add(representation=representation,
                  price=price,
                  quantity=quantity)
-        messages.success(request, f"Ajouté : {quantity} x {price.type}. Vous pouvez continuer vos achats ou aller au panier.")
+        messages.success(request, _("Ajouté : %(qty)s x %(type)s. Vous pouvez continuer vos achats ou aller au panier.") % {'qty': quantity, 'type': price.type})
     
     # Rediriger vers la page précédente (la séance) au lieu du panier
     return redirect('catalogue:representation-show', representation_id=representation.id)
@@ -60,7 +62,7 @@ def cart_checkout(request):
     """
     cart = Cart(request)
     if len(cart) == 0:
-        messages.error(request, "Votre panier est vide.")
+        messages.error(request, _("Votre panier est vide."))
         return redirect('catalogue:show-index')
 
     if request.method == 'POST':
@@ -124,14 +126,14 @@ def payment_simulation(request, reservation_id):
             
             cart = Cart(request)
             cart.clear()
-            messages.success(request, f"Paiement réussi ! {reservations.count()} réservation(s) validée(s).")
+            messages.success(request, _("Paiement réussi ! %(count)s réservation(s) validée(s).") % {'count': reservations.count()})
             return redirect('accounts:user-profile')
             
         elif action == 'failure':
             for reservation in reservations:
                 reservation.status = 'FAILED'
                 reservation.save()
-            messages.error(request, "Le paiement a échoué.")
+            messages.error(request, _("Le paiement a échoué."))
             return redirect('cart:cart_detail')
 
     return render(request, 'cart/payment_simulation.html', {
