@@ -33,12 +33,12 @@ def cart_checkout(request):
         try:
             # 2. Création de la session Stripe
             checkout_session = stripe.checkout.Session.create(
-                payment_method_types=['card'],
+                payment_method_types=['card', 'bancontact', 'sepa_debit'],
                 line_items=line_items,
                 mode='payment',
                 # URLs vers lesquelles Stripe renvoie l'utilisateur
-                success_url=request.build_absolute_uri('/cart/payment/success/'),
-                cancel_url=request.build_absolute_uri('/cart/detail/'),
+                success_url=request.build_absolute_uri(reverse('payments:success')),
+                cancel_url=request.build_absolute_uri(reverse('payments:cancel')),
             )
             
             # 3. REDIRECTION DIRECTE VERS STRIPE

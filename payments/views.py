@@ -11,13 +11,17 @@ from cart.cart import Cart  # Utiliser la classe Cart existante
 # Configuration de la clé Stripe
 stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 
-class CreateCheckoutSessionView(APIView):
+from django.shortcuts import redirect
+from django.views import View
+
+class CreateCheckoutSessionView(View):
     def post(self, request):
         # 1. On initialise le panier via la classe Cart
         cart = Cart(request)
         
         if len(cart) == 0:
-            return Response({'error': 'Votre panier est vide'}, status=status.HTTP_400_BAD_REQUEST)
+            # Redirection vers le panier avec un message d'erreur si possible
+            return redirect('cart:cart_detail')
 
         # 2. Récupérer le total du panier
         total_amount = cart.get_total_price()
@@ -27,7 +31,6 @@ class CreateCheckoutSessionView(APIView):
             base_url = f"{request.scheme}://{request.get_host()}"
 
             # 3. Création de la session Stripe
-            # On ajoute 'bancontact' et 'sepa_debit' pour le paiement sans carte (en ligne)
             checkout_session = stripe.checkout.Session.create(
                 payment_method_types=['card', 'bancontact', 'sepa_debit'],
                 line_items=[{
@@ -44,15 +47,42 @@ class CreateCheckoutSessionView(APIView):
                 success_url=base_url + reverse('payments:success'),
                 cancel_url=base_url + reverse('payments:cancel'),
             )
-            return Response({'url': checkout_session.url})
+            # REDIRECTION DIRECTE (100% Python)
+            return redirect(checkout_session.url, status=303)
+            
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            # En cas d'erreur, on revient au panier
+            return redirect('cart:cart_detail')
+
+from catalogue.models.reservation import Reservation, RepresentationReservation
+from catalogue.models.representation import Representation
+from catalogue.models.price import Price
 
 # Vues pour les pages de confirmation (HTML)
 def payment_success(request):
-    # On vide le panier une fois payé
+    # On initialise le panier
     cart = Cart(request)
-    cart.clear()
+    
+    # On vérifie que l'utilisateur est connecté et que le panier n'est pas vide
+    if request.user.is_authenticated and len(cart) > 0:
+        # 1. Création de la réservation parente
+        reservation = Reservation.objects.create(
+            user=request.user,
+            status="paid"  # Statut de la réservation
+        )
+        
+        # 2. Création du détail pour chaque article du panier
+        for item in cart:
+            RepresentationReservation.objects.create(
+                reservation=reservation,
+                representation=item['representation'],
+                price=item['price_obj'],
+                quantity=item['quantity']
+            )
+            
+        # 3. On vide le panier une fois payé et enregistré
+        cart.clear()
+        
     return render(request, 'payments/success.html')
 
 def payment_cancel(request):
