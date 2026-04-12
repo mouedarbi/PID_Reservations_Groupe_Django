@@ -600,3 +600,120 @@ msgstr "Evenement"
 
 msgid "Êtes-vous sûr ?"
 msgstr "Bent u zeker?"
+
+msgid "Ajouté : %(qty)s x %(type)s. Vous pouvez continuer vos achats ou aller au panier."
+msgstr "Toegevoegd: %(qty)s x %(type)s. U kunt verder winkelen of naar het winkelmandje gaan."
+
+msgid "Annuler et revenir"
+msgstr "Annuleren en teruggaan"
+
+msgid "Annuler et revenir au spectacle"
+msgstr "Annuleren en terug naar voorstelling"
+
+msgid "Cette action est irréversible. Êtes-vous sûr de vouloir supprimer votre critique pour le spectacle"
+msgstr "Deze actie is onomkeerbaar. Weet u zeker dat u uw recensie voor de show wilt verwijderen"
+
+msgid "Confirmer la suppression"
+msgstr "Verwijdering bevestigen"
+
+msgid "Critique inexistante"
+msgstr "Recensie bestaat niet"
+
+msgid "Critique modifiée avec succès."
+msgstr "Recensie succesvol gewijzigd."
+
+msgid "Dutch"
+msgstr "Nederlands"
+
+msgid "Désolé, il ne reste que %(seats)s places disponibles."
+msgstr "Sorry, er zijn nog maar %(seats)s plaatsen beschikbaar."
+
+msgid "Enregistrer les modifications"
+msgstr "Wijzigingen opslaan"
+
+msgid "Fiche d\'une critique"
+msgstr "Recensieprofiel"
+
+msgid "French"
+msgstr "Frans"
+
+msgid "Le paiement a échoué."
+msgstr "Betaling mislukt."
+
+msgid "Liste des critiques"
+msgstr "Lijst met recensies"
+
+msgid "Message supprimé avec succès."
+msgstr "Bericht succesvol verwijderd."
+
+msgid "Mise à jour pour"
+msgstr "Update voor"
+
+msgid "Modification de critique"
+msgstr "Recensie bewerken"
+
+msgid "Modifier ma critique"
+msgstr "Mijn recensie bewerken"
+
+msgid "Modifier mon avis"
+msgstr "Mijn recensie bewerken"
+
+msgid "Non, garder mon avis"
+msgstr "Nee, bewaar mijn recensie"
+
+msgid "Note"
+msgstr "Beoordeling"
+
+msgid "Oui, supprimer définitivement"
+msgstr "Ja, permanent verwijderen"
+
+msgid "Paiement réussi ! %(count)s réservation(s) validée(s)."
+msgstr "Betaling geslaagd! %(count)s reservatie(s) gevalideerd."
+
+msgid "Partagez votre avis sur"
+msgstr "Deel uw mening over"
+
+msgid "Publier ma critique"
+msgstr "Mijn recensie publiceren"
+
+msgid "Quelle note donneriez-vous ?"
+msgstr "Welke beoordeling zou u geven?"
+
+msgid "Seul l'auteur peut modifier son message."
+msgstr "Alleen de auteur kan zijn bericht bewerken."
+
+msgid "Soumission de critique"
+msgstr "Recensie indienen"
+
+msgid "Supprimer cet avis ?"
+msgstr "Deze recensie verwijderen?"
+
+msgid "Veuillez choisir un spectacle pour laisser un commentaire."
+msgstr "Kies een show om een reactie achter te laten."
+
+msgid "Veuillez choisir une note."
+msgstr "Kies een beoordeling."
+
+msgid "Votre Critique"
+msgstr "Uw Recensie"
+
+msgid "Votre avis a été soumis avec succès et sera publié après validation."
+msgstr "Uw recensie is succesvol ingediend en zal na validatie worden gepubliceerd."
+
+msgid "Votre commentaire"
+msgstr "Uw reactie"
+
+msgid "Votre panier est vide."
+msgstr "Uw winkelmandje is leeg."
+
+msgid "Vous n'êtes pas autorisé à supprimer ce message."
+msgstr "U bent niet bevoegd om dit bericht te verwijderen."
+
+msgid "Vous ne pouvez commenter que les spectacles auxquels vous avez assisté."
+msgstr "U kunt alleen reageren op shows die u heeft bezocht."
+
+msgid "Administration"
+msgstr "Administratie"
+
+msgid "à"
+msgstr "om"

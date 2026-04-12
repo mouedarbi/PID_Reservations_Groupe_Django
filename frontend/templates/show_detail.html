@@ -125,7 +125,7 @@
                 <h3>{% trans "Critiques & Avis" %}</h3>
                 {% if user.is_authenticated %}
                     {% if user.groups.all.0.name == 'PRESS_CRITIC' or user.is_superuser %}
-                        <a href="{% url 'catalogue:review-create' %}?show_id={{ show.id }}" class="btn-primary">{% trans "Soumettre une critique" %}</a>
+                        <a href="{% url 'catalogue:review-create' %}?show_id={{ show.id }}" class="btn-danger" style="background: #dc2626; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block;">{% trans "Soumettre une critique" %}</a>
                     {% endif %}
                 {% endif %}
             </div>
@@ -133,7 +133,7 @@
             {% if show.reviews %}
                 <div class="reviews-list">
                     {% for review in show.reviews %}
-                        <div class="review-card mb-3 p-3" style="background: #fdfdfd; border-left: 4px solid var(--primary-color, #ff4d4d); border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                        <div class="review-card mb-3 p-3" style="background: #fdfdfd; border-left: 4px solid #dc2626; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
                             <div class="review-header d-flex justify-content-between">
                                 <strong>{{ review.user_name }}</strong>
                                 <div class="stars" style="color: #ffc107;">
@@ -151,12 +151,12 @@
                                     {% if user.is_authenticated %}
                                         {# Seul l'auteur peut éditer #}
                                         {% if user.username == review.user_name %}
-                                            <a href="{% url 'catalogue:review-edit' review.id %}" class="btn-sm text-primary" title="{% trans 'Modifier' %}"><i class="ph ph-note-pencil"></i></a>
+                                            <a href="{% url 'catalogue:review-edit' review.id %}" class="btn-sm text-danger" title="{% trans 'Modifier' %}" style="color: #dc2626;"><i class="ph ph-note-pencil"></i></a>
                                         {% endif %}
                                         
                                         {# L'auteur ou un modérateur peut supprimer #}
                                         {% if user.username == review.user_name or user.is_superuser or user.groups.all.0.name == 'PRODUCER' or user.groups.all.0.name == 'ADMINISTRATOR' %}
-                                            <a href="{% url 'catalogue:review-delete' review.id %}" class="btn-sm text-danger ms-2" title="{% trans 'Supprimer' %}"><i class="ph ph-trash"></i></a>
+                                            <a href="{% url 'catalogue:review-delete' review.id %}" class="btn-sm text-danger ms-2" title="{% trans 'Supprimer' %}" style="color: #dc2626;"><i class="ph ph-trash"></i></a>
                                         {% endif %}
                                     {% endif %}
                                 </div>

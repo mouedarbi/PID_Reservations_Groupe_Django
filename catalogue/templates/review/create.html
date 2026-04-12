@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Soumettre une critique - {{ block.super }}{% endblock %}
+{% block title %}{% trans "Soumettre une critique" %} - {{ block.super }}{% endblock %}
 
 {% block content %}
 <section class="auth-section" style="padding: 60px 0; background: #f9fafb; min-height: 80vh;">
@@ -10,16 +10,16 @@
             <div class="col-md-8" style="max-width: 700px; margin: 0 auto;">
                 <nav aria-label="breadcrumb" style="margin-bottom: 2rem;">
                     <ol class="breadcrumb" style="display: flex; list-style: none; padding: 0; font-size: 0.9rem;">
-                        <li class="breadcrumb-item"><a href="{% url 'frontend:show_list' %}" style="color: var(--primary-color, #ff4d4d); text-decoration: none;">Spectacles</a></li>
-                        <li class="breadcrumb-item active" style="color: #666; padding-left: 0.5rem;" aria-current="page">Soumission de critique</li>
+                        <li class="breadcrumb-item"><a href="{% url 'frontend:show_list' %}" style="color: #dc2626; text-decoration: none;">{% trans "Spectacles" %}</a></li>
+                        <li class="breadcrumb-item active" style="color: #666; padding-left: 0.5rem;" aria-current="page">{% trans "Soumission de critique" %}</li>
                     </ol>
                 </nav>
 
                 <div class="card" style="background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #edf2f7;">
                     <div class="text-center mb-4">
-                        <i class="ph ph-chat-centered-dots" style="font-size: 3rem; color: var(--primary-color, #ff4d4d);"></i>
-                        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-top: 1rem;">Votre Critique</h2>
-                        <p class="text-muted">Partagez votre avis sur <strong>{{ show.title }}</strong></p>
+                        <i class="ph ph-chat-centered-dots" style="font-size: 3rem; color: #dc2626;"></i>
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-top: 1rem;">{% trans "Votre Critique" %}</h2>
+                        <p class="text-muted">{% trans "Partagez votre avis sur" %} <strong>{{ show.title }}</strong></p>
                     </div>
 
                     <form method="post" class="mt-4" id="review-form">
@@ -34,7 +34,7 @@
                         {% endif %}
 
                         <div class="form-group mb-4 text-center">
-                            <label style="font-weight: 600; display: block; margin-bottom: 15px;">Quelle note donneriez-vous ?</label>
+                            <label style="font-weight: 600; display: block; margin-bottom: 15px;">{% trans "Quelle note donneriez-vous ?" %}</label>
                             <div class="star-rating" style="font-size: 2.5rem; color: #ddd; cursor: pointer;">
                                 <i class="ph-bold ph-star" data-value="1"></i>
                                 <i class="ph-bold ph-star" data-value="2"></i>
@@ -43,12 +43,12 @@
                                 <i class="ph-bold ph-star" data-value="5"></i>
                             </div>
                             {% if form.stars.errors %}
-                                <div class="error-msg" style="color: #b91c1c; font-size: 0.85rem; margin-top: 5px;">Veuillez choisir une note.</div>
+                                <div class="error-msg" style="color: #b91c1c; font-size: 0.85rem; margin-top: 5px;">{% trans "Veuillez choisir une note." %}</div>
                             {% endif %}
                         </div>
 
                         <div class="form-group mb-4">
-                            <label style="font-weight: 600; display: block; margin-bottom: 8px;">Votre commentaire</label>
+                            <label style="font-weight: 600; display: block; margin-bottom: 8px;">{% trans "Votre commentaire" %}</label>
                             {{ form.review }}
                             {% if form.review.errors %}
                                 <div class="error-msg" style="color: #b91c1c; font-size: 0.85rem; margin-top: 5px;">{{ form.review.errors }}</div>
@@ -56,8 +56,8 @@
                         </div>
 
                         <div class="d-grid mt-5" style="display: grid; gap: 1rem;">
-                            <button type="submit" class="btn-primary" style="padding: 15px; font-weight: bold; font-size: 1.1rem; cursor: pointer; border: none; border-radius: 8px;">Publier ma critique</button>
-                            <a href="{% url 'frontend:show_detail' pk=show.id %}" class="text-center" style="color: #666; text-decoration: none; font-size: 0.9rem; padding: 10px;">Annuler et revenir au spectacle</a>
+                            <button type="submit" class="btn-primary" style="padding: 15px; font-weight: bold; font-size: 1.1rem; cursor: pointer; border: none; border-radius: 8px; background: #dc2626; color: white;">{% trans "Publier ma critique" %}</button>
+                            <a href="{% url 'frontend:show_detail' pk=show.id %}" class="text-center" style="color: #666; text-decoration: none; font-size: 0.9rem; padding: 10px;">{% trans "Annuler et revenir au spectacle" %}</a>
                         </div>
                     </form>
                 </div>

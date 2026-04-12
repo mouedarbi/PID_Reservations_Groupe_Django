@@ -38,7 +38,41 @@ Ce document retrace toutes les étapes effectuées pour rendre le site **Théât
 ## 5. Correction de Bugs
 - **Correction du titre du catalogue** : Résolution du problème où "Catalogue des Spectacles" restait en français. Le titre a été déplacé vers une chaîne traduisible dans la vue et les fichiers PO ont été mis à jour.
 
+## 6. Améliorations Systèmes (Audit Avril 2026)
+- **Dynamisation des URLs API** : Dans `frontend/views.py`, remplacement des URLs codées en dur (`127.0.0.1:8000`) par `request.build_absolute_uri('/')` pour supporter différents ports et environnements.
+- **Contexte de langue API** : Ajout de l'en-tête `headers={'Accept-Language': request.LANGUAGE_CODE}` dans tous les appels `requests.get()` du frontend pour garantir que l'API renvoie les données traduites (titres, descriptions).
+
+## 7. Extension de la Couverture I18N (Templates oubliés)
+- **Détail des lieux** : Internationalisation complète de `location_detail.html` (Informations, Adresse, Téléphone, Prochain spectacle).
+- **Gestion du Panier** : Traduction intégrale de tout le tunnel d'achat :
+    - `cart/detail.html` (Le panier).
+    - `cart/checkout.html` (Confirmation).
+    - `cart/payment_simulation.html` (Simulateur de paiement).
+    - `cart/reservation_detail.html` (Facture/Billet).
+- **Profil Utilisateur** : Harmonisation et traduction du profil (`accounts/templates/user/profile.html`). Suppression du doublon dans `frontend/`. Correction des liens vers le changement de mot de passe (`accounts:password_change`).
+
+## 8. Extension des données multilingues (DB)
+- **Nouveaux champs traduits** :
+    - `Location` : Ajout du champ `address`.
+    - `Locality` : Ajout du champ `locality`.
+    - `Price` : Ajout des champs `type` et `description`.
+- **Mise à jour des Fixtures** : Enrichissement des fichiers JSON (`localities.json`, `locations.json`, `shows.json`, `prices.json`) avec les versions EN et NL des données.
+- **Traduction des Statuts** : Implémentation de la traduction logique des statuts de réservation (`PAID`, `PENDING`, `FAILED`) directement dans les templates via des tags `{% trans %}`.
+
+## 9. Automatisation et Maintenance
+- **Scripts d'automatisation créés** :
+    - `extract_and_update_po.py` : Scanne tous les templates pour extraire les nouveaux tags `{% trans %}` et les ajouter aux fichiers `.po`.
+    - `fill_translations_bulk.py` : Remplit automatiquement les traductions vides dans les fichiers `.po` pour l'anglais et le néerlandais.
+    - `deduplicate_po.py` : Nettoie les fichiers de langue des entrées en double.
+    - `compile_translations_v2.py` : Version améliorée du compilateur avec logs détaillés et vérification de `polib`.
+- **API Serializers** : Mise à jour de `RepresentationSerializer` pour utiliser `date_format` de Django, permettant de traduire les noms de mois et le séparateur horaire ("à", "at", "om").
+
+## 10. Synchronisation des Branches
+- **Comparaison dev_mohamed vs dev_ghiles** : #Finalisation de la traduction
+    - `dev_ghiles` inclut désormais des fonctionnalités avancées comme la traduction automatique des avis via LibreTranslate, un tableau de bord pour les paramètres système, et le support i18n dans les formulaires d'administration.
+
 ## Comment ajouter de nouvelles traductions à l'avenir ?
 1. Ajouter le texte dans le template avec `{% trans "Mon texte" %}` ou dans le code avec `_("Mon texte")`.
-2. Ajouter l'entrée `msgid` et `msgstr` dans `locale/en/LC_MESSAGES/django.po` et `locale/nl/LC_MESSAGES/django.po`.
-3. Exécuter `python compile_translations.py` pour activer les changements.
+2. Exécuter `python extract_and_update_po.py` pour détecter automatiquement les nouveaux textes.
+3. Mettre à jour les dictionnaires dans `fill_translations_bulk.py` avec les traductions souhaitées et l'exécuter.
+4. Exécuter `python compile_translations_v2.py` pour compiler et activer les changements.

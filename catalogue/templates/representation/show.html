@@ -22,7 +22,7 @@
         <header style="margin-bottom: 2rem; border-bottom: 2px solid #eee; padding-bottom: 1rem;">
             <h1 style="margin-bottom: 0.5rem;">{{ representation.show.title }}</h1>
             <p style="font-size: 1.2rem; color: #555;">
-                <i class="ph ph-calendar"></i> {{ representation.schedule|date:"d F Y" }} à {{ representation.schedule|date:"H:i" }}
+                <i class="ph ph-calendar"></i> {{ representation.schedule|date:"d F Y" }} {% trans "à" %} {{ representation.schedule|date:"H:i" }}
             </p>
             <p style="color: #777;">
                 <i class="ph ph-map-pin"></i> 

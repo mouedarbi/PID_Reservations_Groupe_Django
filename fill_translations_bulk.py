@@ -70,16 +70,14 @@ translations_en = {
     "ÉCHEC": "FAILURE",
     "Événement": "Event",
     "Êtes-vous sûr ?": "Are you sure?",
-    "ATTENTE": "WAITING",
-    "Action": "Action",
-    "Adresse :": "Address:",
-    "Attention :": "Attention:",
-    "Aucun spectacle trouvé": "No show found",
-    "Aucun tarif n'est disponible pour ce spectacle.": "No rate is available for this show.",
-    "Aucune représentation n'est prévue pour le moment dans ce lieu.": "No performance is scheduled at this location at the moment.",
-    "Bonjour,": "Hello,",
-    "Confirmation de commande": "Order confirmation",
-    "Confirmation de votre commande": "Order confirmation",
+    "à": "at",
+    "Administration": "Administration",
+    "Ajouté : %(qty)s x %(type)s. Vous pouvez continuer vos achats ou aller au panier.": "Added: %(qty)s x %(type)s. You can continue shopping or go to cart.",
+    "Dutch": "Dutch",
+    "Désolé, il ne reste que %(seats)s places disponibles.": "Sorry, only %(seats)s seats available.",
+    "Fiche d'une critique": "Review Profile",
+    "Fiche d\\'une critique": "Review Profile",
+    "French": "French",
 }
 
 translations_nl = {
@@ -99,7 +97,7 @@ translations_nl = {
     "Il semble que vous n'ayez pas encore choisi de spectacle.": "Het lijkt erop dat u nog geen voorstelling heeft gekozen.",
     "Imprimer mon billet": "Mijn ticket afdrukken",
     "Informations": "Informatie",
-    "Mes Réservations": "Mijn Reservaties",
+    "Mes Reservaties": "Mijn Reservaties",
     "Modifier le profil": "Profiel bewerken",
     "Modifier mon panier": "Mijn winkelmandje bewerken",
     "Mon Profil - ThéâtrePlus": "Mijn Profiel - ThéâtrePlus",
@@ -152,43 +150,28 @@ translations_nl = {
     "ÉCHEC": "MISLUKT",
     "Événement": "Evenement",
     "Êtes-vous sûr ?": "Bent u zeker?",
-    "ATTENTE": "WACHTEN",
-    "Action": "Actie",
-    "Adresse :": "Adres:",
-    "Attention :": "Opgelet:",
-    "Aucun spectacle trouvé": "Geen voorstelling gevonden",
-    "Aucun tarif n'est disponible pour ce spectacle.": "Er is geen tarief beschikbaar voor deze voorstelling.",
-    "Aucune représentation n'est prévue pour le moment dans ce lieu.": "Er is momenteel geen voorstelling gepland op deze locatie.",
-    "Bonjour,": "Hallo,",
-    "Confirmation de commande": "Bestellingsbevestiging",
-    "Confirmation de votre commande": "Bestellingsbevestiging",
+    "à": "om",
+    "Administration": "Administratie",
+    "Ajouté : %(qty)s x %(type)s. Vous pouvez continuer vos achats ou aller au panier.": "Toegevoegd: %(qty)s x %(type)s. U kunt verder winkelen of naar het winkelmandje gaan.",
+    "Dutch": "Nederlands",
+    "Désolé, il ne reste que %(seats)s places disponibles.": "Sorry, er zijn nog maar %(seats)s plaatsen beschikbaar.",
+    "Fiche d'une critique": "Recensieprofiel",
+    "Fiche d\\'une critique": "Recensieprofiel",
+    "French": "Frans",
 }
 
 def fill_translations(file_path, translations):
     with open(file_path, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
+        content = f.read()
     
-    new_lines = []
-    i = 0
-    while i < len(lines):
-        line = lines[i]
-        if line.startswith('msgid'):
-            msgid = re.search(r'msgid "(.*?)"', line).group(1)
-            new_lines.append(line)
-            i += 1
-            if i < len(lines) and lines[i].startswith('msgstr ""'):
-                if msgid in translations:
-                    new_lines.append(f'msgstr "{translations[msgid]}"\n')
-                else:
-                    new_lines.append(lines[i])
-            else:
-                new_lines.append(lines[i])
-        else:
-            new_lines.append(line)
-        i += 1
-    
+    for fr, trans in translations.items():
+        # Match exactly the msgid even with backslashes
+        pattern = rf'msgid "{re.escape(fr)}"\nmsgstr ""'
+        replacement = f'msgid "{fr}"\nmsgstr "{trans}"'
+        content = re.sub(pattern, replacement, content)
+
     with open(file_path, 'w', encoding='utf-8') as f:
-        f.writelines(new_lines)
+        f.write(content)
 
 fill_translations('locale/en/LC_MESSAGES/django.po', translations_en)
 fill_translations('locale/nl/LC_MESSAGES/django.po', translations_nl)

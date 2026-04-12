@@ -60,7 +60,7 @@
                         <div class="next-show-content">
                             <h3 style="font-size: 1.5rem; margin-bottom: 10px; color: var(--primary, #e63946);">{{ next_representation.show.title }}</h3>
                             <p style="color: var(--text-secondary, #6c757d); margin-bottom: 8px;">
-                                <strong>{% trans "Date :" %}</strong> {{ next_representation.schedule|date:"d F Y" }} à {{ next_representation.schedule|date:"H:i" }}
+                                <strong>{% trans "Date :" %}</strong> {{ next_representation.schedule|date:"d F Y" }} {% trans "à" %} {{ next_representation.schedule|date:"H:i" }}
                             </p>
                             <p style="color: var(--text-secondary, #6c757d); margin-bottom: 8px;">
                                 <strong>{% trans "Lieu :" %}</strong> {{ next_representation.location.designation }}

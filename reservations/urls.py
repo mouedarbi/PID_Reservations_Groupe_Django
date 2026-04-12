@@ -31,7 +31,7 @@ from catalogue.views.admin_dashboard import (
     admin_representation_create, admin_representation_edit, admin_representation_detail,
     admin_user_create, admin_user_edit, admin_user_detail,
     admin_group_index, admin_group_create, admin_group_edit, admin_group_detail,
-    admin_generic_delete
+    admin_generic_delete, admin_settings
 )
 
 
@@ -41,6 +41,9 @@ urlpatterns = [
 
     # Custom Admin Dashboard
     path('admin-dashboard/', admin_dashboard, name='admin_dashboard'),
+    
+    # Settings
+    path('admin-dashboard/settings/', admin_settings, name='admin_settings'),
     
     # Shows
     path('admin-dashboard/shows/', admin_show_index, name='admin_show_index'),
