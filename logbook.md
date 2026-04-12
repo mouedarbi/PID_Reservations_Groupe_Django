@@ -118,6 +118,39 @@ Cette session a permis de finaliser l'implémentation des fonctionnalités CRUD 
 - **Étape 2 : Validation** -> Transformation du panier session en objet `Reservation` avec statut `PENDING`.
 - **Étape 3 : Paiement (Simulation)** -> Interface de test avec choix [Succès / Échec] pour valider le comportement du système avant l'intégration d'une API réelle (Stripe/PayPal).
 
-### 4. Admin Dashboard (Vues spécialisées)
-- **Gestion des Réservations** : Focus sur le manager (Qui a payé ? Qui faut-il relancer ?).
-- **Audit des Paiements** : Nouveau menu dans "Paramètres" pour consulter les logs techniques de `PaymentTransaction` (essentiel pour le support client).
+## Date: lundi 6 avril 2026
+
+### Progress Summary - Importation de Données via API Externe
+
+Cette session a été consacrée à l'enrichissement de la base de données par l'importation de données réelles provenant d'une API publique (ODWB).
+
+#### 1. Implémentation de la Commande de Gestion (`import_locations`)
+
+Pour automatiser l'ajout de lieux de spectacles, une commande de gestion Django personnalisée a été créée :
+-   **Fichier créé** : `catalogue/management/commands/import_locations.py`.
+-   **Source des données** : API de l'Open Data Wallonie-Bruxelles (ODWB) recensant les salles de concert et théâtres.
+-   **Technologie utilisée** : Bibliothèque `requests` pour les appels HTTP et `BaseCommand` de Django pour l'intégration au CLI `manage.py`.
+
+#### 2. Logique d'Importation et Mapping des Données
+
+Le script a été conçu pour transformer les données brutes de l'API en objets Django cohérents avec le schéma existant :
+-   **Localités** : Création automatique ou récupération des objets `Locality` en utilisant le code postal et la ville fournis par l'API.
+-   **Lieux (Locations)** :
+    *   **Mapping des champs** : `salle` -> `designation`, `adresse` -> `address`, `site_web` -> `website`, `telephone` -> `phone`.
+    *   **Génération de Slugs** : Utilisation de `slugify` pour générer des slugs uniques, avec un système de compteur incrémental pour éviter les collisions en cas de noms identiques.
+
+#### 3. Gestion de l'Intégrité et des Doublons
+
+Un point crucial a été d'assurer que l'importation n'interfère pas avec les données existantes des fixtures :
+-   **Méthode de vérification** : Le script recherche d'abord si une salle avec la même `designation` existe déjà.
+-   **Comportement** : 
+    *   Si la salle existe déjà (ex: issue des fixtures JSON), elle est **mise à jour** avec les dernières informations de l'API.
+    *   Si elle est nouvelle, elle est **créée**.
+-   **Résultat du premier import** : 99 nouveaux lieux créés et 1 lieu mis à jour (**Espace Magh**), sans créer de doublons avec les données de démonstration initiales.
+
+#### 4. Utilisation
+
+La commande peut être relancée à tout moment pour synchroniser la base de données locale avec les mises à jour de l'API ODWB :
+```bash
+python manage.py import_locations
+```
