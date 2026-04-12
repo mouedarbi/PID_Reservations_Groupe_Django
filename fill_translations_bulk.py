@@ -13,7 +13,7 @@ translations_en = {
     "Frais de service": "Service fee",
     "Gérez vos informations et consultez vos réservations.": "Manage your information and view your reservations.",
     "ID": "ID",
-    "Il ne reste que {{ count }} places for cette séance. Ne tardez pas !": "Only {{ count }} seats left for this session. Don't delay!",
+    "Il ne reste que {{ count }} places pour cette séance. Ne tardez pas !": "Only {{ count }} seats left for this session. Don't delay!",
     "Il semble que vous n'ayez pas encore choisi de spectacle.": "It seems you haven't chosen a show yet.",
     "Imprimer mon billet": "Print my ticket",
     "Informations": "Information",
@@ -70,56 +70,14 @@ translations_en = {
     "ÉCHEC": "FAILURE",
     "Événement": "Event",
     "Êtes-vous sûr ?": "Are you sure?",
-    "ATTENTE": "WAITING",
-    "Action": "Action",
-    "Adresse :": "Address:",
-    "Attention :": "Attention:",
-    "Aucun spectacle trouvé": "No show found",
-    "Aucun tarif n'est disponible pour ce spectacle.": "No rate is available for this show.",
-    "Aucune représentation n'est prévue pour le moment dans ce lieu.": "No performance is scheduled at this location at the moment.",
-    "Bonjour,": "Hello,",
-    "Confirmation de commande": "Order confirmation",
-    "Confirmation de votre commande": "Order confirmation",
-    
-    # Nouvelles traductions pour les avis
-    "Critiques & Avis": "Reviews",
-    "Soumettre une critique": "Submit a review",
-    "Modifier": "Edit",
-    "Supprimer": "Delete",
-    "Aucun avis pour le moment. Soyez le premier à partager votre critique !": "No reviews yet. Be the first to share your review!",
-    "Annuler et revenir": "Cancel and go back",
-    "Annuler et revenir au spectacle": "Cancel and return to show",
-    "Cette action est irréversible. Êtes-vous sûr de vouloir supprimer votre critique pour le spectacle": "This action is irreversible. Are you sure you want to delete your review for the show",
-    "Confirmer la suppression": "Confirm deletion",
-    "Critique inexistante": "Review does not exist",
-    "Critique modifiée avec succès.": "Review successfully modified.",
-    "Enregistrer les modifications": "Save changes",
+    "à": "at",
+    "Administration": "Administration",
+    "Ajouté : %(qty)s x %(type)s. Vous pouvez continuer vos achats ou aller au panier.": "Added: %(qty)s x %(type)s. You can continue shopping or go to cart.",
+    "Dutch": "Dutch",
+    "Désolé, il ne reste que %(seats)s places disponibles.": "Sorry, only %(seats)s seats available.",
     "Fiche d'une critique": "Review Profile",
-    "Liste des critiques": "Reviews List",
-    "Message supprimé avec succès.": "Message successfully deleted.",
-    "Mise à jour pour": "Update for",
-    "Modification de critique": "Review Edit",
-    "Modifier ma critique": "Edit my review",
-    "Modifier mon avis": "Edit my review",
-    "Non, garder mon avis": "No, keep my review",
-    "Note": "Rating",
-    "Oui, supprimer définitivement": "Yes, delete permanently",
-    "Partagez votre avis sur": "Share your review on",
-    "Publier ma critique": "Publish my review",
-    "Quelle note donneriez-vous ?": "What rating would you give?",
-    "Seul l'auteur peut modifier son message.": "Only the author can edit their message.",
-    "Soumission de critique": "Review Submission",
-    "Supprimer cet avis ?": "Delete this review?",
-    "Veuillez choisir un spectacle pour laisser un commentaire.": "Please choose a show to leave a comment.",
-    "Veuillez choisir une note.": "Please choose a rating.",
-    "Votre Critique": "Your Review",
-    "Votre avis a été soumis avec succès et sera publié après validation.": "Your review has been successfully submitted and will be published after validation.",
-    "Votre commentaire": "Your comment",
-    "Vous n'êtes pas autorisé à supprimer ce message.": "You are not authorized to delete this message.",
-    "Vous ne pouvez commenter que les spectacles auxquels vous avez assisté.": "You can only comment on shows you have attended.",
-    "Paiement réussi ! %(count)s réservation(s) validée(s).": "Payment successful! %(count)s reservation(s) validated.",
-    "Le paiement a échoué.": "Payment failed.",
-    "Votre panier est vide.": "Your cart is empty.",
+    "Fiche d\\'une critique": "Review Profile",
+    "French": "French",
 }
 
 translations_nl = {
@@ -139,7 +97,7 @@ translations_nl = {
     "Il semble que vous n'ayez pas encore choisi de spectacle.": "Het lijkt erop dat u nog geen voorstelling heeft gekozen.",
     "Imprimer mon billet": "Mijn ticket afdrukken",
     "Informations": "Informatie",
-    "Mes Réservations": "Mijn Reservaties",
+    "Mes Reservaties": "Mijn Reservaties",
     "Modifier le profil": "Profiel bewerken",
     "Modifier mon panier": "Mijn winkelmandje bewerken",
     "Mon Profil - ThéâtrePlus": "Mijn Profiel - ThéâtrePlus",
@@ -192,88 +150,28 @@ translations_nl = {
     "ÉCHEC": "MISLUKT",
     "Événement": "Evenement",
     "Êtes-vous sûr ?": "Bent u zeker?",
-    "ATTENTE": "WACHTEN",
-    "Action": "Actie",
-    "Adresse :": "Adres:",
-    "Attention :": "Opgelet:",
-    "Aucun spectacle trouvé": "Geen voorstelling gevonden",
-    "Aucun tarif n'est disponible pour ce spectacle.": "Er is geen tarief beschikbaar voor deze voorstelling.",
-    "Aucune représentation n'est prévue pour le moment dans ce lieu.": "Er is momenteel geen voorstelling gepland op deze locatie.",
-    "Bonjour,": "Hallo,",
-    "Confirmation de commande": "Bestellingsbevestiging",
-    "Confirmation de votre commande": "Bestellingsbevestiging",
-
-    # Nouvelles traductions pour les avis
-    "Critiques & Avis": "Recensies",
-    "Soumettre une critique": "Schrijf een recensie",
-    "Modifier": "Bewerken",
-    "Supprimer": "Verwijderen",
-    "Aucun avis pour le moment. Soyez le premier à partager votre critique !": "Nog geen recensies. Deel als eerste uw mening!",
-    "Annuler et revenir": "Annuleren en teruggaan",
-    "Annuler et revenir au spectacle": "Annuleren en terug naar voorstelling",
-    "Cette action est irréversible. Êtes-vous sûr de vouloir supprimer votre critique pour le spectacle": "Deze actie is onomkeerbaar. Weet u zeker dat u uw recensie voor de show wilt verwijderen",
-    "Confirmer la suppression": "Verwijdering bevestigen",
-    "Critique inexistante": "Recensie bestaat niet",
-    "Critique modifiée avec succès.": "Recensie succesvol gewijzigd.",
-    "Enregistrer les modifications": "Wijzigingen opslaan",
+    "à": "om",
+    "Administration": "Administratie",
+    "Ajouté : %(qty)s x %(type)s. Vous pouvez continuer vos achats ou aller au panier.": "Toegevoegd: %(qty)s x %(type)s. U kunt verder winkelen of naar het winkelmandje gaan.",
+    "Dutch": "Nederlands",
+    "Désolé, il ne reste que %(seats)s places disponibles.": "Sorry, er zijn nog maar %(seats)s plaatsen beschikbaar.",
     "Fiche d'une critique": "Recensieprofiel",
-    "Liste des critiques": "Lijst met recensies",
-    "Message supprimé avec succès.": "Bericht succesvol verwijderd.",
-    "Mise à jour pour": "Update voor",
-    "Modification de critique": "Recensie bewerken",
-    "Modifier ma critique": "Mijn recensie bewerken",
-    "Modifier mon avis": "Mijn recensie bewerken",
-    "Non, garder mon avis": "Nee, bewaar mijn recensie",
-    "Note": "Beoordeling",
-    "Oui, supprimer définitivement": "Ja, permanent verwijderen",
-    "Partagez votre avis sur": "Deel uw mening over",
-    "Publier ma critique": "Mijn recensie publiceren",
-    "Quelle note donneriez-vous ?": "Welke beoordeling zou u geven?",
-    "Seul l'auteur peut modifier son message.": "Alleen de auteur kan zijn bericht bewerken.",
-    "Soumission de critique": "Recensie indienen",
-    "Supprimer cet avis ?": "Deze recensie verwijderen?",
-    "Veuillez choisir un spectacle pour laisser un commentaire.": "Kies een show om een reactie achter te laten.",
-    "Veuillez choisir une note.": "Kies een beoordeling.",
-    "Votre Critique": "Uw Recensie",
-    "Votre avis a été soumis avec succès et sera publié après validation.": "Uw recensie is succesvol ingediend en zal na validatie worden gepubliceerd.",
-    "Votre commentaire": "Uw reactie",
-    "Vous n'êtes pas autorisé à supprimer ce message.": "U bent niet bevoegd om dit bericht te verwijderen.",
-    "Vous ne pouvez commenter que les spectacles auxquels vous avez assisté.": "U kunt alleen reageren op shows die u heeft bezocht.",
-    "Paiement réussi ! %(count)s réservation(s) validée(s).": "Betaling geslaagd! %(count)s reservatie(s) gevalideerd.",
-    "Le paiement a échoué.": "Betaling mislukt.",
-    "Votre panier est vide.": "Uw winkelmandje is leeg.",
+    "Fiche d\\'une critique": "Recensieprofiel",
+    "French": "Frans",
 }
 
 def fill_translations(file_path, translations):
     with open(file_path, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
+        content = f.read()
     
-    new_lines = []
-    i = 0
-    while i < len(lines):
-        line = lines[i]
-        if line.startswith('msgid'):
-            # Handle multi-line msgid if necessary (simplified here)
-            match = re.search(r'msgid "(.*?)"', line)
-            if match:
-                msgid = match.group(1)
-                new_lines.append(line)
-                i += 1
-                if i < len(lines) and lines[i].startswith('msgstr ""'):
-                    if msgid in translations:
-                        new_lines.append(f'msgstr "{translations[msgid]}"\n')
-                    else:
-                        new_lines.append(lines[i])
-                else:
-                    new_lines.append(lines[i])
-            else:
-                new_lines.append(line)
-        else:
-            new_lines.append(line)
-        i += 1
-    
+    for fr, trans in translations.items():
+        # Match exactly the msgid even with backslashes
+        pattern = rf'msgid "{re.escape(fr)}"\nmsgstr ""'
+        replacement = f'msgid "{fr}"\nmsgstr "{trans}"'
+        content = re.sub(pattern, replacement, content)
+
     with open(file_path, 'w', encoding='utf-8') as f:
-        f.writelines(new_lines)
+        f.write(content)
 
 fill_translations('locale/en/LC_MESSAGES/django.po', translations_en)
 fill_translations('locale/nl/LC_MESSAGES/django.po', translations_nl)

@@ -35,7 +35,7 @@
                                 <td style="padding: 1.5rem;">
                                     <h4 style="margin: 0; color: var(--text-primary);">{{ item.representation.show.title }}</h4>
                                     <p style="margin: 0.2rem 0 0; font-size: 0.85rem; color: var(--text-secondary);">
-                                        <i class="ph ph-calendar"></i> {{ item.representation.schedule|date:"d F Y à H:i" }}
+                                        <i class="ph ph-calendar"></i> {{ item.representation.schedule|date:"d F Y" }} {% trans "à" %} {{ item.representation.schedule|date:"H:i" }}
                                     </p>
                                 </td>
                                 <td style="padding: 1.5rem; text-align: center;">

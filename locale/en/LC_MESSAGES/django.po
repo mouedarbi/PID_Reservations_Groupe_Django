@@ -602,7 +602,7 @@ msgid "Êtes-vous sûr ?"
 msgstr "Are you sure?"
 
 msgid "Ajouté : %(qty)s x %(type)s. Vous pouvez continuer vos achats ou aller au panier."
-msgstr ""
+msgstr "Added: %(qty)s x %(type)s. You can continue shopping or go to cart."
 
 msgid "Annuler et revenir"
 msgstr "Cancel and go back"
@@ -623,19 +623,19 @@ msgid "Critique modifiée avec succès."
 msgstr "Review successfully modified."
 
 msgid "Dutch"
-msgstr ""
+msgstr "Dutch"
 
 msgid "Désolé, il ne reste que %(seats)s places disponibles."
-msgstr ""
+msgstr "Sorry, only %(seats)s seats available."
 
 msgid "Enregistrer les modifications"
 msgstr "Save changes"
 
 msgid "Fiche d\'une critique"
-msgstr ""
+msgstr "Review Profile"
 
 msgid "French"
-msgstr ""
+msgstr "French"
 
 msgid "Le paiement a échoué."
 msgstr "Payment failed."
@@ -711,3 +711,9 @@ msgstr "You are not authorized to delete this message."
 
 msgid "Vous ne pouvez commenter que les spectacles auxquels vous avez assisté."
 msgstr "You can only comment on shows you have attended."
+
+msgid "Administration"
+msgstr "Administration"
+
+msgid "à"
+msgstr "at"

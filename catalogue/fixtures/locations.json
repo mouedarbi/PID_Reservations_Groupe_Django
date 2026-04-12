@@ -7,7 +7,9 @@
     "designation": "Art Center",
     "designation_en": "Art Center",
     "designation_nl": "Kunstcentrum",
-    "address": "",
+    "address": "123 Rue de l'Art",
+    "address_en": "123 Art Street",
+    "address_nl": "Kunststraat 123",
     "locality": [
       "1000",
       "Bruxelles"
@@ -24,7 +26,9 @@
     "designation": "Atrium",
     "designation_en": "Atrium",
     "designation_nl": "Atrium",
-    "address": "",
+    "address": "15 Rue du Commerce",
+    "address_en": "15 Commerce Street",
+    "address_nl": "Handelsstraat 15",
     "locality": [
       "1000",
       "Bruxelles"
@@ -41,7 +45,9 @@
     "designation": "Opera House",
     "designation_en": "Opera House",
     "designation_nl": "Operagebouw",
-    "address": "",
+    "address": "1 Place de l'Opéra",
+    "address_en": "1 Opera Square",
+    "address_nl": "Operaplein 1",
     "locality": [
       "1040",
       "Etterbeek"
@@ -58,7 +64,9 @@
     "designation": "Espace Delvaux",
     "designation_en": "Espace Delvaux",
     "designation_nl": "Espace Delvaux",
-    "address": "",
+    "address": "3 Rue Gratès",
+    "address_en": "3 Gratès Street",
+    "address_nl": "Gratèsstraat 3",
     "website": "https://www.lavenerie.be",
     "phone": null
   }
@@ -71,7 +79,9 @@
     "designation": "Dexia Art Center",
     "designation_en": "Dexia Art Center",
     "designation_nl": "Dexia Art Center",
-    "address": "",
+    "address": "50 Rue de l'Ecuyer",
+    "address_en": "50 Ecuyer Street",
+    "address_nl": "Schildknaapstraat 50",
     "locality": [
       "1000",
       "Bruxelles"
@@ -88,7 +98,9 @@
         "designation": "La Samaritaine",
         "designation_en": "La Samaritaine",
         "designation_nl": "La Samaritaine",
-        "address": "",
+        "address": "16 Rue de la Samaritaine",
+        "address_en": "16 Samaritaine Street",
+        "address_nl": "Samaritainestraat 16",
         "locality": [
           "1000",
           "Bruxelles"
@@ -104,7 +116,9 @@
     "designation": "Espace Magh",
     "designation_en": "Espace Magh",
     "designation_nl": "Espace Magh",
-    "address": "",
+    "address": "17 Rue du Poinçon",
+    "address_en": "17 Poinçon Street",
+    "address_nl": "Priemstraat 17",
     "locality": [
       "1000",
       "Bruxelles"
