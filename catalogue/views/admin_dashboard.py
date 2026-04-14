@@ -1062,6 +1062,16 @@ def admin_settings(request):
         key='LIBRETRANSLATE_API_KEY',
         defaults={'value': '', 'description': 'Clé API LibreTranslate (laisser vide si auto-hébergé)'}
     )
+
+    # Paramètres Stripe
+    AppSetting.objects.get_or_create(
+        key='STRIPE_PUBLISHABLE_KEY',
+        defaults={'value': '', 'description': 'Clé publique Stripe (pk_...)'}
+    )
+    AppSetting.objects.get_or_create(
+        key='STRIPE_SECRET_KEY',
+        defaults={'value': '', 'description': 'Clé secrète Stripe (sk_...)'}
+    )
     
     settings = AppSetting.objects.all().order_by('key')
     setting_forms = []
