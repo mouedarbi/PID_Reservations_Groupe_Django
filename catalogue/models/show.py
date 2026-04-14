@@ -1,5 +1,7 @@
 from django.db import models
 from .location import *
+from .price import Price
+from .show_price import ShowPrice
 
 class ShowManager(models.Manager):
     def get_by_natural_key(self, slug, created_in):
@@ -22,6 +24,11 @@ class Show(models.Model):
         through="ArtistTypeShow",
         related_name="shows",
     )
+    prices = models.ManyToManyField(
+        Price,
+        through=ShowPrice,
+        related_name="shows",
+    )
 
     objects = ShowManager()
 
@@ -39,4 +46,13 @@ class Show(models.Model):
     
     def natural_key(self):
         return (self.slug, self.created_in)
+
+    @property
+    def price(self):
+        """
+        Return the minimum price among all associated prices for this show.
+        """
+        if self.prices.exists():
+            return min(p.price for p in self.prices.all())
+        return None
 

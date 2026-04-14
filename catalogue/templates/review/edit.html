@@ -1,13 +1,100 @@
-{% extends 'layouts/base.html' %}
+{% extends "base.html" %}
+{% load static i18n %}
 
-{% block title %}Edit Review{% endblock %}
+{% block title %}{% trans "Modifier ma critique" %} - {{ block.super }}{% endblock %}
 
 {% block content %}
-    <h1>Modifier la critique</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Sauvegarder</button>
-    </form>
-    <a href="{% url 'catalogue:review-show' review.id %}">Annuler</a>
+<section class="auth-section" style="padding: 60px 0; background: #f9fafb; min-height: 80vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8" style="max-width: 700px; margin: 0 auto;">
+                <nav aria-label="breadcrumb" style="margin-bottom: 2rem;">
+                    <ol class="breadcrumb" style="display: flex; list-style: none; padding: 0; font-size: 0.9rem;">
+                        <li class="breadcrumb-item"><a href="{% url 'frontend:show_list' %}" style="color: #dc2626; text-decoration: none;">{% trans "Spectacles" %}</a></li>
+                        <li class="breadcrumb-item active" style="color: #666; padding-left: 0.5rem;" aria-current="page">{% trans "Modification de critique" %}</li>
+                    </ol>
+                </nav>
+
+                <div class="card" style="background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #edf2f7;">
+                    <div class="text-center mb-4">
+                        <i class="ph ph-note-pencil" style="font-size: 3rem; color: #dc2626;"></i>
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-top: 1rem;">{% trans "Modifier mon avis" %}</h2>
+                        <p class="text-muted">{% trans "Mise à jour pour" %} <strong>{{ show.title }}</strong></p>
+                    </div>
+
+                    <form method="post" class="mt-4" id="review-form">
+                        {% csrf_token %}
+                        {{ form.show }} {# Hidden field #}
+                        {{ form.stars }} {# Hidden field for value #}
+                        
+                        <div class="form-group mb-4 text-center">
+                            <label style="font-weight: 600; display: block; margin-bottom: 15px;">{% trans "Note" %}</label>
+                            <div class="star-rating" style="font-size: 2.5rem; color: #ddd; cursor: pointer;">
+                                <i class="ph-bold ph-star" data-value="1"></i>
+                                <i class="ph-bold ph-star" data-value="2"></i>
+                                <i class="ph-bold ph-star" data-value="3"></i>
+                                <i class="ph-bold ph-star" data-value="4"></i>
+                                <i class="ph-bold ph-star" data-value="5"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label style="font-weight: 600; display: block; margin-bottom: 8px;">{% trans "Votre commentaire" %}</label>
+                            {{ form.review }}
+                            {% if form.review.errors %}
+                                <div class="error-msg" style="color: #b91c1c; font-size: 0.85rem; margin-top: 5px;">{{ form.review.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid mt-5" style="display: grid; gap: 1rem;">
+                            <button type="submit" class="btn-primary" style="padding: 15px; font-weight: bold; font-size: 1.1rem; cursor: pointer; border: none; border-radius: 8px; background: #dc2626; color: white;">{% trans "Enregistrer les modifications" %}</button>
+                            <a href="{% url 'frontend:show_detail' pk=show.id %}" class="text-center" style="color: #666; text-decoration: none; font-size: 0.9rem; padding: 10px;">{% trans "Annuler et revenir" %}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.star-rating i');
+    const starsInput = document.getElementById('id_stars_value');
+    let currentRating = parseInt(starsInput.value) || 0;
+
+    function updateStars(rating) {
+        stars.forEach(star => {
+            const value = parseInt(star.getAttribute('data-value'));
+            if (value <= rating) {
+                star.classList.remove('ph-bold');
+                star.classList.add('ph-fill');
+                star.style.color = '#ffc107';
+            } else {
+                star.classList.remove('ph-fill');
+                star.classList.add('ph-bold');
+                star.style.color = '#ddd';
+            }
+        });
+    }
+
+    if (currentRating > 0) updateStars(currentRating);
+
+    stars.forEach(star => {
+        star.addEventListener('mouseover', function() {
+            updateStars(this.getAttribute('data-value'));
+        });
+
+        star.addEventListener('mouseout', function() {
+            updateStars(currentRating);
+        });
+
+        star.addEventListener('click', function() {
+            currentRating = this.getAttribute('data-value');
+            starsInput.value = currentRating;
+            updateStars(currentRating);
+        });
+    });
+});
+</script>
 {% endblock %}

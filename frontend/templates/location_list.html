@@ -1,52 +1,49 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Nos Lieux{% endblock %}
+{% block title %}{% trans "Nos Lieux" %}{% endblock %}
 
 {% block content %}
-    <section class="hero-small" style="padding: 40px 0; background: #f3f4f6; text-align: center;">
-        <div class="container">
-            <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 10px;">Nos Lieux</h1>
-            <p style="color: #666;">Découvrez les salles qui accueillent nos événements</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>{% trans "Nos Lieux" %}</h1>
+                <p>{% trans "Découvrez les salles qui accueillent nos événements passionnants." %}</p>
+            </div>
         </div>
     </section>
 
+    <!-- Locations Section -->
     <section class="locations-section" style="padding: 60px 0;">
         <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px;">
+            <div class="locations-simple-list" style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px;">
                 {% if locations %}
                     {% for location in locations %}
-                    <div class="location-card" style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee;">
-                        <div style="padding: 25px;">
-                            <h3 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 15px; color: #1f2937;">{{ location.designation }}</h3>
-                            
-                            <div style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px; color: #4b5563;">
-                                <span style="font-size: 1.2rem;">📍</span>
-                                <span>{{ location.address }}</span>
-                            </div>
-
-                            {% if location.phone %}
-                            <div style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px; color: #4b5563;">
-                                <span style="font-size: 1.2rem;">📞</span>
-                                <span>{{ location.phone }}</span>
-                            </div>
-                            {% endif %}
-
-                            {% if location.website %}
-                            <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: #4b5563;">
-                                <span style="font-size: 1.2rem;">🌐</span>
-                                <a href="{{ location.website }}" target="_blank" style="color: #6366f1; text-decoration: none; font-weight: 500;">Visiter le site web</a>
-                            </div>
-                            {% endif %}
-
-                            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #f3f4f6;">
-                                <a href="#" class="btn-secondary" style="color: #6366f1; font-weight: 600; text-decoration: none; font-size: 0.9rem;">Voir les spectacles dans ce lieu →</a>
-                            </div>
-                        </div>
-                    </div>
+                    <a href="{% url 'frontend:location_detail' location.id %}" 
+                       style="display: flex; align-items: center; justify-content: space-between; padding: 25px 35px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"
+                       onmouseover="this.style.borderColor='#6366f1'; this.style.transform='translateX(10px)'; this.style.boxShadow='0 10px 15px -3px rgba(0,0,0,0.1)';"
+                       onmouseout="this.style.borderColor='#e2e8f0'; this.style.transform='translateX(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.02)';"
+                       class="location-item">
+                        
+                        <span style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #2d3748; font-weight: 700;">
+                            {{ location.designation|default:location.slug|capfirst }}
+                        </span>
+                        
+                        <span style="color: #6366f1; font-size: 1.5rem; font-weight: bold;">→</span>
+                    </a>
                     {% endfor %}
                 {% else %}
-                    <p style="text-align: center; grid-column: 1 / -1; color: #666; font-style: italic;">Aucun lieu n'est répertorié pour le moment.</p>
+                    <div style="padding: 40px; text-align: center; color: #a0aec0; background: #f8fafc; border-radius: 12px; border: 2px dashed #e2e8f0;">
+                        {% trans "Aucun lieu n'est répertorié pour le moment." %}
+                    </div>
                 {% endif %}
+            </div>
+            
+            <div style="margin-top: 50px; text-align: center;">
+                <a href="{% url 'frontend:home' %}" style="color: #a0aec0; text-decoration: none; font-size: 0.9rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em;">
+                    ← {% trans "Retour à l'accueil" %}
+                </a>
             </div>
         </div>
     </section>

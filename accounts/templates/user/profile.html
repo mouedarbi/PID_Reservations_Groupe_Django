@@ -1,48 +1,133 @@
-{% extends "layouts/base.html" %}
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
 
-{% block title %}Profil{% endblock title %}
+{% block title %}{% trans "Mon Profil - ThéâtrePlus" %}{% endblock %}
 
 {% block content %}
-    <div>
-        <h2>{{user.first_name}} {{user.last_name}}</h2>
-        <p>Login : {{user.username}}</p>
-        <p>Email : {{user.email}}</p>
-        <p>Langue : {{user_language}}</p>
+<!-- Hero Section Compacte -->
+<section class="hero compact" style="padding-top: 120px; background: var(--secondary); color: white; padding-bottom: 3rem;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem;">{% trans "Bonjour," %} {{ user.first_name|default:user.username }} !</h1>
+        <p style="opacity: 0.9; font-size: 1.1rem;">{% trans "Gérez vos informations et consultez vos réservations." %}</p>
     </div>
+</section>
 
-    <ul>
-        <li><a href="{% url 'accounts:user-update' request.user.id %}">Modifier</a></li>
-        <li><a href="{% url 'password_change' %}">Modifier le mot de passe</a></li>
-        <li>
-            <form method="post" action="{% url 'accounts:user-delete' request.user.id %}"
-                onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')">
-                {% csrf_token %}
-                <input type="submit" value="Supprimer son compte">
-            </form>
-        </li>
-    </ul>
+<section class="profile-section" style="padding: 4rem 0;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        
+        <div class="profile-grid" style="display: grid; grid-template-columns: 300px 1fr; gap: 3rem; align-items: start;">
+            
+            <!-- Sidebar Infos Perso -->
+            <aside class="profile-info" style="background: var(--bg-light); border-radius: 15px; padding: 2rem; border: 1px solid var(--border-color);">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="width: 80px; height: 80px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; margin: 0 auto 1rem;">
+                        {{ user.username|slice:":1"|upper }}
+                    </div>
+                    <h3 style="margin: 0; color: var(--secondary);">{{ user.username }}</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">{{ user.email }}</p>
+                </div>
 
-    <h3>Mes réservations</h3>
+                <div style="border-top: 1px solid var(--border-color); padding-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                    <div>
+                        <p style="color: var(--text-secondary); margin-bottom: 5px; font-size: 0.85rem;">{% trans "Langue préférée" %}</p>
+                        <p style="font-weight: 500; margin-bottom: 1rem;">{{ user_language }}</p>
+                    </div>
+                    
+                    <a href="{% url 'accounts:user-update' request.user.id %}" style="text-decoration: none; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; font-weight: 500;">
+                        <i class="ph ph-user-edit"></i> {% trans "Modifier le profil" %}
+                    </a>
+                    <a href="{% url 'accounts:password_change' %}" style="text-decoration: none; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; font-weight: 500;">
+                        <i class="ph ph-key"></i> {% trans "Mot de passe" %}
+                    </a>
+                    
+                    {% if user.is_staff or user.is_superuser or user.groups.all.0.name == 'ADMINISTRATOR' or user.groups.all.0.name == 'PRODUCER' %}
+                    <a href="{% url 'admin_dashboard' %}" style="text-decoration: none; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-top: 0.5rem; padding: 10px; background: #fff5f5; border-radius: 8px; border: 1px solid #ffe3e3;">
+                        <i class="ph ph-gauge"></i> {% trans "Administration" %}
+                    </a>
+                    {% endif %}
+                    
+                    <form method="post" action="{% url 'accounts:user-delete' request.user.id %}" onsubmit="return confirm('{% trans "Êtes-vous sûr ?" %}')" style="margin-top: 1rem;">
+                        {% csrf_token %}
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" style="background: none; border: none; color: #dc3545; cursor: pointer; padding: 0; font-family: inherit; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="ph ph-trash"></i> {% trans "Supprimer mon compte" %}
+                        </button>
+                    </form>
+                </div>
+            </aside>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Date</th>
-                <th>Statut</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for reservation in user.reservations.all %}
-            <tr>
-                <td>{{ reservation.id }}</td>
-                <td>{{ reservation.booking_date|date:"d/m/Y" }}</td>
-                <td>{{ reservation.status }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <!-- Liste des réservations -->
+            <main class="reservations-list">
+                <h2 style="margin-top: 0; margin-bottom: 2rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; display: inline-block;">{% trans "Mes Réservations" %}</h2>
 
-    <p><code>{{ user.reservations.all }}</code></p>
+                {% if user.reservations.all %}
+                    <div style="background: white; border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead style="background: var(--bg-light); border-bottom: 1px solid var(--border-color);">
+                                <tr>
+                                    <th style="padding: 1.2rem; text-align: left; color: var(--secondary);">{% trans "ID" %}</th>
+                                    <th style="padding: 1.2rem; text-align: left; color: var(--secondary);">{% trans "Date" %}</th>
+                                    <th style="padding: 1.2rem; text-align: left; color: var(--secondary);">{% trans "Spectacle(s)" %}</th>
+                                    <th style="padding: 1.2rem; text-align: center; color: var(--secondary);">{% trans "Statut" %}</th>
+                                    <th style="padding: 1.2rem; text-align: right; color: var(--secondary);">{% trans "Action" %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for reservation in user.reservations.all %}
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 1.2rem; font-weight: bold; color: var(--text-secondary);">#{{ reservation.id }}</td>
+                                    <td style="padding: 1.2rem; font-size: 0.9rem;">{{ reservation.booking_date|date:"d/m/Y" }}</td>
+                                    <td style="padding: 1.2rem;">
+                                        {% for rr in reservation.representation_reservations.all %}
+                                            <div style="margin-bottom: 0.3rem;">
+                                                <strong style="color: var(--secondary);">{{ rr.representation.show.title }}</strong><br>
+                                                <small style="color: var(--text-secondary);">
+                                                    {{ rr.quantity }} {% trans "place(s) à" %} {{ rr.price.price }}€ - {{ rr.representation.schedule|date:"d/m/Y H:i" }}
+                                                </small>
+                                            </div>
+                                        {% empty %}
+                                            <span style="color: #ccc; font-style: italic;">{% trans "Aucun spectacle trouvé" %}</span>
+                                        {% endfor %}
+                                    </td>
+                                    <td style="padding: 1.2rem; text-align: center;">
+                                        {% if reservation.status == 'PAID' %}
+                                            <span style="background: #d4edda; color: #155724; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold;">{% trans "PAYÉ" %}</span>
+                                        {% elif reservation.status == 'PENDING' %}
+                                            <span style="background: #fff3cd; color: #856404; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold;">{% trans "ATTENTE" %}</span>
+                                        {% elif reservation.status == 'FAILED' %}
+                                            <span style="background: #f8d7da; color: #721c24; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold;">{% trans "ÉCHEC" %}</span>
+                                        {% else %}
+                                            <span style="background: #e9ecef; color: #6c757d; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold;">{{ reservation.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="padding: 1.2rem; text-align: right;">
+                                        <a href="{% url 'cart:reservation_detail' reservation.id %}" style="color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                                            <i class="ph ph-eye"></i> {% trans "Détails" %}
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div style="text-align: center; padding: 4rem; background: var(--bg-light); border-radius: 15px; border: 2px dashed var(--border-color);">
+                        <i class="ph ph-calendar-blank" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 1rem; display: block;"></i>
+                        <p style="color: var(--text-secondary);">{% trans "Vous n'avez pas encore effectué de réservation." %}</p>
+                        <a href="{% url 'frontend:show_list' %}" style="color: var(--primary); font-weight: bold; text-decoration: none;">{% trans "Découvrir les spectacles" %}</a>
+                    </div>
+                {% endif %}
+            </main>
 
-{% endblock content %}
+        </div>
+
+    </div>
+</section>
+
+<style>
+    @media (max-width: 992px) {
+        .profile-grid { grid-template-columns: 1fr !important; }
+    }
+</style>
+{% endblock %}

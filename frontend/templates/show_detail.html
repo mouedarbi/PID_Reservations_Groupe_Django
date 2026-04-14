@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}{{ show.title }}{% endblock %}
 
@@ -15,7 +15,7 @@
             <div class="show-detail-content">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url 'frontend:show_list' %}">Spectacles</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'frontend:show_list' %}">{% trans "Spectacles" %}</a></li>
                         <li class="breadcrumb-item active" aria-current="page">{{ show.title }}</li>
                     </ol>
                 </nav>
@@ -24,9 +24,9 @@
                 
                 <div class="show-badges mb-4">
                     {% if show.bookable %}
-                    <span class="badge bg-success">Réservable</span>
+                    <span class="badge bg-success">{% trans "Réservable" %}</span>
                     {% else %}
-                    <span class="badge bg-secondary">Non réservable</span>
+                    <span class="badge bg-secondary">{% trans "Non réservable" %}</span>
                     {% endif %}
                     
                     {% if show.artist_types %}
@@ -37,55 +37,143 @@
                 </div>
 
                 <div class="show-description mb-4">
-                    <h3>Description</h3>
-                    <p>{{ show.description|default:"Aucune description disponible." }}</p>
+                    <h3>{% trans "Description" %}</h3>
+                    <p>{{ show.description|default:_("Aucune description disponible.") }}</p>
                 </div>
 
                 <div class="show-info-list mb-4">
                     <div class="info-item">
-                        <strong>📍 Lieu :</strong> 
+                        <strong>📍 {% trans "Lieu :" %}</strong> 
                         {% if show.location %}
                             {{ show.location.designation }} ({{ show.location.locality.postal_code }} {{ show.location.locality.locality }})
                         {% else %}
-                            Lieu non défini
+                            {% trans "Lieu non défini" %}
                         {% endif %}
                     </div>
                     <div class="info-item">
-                        <strong>⏱ Durée :</strong> {{ show.duration|default:"N/A" }} minutes
+                        <strong>⏱ {% trans "Durée :" %}</strong> {{ show.duration|default:"N/A" }} {% trans "minutes" %}
                     </div>
                     <div class="info-item">
-                        <strong>📅 Année de création :</strong> {{ show.created_in }}
+                        <strong>📅 {% trans "Année de création :" %}</strong> {{ show.created_in }}
                     </div>
                     <div class="info-item">
-                        <strong>💰 Prix à partir de :</strong> {{ show.price|default:"25.00" }}€
+                        <strong>💰 {% trans "Prix à partir de :" %}</strong> {{ show.price|default:"25.00" }}€
                     </div>
                 </div>
 
                 <div class="show-actions mt-5">
                     {% if show.bookable %}
-                        <a href="#" class="btn-primary btn-lg">Réserver mes places</a>
+                        <a href="#seances" class="btn-primary btn-lg">{% trans "Réserver mes places" %}</a>
                     {% else %}
-                        <button class="btn btn-secondary btn-lg" disabled>Complet</button>
+                        <button class="btn btn-secondary btn-lg" disabled>{% trans "Complet" %}</button>
                     {% endif %}
                 </div>
             </div>
         </div>
         
-        <!-- Section Représentations (si implémenté dans le futur) -->
-        <div class="representations-list mt-5">
-            <h3>Prochaines représentations</h3>
-            <p>Consultez les dates disponibles pour ce spectacle.</p>
-            <!-- Ici on pourrait boucler sur les représentations si elles étaient incluses -->
-            <div class="alert alert-info">
-                Les dates des représentations seront bientôt disponibles.
+        <!-- Section Représentations -->
+        <div class="representations-list mt-5" id="seances">
+            <h3>{% trans "Prochaines représentations" %}</h3>
+            {% if show.representations %}
+                <div class="rep-grid mt-4">
+                    {% for rep in show.representations %}
+                    <div class="rep-card">
+                        <div class="rep-info">
+                            <div class="rep-date">
+                                <i class="ph ph-calendar"></i> {{ rep.formatted_date }}
+                            </div>
+                            <div class="rep-location">
+                                <i class="ph ph-map-pin"></i> 
+                                {% if rep.location.designation %}
+                                    {{ rep.location.designation }}
+                                {% else %}
+                                    {{ show.location.designation }}
+                                {% endif %}
+                            </div>
+                            <div class="rep-seats">
+                                {% if rep.available_seats < 10 and rep.available_seats > 0 %}
+                                    <span style="color: #ff4d4d; font-weight: bold;">
+                                        <i class="ph ph-warning"></i> {% trans "Dernières places :" %} {{ rep.available_seats }} !
+                                    </span>
+                                {% elif rep.available_seats <= 0 %}
+                                    <span style="color: #666; font-weight: bold;">{% trans "COMPLET" %}</span>
+                                {% else %}
+                                    <i class="ph ph-users"></i> {{ rep.available_seats }} {% trans "places disponibles" %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="rep-action">
+                            {% if rep.available_seats > 0 %}
+                                <a href="{% url 'catalogue:representation-show' rep.id %}" class="btn-book">{% trans "Réserver" %}</a>
+                            {% else %}
+                                <button class="btn-book" style="background: #ccc; cursor: not-allowed;" disabled>{% trans "Complet" %}</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    {% trans "Aucune représentation n'est prévue pour le moment." %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Section Critiques & Avis -->
+        <div class="reviews-section mt-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3>{% trans "Critiques & Avis" %}</h3>
+                {% if user.is_authenticated %}
+                    {% if user.groups.all.0.name == 'PRESS_CRITIC' or user.is_superuser %}
+                        <a href="{% url 'catalogue:review-create' %}?show_id={{ show.id }}" class="btn-danger" style="background: #dc2626; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block;">{% trans "Soumettre une critique" %}</a>
+                    {% endif %}
+                {% endif %}
             </div>
+
+            {% if show.reviews %}
+                <div class="reviews-list">
+                    {% for review in show.reviews %}
+                        <div class="review-card mb-3 p-3" style="background: #fdfdfd; border-left: 4px solid #dc2626; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                            <div class="review-header d-flex justify-content-between">
+                                <strong>{{ review.user_name }}</strong>
+                                <div class="stars" style="color: #ffc107;">
+                                    {% for i in "12345" %}
+                                        <i class="ph-fill ph-star{% if forloop.counter > review.stars %}-none{% endif %}"></i>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <p class="review-text mt-2" style="font-style: italic;">"{{ review.review }}"</p>
+                            
+                            <div class="review-footer d-flex justify-content-between align-items-center mt-2">
+                                <small class="text-muted">{{ review.created_at|slice:":10" }}</small>
+                                
+                                <div class="review-actions">
+                                    {% if user.is_authenticated %}
+                                        {# Seul l'auteur peut éditer #}
+                                        {% if user.username == review.user_name %}
+                                            <a href="{% url 'catalogue:review-edit' review.id %}" class="btn-sm text-danger" title="{% trans 'Modifier' %}" style="color: #dc2626;"><i class="ph ph-note-pencil"></i></a>
+                                        {% endif %}
+                                        
+                                        {# L'auteur ou un modérateur peut supprimer #}
+                                        {% if user.username == review.user_name or user.is_superuser or user.groups.all.0.name == 'PRODUCER' or user.groups.all.0.name == 'ADMINISTRATOR' %}
+                                            <a href="{% url 'catalogue:review-delete' review.id %}" class="btn-sm text-danger ms-2" title="{% trans 'Supprimer' %}" style="color: #dc2626;"><i class="ph ph-trash"></i></a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted">{% trans "Aucun avis pour le moment. Soyez le premier à partager votre critique !" %}</p>
+            {% endif %}
         </div>
 
         {% else %}
         <div class="alert alert-danger">
-            <h2>Spectacle introuvable</h2>
-            <p>Désolé, nous n'avons pas pu trouver les détails de ce spectacle.</p>
-            <a href="{% url 'frontend:show_list' %}" class="btn-primary">Retour à la liste</a>
+            <h2>{% trans "Spectacle introuvable" %}</h2>
+            <p>{% trans "Désolé, nous n'avons pas pu trouver les détails de ce spectacle." %}</p>
+            <a href="{% url 'frontend:show_list' %}" class="btn-primary">{% trans "Retour à la liste" %}</a>
         </div>
         {% endif %}
     </div>
@@ -106,6 +194,31 @@
     .bg-primary { background: #007bff; color: white; }
     .bg-secondary { background: #6c757d; color: white; }
     .btn-lg { padding: 1rem 2.5rem; font-size: 1.2rem; }
+
+    .rep-grid { display: grid; gap: 1.5rem; }
+    .rep-card { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        padding: 1.5rem; 
+        background: #f8f9fa; 
+        border-radius: 10px; 
+        border: 1px solid #e9ecef;
+        transition: all 0.3s;
+    }
+    .rep-card:hover { border-color: #007bff; background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    .rep-date { font-weight: bold; font-size: 1.1rem; color: #333; margin-bottom: 0.3rem; }
+    .rep-location, .rep-seats { font-size: 0.95rem; color: #666; }
+    .btn-book { 
+        background: #28a745; 
+        color: white; 
+        padding: 0.8rem 2rem; 
+        border-radius: 5px; 
+        text-decoration: none; 
+        font-weight: bold;
+        transition: background 0.2s;
+    }
+    .btn-book:hover { background: #218838; }
     
     @media (max-width: 992px) {
         .show-detail-grid { grid-template-columns: 1fr; gap: 2rem; }

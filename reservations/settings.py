@@ -15,6 +15,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+from django.utils.translation import gettext_lazy as _
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -34,6 +36,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "modeltranslation",
     # ajout de api
     "frontend", # Ajout de l'application frontend - Déplacé ici pour la priorité des templates
     "django.contrib.admin",
@@ -46,14 +49,16 @@ INSTALLED_APPS = [
     "accounts",
     #ajout de catalogue
     "catalogue",
-    "payments",
     # ajout de rest_framework
     'rest_framework',
     "rest_framework.authtoken",
+    "cart",
 ]
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -74,6 +79,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.i18n",
+                "cart.context_processors.cart",
             ],
         },
     },
@@ -119,13 +126,25 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "fr"
 
 TIME_ZONE = "UTC"
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
+
+LANGUAGES = [
+    ('fr', _('French')),
+    ('en', _('English')),
+    ('nl', _('Dutch')),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale/',
+]
 
 
 # Static files (CSS, JavaScript, Images)
@@ -143,6 +162,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Panier
+CART_SESSION_ID = 'cart'
 
 # REST Framework authentications & parmissions
 # https://www.django-rest-framework.org/api-guide/authentication/
@@ -167,6 +189,7 @@ LOGOUT_REDIRECT_URL = 'frontend:home'
 
 PASSWORD_CHANGE_REDIRECT_URL = 'accounts:user-profile'
 
+# Modeltranslation configuration
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'fr'
+MODELTRANSLATION_FALLBACK_LANGUAGES = ('fr', 'en', 'nl')
 
-# Panier
-CART_SESSION_ID = 'cart'

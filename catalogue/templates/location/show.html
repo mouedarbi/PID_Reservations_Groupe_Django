@@ -23,10 +23,10 @@
     </address>
 
     {% if perms.catalogue.change_location %}
-        <a href="{% url 'catalogue:location-edit' location.id %}" class="btn btn-warning">Modifier</a>
+        <a href="{% url 'admin_location_edit' location.id %}" class="btn btn-warning">Modifier</a>
     {% endif %}
     {% if perms.catalogue.delete_location %}
-        <form action="{% url 'catalogue:location-delete' location.id %}" method="post" style="display: inline;">
+        <form action="{% url 'admin_generic_delete' 'location' location.id %}" method="post" style="display: inline;">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Supprimer</button>
         </form>

@@ -5,7 +5,11 @@
   "fields": {
     "slug": "art-center",
     "designation": "Art Center",
-    "address": "",
+    "designation_en": "Art Center",
+    "designation_nl": "Kunstcentrum",
+    "address": "123 Rue de l'Art",
+    "address_en": "123 Art Street",
+    "address_nl": "Kunststraat 123",
     "locality": [
       "1000",
       "Bruxelles"
@@ -20,7 +24,11 @@
   "fields": {
     "slug": "atrium",
     "designation": "Atrium",
-    "address": "",
+    "designation_en": "Atrium",
+    "designation_nl": "Atrium",
+    "address": "15 Rue du Commerce",
+    "address_en": "15 Commerce Street",
+    "address_nl": "Handelsstraat 15",
     "locality": [
       "1000",
       "Bruxelles"
@@ -35,7 +43,11 @@
   "fields": {
     "slug": "opera-house",
     "designation": "Opera House",
-    "address": "",
+    "designation_en": "Opera House",
+    "designation_nl": "Operagebouw",
+    "address": "1 Place de l'Opéra",
+    "address_en": "1 Opera Square",
+    "address_nl": "Operaplein 1",
     "locality": [
       "1040",
       "Etterbeek"
@@ -49,8 +61,12 @@
   "pk": 12,
   "fields": {
     "slug": "espace-delvaux-la-venerie",
-    "designation": "",
-    "address": "",
+    "designation": "Espace Delvaux",
+    "designation_en": "Espace Delvaux",
+    "designation_nl": "Espace Delvaux",
+    "address": "3 Rue Gratès",
+    "address_en": "3 Gratès Street",
+    "address_nl": "Gratèsstraat 3",
     "website": "https://www.lavenerie.be",
     "phone": null
   }
@@ -60,8 +76,12 @@
   "pk": 13,
   "fields": {
     "slug": "dexia-art-center",
-    "designation": "",
-    "address": "",
+    "designation": "Dexia Art Center",
+    "designation_en": "Dexia Art Center",
+    "designation_nl": "Dexia Art Center",
+    "address": "50 Rue de l'Ecuyer",
+    "address_en": "50 Ecuyer Street",
+    "address_nl": "Schildknaapstraat 50",
     "locality": [
       "1000",
       "Bruxelles"
@@ -75,8 +95,12 @@
   "pk": 14,
       "fields": {
         "slug": "la-samaritaine",
-        "designation": "",
-        "address": "",
+        "designation": "La Samaritaine",
+        "designation_en": "La Samaritaine",
+        "designation_nl": "La Samaritaine",
+        "address": "16 Rue de la Samaritaine",
+        "address_en": "16 Samaritaine Street",
+        "address_nl": "Samaritainestraat 16",
         "locality": [
           "1000",
           "Bruxelles"
@@ -89,8 +113,12 @@
   "pk": 15,
   "fields": {
     "slug": "espace-magh",
-    "designation": "",
-    "address": "",
+    "designation": "Espace Magh",
+    "designation_en": "Espace Magh",
+    "designation_nl": "Espace Magh",
+    "address": "17 Rue du Poinçon",
+    "address_en": "17 Poinçon Street",
+    "address_nl": "Priemstraat 17",
     "locality": [
       "1000",
       "Bruxelles"

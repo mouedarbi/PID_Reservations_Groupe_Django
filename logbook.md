@@ -1,135 +1,156 @@
-# Logbook
 
-## Date: Wed Jan 21 2026
+## Date: samedi 21 mars 2026
 
-### Progress Summary
+### Progress Summary - Custom Admin Dashboard
 
-This session focused on analyzing the project's current state, setting up a development branch, implementing a new API endpoint, addressing an authentication issue by creating a superuser, and writing and fixing tests for the new API.
+Cette session a été consacrée à l'implémentation et à la validation du dashboard d'administration personnalisé, en veillant à ne pas modifier l'admin Django natif.
 
-#### 1. Project State Analysis
+#### 1. Implémentation des vues Liste et Détail pour le dashboard personnalisé
 
--   **Git Status**: The project is on the `dev_ghiles` branch, which is up-to-date with `origin/dev_ghiles`. The working tree is clean.
--   **Recent Commits**: Reviewed the last 5 commits, noting merges and CI pipeline fixes, indicating active development.
--   **Project Description**: Confirmed it's a Django-based reservation system for shows, featuring a catalogue, online reservations, admin back-office, RESTful API, and a planned ReactJS frontend (from `README.md`).
--   **Dependencies**: Identified key dependencies from `requirements.txt` and `README.md`, including Python 3.11+, Django 5.0.14, Django REST Framework, MySQL/MariaDB 11+, and Bootstrap 5.
--   **Database Migrations**: Verified that all migrations for `admin`, `auth`, `authtoken`, `catalogue`, `contenttypes`, and `sessions` apps are applied. The `api` app currently has no migrations.
--   **Virtual Environment**: Initially, `python manage.py` commands failed due to the virtual environment not being activated or dependencies not installed within the shell context. This was resolved by using the full path to the `python` executable within the `venv` folder.
+Toutes les vues de liste (index) et de détail pour les modèles clés ont été créées et intégrées au dashboard, remplaçant les accès directs à l'admin Django par défaut pour ces fonctionnalités :
+-   **Vues créées/mises à jour** : `admin_dashboard`, `admin_show_index`, `admin_representation_index`, `admin_artist_index`, `admin_type_index`, `admin_review_index`, `admin_location_index`, `admin_locality_index`, `admin_reservation_index`, `admin_reservation_detail`, `admin_user_index`, `admin_group_index`, `admin_price_index`, `admin_show_detail`.
+-   **URLs configurées** : Toutes les routes correspondantes ont été ajoutées dans `reservations/urls.py` sous le préfixe `/admin-dashboard/`.
+-   **Templates créés/mis à jour** : Les templates HTML (`index.html`, `detail.html`, `group_index.html`) pour chaque vue ont été développés dans `catalogue/templates/admin/`.
 
-#### 2. Branch Creation
+#### 2. Correction et Amélioration des Liens et Fonctionnalités
 
--   Created and switched to a new Git branch named `TESTING` as requested by the user, for testing purposes.
+-   **Sidebar du dashboard (`admin.html`)** :
+    -   Tous les liens de la navigation latérale ont été mis à jour pour pointer vers les vues du dashboard personnalisé, remplaçant les liens vers l'admin Django natif.
+    -   Le lien "Accueil" du dashboard personnalisé pointe désormais vers `admin_dashboard`.
+    -   Le lien "Détails des réservations" a été supprimé de la sidebar car il était redondant (l'accès se fait via l'icône "œil" de la liste des réservations).
+-   **Gestion des Prix pour les Spectacles (`admin_show_detail`)** :
+    -   La vue `admin_show_detail` a été enrichie pour permettre l'association et la désassociation dynamique de prix à un spectacle via le modèle `ShowPrice`.
+    -   Le template `catalogue/templates/admin/show/detail.html` a été adapté pour inclure les formulaires d'ajout et de suppression fonctionnels.
+-   **Corrections d'erreurs** :
+    -   Correction d'une `NameError` (modèle `Price` non importé) dans `catalogue/views/admin_dashboard.py`.
+    -   Correction d'une `IndentationError` et d'un problème de formatage dans `reservations/urls.py`.
+    -   Correction d'une `ModuleNotFoundError` pour l'import de `ShowPrice` dans `admin_show_detail`.
+    -   Correction d'une `NoReverseMatch` pour le lien d'édition des spectacles dans `catalogue/templates/admin/show/index.html`.
 
-#### 3. Localities API Implementation
+#### 3. Validation et Suivi du code
 
--   **Model Inspection**: Reviewed the `Locality` model in `catalogue/models/locality.py`, noting its `postal_code` and `locality` fields.
--   **Serializer Update**: Modified `api/serializers/localities.py`.
-    -   Changed from `serializers.Serializer` to `serializers.ModelSerializer`.
-    -   Corrected field exposure to `id`, `postal_code`, and `locality`, aligning with the `Locality` model.
-    -   Removed `zip_code` as it did not exist in the `Locality` model and was an inconsistent field name in the previous placeholder serializer.
--   **Views Implementation**: Updated `api/views/localities.py`.
-    -   Replaced placeholder `APIView` implementations with Django REST Framework's generic views: `generics.ListAPIView` for fetching a list of all localities and `generics.RetrieveAPIView` for fetching a single locality by its ID.
-    -   Explained that this change simplifies the code and aligns with DRF best practices, as generic views encapsulate common API logic.
--   **Routes**: Confirmed that the routes in `api/urls.py` for `/localities/` and `/localities/<int:id>/` were already correctly configured and pointed to the respective views, requiring no further modifications.
+-   Chaque étape significative a été validée par un `git commit` avec un message clair.
+-   Des `manage.py check` ont été exécutés régulièrement pour garantir l'intégrité du projet.
+-   Toutes les modifications ont été poussées sur la branche `dev_mohamed`.
 
-#### 4. Authentication Issue and Superuser Creation
+## Date: lundi 23 mars 2026
 
--   **Error Diagnosis**: Addressed an `HTTP 403 Forbidden` error ("Authentication credentials were not provided"), explaining that the API endpoint requires authentication.
--   **Superuser Creation**: Created a Django superuser named `admin` with the email `admin@gmail.com` via the `createsuperuser` management command. Password validation was bypassed during creation. This superuser can now be used for API authentication.
+### Progress Summary - CRUD Admin Dashboard (Partie 1)
 
-#### 5. API Testing and Fixing
+Cette session a marqué le début de l'implémentation des fonctionnalités CRUD pour le dashboard d'administration personnalisé.
 
--   **Test Creation**: Created a new test file `api/tests/test_localities.py`, using `api/tests/test_prices.py` as a template. The new tests cover listing and retrieving localities for both authenticated and unauthenticated users, as well as handling non-existent localities.
--   **Initial Test Failure**: The initial test run failed with an `AssertionError`. The error indicated that the `LocalitiesDetailView` expected a URL keyword argument named `pk`, but the URL was configured with `id`.
--   **Git Commit**: As requested, the new test file was committed with the message "AssertionError, use pk instead of id" before the fix was applied.
--   **The Fix**: The issue was resolved by adding `lookup_field = 'id'` to the `LocalitiesDetailView` in `api/views/localities.py`. This change aligns the view with the project's URL convention of using `id` as the lookup key.
--   **Successful Test Run**: After applying the fix, the tests in `api.tests.test_localities` were run again and all passed successfully.
+#### 1. Module Artistes
+- **Vues créées** : `admin_artist_detail`, `admin_artist_create`, `admin_artist_edit`.
+- **Templates** : Création de `detail.html`, `create.html`, `edit.html` dans `catalogue/templates/admin/artist/`.
+- **Améliorations** : Les liens de la liste pointent désormais vers le dashboard personnalisé plutôt que le front-end. Correction des tags de template Django (`else` au lieu de `else:`).
+- **Validation** : Fonctionnalités de création, édition et affichage des détails testées et validées.
 
-## Date: Mon Jan 26 2026
+#### 2. Module Spectacles
+- **Vues créées** : `admin_show_create`, `admin_show_edit`.
+- **Templates** : Création de `create.html`, `edit.html` dans `catalogue/templates/admin/show/`.
+- **Mises à jour** : Intégration des boutons "Ajouter" et "Modifier" dans l'index et la vue détaillée des spectacles.
+- **Validation** : Fonctionnalités de création et édition testées et validées.
 
-### Progress Summary
+#### 3. Gestion Git
+- Les changements ont été organisés en commits distincts pour chaque module sur la branche `dev_mohamed`.
+- Amélioration visuelle des formulaires avec l'ajout de styles CSS spécifiques dans les templates.
 
-This session focused on implementing a complete authentication API, including user signup, login, and logout. This involved creating new serializers, views, and a comprehensive test suite. A summary of the user's recent commits was also added to this logbook.
+### Tâches restantes pour la prochaine session
 
-#### 1. User Commits Summary
+Poursuivre l'implémentation du CRUD pour les modules restants :
+- **Lieux (Locations)** : Vues et templates Create/Update.
+- **Localités (Localities)** : Vues et templates Create/Update.
+- **Prix (Prices)** : Vues et templates Create/Update.
+- **Types** : Vues et templates Create/Update.
+- **Avis (Reviews)** : Vues et templates Create/Update.
+- **Réservations** : Vues et templates Update.
+- **Utilisateurs et Groupes** : Vues et templates Create/Update.
 
-A summary of the user's last four commits was added to the logbook:
+**Point crucial** : Implémenter la stratégie de **Soft Delete** (Suppression logique) pour l'ensemble des modèles afin de permettre une suppression sécurisée des données sans perte définitive.
 
--   **`78368558c6ce615395bba300862e3dd8a441542c`**: API test locations v.0
--   **`aaed9597e3ac9470396930d819e92cf30eff092e`**: feat(api): Implement staff-only CRUD for Locations and Localities & Update test\_localities.py
--   **`9d5abe05892d9c19868320faa466466dd8c0cd03`**: API locations & localities modified v2
--   **`47dafe721c6b019c812e70d457c32408b197b942`**: API locations & localities modified
+## Date: samedi 28 mars 2026
 
-#### 2. Authentication API Implementation
+### Progress Summary - CRUD Admin Dashboard (Partie 2)
 
--   **Analysis**: Analyzed the project to determine the correct approach for implementing token-based authentication using Django REST Framework's built-in `TokenAuthentication`.
--   **Serializers**:
-    -   Created `api/serializers/signup.py` with a `SignUpSerializer` for user registration. The serializer handles `username`, `password`, `email`, `first_name`, `last_name`, and `langue`. It also adds new users to the `MEMBER` group and creates a `UserMeta` object.
-    -   Updated `api/serializers/auth.py` to use DRF's `AuthTokenSerializer` for the login view.
--   **Views**:
-    -   Implemented `AuthSignupView`, `AuthLoginView`, and `AuthLogoutView` in `api/views/auth.py`.
-    -   `AuthSignupView` (`generics.CreateAPIView`) uses the `SignUpSerializer` to create new users and returns an auth token upon successful registration.
-    -   `AuthLoginView` (subclass of `ObtainAuthToken`) handles user login and returns a token.
-    -   `AuthLogoutView` (`APIView`) deletes the user's token to log them out.
--   **Testing**:
-    -   Created `api/tests/test_auth.py` with a comprehensive test suite.
-    -   Tests cover successful and unsuccessful signup (e.g., missing fields, existing username), login (correct and incorrect credentials), and logout (authenticated and unauthenticated users).
-    -   Debugged and fixed initial test failures, including a 403 vs. 401 status code issue for unauthenticated logout and ensuring required fields in the signup serializer were enforced.
--   **File Management**: Accidentally deleted and then restored the `api/serializers/signup.py` file, confirming the fix by re-running the test suite.
+Cette session a permis de finaliser l'implémentation des fonctionnalités CRUD pour l'ensemble des modules du dashboard d'administration personnalisé.
 
-## Date: Mon Jan 26 2026
+#### 1. Finalisation des Templates CRUD
+- **Création des templates manquants** :
+    - `representation/create.html` et `edit.html`.
+    - `user/create.html` et `edit.html`.
+    - `reservation/edit.html`.
+- **Mise à jour des Index** : Tous les fichiers `index.html` (Artistes, Spectacles, Représentations, Lieux, Localités, Prix, Types, Avis, Réservations, Utilisateurs) ont été mis à jour pour inclure les liens fonctionnels vers les actions "Ajouter", "Modifier" et "Supprimer".
 
-### Progress Summary
+#### 2. Module Réservations
+- **Formulaire créé** : `catalogue/forms/ReservationForm.py` pour permettre la modification du statut et de l'utilisateur associé à une réservation.
+- **Vue créée** : `admin_reservation_edit` dans `catalogue/views/admin_dashboard.py`.
+- **URL configurée** : Ajout de la route `admin_reservation_edit` dans `reservations/urls.py`.
 
-This session focused on fixing failing API tests for localities and locations to ensure a successful merge with the pre-production environment. The main problem was that unauthenticated access to these APIs was returning `403 Forbidden` instead of the expected `200 OK` for existing resources or `404 Not Found` for non-existent ones.
+#### 3. Intégration de la Suppression (Placeholder Soft Delete)
+- Utilisation de la vue `admin_generic_delete` pour toutes les actions de suppression dans les templates index.
+- Ajout de confirmations JavaScript (`onclick="return confirm(...)"`) sur tous les boutons de suppression pour éviter les erreurs accidentelles.
 
-#### 1. Fixes for Localities and Locations API Permissions
+#### 4. Validation et Qualité
+- Exécution de `manage.py check` : Aucune erreur système détectée.
+- Cohérence visuelle maintenue sur l'ensemble des formulaires CRUD avec des styles CSS harmonisés.
 
--   **Problem Diagnosis**: Identified that several tests in `test_localities.py` and `test_locations.py` were failing due to `403 Forbidden` responses for unauthenticated `GET` requests, and `400 Bad Request` errors during location creation/update.
--   **Permissions Refactoring**:
-    -   Implemented the `get_permissions` method in `api/views/localities.py` (`LocalitiesView`, `LocalitiesDetailView`) and `api/views/locations.py` (`LocationsView`, `LocationsDetailView`).
-    -   This method now dynamically assigns permissions: `[AllowAny()]` for `GET` requests (allowing public read access) and `[IsAdminUser()]` for `POST`, `PUT`, `PATCH`, and `DELETE` requests (restricting write operations to admin users).
-    -   Removed redundant manual `request.user.is_staff` checks within the view methods, promoting declarative permission handling.
--   **Serializer Validation Fix**:
-    -   Addressed `400 Bad Request` errors during location creation and update by explicitly defining the `website` field in `api/serializers/locations.py` (`LocationSerializer`).
-    -   The `website` field was set with `required=False`, `allow_null=True`, and `default=None` to correctly handle its optional nature as defined in the `Location` model.
--   **Verification**: All tests for `api.tests.test_localities` and `api.tests.test_locations` now pass successfully, confirming the resolution of the permission and validation issues.
+### Prochaines étapes
+- Implémenter réellement le **Soft Delete** dans les modèles (ajout du champ `is_deleted` et filtrage automatique).
+- Améliorer la validation des formulaires côté client.
+- Ajouter des messages de succès (Django messages framework) après chaque action CRUD.
 
-## Date: Mon Jan 26 2026
+## Roadmap : Module de Réservation & Paiement (Brainstorming du 28/03/2026)
 
-### Progress Summary
+### 1. Architecture Applicative
+- **Création de l'application `cart` (ou `booking`)** : Isoler la logique de panier et de tunnel d'achat du reste du frontend.
+- **Gestion du Panier** : Utilisation des **Django Sessions** pour stocker temporairement les choix de l'utilisateur (Représentation, Type de Prix, Quantité) avant l'engagement en base de données.
 
-This session focused on fixing a critical `IndentationError` in `api/views/shows.py` that was breaking the application.
+### 2. Évolution du Modèle de Données (Backend)
+- **Table `RepresentationReservation`** :
+    - Ajouter un champ `price_snapshot` (DecimalField) pour figer le prix au moment de l'achat et garantir l'intégrité comptable en cas de modification ultérieure des tarifs.
+- **Création du module `Payment`** :
+    - Nouveau modèle `PaymentTransaction` pour stocker les logs techniques (ID transaction, statut prestataire, réponse JSON complète).
+    - Permet de dissocier la "Réservation" (objet métier) de la "Tentative de paiement" (log technique).
+- **Statuts de Réservation** : Migration vers des constantes standardisées (`PENDING`, `PAID`, `CANCELED`, `FAILED`).
 
--   **Error Diagnosis**: An `IndentationError` was identified in `api/views/shows.py`, caused by an incorrectly indented docstring. A subsequent fix attempt then introduced a `SyntaxError` due to a misplaced class docstring that improperly wrapped a method definition.
--   **Code Refactoring**:
-    -   Corrected the indentation of all docstrings within the file.
-    -   Restructured the class definitions for `ShowsView` and `ShowsDetailView` to properly separate the class docstring from method definitions.
-    -   Added missing imports for `permissions` and `status` from `rest_framework` to resolve `NameError` issues.
--   **Verification**: After refactoring, the application's test suite was run. It passed without any syntax or indentation errors, confirming that the file is now correctly formatted and loadable by Django.
--   **Version Control**: The corrected file was committed to the `feature/frontend-mvp` branch and pushed to the remote repository.
+### 3. Workflow Frontend (Tunnel d'achat)
+- **Étape 1 : Panier** -> Récapitulatif des séances choisies et calcul dynamique du total. Vérification des `available_seats` en temps réel.
+- **Étape 2 : Validation** -> Transformation du panier session en objet `Reservation` avec statut `PENDING`.
+- **Étape 3 : Paiement (Simulation)** -> Interface de test avec choix [Succès / Échec] pour valider le comportement du système avant l'intégration d'une API réelle (Stripe/PayPal).
 
-## Date: Mon Jan 26 2026
+## Date: lundi 6 avril 2026
 
-### Progress Summary
+### Progress Summary - Importation de Données via API Externe
 
-This session involved comparing the `dev_noureddine` branch with the `pre-production` branch and then merging `dev_noureddine` into `feature/frontend-mvp`.
+Cette session a été consacrée à l'enrichissement de la base de données par l'importation de données réelles provenant d'une API publique (ODWB).
 
-#### 1. Branch Comparison
+#### 1. Implémentation de la Commande de Gestion (`import_locations`)
 
--   **`dev_noureddine` vs. `pre-production`**:
-    -   **Commits unique to `dev_noureddine`**:
-        -   `aa34ad7`: Implementation of the `ticket`, `checkout`, and `rss` API endpoints.
-        -   `546bede`: Implementation of the `artist-types` API (linking Artist and Type).
-        -   `34249cc`: Correction of the reservation API, including security and tests.
-    -   **Commits unique to `pre-production`**: (representing work from other developers and merged features)
-        -   Significant frontend implementation (Django `frontend` app, templates, static files, views).
-        -   API fixes and features: Syntax correction in `api/views/shows.py`, re-authentication for `Show` views, `PricesAPI` test updates, `requirements.txt` correction, admin permissions for price creation in `PricesView`, and `.idea/` file ignoring.
-        -   CI/CD improvements (runner and MySQL service for tests).
-        -   Other API implementations for `Price` and `Localities`.
+Pour automatiser l'ajout de lieux de spectacles, une commande de gestion Django personnalisée a été créée :
+-   **Fichier créé** : `catalogue/management/commands/import_locations.py`.
+-   **Source des données** : API de l'Open Data Wallonie-Bruxelles (ODWB) recensant les salles de concert et théâtres.
+-   **Technologie utilisée** : Bibliothèque `requests` pour les appels HTTP et `BaseCommand` de Django pour l'intégration au CLI `manage.py`.
 
-#### 2. Merge `dev_noureddine` into `feature/frontend-mvp`
+#### 2. Logique d'Importation et Mapping des Données
 
--   **Merge Execution**: The `dev_noureddine` branch was merged into the current `feature/frontend-mvp` branch.
--   **Conflicts**: As anticipated, conflicts arose in `api/test/test_reservation.py` (modify/delete) and `api/urls.py` (content).
--   **Conflict Resolution**: The user indicated that they would manage the conflicts in PyCharm. After manual resolution, `git status` confirmed that all conflicts were resolved and staged.
--   **Version Control**: The merge commit was created and pushed to the remote `feature/frontend-mvp` branch, integrating the changes from `dev_noureddine`.
+Le script a été conçu pour transformer les données brutes de l'API en objets Django cohérents avec le schéma existant :
+-   **Localités** : Création automatique ou récupération des objets `Locality` en utilisant le code postal et la ville fournis par l'API.
+-   **Lieux (Locations)** :
+    *   **Mapping des champs** : `salle` -> `designation`, `adresse` -> `address`, `site_web` -> `website`, `telephone` -> `phone`.
+    *   **Génération de Slugs** : Utilisation de `slugify` pour générer des slugs uniques, avec un système de compteur incrémental pour éviter les collisions en cas de noms identiques.
+
+#### 3. Gestion de l'Intégrité et des Doublons
+
+Un point crucial a été d'assurer que l'importation n'interfère pas avec les données existantes des fixtures :
+-   **Méthode de vérification** : Le script recherche d'abord si une salle avec la même `designation` existe déjà.
+-   **Comportement** : 
+    *   Si la salle existe déjà (ex: issue des fixtures JSON), elle est **mise à jour** avec les dernières informations de l'API.
+    *   Si elle est nouvelle, elle est **créée**.
+-   **Résultat du premier import** : 99 nouveaux lieux créés et 1 lieu mis à jour (**Espace Magh**), sans créer de doublons avec les données de démonstration initiales.
+
+#### 4. Utilisation
+
+La commande peut être relancée à tout moment pour synchroniser la base de données locale avec les mises à jour de l'API ODWB :
+```bash
+python manage.py import_locations
+```

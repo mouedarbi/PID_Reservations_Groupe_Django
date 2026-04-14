@@ -8,6 +8,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # The order of fixtures to load
         fixture_files = [
+            'groups.json',
             'auth_user.json',
             'localities.json',
             'types.json',
@@ -16,6 +17,7 @@ class Command(BaseCommand):
             'artist_type.json',
             'locations.json',
             'shows.json',
+            'show_prices.json',
             'representations.json',
             'reviews.json',
             'user_meta.json',
