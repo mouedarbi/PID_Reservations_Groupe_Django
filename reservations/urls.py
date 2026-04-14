@@ -114,6 +114,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')), # All accounts/auth related URLs will be handled here
     
     path('catalogue/', include('catalogue.urls')),
+    path('payments/', include('payments.urls', namespace='payments')),
     path('api/', include('api.urls')),
     path('cart/', include('cart.urls', namespace='cart')),
     path('admin/', admin.site.urls),
