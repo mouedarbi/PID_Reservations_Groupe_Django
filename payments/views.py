@@ -7,15 +7,19 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from cart.cart import Cart  # Utiliser la classe Cart existante
+from catalogue.models.setting import AppSetting
 
-# Configuration de la clé Stripe
-stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
+# Configuration de la clé Stripe (récupérée de la DB)
+stripe.api_key = AppSetting.get_value('STRIPE_SECRET_KEY')
 
 from django.shortcuts import redirect
 from django.views import View
 
 class CreateCheckoutSessionView(View):
     def post(self, request):
+        # Configuration dynamique de la clé Stripe depuis la DB
+        stripe.api_key = AppSetting.get_value('STRIPE_SECRET_KEY')
+        
         # 1. On initialise le panier via la classe Cart
         cart = Cart(request)
         
