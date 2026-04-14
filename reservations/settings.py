@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "accounts",
     #ajout de catalogue
     "catalogue",
+    "payments",
     # ajout de rest_framework
     'rest_framework',
     "rest_framework.authtoken",
