@@ -18,49 +18,91 @@
     </div>
 
     <div class="row">
-        {% for item in setting_forms %}
-        <div class="col-md-6 mb-4">
-            <div class="card" style="border-radius: 12px; border: 1px solid #edf2f7; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
-                <div class="card-header" style="background: #f8fafc; border-bottom: 1px solid #edf2f7; padding: 1rem 1.5rem;">
-                    <h5 class="mb-0" style="font-weight: 600; color: #2d3748;">
-                        <i class="ph ph-key me-2" style="color: #ff4d4d;"></i> {{ item.obj.key }}
-                    </h5>
-                </div>
-                <div class="card-body" style="padding: 1.5rem;">
-                    <form method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="setting_id" value="{{ item.obj.id }}">
-                        
-                        <div class="mb-3">
-                            <label class="form-label text-muted small uppercase" style="font-weight: bold;">Description</label>
-                            {{ item.form.description }}
+        <!-- Section Stripe -->
+        <div class="col-12 mb-4">
+            <h3 style="font-weight: 600; color: #2d3748; margin-bottom: 1.5rem;"><i class="ph ph-credit-card me-2"></i> Configuration Stripe</h3>
+            <div class="row">
+                {% for item in setting_forms %}
+                {% if 'STRIPE' in item.obj.key %}
+                <div class="col-md-6 mb-4">
+                    <div class="card" style="border-radius: 12px; border: 1px solid #edf2f7; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
+                        <div class="card-header" style="background: #f8fafc; border-bottom: 1px solid #edf2f7; padding: 1rem 1.5rem;">
+                            <h5 class="mb-0" style="font-weight: 600; color: #2d3748;">
+                                <i class="ph ph-key me-2" style="color: #6366f1;"></i> {{ item.obj.key }}
+                            </h5>
                         </div>
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="setting_id" value="{{ item.obj.id }}">
+                                
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small uppercase" style="font-weight: bold;">Description</label>
+                                    {{ item.form.description }}
+                                </div>
 
-                        <div class="mb-3">
-                            <label class="form-label text-muted small uppercase" style="font-weight: bold;">Valeur / Clé API</label>
-                            {{ item.form.value }}
-                            <div class="form-text small text-muted mt-1">
-                                <i class="ph ph-info me-1"></i> Cette valeur est utilisée pour les services tiers (Google Translate, etc.).
-                            </div>
-                        </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small uppercase" style="font-weight: bold;">Valeur / Clé API</label>
+                                    {{ item.form.value }}
+                                </div>
 
-                        <div class="d-flex justify-content-end mt-4">
-                            <button type="submit" class="btn btn-primary" style="background: #2d3748; border: none; padding: 8px 20px; border-radius: 6px; font-weight: 600;">
-                                Sauvegarder
-                            </button>
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button type="submit" class="btn btn-primary" style="background: #6366f1; border: none; padding: 8px 20px; border-radius: 6px; font-weight: 600;">
+                                        Sauvegarder
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
-                <div class="card-footer" style="background: #fff; border-top: 1px solid #edf2f7; padding: 0.75rem 1.5rem;">
-                    <small class="text-muted">Dernière mise à jour : {{ item.obj.updated_at|date:"d/m/Y H:i" }}</small>
-                </div>
+                {% endif %}
+                {% endfor %}
             </div>
         </div>
-        {% empty %}
-        <div class="col-12">
-            <div class="alert alert-info">Aucun paramètre configuré.</div>
+
+        <!-- Section LibreTranslate -->
+        <div class="col-12 mb-4">
+            <hr class="mb-5">
+            <h3 style="font-weight: 600; color: #2d3748; margin-bottom: 1.5rem;"><i class="ph ph-translate me-2"></i> Configuration Traduction</h3>
+            <div class="row">
+                {% for item in setting_forms %}
+                {% if 'LIBRETRANSLATE' in item.obj.key or 'TICKETMASTER' in item.obj.key %}
+                <div class="col-md-6 mb-4">
+                    <div class="card" style="border-radius: 12px; border: 1px solid #edf2f7; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
+                        <div class="card-header" style="background: #f8fafc; border-bottom: 1px solid #edf2f7; padding: 1rem 1.5rem;">
+                            <h5 class="mb-0" style="font-weight: 600; color: #2d3748;">
+                                <i class="ph ph-key me-2" style="color: #ff4d4d;"></i> {{ item.obj.key }}
+                            </h5>
+                        </div>
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="setting_id" value="{{ item.obj.id }}">
+                                
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small uppercase" style="font-weight: bold;">Description</label>
+                                    {{ item.form.description }}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small uppercase" style="font-weight: bold;">Valeur / Clé API</label>
+                                    {{ item.form.value }}
+                                </div>
+
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button type="submit" class="btn btn-primary" style="background: #2d3748; border: none; padding: 8px 20px; border-radius: 6px; font-weight: 600;">
+                                        Sauvegarder
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
         </div>
-        {% endfor %}
+    </div>
     </div>
 
     <!-- Section Information LibreTranslate -->

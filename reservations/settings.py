@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     "accounts",
     #ajout de catalogue
     "catalogue",
+    "payments",
     # ajout de rest_framework
     'rest_framework',
     "rest_framework.authtoken",
@@ -102,6 +104,20 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT'),
     }
 }
+
+# Configuration spécifique pour les tests
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'test_db',
+        'USER': os.getenv('DB_USER', 'root'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'mysecretpassword'),
+        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+        'PORT': os.getenv('DB_PORT', '3306'),
+        'TEST': {
+            'NAME': 'test_db', # Utiliser la base de données créée par le service MySQL du workflow
+        }
+    }
 
 
 # Password validation
