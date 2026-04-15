@@ -9,9 +9,6 @@ from rest_framework import status
 from cart.cart import Cart  # Utiliser la classe Cart existante
 from catalogue.models.setting import AppSetting
 
-# Configuration de la clé Stripe (récupérée de la DB)
-stripe.api_key = AppSetting.get_value('STRIPE_SECRET_KEY')
-
 from django.shortcuts import redirect
 from django.views import View
 
