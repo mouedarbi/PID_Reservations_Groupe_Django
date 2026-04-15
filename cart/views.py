@@ -96,50 +96,10 @@ def cart_checkout(request):
                     quantity=item['quantity']
                 )
         
-        # On passe la liste des IDs à la simulation de paiement (séparés par des virgules)
-        ids_str = ",".join(created_reservation_ids)
-        return redirect(f"/cart/payment/{ids_str}/")
+        # On passe la liste des IDs (OBSOLÈTE : Redirigé vers Stripe via le template)
+        return redirect('cart:cart_detail')
 
     return render(request, 'cart/checkout.html', {'cart': cart})
-
-def payment_simulation(request, reservation_id):
-    """
-    Vue pour simuler le paiement d'une ou plusieurs réservations.
-    Note : reservation_id peut être une chaîne d'IDs séparés par des virgules.
-    """
-    # On gère le cas multi-réservations
-    id_list = str(reservation_id).split(',')
-    reservations = Reservation.objects.filter(id__in=id_list, user=request.user)
-    
-    if request.method == 'POST':
-        action = request.POST.get('action')
-        
-        if action == 'success':
-            for reservation in reservations:
-                reservation.status = 'PAID'
-                reservation.save()
-                
-                # Mise à jour des stocks
-                for rr in reservation.representation_reservations.all():
-                    rr.representation.available_seats -= rr.quantity
-                    rr.representation.save()
-            
-            cart = Cart(request)
-            cart.clear()
-            messages.success(request, _("Paiement réussi ! %(count)s réservation(s) validée(s).") % {'count': reservations.count()})
-            return redirect('accounts:user-profile')
-            
-        elif action == 'failure':
-            for reservation in reservations:
-                reservation.status = 'FAILED'
-                reservation.save()
-            messages.error(request, _("Le paiement a échoué."))
-            return redirect('cart:cart_detail')
-
-    return render(request, 'cart/payment_simulation.html', {
-        'reservations': reservations,
-        'is_multiple': len(id_list) > 1
-    })
 
 @login_required
 def reservation_detail(request, reservation_id):
