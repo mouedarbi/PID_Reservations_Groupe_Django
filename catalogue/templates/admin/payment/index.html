@@ -1,0 +1,88 @@
+{% extends "admin/dashboard.html" %}
+{% load i18n %}
+
+{% block dashboard_content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0 text-primary font-weight-bold">
+                        <i class="ph ph-credit-card me-2"></i> {% trans "Historique des Paiements Stripe" %}
+                    </h5>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Barre de recherche -->
+                    <form method="get" class="mb-4">
+                        <div class="input-group" style="max-width: 400px;">
+                            <input type="text" name="q" class="form-control" placeholder="{% trans 'Rechercher par utilisateur ou ID Stripe...' %}" value="{{ search_query|default:'' }}">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="ph ph-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>{% trans "Utilisateur" %}</th>
+                                    <th>{% trans "Réservation" %}</th>
+                                    <th>{% trans "Montant" %}</th>
+                                    <th>{% trans "ID Session Stripe" %}</th>
+                                    <th>{% trans "Statut" %}</th>
+                                    <th>{% trans "Date" %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for payment in payments %}
+                                <tr>
+                                    <td>{{ payment.id }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm bg-light rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                                <i class="ph ph-user text-muted"></i>
+                                            </div>
+                                            <span class="font-weight-medium">{{ payment.reservation.user.username }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'admin_reservation_detail' payment.reservation.id %}" class="btn btn-sm btn-outline-info">
+                                            #{{ payment.reservation.id }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-success-soft text-success font-weight-bold" style="font-size: 0.9rem;">
+                                            {{ payment.amount }} {{ payment.currency }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <code class="text-muted small">{{ payment.stripe_session_id|truncatechars:20 }}</code>
+                                    </td>
+                                    <td>
+                                        {% if payment.status == 'succeeded' %}
+                                            <span class="badge bg-success">{% trans "Succès" %}</span>
+                                        {% else %}
+                                            <span class="badge bg-warning">{{ payment.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ payment.created_at|date:"d/m/Y H:i" }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7" class="text-center py-4 text-muted">
+                                        <i class="ph ph-info me-1"></i> {% trans "Aucun paiement trouvé." %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

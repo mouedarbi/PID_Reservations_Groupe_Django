@@ -31,7 +31,8 @@ from catalogue.views.admin_dashboard import (
     admin_representation_create, admin_representation_edit, admin_representation_detail,
     admin_user_create, admin_user_edit, admin_user_detail,
     admin_group_index, admin_group_create, admin_group_edit, admin_group_detail,
-    admin_generic_delete, admin_settings
+    admin_generic_delete, admin_settings, admin_payment_index, admin_ticketmaster_sync,
+    admin_ticketmaster_sync_live
 )
 
 
@@ -47,6 +48,8 @@ urlpatterns = [
     
     # Shows
     path('admin-dashboard/shows/', admin_show_index, name='admin_show_index'),
+    path('admin-dashboard/shows/sync-tm/', admin_ticketmaster_sync, name='admin_ticketmaster_sync'),
+    path('admin-dashboard/shows/sync-tm-live/', admin_ticketmaster_sync_live, name='admin_ticketmaster_sync_live'),
     path('admin-dashboard/shows/create/', admin_show_create, name='admin_show_create'),
     path('admin-dashboard/shows/<int:pk>/', admin_show_detail, name='admin_show_detail'),
     path('admin-dashboard/shows/<int:pk>/edit/', admin_show_edit, name='admin_show_edit'),
@@ -107,6 +110,9 @@ urlpatterns = [
     path('admin-dashboard/prices/create/', admin_price_create, name='admin_price_create'),
     path('admin-dashboard/prices/<int:pk>/', admin_price_detail, name='admin_price_detail'),
     path('admin-dashboard/prices/<int:pk>/edit/', admin_price_edit, name='admin_price_edit'),
+
+    # Payments Stripe
+    path('admin-dashboard/payments/', admin_payment_index, name='admin_payment_index'),
 
     # Generic Delete (Soft Delete)
     path('admin-dashboard/delete/<str:model_name>/<int:pk>/', admin_generic_delete, name='admin_generic_delete'),

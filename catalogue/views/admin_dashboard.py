@@ -3,6 +3,9 @@ from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
 from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting
+from catalogue.utils.ticketmaster import run_ticketmaster_import, run_ticketmaster_import_gen
+from django.http import StreamingHttpResponse
+from payments.models import Payment
 from catalogue.forms.ArtistForm import ArtistForm
 from catalogue.forms.ShowForm import ShowForm
 from catalogue.forms.LocationForm import LocationForm
@@ -35,26 +38,18 @@ def admin_dashboard(request):
     total_customers = User.objects.count()
     active_shows = Show.objects.filter(bookable=True).count()
     
-    # 2. Revenue & Tickets
-    # Calculate revenue from RepresentationReservation (price * quantity)
-    # Note: price in RepresentationReservation is a ForeignKey to Price model which has 'price' field.
-    # We need to aggregate.
+    # 2. Revenue & Tickets Sold
+    # On calcule le revenu réel basé sur les paiements Stripe réussis
+    total_revenue = Payment.objects.filter(status='succeeded').aggregate(total=Sum('amount'))['total'] or 0
     
-    revenue_agg = RepresentationReservation.objects.aggregate(
-        total_rev=Sum(F('price__price') * F('quantity')),
-        total_tickets=Sum('quantity')
-    )
-    total_revenue = revenue_agg['total_rev'] or 0
-    total_tickets_sold = revenue_agg['total_tickets'] or 0
+    # Pour les tickets, on garde le calcul basé sur les réservations payées
+    total_tickets_sold = RepresentationReservation.objects.filter(reservation__status='paid').aggregate(total=Sum('quantity'))['total'] or 0
     
     # 3. Upcoming Shows (Representations)
     now = timezone.now()
     upcoming_reps_count = Representation.objects.filter(schedule__gte=now).count()
     
     # 4. Mock Data for Charts & Lists (to ensure template renders beautiful UI)
-    # In a real app, we would query this per day/week.
-    
-    # Mocking 'upcoming_shows_list' for the UI
     # We'll fetch some real representations and format them
     upcoming_reps = Representation.objects.filter(schedule__gte=now).select_related('show').order_by('schedule')[:5]
     
@@ -81,12 +76,24 @@ def admin_dashboard(request):
             {'title': 'Théâtre Classique', 'date': now + datetime.timedelta(days=5), 'time': now, 'tickets_sold': 90, 'capacity': 100, 'sold_percentage': 90},
         ]
 
-    # Mocking 'recent_activities'
-    recent_activities = [
-        {'title': 'Nouvelle réservation', 'description': 'Jean Dupont a réservé 2 places', 'timestamp': now - datetime.timedelta(minutes=15), 'status': 'success'},
-        {'title': 'Nouveau commentaire', 'description': 'Marie a commenté "Super spectacle!"', 'timestamp': now - datetime.timedelta(hours=2), 'status': 'info'},
-        {'title': 'Spectacle complet', 'description': 'Le concert de samedi est complet', 'timestamp': now - datetime.timedelta(days=1), 'status': 'warning'},
-    ]
+    # On récupère les 5 derniers paiements réels pour les activités
+    recent_payments = Payment.objects.select_related('reservation__user').order_by('-created_at')[:5]
+    
+    recent_activities = []
+    for payment in recent_payments:
+        recent_activities.append({
+            'title': 'Paiement Stripe',
+            'description': f'{payment.reservation.user.username} a payé {payment.amount} {payment.currency}',
+            'timestamp': payment.created_at,
+            'status': 'success' if payment.status == 'succeeded' else 'warning'
+        })
+    
+    # Si pas de paiements réels, on garde les mocks originaux
+    if not recent_activities:
+        recent_activities = [
+            {'title': 'Nouvelle réservation', 'description': 'Jean Dupont a réservé 2 places', 'timestamp': now - datetime.timedelta(minutes=15), 'status': 'success'},
+            {'title': 'Nouveau commentaire', 'description': 'Marie a commenté "Super spectacle!"', 'timestamp': now - datetime.timedelta(hours=2), 'status': 'info'},
+        ]
     
     # Mocking 'top_shows'
     top_shows = [
@@ -405,12 +412,16 @@ def admin_reservation_detail(request, pk):
     )
 
     items = reservation.representation_reservations.all().select_related('representation__show', 'price')
+    
+    # Récupérer le paiement associé si il existe
+    payment = Payment.objects.filter(reservation=reservation).first()
 
     context = {
         'page_title': f'Détails Réservation #{reservation.id}',
         'title': f'Réservation #{reservation.id}',
         'reservation': reservation,
         'items': items,
+        'payment': payment,
     }
     return render(request, 'admin/reservation/detail.html', context)
 
@@ -1101,3 +1112,55 @@ def admin_settings(request):
         'setting_forms': setting_forms,
     }
     return render(request, 'admin/settings/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_payment_index(request):
+    """
+    Vue pour lister les paiements Stripe dans le dashboard admin personnalisé.
+    """
+    payments = Payment.objects.all().select_related('reservation__user').order_by('-created_at')
+
+    # Recherche par nom d'utilisateur ou ID de session
+    search_query = request.GET.get('q')
+    if search_query:
+        from django.db.models import Q
+        payments = payments.filter(
+            Q(reservation__user__username__icontains=search_query) | 
+            Q(stripe_session_id__icontains=search_query) |
+            Q(stripe_payment_intent_id__icontains=search_query)
+        )
+
+    context = {
+        'page_title': 'Gestion des Paiements Stripe',
+        'title': 'Paiements',
+        'payments': payments,
+        'search_query': search_query,
+    }
+    return render(request, 'admin/payment/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_ticketmaster_sync(request):
+    """
+    Vue pour déclencher la synchronisation avec Ticketmaster.
+    """
+    try:
+        count_new, count_updated = run_ticketmaster_import()
+        from django.contrib import messages
+        messages.success(request, f"Synchronisation terminée ! {count_new} nouveaux spectacles importés, {count_updated} mis à jour.")
+    except Exception as e:
+        from django.contrib import messages
+        messages.error(request, f"Erreur lors de la synchronisation : {str(e)}")
+        
+    return redirect('admin_show_index')
+
+@user_passes_test(is_admin)
+def admin_ticketmaster_sync_live(request):
+    """
+    Vue de streaming pour afficher les logs de synchronisation en temps réel.
+    """
+    def stream_logs():
+        # On utilise le générateur créé dans ticketmaster.py
+        for message in run_ticketmaster_import_gen():
+            yield message
+            
+    return StreamingHttpResponse(stream_logs(), content_type='text/plain')
