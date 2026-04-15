@@ -66,37 +66,8 @@ def cart_checkout(request):
         return redirect('catalogue:show-index')
 
     if request.method == 'POST':
-        # SÉCURITÉ : On supprime les anciennes réservations 'PENDING' de l'utilisateur
-        # pour éviter les doublons en cas de rafraîchissement de page ou retour arrière.
-        Reservation.objects.filter(user=request.user, status='PENDING').delete()
-
-        # On groupe les articles du panier par représentation
-        items_by_rep = {}
-        for item in cart:
-            rep_id = item['representation'].id
-            if rep_id not in items_by_rep:
-                items_by_rep[rep_id] = []
-            items_by_rep[rep_id].append(item)
-
-        created_reservation_ids = []
-
-        # Pour chaque séance, on crée une réservation distincte
-        for rep_id, items in items_by_rep.items():
-            reservation = Reservation.objects.create(
-                user=request.user,
-                status='PENDING'
-            )
-            created_reservation_ids.append(str(reservation.id))
-
-            for item in items:
-                RepresentationReservation.objects.create(
-                    reservation=reservation,
-                    representation=item['representation'],
-                    price=item['price_obj'],
-                    quantity=item['quantity']
-                )
-        
-        # On passe la liste des IDs (OBSOLÈTE : Redirigé vers Stripe via le template)
+        # On ne crée plus les réservations ici car elles sont créées par Stripe lors du succès du paiement
+        # Redirection vers Stripe via le template
         return redirect('cart:cart_detail')
 
     return render(request, 'cart/checkout.html', {'cart': cart})

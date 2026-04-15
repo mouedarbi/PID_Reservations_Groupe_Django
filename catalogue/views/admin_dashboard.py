@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
-from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting
+from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType
 from catalogue.utils.ticketmaster import run_ticketmaster_import, run_ticketmaster_import_gen
 from django.http import StreamingHttpResponse
 from payments.models import Payment
@@ -16,6 +16,7 @@ from catalogue.forms.ReviewForm import ReviewForm
 from catalogue.forms.RepresentationForm import RepresentationForm
 from catalogue.forms.ReservationForm import ReservationForm
 from catalogue.forms.SettingForm import AppSettingForm
+from catalogue.forms.ArtistTypeForm import ArtistTypeForm
 from django.contrib.auth.models import Group
 from accounts.forms.UserUpdateForm import UserUpdateForm
 from accounts.forms.UserSignUpForm import UserSignUpForm
@@ -254,6 +255,68 @@ def admin_type_detail(request, pk):
         'artists': artists,
     }
     return render(request, 'admin/type/detail.html', context)
+
+@user_passes_test(is_admin)
+def artist_type_list(request):
+    """
+    View to list artist-type mappings.
+    """
+    mappings = ArtistType.objects.all().select_related('artist', 'type').order_by('artist__lastname')
+    context = {
+        'page_title': 'Mappage Artiste-Type',
+        'title': 'Associations Artistes & Types',
+        'mappings': mappings,
+    }
+    return render(request, 'admin/artist_type/index.html', context)
+
+@user_passes_test(is_admin)
+def artist_type_create(request):
+    """
+    View to create a new artist-type mapping.
+    """
+    if request.method == 'POST':
+        form = ArtistTypeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('artist_type_list')
+    else:
+        form = ArtistTypeForm()
+    context = {
+        'page_title': 'Ajouter un Mappage',
+        'title': 'Nouvel Association Artiste-Type',
+        'form': form,
+    }
+    return render(request, 'admin/artist_type/create.html', context)
+
+@user_passes_test(is_admin)
+def artist_type_edit(request, pk):
+    """
+    View to edit an existing artist-type mapping.
+    """
+    mapping = get_object_or_404(ArtistType, pk=pk)
+    if request.method == 'POST':
+        form = ArtistTypeForm(request.POST, instance=mapping)
+        if form.is_valid():
+            form.save()
+            return redirect('artist_type_list')
+    else:
+        form = ArtistTypeForm(instance=mapping)
+    context = {
+        'page_title': 'Modifier Mappage',
+        'title': 'Modifier Association Artiste-Type',
+        'form': form,
+        'mapping': mapping,
+    }
+    return render(request, 'admin/artist_type/edit.html', context)
+
+@user_passes_test(is_admin)
+def artist_type_delete(request, pk):
+    """
+    View to delete an artist-type mapping.
+    """
+    mapping = get_object_or_404(ArtistType, pk=pk)
+    mapping.delete()
+    return redirect('artist_type_list')
 
 @user_passes_test(is_admin)
 def admin_review_index(request):
@@ -1082,6 +1145,12 @@ def admin_settings(request):
     AppSetting.objects.get_or_create(
         key='STRIPE_SECRET_KEY',
         defaults={'value': '', 'description': 'Clé secrète Stripe (sk_...)'}
+    )
+
+    # Paramètres Ticketmaster
+    AppSetting.objects.get_or_create(
+        key='TICKETMASTER_API_KEY',
+        defaults={'value': '', 'description': 'Clé API Ticketmaster (Discovery API v2)'}
     )
     
     settings = AppSetting.objects.all().order_by('key')

@@ -1,7 +1,7 @@
 """reservations URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.2/topics/http/urls/
+    https://docs.djangoproject.com/en/5.0/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -22,6 +22,7 @@ from catalogue.views.admin_dashboard import (
     admin_location_index, admin_locality_index, admin_reservation_index, 
     admin_reservation_detail, admin_reservation_edit, admin_user_index, admin_group_index,
     admin_price_index, admin_show_detail, admin_artist_create, admin_artist_edit,
+    artist_type_list, artist_type_create, artist_type_edit, artist_type_delete,
     admin_artist_detail, admin_show_create, admin_show_edit,
     admin_location_create, admin_location_edit, admin_location_detail,
     admin_locality_create, admin_locality_edit, admin_locality_detail,
@@ -66,6 +67,12 @@ urlpatterns = [
     path('admin-dashboard/artists/create/', admin_artist_create, name='admin_artist_create'),
     path('admin-dashboard/artists/<int:pk>/edit/', admin_artist_edit, name='admin_artist_edit'),
     
+    # Artist-Types (Mapping)
+    path('admin-dashboard/artist-types/', artist_type_list, name='artist_type_list'),
+    path('admin-dashboard/artist-types/create/', artist_type_create, name='artist_type_create'),
+    path('admin-dashboard/artist-types/<int:pk>/edit/', artist_type_edit, name='artist_type_edit'),
+    path('admin-dashboard/artist-types/<int:pk>/delete/', artist_type_delete, name='artist_type_delete'),
+
     # Types
     path('admin-dashboard/types/', admin_type_index, name='admin_type_index'),
     path('admin-dashboard/types/create/', admin_type_create, name='admin_type_create'),
@@ -126,4 +133,3 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
 ]
-
