@@ -209,3 +209,14 @@ PASSWORD_CHANGE_REDIRECT_URL = 'accounts:user-profile'
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'fr'
 MODELTRANSLATION_FALLBACK_LANGUAGES = ('fr', 'en', 'nl')
 
+# Configuration des E-mails
+# Par défaut, les mails s'affichent dans la console pour le développement.
+# Pour envoyer de vrais mails, changez EMAIL_BACKEND dans le .env
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@theatreplus.be')
+
