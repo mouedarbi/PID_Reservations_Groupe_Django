@@ -1,7 +1,14 @@
 {% extends "admin/admin.html" %}
-{% load i18n %}
+{% load static i18n %}
 
 {% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-main-style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-1.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-2.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="dashboard-content">
