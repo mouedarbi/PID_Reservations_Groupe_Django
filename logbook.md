@@ -188,3 +188,9 @@ Renforcement du contrôle éditorial via le Dashboard Admin :
 
 - **Rôles** : Utilisation du groupe `PRODUCER` pour filtrer l'accès aux fonctionnalités et garantir qu'un producteur ne peut modifier que ses propres données.
 - **Interface Utilisateur** : Distinction visuelle claire dans le profil utilisateur entre les liens "Administration" (staff) et "Espace Producteur" (group producer).
+
+### Correctifs et Ajustements (Post-Implémentation)
+
+- **Fix Dashboard Admin** : Résolution d'une `TemplateSyntaxError` causée par l'absence du tag `{% load i18n %}` dans le template principal du dashboard.
+- **Données de Capacité** : Correction d'un bug où la capacité des salles restait à 0. Lancement d'un script de maintenance pour synchroniser les 106 lieux avec les données réelles de l'API ODWB.
+- **Sécurité et Rôles** : Affinement de la visibilité des liens dans le profil utilisateur pour éviter qu'un super-administrateur ne voit le menu "Espace Producteur", clarifiant ainsi les périmètres d'action de chaque rôle.

@@ -87,19 +87,24 @@
 
                 <form method="post" class="border-t border-border mt-4 pt-4">
                     {% csrf_token %}
-                    <label class="text-muted block text-sm font-medium">{% trans "Ajouter un tarif existant" %}</label>
-                    <div class="mt-1 flex gap-2">
-                        <select name="price_id" class="bg-muted/20 border-border block w-full rounded-md border p-2 text-sm text-text">
-                            <option value="">-- {% trans "Choisir" %} --</option>
+                    <label class="text-muted block text-sm font-medium">{% trans "Affecter un nouveau prix" %}</label>
+                    <div class="mt-2 space-y-2">
+                        <select name="price_id" class="bg-muted/20 border-border block w-full rounded-md border p-2 text-sm text-text" required>
+                            <option value="">-- {% trans "Choisir un type de prix" %} --</option>
                             {% for p in available_prices %}
                                 <option value="{{ p.id }}">{{ p.type|title }} ({{ p.price }} €)</option>
                             {% endfor %}
                         </select>
-                        <button type="submit" class="btn-sm bg-purple-600 text-white">
-                            <i class="ph ph-plus"></i>
+                        <button type="submit" class="btn w-full bg-purple-600 text-white hover:bg-purple-700">
+                            <i class="ph ph-plus-circle"></i> {% trans "Ajouter ce tarif" %}
                         </button>
                     </div>
                 </form>
+                <div class="mt-4">
+                    <a href="{% url 'admin_price_create' %}" class="text-xs text-blue-500 hover:underline">
+                        <i class="ph ph-plus"></i> {% trans "Créer un nouveau type de prix" %}
+                    </a>
+                </div>
                 <p class="text-small mt-4">
                     <i class="ph ph-info"></i> {% trans "Un spectacle doit avoir au moins un tarif pour être publié." %}
                 </p>
