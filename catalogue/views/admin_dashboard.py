@@ -45,7 +45,7 @@ def admin_dashboard(request):
     total_revenue = Payment.objects.filter(status='succeeded').aggregate(total=Sum('amount'))['total'] or 0
     
     # Pour les tickets, on garde le calcul basé sur les réservations payées
-    total_tickets_sold = RepresentationReservation.objects.filter(reservation__status='paid').aggregate(total=Sum('quantity'))['total'] or 0
+    total_tickets_sold = RepresentationReservation.objects.filter(reservation__status='PAID').aggregate(total=Sum('quantity'))['total'] or 0
     
     # 3. Upcoming Shows (Representations)
     now = timezone.now()

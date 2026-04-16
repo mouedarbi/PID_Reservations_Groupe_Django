@@ -41,16 +41,20 @@
                         <i class="ph ph-key"></i> {% trans "Mot de passe" %}
                     </a>
                     
-                    {% if user.is_staff or user.is_superuser or user.groups.all.0.name == 'ADMINISTRATOR' %}
+                    {% if user.is_staff or user.is_superuser %}
                     <a href="{% url 'admin_dashboard' %}" style="text-decoration: none; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-top: 0.5rem; padding: 10px; background: #fff5f5; border-radius: 8px; border: 1px solid #ffe3e3;">
                         <i class="ph ph-gauge"></i> {% trans "Administration" %}
                     </a>
                     {% endif %}
 
-                    {% if user.groups.all.0.name == 'PRODUCER' or user.is_superuser %}
-                    <a href="{% url 'catalogue:prod_dashboard' %}" style="text-decoration: none; color: #0284c7; display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-top: 0.5rem; padding: 10px; background: #e0f2fe; border-radius: 8px; border: 1px solid #bae6fd;">
-                        <i class="ph ph-storefront"></i> {% trans "Espace Producteur" %}
-                    </a>
+                    {% if not user.is_superuser %}
+                        {% for group in user.groups.all %}
+                            {% if group.name == 'PRODUCER' %}
+                                <a href="{% url 'catalogue:prod_dashboard' %}" style="text-decoration: none; color: #0284c7; display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-top: 0.5rem; padding: 10px; background: #e0f2fe; border-radius: 8px; border: 1px solid #bae6fd;">
+                                    <i class="ph ph-storefront"></i> {% trans "Espace Producteur" %}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
                     
                     <form method="post" action="{% url 'accounts:user-delete' request.user.id %}" onsubmit="return confirm('{% trans "Êtes-vous sûr ?" %}')" style="margin-top: 1rem;">
