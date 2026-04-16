@@ -15,6 +15,7 @@ class Location(models.Model):
                                  on_delete=models.RESTRICT, null=True, related_name='locations')
     website = models.CharField(max_length=255, null=True)
     phone = models.CharField(max_length=30, null=True)
+    capacity = models.PositiveIntegerField(default=0)
 
     objects = LocationManager()
 

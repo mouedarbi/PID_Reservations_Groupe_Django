@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from .location import *
 from .price import Price
 from .show_price import ShowPrice
@@ -8,6 +9,10 @@ class ShowManager(models.Manager):
         return self.get(slug=slug, created_in=created_in)
 
 class Show(models.Model):
+    SHOW_STATUS = [
+        ('pending', 'En attente'),
+        ('published', 'Publié'),
+    ]
     slug = models.CharField(max_length=60, unique=True)
     title = models.CharField(max_length=255)
     description = models.TextField(max_length=255, null=True)
@@ -18,6 +23,8 @@ class Show(models.Model):
     bookable = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True)
+    producer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='submitted_shows')
+    status = models.CharField(max_length=20, choices=SHOW_STATUS, default='pending')
 
     artist_types = models.ManyToManyField(
         "ArtistType",
