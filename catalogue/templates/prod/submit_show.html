@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Partager un spectacle" %} - ThéâtrePlus{% endblock %}
+
+{% block content %}
+<section class="hero compact" style="padding-top: 120px; background: #0284c7; color: white; padding-bottom: 3rem;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem;">{% trans "Partager un spectacle" %}</h1>
+        <p style="opacity: 0.9; font-size: 1.1rem;">{% trans "Proposez votre spectacle à l'administration." %}</p>
+    </div>
+</section>
+
+<section class="submit-show" style="padding: 4rem 0;">
+    <div class="container" style="max-width: 800px; margin: 0 auto; padding: 0 15px;">
+        
+        <div style="background: white; border-radius: 12px; border: 1px solid #e5e7eb; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <form method="post" id="submitShowForm">
+                {% csrf_token %}
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Titre du spectacle" %}</label>
+                    <input type="text" name="title" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Description" %}</label>
+                    <textarea name="description" rows="4" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;"></textarea>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Durée (minutes)" %}</label>
+                        <input type="number" name="duration" required min="1" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Salle / Lieu" %}</label>
+                        <select name="location" id="locationSelect" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                            <option value="">-- {% trans "Choisir une salle" %} --</option>
+                            {% for loc in locations %}
+                                <option value="{{ loc.id }}" data-capacity="{{ loc.capacity }}">{{ loc.designation }}</option>
+                            {% endfor %}
+                        </select>
+                        <div id="capacityInfo" style="margin-top: 5px; font-size: 0.85rem; color: #6b7280; font-weight: 500;"></div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Date" %}</label>
+                        <input type="date" name="date" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Heure" %}</label>
+                        <input type="time" name="time" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Nombre de tickets" %}</label>
+                    <input type="number" name="ticket_count" id="ticketCountInput" required min="1" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                    <p id="ticketError" style="color: #dc2626; font-size: 0.85rem; margin-top: 5px; display: none;">
+                        {% trans "Le nombre de tickets ne peut pas dépasser la capacité de la salle." %}
+                    </p>
+                </div>
+
+                <div style="display: flex; gap: 1rem;">
+                    <button type="submit" id="submitBtn" style="flex: 1; background: #0284c7; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                        {% trans "Publier le Spectacle" %}
+                    </button>
+                    <a href="{% url 'catalogue:prod_dashboard' %}" style="flex: 1; text-align: center; background: #f3f4f6; color: #374151; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 600; border: 1px solid #d1d5db;">
+                        {% trans "Annuler" %}
+                    </a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    const locationSelect = document.getElementById('locationSelect');
+    const capacityInfo = document.getElementById('capacityInfo');
+    const ticketCountInput = document.getElementById('ticketCountInput');
+    const ticketError = document.getElementById('ticketError');
+    const submitBtn = document.getElementById('submitBtn');
+    const form = document.getElementById('submitShowForm');
+
+    let currentCapacity = 0;
+
+    locationSelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        if (selectedOption.value) {
+            currentCapacity = parseInt(selectedOption.getAttribute('data-capacity') || 0);
+            capacityInfo.innerText = `{% trans "Capacité de la salle :" %} ${currentCapacity} {% trans "places" %}`;
+            validateTickets();
+        } else {
+            capacityInfo.innerText = "";
+            currentCapacity = 0;
+        }
+    });
+
+    function validateTickets() {
+        const ticketCount = parseInt(ticketCountInput.value || 0);
+        if (currentCapacity > 0 && ticketCount > currentCapacity) {
+            ticketError.style.display = "block";
+            ticketCountInput.style.borderColor = "#dc2626";
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = "0.5";
+            return false;
+        } else {
+            ticketError.style.display = "none";
+            ticketCountInput.style.borderColor = "#d1d5db";
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = "1";
+            return true;
+        }
+    }
+
+    ticketCountInput.addEventListener('input', validateTickets);
+
+    form.addEventListener('submit', function(e) {
+        if (!validateTickets()) {
+            e.preventDefault();
+        }
+    });
+</script>
+{% endblock %}
