@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
-from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType
+from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType, ShowPrice
 from catalogue.utils.ticketmaster import run_ticketmaster_import, run_ticketmaster_import_gen
 from django.http import StreamingHttpResponse
 from payments.models import Payment
@@ -1223,6 +1223,18 @@ def admin_ticketmaster_sync(request):
         messages.error(request, f"Erreur lors de la synchronisation : {str(e)}")
         
     return redirect('admin_show_index')
+
+@user_passes_test(is_admin)
+def admin_ticketmaster_sync_live(request):
+    """
+    Vue de streaming pour afficher les logs de synchronisation en temps réel.
+    """
+    def stream_logs():
+        # On utilise le générateur créé dans ticketmaster.py
+        for message in run_ticketmaster_import_gen():
+            yield message
+            
+    return StreamingHttpResponse(stream_logs(), content_type='text/plain')
 
 @user_passes_test(is_admin)
 def admin_pending_shows(request):
