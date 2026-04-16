@@ -1,7 +1,7 @@
 """reservations.catalogue URL Configuration
 """
 from django.urls import path
-from .views import artist, type, price, locality, location, representation, review
+from .views import artist, type, price, locality, location, representation, review, ticket
 from .views.show_ import index as show_index, show as show_detail, create as show_create, edit as show_edit, delete as show_delete
 from .views.admin_dashboard import admin_show_index, admin_representation_index
 
@@ -48,4 +48,9 @@ urlpatterns = [
     path('review/create/', review.create, name='review-create'),
     path('review/edit/<int:review_id>', review.edit, name='review-edit'),
     path('review/delete/<int:review_id>', review.delete, name='review-delete'),
+
+    # Tickets
+    path('ticket/<uuid:ticket_id>', ticket.ticket_detail, name='ticket-detail'),
+    path('ticket/<uuid:ticket_id>/pdf', ticket.ticket_pdf, name='ticket-pdf'),
+    path('reservation/<int:reservation_id>/pdf', ticket.reservation_pdf, name='reservation-pdf'),
     ]

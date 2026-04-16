@@ -91,20 +91,26 @@
                                         {% endfor %}
                                     </td>
                                     <td style="padding: 1.2rem; text-align: center;">
-                                        {% if reservation.status == 'PAID' %}
+                                        {% if reservation.status|upper == 'PAID' %}
                                             <span style="background: #d4edda; color: #155724; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold;">{% trans "PAYÉ" %}</span>
-                                        {% elif reservation.status == 'PENDING' %}
+                                        {% elif reservation.status|upper == 'PENDING' %}
                                             <span style="background: #fff3cd; color: #856404; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold;">{% trans "ATTENTE" %}</span>
-                                        {% elif reservation.status == 'FAILED' %}
+                                        {% elif reservation.status|upper == 'FAILED' %}
                                             <span style="background: #f8d7da; color: #721c24; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold;">{% trans "ÉCHEC" %}</span>
                                         {% else %}
                                             <span style="background: #e9ecef; color: #6c757d; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold;">{{ reservation.status }}</span>
                                         {% endif %}
                                     </td>
                                     <td style="padding: 1.2rem; text-align: right;">
+                                        {% if reservation.status|upper == 'PAID' %}
+                                        <a href="{% url 'cart:reservation_detail' reservation.id %}" style="color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem;">
+                                            <i class="ph ph-ticket"></i> {% trans "Voir mes billets" %}
+                                        </a>
+                                        {% else %}
                                         <a href="{% url 'cart:reservation_detail' reservation.id %}" style="color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9rem;">
                                             <i class="ph ph-eye"></i> {% trans "Détails" %}
                                         </a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                                 {% endfor %}
