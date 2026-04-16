@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{% trans "Partager un spectacle" %} - ThéâtrePlus{% endblock %}
+{% block title %}{% if is_edit %}{% trans "Modifier le spectacle" %}{% else %}{% trans "Partager un spectacle" %}{% endif %} - ThéâtrePlus{% endblock %}
 
 {% block content %}
 <section class="hero compact" style="padding-top: 120px; background: #0284c7; color: white; padding-bottom: 3rem;">
     <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
-        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem;">{% trans "Partager un spectacle" %}</h1>
-        <p style="opacity: 0.9; font-size: 1.1rem;">{% trans "Proposez votre spectacle à l'administration." %}</p>
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem;">
+            {% if is_edit %}{% trans "Modifier le spectacle" %}{% else %}{% trans "Partager un spectacle" %}{% endif %}
+        </h1>
+        <p style="opacity: 0.9; font-size: 1.1rem;">
+            {% if is_edit %}{% trans "Mettez à jour les informations de votre spectacle." %}{% else %}{% trans "Proposez votre spectacle à l'administration." %}{% endif %}
+        </p>
     </div>
 </section>
 
@@ -20,25 +24,25 @@
                 
                 <div style="margin-bottom: 1.5rem;">
                     <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Titre du spectacle" %}</label>
-                    <input type="text" name="title" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                    <input type="text" name="title" value="{{ show.title|default:'' }}" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
                 </div>
 
                 <div style="margin-bottom: 1.5rem;">
                     <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Description" %}</label>
-                    <textarea name="description" rows="4" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;"></textarea>
+                    <textarea name="description" rows="4" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">{{ show.description|default:'' }}</textarea>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
                     <div>
                         <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Durée (minutes)" %}</label>
-                        <input type="number" name="duration" required min="1" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                        <input type="number" name="duration" value="{{ show.duration|default:'' }}" required min="1" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
                     </div>
                     <div>
                         <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Salle / Lieu" %}</label>
-                        <select name="location" id="locationSelect" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                        <select name="location" id="locationSelect" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;" {% if is_edit and show.status != 'pending' %}disabled{% endif %}>
                             <option value="">-- {% trans "Choisir une salle" %} --</option>
                             {% for loc in locations %}
-                                <option value="{{ loc.id }}" data-capacity="{{ loc.capacity }}">{{ loc.designation }}</option>
+                                <option value="{{ loc.id }}" data-capacity="{{ loc.capacity }}" {% if show.location_id == loc.id %}selected{% endif %}>{{ loc.designation }}</option>
                             {% endfor %}
                         </select>
                         <div id="capacityInfo" style="margin-top: 5px; font-size: 0.85rem; color: #6b7280; font-weight: 500;"></div>
@@ -48,17 +52,17 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
                     <div>
                         <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Date" %}</label>
-                        <input type="date" name="date" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                        <input type="date" name="date" value="{{ representation.schedule|date:'Y-m-d' }}" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;" {% if is_edit and show.status != 'pending' %}disabled{% endif %}>
                     </div>
                     <div>
                         <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Heure" %}</label>
-                        <input type="time" name="time" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                        <input type="time" name="time" value="{{ representation.schedule|time:'H:i' }}" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;" {% if is_edit and show.status != 'pending' %}disabled{% endif %}>
                     </div>
                 </div>
 
                 <div style="margin-bottom: 2rem;">
                     <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Nombre de tickets" %}</label>
-                    <input type="number" name="ticket_count" id="ticketCountInput" required min="1" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                    <input type="number" name="ticket_count" id="ticketCountInput" value="{{ representation.total_seats|default:'' }}" required min="1" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;" {% if is_edit and show.status != 'pending' %}disabled{% endif %}>
                     <p id="ticketError" style="color: #dc2626; font-size: 0.85rem; margin-top: 5px; display: none;">
                         {% trans "Le nombre de tickets ne peut pas dépasser la capacité de la salle." %}
                     </p>
@@ -66,7 +70,7 @@
 
                 <div style="display: flex; gap: 1rem;">
                     <button type="submit" id="submitBtn" style="flex: 1; background: #0284c7; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
-                        {% trans "Publier le Spectacle" %}
+                        {% if is_edit %}{% trans "Enregistrer" %}{% else %}{% trans "Publier le Spectacle" %}{% endif %}
                     </button>
                     <a href="{% url 'catalogue:prod_dashboard' %}" style="flex: 1; text-align: center; background: #f3f4f6; color: #374151; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 600; border: 1px solid #d1d5db;">
                         {% trans "Annuler" %}

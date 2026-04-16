@@ -59,11 +59,13 @@
                         <td style="padding: 1.2rem; text-align: center; font-weight: 600; color: #059669;">
                             {{ item.stats.remaining_seats }}
                         </td>
-                        <td style="padding: 1.2rem; text-align: right;">
+                        <td class="padding: 1.2rem; text-align: right;">
                             <a href="{% url 'frontend:show_detail' item.show.id %}" style="color: #6b7280; text-decoration: none; margin-right: 1rem;" title="{% trans 'Voir sur le site' %}">
                                 <i class="ph ph-eye" style="font-size: 1.2rem;"></i>
                             </a>
-                            <!-- Modification non implémentée mais possible ici -->
+                            <a href="{% url 'catalogue:prod_edit_show' item.show.id %}" style="color: #0284c7; text-decoration: none;" title="{% trans 'Modifier' %}">
+                                <i class="ph ph-note-pencil" style="font-size: 1.2rem;"></i>
+                            </a>
                         </td>
                     </tr>
                     {% empty %}

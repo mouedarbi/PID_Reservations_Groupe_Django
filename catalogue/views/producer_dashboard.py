@@ -81,6 +81,51 @@ def prod_submit_show(request):
 
 @login_required
 @user_passes_test(is_producer)
+def prod_edit_show(request, pk):
+    show = get_object_or_404(Show, pk=pk, producer=request.user)
+    
+    if request.method == 'POST':
+        show.title = request.POST.get('title')
+        show.description = request.POST.get('description')
+        show.duration = request.POST.get('duration')
+        
+        # If pending, allow changing location and date too
+        if show.status == 'pending':
+            location_id = request.POST.get('location')
+            show.location = get_object_or_404(Location, id=location_id)
+            
+            # Update representation
+            rep = show.representations.first()
+            if rep:
+                date_str = request.POST.get('date')
+                time_str = request.POST.get('time')
+                ticket_count = int(request.POST.get('ticket_count', 0))
+                
+                if ticket_count <= show.location.capacity:
+                    schedule_str = f"{date_str} {time_str}"
+                    rep.schedule = timezone.make_aware(timezone.datetime.strptime(schedule_str, "%Y-%m-%d %H:%M"))
+                    rep.location = show.location
+                    rep.available_seats = ticket_count
+                    rep.total_seats = ticket_count
+                    rep.save()
+        
+        show.save()
+        messages.success(request, "Spectacle mis à jour.")
+        return redirect('catalogue:prod_dashboard')
+
+    locations = Location.objects.all()
+    # Get initial date/time from first representation
+    rep = show.representations.first()
+    context = {
+        'show': show,
+        'locations': locations,
+        'representation': rep,
+        'is_edit': True
+    }
+    return render(request, 'prod/submit_show.html', context)
+
+@login_required
+@user_passes_test(is_producer)
 def prod_moderate_reviews(request):
     # Only reviews for shows belonging to this producer
     reviews = Review.objects.filter(show__producer=request.user).order_by('-created_at')
