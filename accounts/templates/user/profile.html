@@ -47,7 +47,7 @@
                     </a>
                     {% endif %}
 
-                    {% if not user.is_superuser %}
+                    {% if not user.is_staff and not user.is_superuser %}
                         {% for group in user.groups.all %}
                             {% if group.name == 'PRODUCER' %}
                                 <a href="{% url 'catalogue:prod_dashboard' %}" style="text-decoration: none; color: #0284c7; display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-top: 0.5rem; padding: 10px; background: #e0f2fe; border-radius: 8px; border: 1px solid #bae6fd;">

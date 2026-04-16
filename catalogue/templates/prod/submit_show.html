@@ -42,7 +42,7 @@
                         <select name="location" id="locationSelect" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;" {% if is_edit and show.status != 'pending' %}disabled{% endif %}>
                             <option value="">-- {% trans "Choisir une salle" %} --</option>
                             {% for loc in locations %}
-                                <option value="{{ loc.id }}" data-capacity="{{ loc.capacity }}" {% if show.location_id == loc.id %}selected{% endif %}>{{ loc.designation }}</option>
+                                <option value="{{ loc.id }}" data-capacity="{{ loc.capacity|default:0 }}" {% if show.location_id == loc.id %}selected{% endif %}>{{ loc.designation }}</option>
                             {% endfor %}
                         </select>
                         <div id="capacityInfo" style="margin-top: 5px; font-size: 0.85rem; color: #6b7280; font-weight: 500;"></div>
@@ -122,6 +122,16 @@
     }
 
     ticketCountInput.addEventListener('input', validateTickets);
+
+    // Initial check on page load
+    window.addEventListener('DOMContentLoaded', function() {
+        const selectedOption = locationSelect.options[locationSelect.selectedIndex];
+        if (selectedOption && selectedOption.value) {
+            currentCapacity = parseInt(selectedOption.getAttribute('data-capacity') || 0);
+            capacityInfo.innerText = `{% trans "Capacité de la salle :" %} ${currentCapacity} {% trans "places" %}`;
+            validateTickets();
+        }
+    });
 
     form.addEventListener('submit', function(e) {
         if (!validateTickets()) {
