@@ -1,0 +1,60 @@
+{% extends "admin/admin.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <div class="mb-6 flex items-center justify-between">
+        <div>
+            <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
+            <p class="text-small mt-1">{% trans "Gérez les nouvelles propositions des producteurs." %}</p>
+        </div>
+    </div>
+
+    <div class="card-event">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="border-border border-b text-sm font-semibold text-muted">
+                        <th class="px-4 py-3">{% trans "Spectacle" %}</th>
+                        <th class="px-4 py-3">{% trans "Producteur" %}</th>
+                        <th class="px-4 py-3">{% trans "Lieu" %}</th>
+                        <th class="px-4 py-3">{% trans "Date Soumission" %}</th>
+                        <th class="px-4 py-3 text-right">{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border">
+                    {% for show in pending_shows %}
+                    <tr class="hover:bg-muted/30 transition-colors">
+                        <td class="px-4 py-4">
+                            <span class="text-text font-medium">{{ show.title }}</span>
+                        </td>
+                        <td class="px-4 py-4">
+                            <span class="text-muted">{{ show.producer.username }}</span>
+                        </td>
+                        <td class="px-4 py-4">
+                            <span class="text-muted">{{ show.location.designation }}</span>
+                        </td>
+                        <td class="px-4 py-4">
+                            <span class="text-muted">{{ show.created_at|date:"d/m/Y" }}</span>
+                        </td>
+                        <td class="px-4 py-4 text-right">
+                            <a href="{% url 'admin_approve_show' show.id %}" class="btn-sm bg-blue-600 text-white hover:bg-blue-700">
+                                <i class="ph ph-check-circle"></i> {% trans "Examiner" %}
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-4 py-8 text-center text-muted italic">
+                            {% trans "Aucun spectacle en attente." %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

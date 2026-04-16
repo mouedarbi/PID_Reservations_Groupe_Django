@@ -33,7 +33,7 @@ from catalogue.views.admin_dashboard import (
     admin_user_create, admin_user_edit, admin_user_detail,
     admin_group_index, admin_group_create, admin_group_edit, admin_group_detail,
     admin_generic_delete, admin_settings, admin_payment_index, admin_ticketmaster_sync,
-    admin_ticketmaster_sync_live
+    admin_ticketmaster_sync_live, admin_pending_shows, admin_approve_show
 )
 
 
@@ -49,6 +49,8 @@ urlpatterns = [
     
     # Shows
     path('admin-dashboard/shows/', admin_show_index, name='admin_show_index'),
+    path('admin-dashboard/shows/pending/', admin_pending_shows, name='admin_pending_shows'),
+    path('admin-dashboard/shows/approve/<int:pk>/', admin_approve_show, name='admin_approve_show'),
     path('admin-dashboard/shows/sync-tm/', admin_ticketmaster_sync, name='admin_ticketmaster_sync'),
     path('admin-dashboard/shows/sync-tm-live/', admin_ticketmaster_sync_live, name='admin_ticketmaster_sync_live'),
     path('admin-dashboard/shows/create/', admin_show_create, name='admin_show_create'),
