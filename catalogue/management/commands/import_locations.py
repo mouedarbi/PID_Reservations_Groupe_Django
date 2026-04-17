@@ -49,6 +49,7 @@ class Command(BaseCommand):
                 existing_location.locality = locality
                 existing_location.website = item.get('site_web')
                 existing_location.phone = item.get('telephone')
+                existing_location.capacity = int(item.get('jauge_maximale', 0) or 0)
                 existing_location.save()
                 count_updated += 1
                 self.stdout.write(f"Mis à jour : {salle_name}")
@@ -67,7 +68,8 @@ class Command(BaseCommand):
                     address=item.get('adresse', '') or '',
                     locality=locality,
                     website=item.get('site_web'),
-                    phone=item.get('telephone')
+                    phone=item.get('telephone'),
+                    capacity=int(item.get('jauge_maximale', 0) or 0)
                 )
                 count_created += 1
                 self.stdout.write(self.style.SUCCESS(f"Créé : {salle_name}"))

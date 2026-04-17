@@ -4,6 +4,7 @@ from .price import Price
 class ShowPrice(models.Model):
     show = models.ForeignKey('Show', on_delete=models.CASCADE)
     price = models.ForeignKey(Price, on_delete=models.CASCADE)
+    quantity_total = models.PositiveIntegerField(default=100)
 
     class Meta:
         db_table = "show_prices"

@@ -23,7 +23,7 @@ Toutes les vues de liste (index) et de détail pour les modèles clés ont été
     -   Le template `catalogue/templates/admin/show/detail.html` a été adapté pour inclure les formulaires d'ajout et de suppression fonctionnels.
 -   **Corrections d'erreurs** :
     -   Correction d'une `NameError` (modèle `Price` non importé) dans `catalogue/views/admin_dashboard.py`.
-    -   Correction d'une `IndentationError` et d'un problème de formatage dans `reservations/urls.py`.
+    -   Correction d'une `IndentationError` and d'un problème de formatage dans `reservations/urls.py`.
     -   Correction d'une `ModuleNotFoundError` pour l'import de `ShowPrice` dans `admin_show_detail`.
     -   Correction d'une `NoReverseMatch` pour le lien d'édition des spectacles dans `catalogue/templates/admin/show/index.html`.
 
@@ -154,3 +154,45 @@ La commande peut être relancée à tout moment pour synchroniser la base de don
 ```bash
 python manage.py import_locations
 ```
+
+## Date: lundi 13 avril 2026
+
+### Progress Summary - Espace Producteur & Modération Admin
+
+Cette session a été consacrée à l'implémentation d'un workflow collaboratif entre les producteurs et l'administration pour la publication de nouveaux spectacles.
+
+#### 1. Évolutions du Modèle de Données (Backend)
+
+Pour supporter ce nouveau flux, plusieurs modèles ont été enrichis :
+- **Modèle `Show`** : Ajout d'une relation `producer` (ForeignKey vers `User`) et d'un champ `status` (`pending`, `published`).
+- **Modèle `Location`** : Ajout du champ `capacity` pour définir la jauge maximale de chaque salle.
+- **Modèle `Representation`** : Ajout de `total_seats` pour garder une trace du quota initial de billets.
+- **Mise à jour de l'Importer** : Le script `import_locations` récupère désormais la capacité réelle des salles via le champ `jauge_maximale` de l'API ODWB.
+
+#### 2. Espace Producteur (Dashboard Dédié)
+
+Création d'une interface sécurisée pour les utilisateurs du groupe `PRODUCER` :
+- **Tableau de bord** : Vue synthétique des spectacles partagés avec statistiques de ventes (tickets vendus, places restantes) et état de publication.
+- **Soumission de Spectacle** : Formulaire interactif permettant de proposer un spectacle (titre, durée, salle, date, heure, nombre de tickets).
+- **Validation Frontend** : Intégration de JavaScript pour afficher dynamiquement la capacité de la salle sélectionnée et interdire une mise en vente supérieure à la jauge réelle.
+- **Modération des Avis** : Interface permettant aux producteurs de gérer (approuver/rejeter) les critiques concernant uniquement leurs propres productions.
+
+#### 3. Flux de Modération Administrateur
+
+Renforcement du contrôle éditorial via le Dashboard Admin :
+- **Système d'Alerte** : Ajout d'un compteur "Spectacles en attente" sur la page d'accueil de l'administration.
+- **Interface de Validation** : Vue dédiée permettant à l'admin d'examiner les propositions des producteurs, de modifier les détails techniques si nécessaire, et d'affecter les tarifs (VIP, Standard, etc.).
+- **Publication** : Le passage au statut `published` rend le spectacle visible et réservable pour le grand public.
+
+#### 4. Intégration et Sécurité
+
+- **Rôles** : Utilisation du groupe `PRODUCER` pour filtrer l'accès aux fonctionnalités et garantir qu'un producteur ne peut modifier que ses propres données.
+- **Interface Utilisateur** : Distinction visuelle claire dans le profil utilisateur entre les liens "Administration" (staff) et "Espace Producteur" (group producer).
+
+### Correctifs et Ajustements (Post-Implémentation)
+
+- **Fix Dashboard Admin** : Résolution d'une `TemplateSyntaxError` causée par l'absence du tag `{% load i18n %}` dans le template principal du dashboard.
+- **Données de Capacité** : Correction d'un bug où la capacité des salles restait à 0. Lancement d'un script de maintenance pour synchroniser les 106 lieux avec les données réelles de l'API ODWB.
+- **Sécurité et Rôles** : Affinement de la visibilité des liens dans le profil utilisateur pour éviter qu'un super-administrateur ne voit le menu "Espace Producteur", clarifiant ainsi les périmètres d'action de chaque rôle.
+- **Fix IntegrityError** : Résolution d'une erreur lors de l'ajout de tarifs dans le dashboard admin. Le champ `quantity_total` du modèle `ShowPrice` a été réintégré et synchronisé avec la base de données (migration faked pour correspondre à l'état réel de MySQL).
+- **UI Modernisation** : Refonte visuelle de la page "Demandes Producteurs" et de l'interface d'approbation pour une cohérence parfaite avec la charte graphique du nouveau dashboard administrateur.

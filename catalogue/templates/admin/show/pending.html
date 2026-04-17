@@ -1,0 +1,85 @@
+{% extends "admin/admin.html" %}
+{% load static i18n %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-main-style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-1.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-2.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
+            <p class="text-small mt-1">{% trans "Gérez les nouvelles propositions des producteurs." %}</p>
+        </div>
+    </div>
+
+    <!-- Pending Shows Table -->
+    <div class="border-border overflow-hidden rounded-lg border bg-bg dark:bg-[#040b1a]">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 dark:bg-gray-900/50">
+                    <tr class="border-border border-b text-sm font-semibold text-muted">
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider">{% trans "Spectacle" %}</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider">{% trans "Producteur" %}</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider">{% trans "Lieu" %}</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider">{% trans "Date Soumission" %}</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-right">{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+                    {% for show in pending_shows %}
+                    <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="flex h-10 w-10 items-center justify-center rounded bg-gray-100 dark:bg-gray-800">
+                                    <i class="ph ph-hand-pointing text-red-600 text-xl"></i>
+                                </div>
+                                <div>
+                                    <div class="text-text font-medium">{{ show.title }}</div>
+                                    <div class="text-xs text-muted">{{ show.duration }} min</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <img src="{% static 'admin/images/user-avatar.jpg' %}" alt="avatar" class="size-6 rounded-full object-cover">
+                                <span class="text-text text-sm">{{ show.producer.username }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-text text-sm">
+                                {% if show.location %}
+                                    {{ show.location.designation }}
+                                {% else %}
+                                    <span class="text-xs italic text-muted">{% trans "Non défini" %}</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-muted text-sm">{{ show.created_at|date:"d/m/Y H:i" }}</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <a href="{% url 'admin_approve_show' show.id %}" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition">
+                                <i class="ph ph-check-circle"></i> {% trans "Examiner" %}
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-10 text-center text-muted italic">
+                            {% trans "Aucun spectacle en attente." %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

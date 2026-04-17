@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
-from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType
+from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType, ShowPrice
 from catalogue.utils.ticketmaster import run_ticketmaster_import, run_ticketmaster_import_gen
 from django.http import StreamingHttpResponse
 from payments.models import Payment
@@ -38,13 +38,14 @@ def admin_dashboard(request):
     total_reservations = Reservation.objects.count()
     total_customers = User.objects.count()
     active_shows = Show.objects.filter(bookable=True).count()
+    pending_shows_count = Show.objects.filter(status='pending').count()
     
     # 2. Revenue & Tickets Sold
     # On calcule le revenu réel basé sur les paiements Stripe réussis
     total_revenue = Payment.objects.filter(status='succeeded').aggregate(total=Sum('amount'))['total'] or 0
     
     # Pour les tickets, on garde le calcul basé sur les réservations payées
-    total_tickets_sold = RepresentationReservation.objects.filter(reservation__status='paid').aggregate(total=Sum('quantity'))['total'] or 0
+    total_tickets_sold = RepresentationReservation.objects.filter(reservation__status='PAID').aggregate(total=Sum('quantity'))['total'] or 0
     
     # 3. Upcoming Shows (Representations)
     now = timezone.now()
@@ -112,6 +113,7 @@ def admin_dashboard(request):
         'total_revenue': round(total_revenue, 2),
         'total_tickets_sold': total_tickets_sold,
         'active_shows': active_shows,
+        'pending_shows_count': pending_shows_count,
         'upcoming_shows': upcoming_reps_count,
         'total_customers': total_customers,
 
@@ -1233,3 +1235,86 @@ def admin_ticketmaster_sync_live(request):
             yield message
             
     return StreamingHttpResponse(stream_logs(), content_type='text/plain')
+
+@user_passes_test(is_admin)
+def admin_pending_shows(request):
+    """
+    Vue pour lister les spectacles en attente de validation.
+    """
+    pending_shows = Show.objects.filter(status='pending').select_related('producer', 'location').order_by('-created_at')
+    
+    context = {
+        'page_title': 'Spectacles en attente',
+        'title': 'Modération des Spectacles',
+        'pending_shows': pending_shows,
+    }
+    return render(request, 'admin/show/pending.html', context)
+
+@user_passes_test(is_admin)
+def admin_approve_show(request, pk):
+    """
+    Vue pour modifier, ajouter des prix et publier un spectacle soumis par un producteur.
+    """
+    show = get_object_or_404(Show, pk=pk)
+    # On récupère la première représentation créée par le producteur (ou toutes)
+    representations = show.representations.all()
+
+    if request.method == 'POST':
+        # 1. Mise à jour des infos de base
+        show.title = request.POST.get('title')
+        show.duration = request.POST.get('duration')
+        show.location_id = request.POST.get('location')
+        
+        # 2. Publication ?
+        if 'publish' in request.POST:
+            if not show.prices.exists():
+                from django.contrib import messages
+                messages.error(request, "Impossible de publier : vous devez d'abord ajouter au moins un prix.")
+            else:
+                show.status = 'published'
+                show.bookable = True
+                show.save()
+                from django.contrib import messages
+                messages.success(request, f"Le spectacle '{show.title}' a été publié avec succès.")
+                return redirect('admin_pending_shows')
+        
+        show.save()
+        
+        # 3. Mise à jour de la représentation
+        # On suppose pour la simplicité qu'on modifie la première representation
+        if representations.exists():
+            rep = representations.first()
+            date_str = request.POST.get('date')
+            time_str = request.POST.get('time')
+            ticket_count = int(request.POST.get('ticket_count', rep.total_seats))
+            
+            schedule_str = f"{date_str} {time_str}"
+            rep.schedule = timezone.make_aware(timezone.datetime.strptime(schedule_str, "%Y-%m-%d %H:%M"))
+            rep.location_id = show.location_id
+            rep.total_seats = ticket_count
+            rep.available_seats = ticket_count # On réinitialise car pas encore de ventes
+            rep.save()
+
+        # 4. Ajout de prix (via ShowPrice)
+        price_id = request.POST.get('price_id')
+        if price_id:
+            price = get_object_or_404(Price, id=price_id)
+            from catalogue.models import ShowPrice
+            ShowPrice.objects.get_or_create(show=show, price=price)
+
+        return redirect('admin_approve_show', pk=show.id)
+
+    locations = Location.objects.all()
+    available_prices = Price.objects.all()
+    show_prices = show.showprice_set.select_related('price').all()
+
+    context = {
+        'page_title': f'Approuver : {show.title}',
+        'title': 'Validation de Spectacle',
+        'show': show,
+        'representations': representations,
+        'locations': locations,
+        'available_prices': available_prices,
+        'show_prices': show_prices,
+    }
+    return render(request, 'admin/show/approve.html', context)
