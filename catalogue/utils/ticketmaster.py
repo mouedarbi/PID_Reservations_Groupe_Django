@@ -88,7 +88,7 @@ def run_ticketmaster_import_gen():
                 defaults={
                     'title': name, 'title_fr': name,
                     'description': event.get('info') or event.get('pleaseNote') or f"Spectacle : {name}",
-                    'poster_url': TicketmasterAPI.get_best_image(event.get('images', [])),
+                    'poster': TicketmasterAPI.get_best_image(event.get('images', [])),
                     'location': location, 'bookable': True, 'duration': 90,
                     'created_in': datetime.date.today().year
                 }

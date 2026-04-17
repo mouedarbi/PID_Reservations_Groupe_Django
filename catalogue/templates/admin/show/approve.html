@@ -23,7 +23,7 @@
         <!-- Main Edit Form -->
         <div class="card-event lg:col-span-2">
             <h3 class="mb-4 font-bold">{% trans "Informations du Spectacle" %}</h3>
-            <form method="post" class="space-y-4">
+            <form method="post" class="space-y-4" enctype="multipart/form-data">
                 {% csrf_token %}
                 
                 <div>
@@ -37,8 +37,14 @@
                 </div>
 
                 <div>
-                    <label class="text-muted block text-sm font-medium">{% trans "Image (URL)" %}</label>
-                    <input type="url" name="poster_url" value="{{ show.poster_url|default:'' }}" class="bg-muted/20 border-border mt-1 block w-full rounded-md border p-2 text-text">
+                    <label class="text-muted block text-sm font-medium">{% trans "Image du spectacle" %}</label>
+                    {% if show.poster %}
+                        <div class="mt-1">
+                            <img src="{{ show.poster.url }}" alt="poster" class="max-h-32 rounded border border-border">
+                        </div>
+                    {% else %}
+                        <p class="text-xs italic text-muted">{% trans "Aucune image fournie." %}</p>
+                    {% endif %}
                 </div>
 
                 <div>

@@ -49,7 +49,9 @@ class Command(BaseCommand):
                 existing_location.locality = locality
                 existing_location.website = item.get('site_web')
                 existing_location.phone = item.get('telephone')
-                existing_location.capacity = int(item.get('jauge_maximale', 0) or 0)
+                jauge = item.get('jauge_maximale')
+                if jauge is not None:
+                    existing_location.capacity = int(jauge)
                 existing_location.save()
                 count_updated += 1
                 self.stdout.write(f"Mis à jour : {salle_name}")
@@ -62,6 +64,9 @@ class Command(BaseCommand):
                     slug = f"{base_slug}-{counter}"
                     counter += 1
                 
+                jauge = item.get('jauge_maximale')
+                capacity = int(jauge) if jauge is not None else 0
+                
                 Location.objects.create(
                     slug=slug,
                     designation=salle_name,
@@ -69,7 +74,7 @@ class Command(BaseCommand):
                     locality=locality,
                     website=item.get('site_web'),
                     phone=item.get('telephone'),
-                    capacity=int(item.get('jauge_maximale', 0) or 0)
+                    capacity=capacity
                 )
                 count_created += 1
                 self.stdout.write(self.style.SUCCESS(f"Créé : {salle_name}"))

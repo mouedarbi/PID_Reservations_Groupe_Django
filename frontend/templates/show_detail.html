@@ -9,8 +9,11 @@
         {% if show %}
         <div class="show-detail-grid">
             <div class="show-detail-image">
-                <img src="{{ show.poster_url|default:'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&h=1200&fit=crop' }}" 
-                     alt="{{ show.title }}">
+                {% if show.poster %}
+                    <img src="{{ show.poster }}" alt="{{ show.title }}">
+                {% else %}
+                    <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&h=1200&fit=crop" alt="{{ show.title }}">
+                {% endif %}
             </div>
             <div class="show-detail-content">
                 <nav aria-label="breadcrumb">

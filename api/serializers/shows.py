@@ -15,6 +15,7 @@ class ShowSerializer(serializers.ModelSerializer):
     has_multiple_prices = serializers.ReadOnlyField()
     next_representation_date = serializers.ReadOnlyField()
     formatted_next_date = serializers.SerializerMethodField()
+    poster = serializers.ImageField(use_url=True, required=False, allow_null=True)
     representations = RepresentationSerializer(many=True, read_only=True)
     reviews = serializers.SerializerMethodField()
 

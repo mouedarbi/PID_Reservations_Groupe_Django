@@ -81,8 +81,11 @@
                         <a href="{% url 'frontend:show_detail' show.id %}" class="show-card-link">
                             <div class="show-card">
                                 <div class="show-image">
-                                    <img src="{{ show.poster_url|default:'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&h=400&fit=crop' }}" 
-                                         alt="{{ show.title }}">
+                                    {% if show.poster %}
+                                        <img src="{{ show.poster }}" alt="{{ show.title }}">
+                                    {% else %}
+                                        <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&h=400&fit=crop" alt="{{ show.title }}">
+                                    {% endif %}
                                     {% if show.bookable %}
                                     <span class="show-badge">{% trans "Disponible" %}</span>
                                     {% else %}
