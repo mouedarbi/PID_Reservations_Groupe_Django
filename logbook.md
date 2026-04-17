@@ -195,4 +195,5 @@ Renforcement du contrôle éditorial via le Dashboard Admin :
 - **Données de Capacité** : Correction d'un bug où la capacité des salles restait à 0. Lancement d'un script de maintenance pour synchroniser les 106 lieux avec les données réelles de l'API ODWB.
 - **Sécurité et Rôles** : Affinement de la visibilité des liens dans le profil utilisateur pour éviter qu'un super-administrateur ne voit le menu "Espace Producteur", clarifiant ainsi les périmètres d'action de chaque rôle.
 - **Fix IntegrityError** : Résolution d'une erreur lors de l'ajout de tarifs dans le dashboard admin. Le champ `quantity_total` du modèle `ShowPrice` a été réintégré et synchronisé avec la base de données (migration faked pour correspondre à l'état réel de MySQL).
+- **Fix ValueError** : Correction d'un crash dans la validation des spectacles où le système tentait de parser des dates/heures vides lors de l'ajout d'un simple tarif. La mise à jour de la séance est désormais optionnelle.
 - **UI Modernisation** : Refonte visuelle de la page "Demandes Producteurs" et de l'interface d'approbation pour une cohérence parfaite avec la charte graphique du nouveau dashboard administrateur.

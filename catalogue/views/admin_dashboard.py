@@ -1281,19 +1281,27 @@ def admin_approve_show(request, pk):
         show.save()
         
         # 3. Mise à jour de la représentation
-        # On suppose pour la simplicité qu'on modifie la première representation
+        # On n'effectue la mise à jour que si les champs sont présents dans le POST
         if representations.exists():
             rep = representations.first()
             date_str = request.POST.get('date')
             time_str = request.POST.get('time')
-            ticket_count = int(request.POST.get('ticket_count', rep.total_seats))
+            ticket_count_str = request.POST.get('ticket_count')
             
-            schedule_str = f"{date_str} {time_str}"
-            rep.schedule = timezone.make_aware(timezone.datetime.strptime(schedule_str, "%Y-%m-%d %H:%M"))
-            rep.location_id = show.location_id
-            rep.total_seats = ticket_count
-            rep.available_seats = ticket_count # On réinitialise car pas encore de ventes
-            rep.save()
+            if date_str and time_str:
+                try:
+                    schedule_str = f"{date_str} {time_str}"
+                    rep.schedule = timezone.make_aware(timezone.datetime.strptime(schedule_str, "%Y-%m-%d %H:%M"))
+                    rep.location_id = show.location_id
+                    
+                    if ticket_count_str:
+                        rep.total_seats = int(ticket_count_str)
+                        rep.available_seats = int(ticket_count_str)
+                    
+                    rep.save()
+                except ValueError as e:
+                    from django.contrib import messages
+                    messages.error(request, f"Format de date ou d'heure invalide : {e}")
 
         # 4. Ajout de prix (via ShowPrice)
         price_id = request.POST.get('price_id')
