@@ -57,7 +57,9 @@
                         <strong>📅 {% trans "Année de création :" %}</strong> {{ show.created_in }}
                     </div>
                     <div class="info-item">
-                        <strong>💰 {% trans "Prix à partir de :" %}</strong> {{ show.price|default:"25.00" }}€
+                        <strong>💰 {% trans "Prix :" %}</strong> 
+                        {% if show.has_multiple_prices %}{% trans "à partir de" %} {% endif %}
+                        {{ show.price|default:"25.00" }}€
                     </div>
                 </div>
 

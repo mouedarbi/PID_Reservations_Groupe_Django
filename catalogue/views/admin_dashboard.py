@@ -1265,6 +1265,7 @@ def admin_approve_show(request, pk):
         new_title = request.POST.get('title')
         new_duration = request.POST.get('duration')
         new_location_id = request.POST.get('location')
+        new_poster_url = request.POST.get('poster_url')
 
         if new_title:
             show.title = new_title
@@ -1272,6 +1273,8 @@ def admin_approve_show(request, pk):
             show.duration = new_duration
         if new_location_id:
             show.location_id = new_location_id
+        if new_poster_url:
+            show.poster_url = new_poster_url
         
         # 2. Tentative de Publication
         if 'publish' in request.POST:

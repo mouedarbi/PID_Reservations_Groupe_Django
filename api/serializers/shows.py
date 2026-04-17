@@ -12,6 +12,9 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class ShowSerializer(serializers.ModelSerializer):
     price = serializers.SerializerMethodField()
+    has_multiple_prices = serializers.ReadOnlyField()
+    next_representation_date = serializers.ReadOnlyField()
+    formatted_next_date = serializers.SerializerMethodField()
     representations = RepresentationSerializer(many=True, read_only=True)
     reviews = serializers.SerializerMethodField()
 
@@ -19,6 +22,14 @@ class ShowSerializer(serializers.ModelSerializer):
         model = Show
         fields = '__all__'
         depth = 1
+
+    def get_formatted_next_date(self, obj):
+        from django.utils import timezone
+        from django.utils.formats import date_format
+        next_rep = obj.representations.filter(schedule__gte=timezone.now()).order_by('schedule').first()
+        if next_rep:
+            return date_format(next_rep.schedule, "d M Y")
+        return None
 
     def get_price(self, obj):
         # Retrieve all ShowPrice objects related to the current Show

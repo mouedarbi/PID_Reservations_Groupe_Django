@@ -32,6 +32,12 @@
                     <textarea name="description" rows="4" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">{{ show.description|default:'' }}</textarea>
                 </div>
 
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Image du spectacle (URL)" %}</label>
+                    <input type="url" name="poster_url" value="{{ show.poster_url|default:'' }}" placeholder="https://example.com/image.jpg" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                    <p style="font-size: 0.8rem; color: #6b7280; margin-top: 5px;">{% trans "Laissez vide pour utiliser l'image par défaut." %}</p>
+                </div>
+
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
                     <div>
                         <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Durée (minutes)" %}</label>

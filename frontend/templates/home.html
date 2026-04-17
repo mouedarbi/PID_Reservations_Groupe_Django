@@ -112,9 +112,11 @@
                                     </div>
                                     <div class="show-meta">
                                         <div>
-                                            <div class="show-date">{{ show.next_representation_date|date:"d M Y"|default:_('Date inconnue') }}</div>
+                                            <div class="show-date">{{ show.formatted_next_date|default:_('Date inconnue') }}</div>
                                         </div>
-                                        <div class="show-price">{{ show.price|default:'N/A' }}€</div>
+                                        <div class="show-price">
+                                            {% if show.has_multiple_prices %}{% trans "à partir de" %} {% endif %}{{ show.price|default:'N/A' }}€
+                                        </div>
                                     </div>
                                 </div>
                             </div>

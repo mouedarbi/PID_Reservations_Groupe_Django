@@ -26,15 +26,18 @@
                 <div style="flex: 1;">
                     <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
                         <strong style="color: #111827;">{{ review.user.username }}</strong>
-                        <span style="color: #f59e0b;">
-                            {% for i in "12345"|make_list %}
-                                {% if forloop.counter <= review.stars %}
-                                    <i class="ph ph-star-fill"></i>
-                                {% else %}
-                                    <i class="ph ph-star"></i>
-                                {% endif %}
-                            {% endfor %}
-                        </span>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <span style="color: #f59e0b; display: flex; gap: 2px;">
+                                {% for i in "12345"|make_list %}
+                                    {% if forloop.counter <= review.stars %}
+                                        <i class="ph-fill ph-star"></i>
+                                    {% else %}
+                                        <i class="ph ph-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                            <span style="font-weight: bold; color: #f59e0b; font-size: 0.9rem;">({{ review.stars }}/5)</span>
+                        </div>
                         <span style="font-size: 0.85rem; color: #6b7280;">{{ review.created_at|date:"d/m/Y H:i" }}</span>
                     </div>
                     <p style="font-weight: 600; color: #0284c7; margin: 0 0 0.5rem 0;">{{ review.show.title }}</p>

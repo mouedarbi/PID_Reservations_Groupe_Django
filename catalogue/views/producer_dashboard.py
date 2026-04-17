@@ -33,6 +33,7 @@ def prod_submit_show(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
+        poster_url = request.POST.get('poster_url')
         duration = request.POST.get('duration')
         date_str = request.POST.get('date')
         time_str = request.POST.get('time')
@@ -53,6 +54,7 @@ def prod_submit_show(request):
             slug=slug,
             title=title,
             description=description,
+            poster_url=poster_url,
             duration=duration,
             location=location,
             producer=request.user,
@@ -87,6 +89,7 @@ def prod_edit_show(request, pk):
     if request.method == 'POST':
         show.title = request.POST.get('title')
         show.description = request.POST.get('description')
+        show.poster_url = request.POST.get('poster_url')
         show.duration = request.POST.get('duration')
         
         # If pending, allow changing location and date too
