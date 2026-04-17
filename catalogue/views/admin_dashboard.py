@@ -1260,14 +1260,30 @@ def admin_approve_show(request, pk):
     representations = show.representations.all()
 
     if request.method == 'POST':
-        # 1. Mise à jour des infos de base
-        show.title = request.POST.get('title')
-        show.duration = request.POST.get('duration')
-        show.location_id = request.POST.get('location')
+        # 1. Mise à jour des infos de base (SEULEMENT si présentes dans le POST)
+        # Cela évite d'écraser avec None quand on ajoute juste un prix via l'autre formulaire
+        new_title = request.POST.get('title')
+        new_duration = request.POST.get('duration')
+        new_location_id = request.POST.get('location')
+
+        if new_title:
+            show.title = new_title
+        if new_duration:
+            show.duration = new_duration
+        if new_location_id:
+            show.location_id = new_location_id
         
-        # 2. Publication ?
+        # 2. Tentative de Publication
         if 'publish' in request.POST:
-            if not show.prices.exists():
+            # Vérification de TOUS les champs requis
+            rep = representations.first()
+            date_val = request.POST.get('date')
+            time_val = request.POST.get('time')
+            
+            if not all([show.title, show.duration, show.location_id, date_val, time_val]):
+                from django.contrib import messages
+                messages.error(request, "Impossible de publier : tous les champs (titre, durée, lieu, date, heure) doivent être remplis.")
+            elif not show.prices.exists():
                 from django.contrib import messages
                 messages.error(request, "Impossible de publier : vous devez d'abord ajouter au moins un prix.")
             else:
