@@ -8,7 +8,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ['id', 'user_name', 'review', 'stars', 'validated', 'created_at']
+        fields = ['id', 'user_name', 'review', 'stars', 'validated', 'is_pinned', 'created_at']
 
 class ShowSerializer(serializers.ModelSerializer):
     price = serializers.SerializerMethodField()
