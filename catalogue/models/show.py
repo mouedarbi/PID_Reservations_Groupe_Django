@@ -16,7 +16,7 @@ class Show(models.Model):
     slug = models.CharField(max_length=60, unique=True)
     title = models.CharField(max_length=255)
     description = models.TextField(max_length=255, null=True)
-    poster_url = models.CharField(max_length=255, null=True)
+    poster = models.ImageField(upload_to='posters/', null=True, blank=True)
     duration = models.PositiveSmallIntegerField(null=True)
     created_in = models.PositiveSmallIntegerField()
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, related_name='shows')
@@ -62,4 +62,20 @@ class Show(models.Model):
         if self.prices.exists():
             return min(p.price for p in self.prices.all())
         return None
+
+    @property
+    def has_multiple_prices(self):
+        """
+        Return True if the show has more than one price associated.
+        """
+        return self.prices.count() > 1
+
+    @property
+    def next_representation_date(self):
+        """
+        Return the date of the next upcoming representation.
+        """
+        from django.utils import timezone
+        next_rep = self.representations.filter(schedule__gte=timezone.now()).order_by('schedule').first()
+        return next_rep.schedule if next_rep else None
 

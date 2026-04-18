@@ -8,7 +8,7 @@ class ShowForm(ModelForm):
             'slug', 
             'title_fr', 'title_en', 'title_nl', 
             'description_fr', 'description_en', 'description_nl', 
-            'poster_url', 'duration', 'created_in', 
+            'poster', 'duration', 'created_in', 
             'location', 'bookable'
         ]
         widgets = {

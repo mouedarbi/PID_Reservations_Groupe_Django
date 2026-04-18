@@ -10,6 +10,7 @@ class Review(models.Model):
     review = models.TextField()
     stars = models.PositiveSmallIntegerField()
     validated = models.BooleanField()
+    is_pinned = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True)
 

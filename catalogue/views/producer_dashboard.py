@@ -33,6 +33,7 @@ def prod_submit_show(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
+        poster = request.FILES.get('poster')
         duration = request.POST.get('duration')
         date_str = request.POST.get('date')
         time_str = request.POST.get('time')
@@ -53,6 +54,7 @@ def prod_submit_show(request):
             slug=slug,
             title=title,
             description=description,
+            poster=poster,
             duration=duration,
             location=location,
             producer=request.user,
@@ -87,6 +89,8 @@ def prod_edit_show(request, pk):
     if request.method == 'POST':
         show.title = request.POST.get('title')
         show.description = request.POST.get('description')
+        if request.FILES.get('poster'):
+            show.poster = request.FILES.get('poster')
         show.duration = request.POST.get('duration')
         
         # If pending, allow changing location and date too
@@ -147,3 +151,23 @@ def prod_moderate_reviews(request):
         return redirect('catalogue:prod_moderate_reviews')
 
     return render(request, 'prod/moderate_reviews.html', {'reviews': reviews})
+
+@login_required
+@user_passes_test(is_producer)
+def pin_review(request, review_id):
+    """
+    Vue pour épingler ou désépingler un avis.
+    """
+    # Sécurité : On s'assure que le producteur ne peut épingler que les avis de ses propres shows.
+    review = get_object_or_404(Review, id=review_id, show__producer=request.user)
+    
+    # Inverse l'état d'épinglage
+    review.is_pinned = not review.is_pinned
+    review.save()
+    
+    if review.is_pinned:
+        messages.success(request, "L'avis a été épinglé avec succès.")
+    else:
+        messages.info(request, "L'avis a été désépinglé.")
+        
+    return redirect('catalogue:prod_moderate_reviews')

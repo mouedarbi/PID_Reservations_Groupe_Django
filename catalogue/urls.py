@@ -54,6 +54,7 @@ urlpatterns = [
     path('prod-dashboard/submit-show/', producer_dashboard.prod_submit_show, name='prod_submit_show'),
     path('prod-dashboard/edit-show/<int:pk>/', producer_dashboard.prod_edit_show, name='prod_edit_show'),
     path('prod-dashboard/moderate-reviews/', producer_dashboard.prod_moderate_reviews, name='prod_moderate_reviews'),
+    path('prod-dashboard/pin-review/<int:review_id>/', producer_dashboard.pin_review, name='prod_pin_review'),
 
     # Tickets
     path('ticket/<uuid:ticket_id>', ticket.ticket_detail, name='ticket-detail'),
