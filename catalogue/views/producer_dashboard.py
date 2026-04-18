@@ -151,3 +151,23 @@ def prod_moderate_reviews(request):
         return redirect('catalogue:prod_moderate_reviews')
 
     return render(request, 'prod/moderate_reviews.html', {'reviews': reviews})
+
+@login_required
+@user_passes_test(is_producer)
+def pin_review(request, review_id):
+    """
+    Vue pour épingler ou désépingler un avis.
+    """
+    # Sécurité : On s'assure que le producteur ne peut épingler que les avis de ses propres shows.
+    review = get_object_or_404(Review, id=review_id, show__producer=request.user)
+    
+    # Inverse l'état d'épinglage
+    review.is_pinned = not review.is_pinned
+    review.save()
+    
+    if review.is_pinned:
+        messages.success(request, "L'avis a été épinglé avec succès.")
+    else:
+        messages.info(request, "L'avis a été désépinglé.")
+        
+    return redirect('catalogue:prod_moderate_reviews')

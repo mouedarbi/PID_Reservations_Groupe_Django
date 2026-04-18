@@ -214,7 +214,7 @@ Cette session a été consacrée à la migration du système d'images des specta
 
 #### 2. Évolution du Modèle Show
 - **Migration ImageField** : Remplacement du champ `poster_url` (CharField) par un champ `poster` de type `ImageField` avec stockage dans le dossier `/posters/`.
-- **Synchronisation API** : Mise à jour de `ShowSerializer` pour inclure le champ `poster` et générer des URLs d'images valides pour le frontend.
+- **Synchronisation API** : Mise à jour de `ShowSerializer` pour inclure le champ `poster` et generer des URLs d'images valides pour le frontend.
 
 #### 3. Workflow de Soumission (Producteurs)
 - **Upload Direct** : Mise à jour des formulaires `prod_submit_show` et `prod_edit_show` pour supporter l'envoi de fichiers binaires depuis l'ordinateur du producteur (ajout de `enctype="multipart/form-data"`).
@@ -226,4 +226,22 @@ Cette session a été consacrée à la migration du système d'images des specta
 #### 5. Mise à jour Frontend
 - **Affichage Dynamique** : Adaptation de tous les templates clients (`home.html`, `show_list.html`, `show_detail.html`) pour utiliser `show.poster.url` avec un système de fallback (image par défaut) si aucun poster n'est disponible.
 
-Je devrai implémenter un système pour gérer les spectacles déjà partagés
+## Date: mardi 21 avril 2026
+
+### Progress Summary - Système d'Épinglage des Avis (Reviews)
+
+Cette session a été consacrée à l'ajout d'une fonctionnalité permettant aux producteurs de mettre en avant certains avis spectateurs sur la page de leurs spectacles.
+
+#### 1. Évolution du Modèle Review
+- **Nouveau champ** : Ajout d'un champ boolean `is_pinned` (défaut: `False`) au modèle `Review`.
+- **Migration** : Création et application de la migration `0040_review_is_pinned.py`.
+
+#### 2. Interface de Modération (Producteur)
+- **Gestion de l'épinglage** : Ajout d'une vue `pin_review` permettant aux producteurs de toggler (activer/désactiver) l'état d'épinglage d'un avis.
+- **Sécurité** : Mise en place d'une vérification stricte garantissant qu'un producteur ne peut épingler que les avis liés à ses propres spectacles.
+- **Amélioration UI** : Mise à jour du template `moderate_reviews.html` avec un nouveau bouton d'épingle. Le style a été affiné pour offrir un retour visuel clair (fond jaune ambre et icône remplie) lorsqu'un avis est épinglé.
+
+#### 3. Affichage Frontend (Détail du Spectacle)
+- **Priorisation** : Modification de la logique d'affichage dans `show_detail.html` pour que les avis épinglés apparaissent systématiquement en haut de la liste (tri par `is_pinned` décroissant).
+- **Mise en évidence** : Les avis épinglés bénéficient désormais d'une bordure ambre, d'un fond légèrement teinté et d'un badge visuel **"Épinglé"** avec une icône de punaise à côté du nom de l'utilisateur.
+- **Compatibilité API** : Mise à jour du `ReviewSerializer` dans `api/serializers/shows.py` pour inclure le champ `is_pinned`, assurant ainsi la persistance de l'information lors du chargement dynamique des données.
