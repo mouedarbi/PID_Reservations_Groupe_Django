@@ -1260,14 +1260,30 @@ def admin_approve_show(request, pk):
     representations = show.representations.all()
 
     if request.method == 'POST':
-        # 1. Mise à jour des infos de base
-        show.title = request.POST.get('title')
-        show.duration = request.POST.get('duration')
-        show.location_id = request.POST.get('location')
+        # 1. Mise à jour des infos de base (SEULEMENT si présentes dans le POST)
+        # Cela évite d'écraser avec None quand on ajoute juste un prix via l'autre formulaire
+        new_title = request.POST.get('title')
+        new_duration = request.POST.get('duration')
+        new_location_id = request.POST.get('location')
+
+        if new_title:
+            show.title = new_title
+        if new_duration:
+            show.duration = new_duration
+        if new_location_id:
+            show.location_id = new_location_id
         
-        # 2. Publication ?
+        # 2. Tentative de Publication
         if 'publish' in request.POST:
-            if not show.prices.exists():
+            # Vérification de TOUS les champs requis
+            rep = representations.first()
+            date_val = request.POST.get('date')
+            time_val = request.POST.get('time')
+            
+            if not all([show.title, show.duration, show.location_id, date_val, time_val]):
+                from django.contrib import messages
+                messages.error(request, "Impossible de publier : tous les champs (titre, durée, lieu, date, heure) doivent être remplis.")
+            elif not show.prices.exists():
                 from django.contrib import messages
                 messages.error(request, "Impossible de publier : vous devez d'abord ajouter au moins un prix.")
             else:
@@ -1281,19 +1297,27 @@ def admin_approve_show(request, pk):
         show.save()
         
         # 3. Mise à jour de la représentation
-        # On suppose pour la simplicité qu'on modifie la première representation
+        # On n'effectue la mise à jour que si les champs sont présents dans le POST
         if representations.exists():
             rep = representations.first()
             date_str = request.POST.get('date')
             time_str = request.POST.get('time')
-            ticket_count = int(request.POST.get('ticket_count', rep.total_seats))
+            ticket_count_str = request.POST.get('ticket_count')
             
-            schedule_str = f"{date_str} {time_str}"
-            rep.schedule = timezone.make_aware(timezone.datetime.strptime(schedule_str, "%Y-%m-%d %H:%M"))
-            rep.location_id = show.location_id
-            rep.total_seats = ticket_count
-            rep.available_seats = ticket_count # On réinitialise car pas encore de ventes
-            rep.save()
+            if date_str and time_str:
+                try:
+                    schedule_str = f"{date_str} {time_str}"
+                    rep.schedule = timezone.make_aware(timezone.datetime.strptime(schedule_str, "%Y-%m-%d %H:%M"))
+                    rep.location_id = show.location_id
+                    
+                    if ticket_count_str:
+                        rep.total_seats = int(ticket_count_str)
+                        rep.available_seats = int(ticket_count_str)
+                    
+                    rep.save()
+                except ValueError as e:
+                    from django.contrib import messages
+                    messages.error(request, f"Format de date ou d'heure invalide : {e}")
 
         # 4. Ajout de prix (via ShowPrice)
         price_id = request.POST.get('price_id')

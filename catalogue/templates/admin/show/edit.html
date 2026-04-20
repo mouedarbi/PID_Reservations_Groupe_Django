@@ -26,7 +26,7 @@
     </div>
 
     <div class="max-w-4xl border-border overflow-hidden rounded-lg border bg-bg p-6 dark:bg-[#040b1a]">
-        <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {% csrf_token %}
             
             {% for field in form %}
