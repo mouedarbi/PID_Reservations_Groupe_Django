@@ -195,4 +195,53 @@ Renforcement du contrôle éditorial via le Dashboard Admin :
 - **Données de Capacité** : Correction d'un bug où la capacité des salles restait à 0. Lancement d'un script de maintenance pour synchroniser les 106 lieux avec les données réelles de l'API ODWB.
 - **Sécurité et Rôles** : Affinement de la visibilité des liens dans le profil utilisateur pour éviter qu'un super-administrateur ne voit le menu "Espace Producteur", clarifiant ainsi les périmètres d'action de chaque rôle.
 - **Fix IntegrityError** : Résolution d'une erreur lors de l'ajout de tarifs dans le dashboard admin. Le champ `quantity_total` du modèle `ShowPrice` a été réintégré et synchronisé avec la base de données (migration faked pour correspondre à l'état réel de MySQL).
+- **Fix ValueError** : Correction d'un crash dans la validation des spectacles où le système tentait de parser des dates/heures vides lors de l'ajout d'un simple tarif. La mise à jour de la séance est désormais optionnelle.
 - **UI Modernisation** : Refonte visuelle de la page "Demandes Producteurs" et de l'interface d'approbation pour une cohérence parfaite avec la charte graphique du nouveau dashboard administrateur.
+- **Fix Persistance Approbation** : Correction d'un bug de perte de données (titre, lieu, durée) lors de l'actualisation ou de l'ajout de tarifs sur la page de validation administrateur.
+- **Amélioration Modération Avis** : Affichage explicite des étoiles (notation numérique et graphique) pour le producteur lors de la modération des commentaires.
+- **Support des Images (Posters)** : Ajout de la gestion du champ `poster_url` dans le flux de soumission producteur et d'approbation admin, permettant l'affichage d'images personnalisées par spectacle.
+- **Logique d'affichage Frontend** : Implémentation du libellé "à partir de" pour les prix et correction du bug "Date inconnue" sur les cartes de spectacles grâce à une nouvelle propriété API `formatted_next_date`.
+
+## Date: lundi 20 avril 2026
+
+### Progress Summary - Système d'Upload d'Images Local
+
+Cette session a été consacrée à la migration du système d'images des spectacles d'un modèle basé sur des URLs externes vers un système d'upload de fichiers locaux.
+
+#### 1. Configuration de l'Environnement (Media)
+- **Paramétrage Django** : Configuration de `MEDIA_URL` et `MEDIA_ROOT` dans `reservations/settings.py` pour définir l'emplacement de stockage des fichiers téléchargés.
+- **Serveur de Media** : Ajout des routes statiques pour les fichiers média dans `reservations/urls.py` afin de permettre l'affichage des images en mode développement.
+
+#### 2. Évolution du Modèle Show
+- **Migration ImageField** : Remplacement du champ `poster_url` (CharField) par un champ `poster` de type `ImageField` avec stockage dans le dossier `/posters/`.
+- **Synchronisation API** : Mise à jour de `ShowSerializer` pour inclure le champ `poster` et generer des URLs d'images valides pour le frontend.
+
+#### 3. Workflow de Soumission (Producteurs)
+- **Upload Direct** : Mise à jour des formulaires `prod_submit_show` et `prod_edit_show` pour supporter l'envoi de fichiers binaires depuis l'ordinateur du producteur (ajout de `enctype="multipart/form-data"`).
+- **Traitement des Fichiers** : Modification des vues du dashboard producteur pour intercepter et sauvegarder les fichiers via `request.FILES`.
+
+#### 4. Interface de Validation (Administration)
+- **Lecture seule** : Modification de la vue d'approbation admin pour afficher la photo téléchargée par le producteur sans permettre à l'administrateur de la modifier ou de la supprimer, garantissant l'intégrité de la proposition visuelle originale.
+
+#### 5. Mise à jour Frontend
+- **Affichage Dynamique** : Adaptation de tous les templates clients (`home.html`, `show_list.html`, `show_detail.html`) pour utiliser `show.poster.url` avec un système de fallback (image par défaut) si aucun poster n'est disponible.
+
+## Date: mardi 21 avril 2026
+
+### Progress Summary - Système d'Épinglage des Avis (Reviews)
+
+Cette session a été consacrée à l'ajout d'une fonctionnalité permettant aux producteurs de mettre en avant certains avis spectateurs sur la page de leurs spectacles.
+
+#### 1. Évolution du Modèle Review
+- **Nouveau champ** : Ajout d'un champ boolean `is_pinned` (défaut: `False`) au modèle `Review`.
+- **Migration** : Création et application de la migration `0040_review_is_pinned.py`.
+
+#### 2. Interface de Modération (Producteur)
+- **Gestion de l'épinglage** : Ajout d'une vue `pin_review` permettant aux producteurs de toggler (activer/désactiver) l'état d'épinglage d'un avis.
+- **Sécurité** : Mise en place d'une vérification stricte garantissant qu'un producteur ne peut épingler que les avis liés à ses propres spectacles.
+- **Amélioration UI** : Mise à jour du template `moderate_reviews.html` avec un nouveau bouton d'épingle. Le style a été affiné pour offrir un retour visuel clair (fond jaune ambre et icône remplie) lorsqu'un avis est épinglé.
+
+#### 3. Affichage Frontend (Détail du Spectacle)
+- **Priorisation** : Modification de la logique d'affichage dans `show_detail.html` pour que les avis épinglés apparaissent systématiquement en haut de la liste (tri par `is_pinned` décroissant).
+- **Mise en évidence** : Les avis épinglés bénéficient désormais d'une bordure ambre, d'un fond légèrement teinté et d'un badge visuel **"Épinglé"** avec une icône de punaise à côté du nom de l'utilisateur.
+- **Compatibilité API** : Mise à jour du `ReviewSerializer` dans `api/serializers/shows.py` pour inclure le champ `is_pinned`, assurant ainsi la persistance de l'information lors du chargement dynamique des données.

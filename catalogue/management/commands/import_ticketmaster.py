@@ -68,7 +68,7 @@ class Command(BaseCommand):
                 'title_fr': name,
                 'description': description,
                 'description_fr': description,
-                'poster_url': poster_url,
+                'poster': poster_url,
                 'location': location,
                 'bookable': True,
                 'duration': 90, # Par defaut

@@ -44,8 +44,11 @@ def run_ticketmaster_import_gen():
     """
     from django.utils.text import slugify
     from django.utils.dateparse import parse_datetime
+    from django.core.files.base import ContentFile
     from catalogue.models import Show, Location, Locality, Representation
     import datetime
+    import requests
+    import os
 
     yield "Initialisation de la connexion à Ticketmaster...\n"
     
@@ -83,16 +86,38 @@ def run_ticketmaster_import_gen():
 
             # 3. Spectacle
             show_slug = slugify(name)[:60]
+            
+            # Récupérer l'URL de l'image
+            poster_url = TicketmasterAPI.get_best_image(event.get('images', []))
+            
             show, created = Show.objects.get_or_create(
                 slug=show_slug,
                 defaults={
                     'title': name, 'title_fr': name,
                     'description': event.get('info') or event.get('pleaseNote') or f"Spectacle : {name}",
-                    'poster_url': TicketmasterAPI.get_best_image(event.get('images', [])),
                     'location': location, 'bookable': True, 'duration': 90,
-                    'created_in': datetime.date.today().year
+                    'created_in': datetime.date.today().year,
+                    'status': 'published',
+                    'external_url': event.get('url')
                 }
             )
+
+            # Mettre à jour l'URL externe si elle n'existe pas déjà (pour les spectacles existants)
+            if not created and not show.external_url and event.get('url'):
+                show.external_url = event.get('url')
+                show.save()
+
+            # Si on a une URL d'image et que le spectacle n'a pas encore de poster
+            if poster_url and not show.poster:
+                try:
+                    response = requests.get(poster_url, timeout=10)
+                    if response.status_code == 200:
+                        # Extraire l'extension du fichier
+                        ext = os.path.splitext(poster_url.split('?')[0])[1] or '.jpg'
+                        filename = f"{show_slug}{ext}"
+                        show.poster.save(filename, ContentFile(response.content), save=True)
+                except Exception as img_err:
+                    yield f" (Erreur image : {img_err})"
             
             if created:
                 count_new += 1

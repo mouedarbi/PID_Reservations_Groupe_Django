@@ -9,8 +9,11 @@
         {% if show %}
         <div class="show-detail-grid">
             <div class="show-detail-image">
-                <img src="{{ show.poster_url|default:'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&h=1200&fit=crop' }}" 
-                     alt="{{ show.title }}">
+                {% if show.poster %}
+                    <img src="{{ show.poster }}" alt="{{ show.title }}">
+                {% else %}
+                    <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&h=1200&fit=crop" alt="{{ show.title }}">
+                {% endif %}
             </div>
             <div class="show-detail-content">
                 <nav aria-label="breadcrumb">
@@ -57,7 +60,9 @@
                         <strong>📅 {% trans "Année de création :" %}</strong> {{ show.created_in }}
                     </div>
                     <div class="info-item">
-                        <strong>💰 {% trans "Prix à partir de :" %}</strong> {{ show.price|default:"25.00" }}€
+                        <strong>💰 {% trans "Prix :" %}</strong> 
+                        {% if show.has_multiple_prices %}{% trans "à partir de" %} {% endif %}
+                        {{ show.price|default:"25.00" }}€
                     </div>
                 </div>
 
@@ -132,10 +137,18 @@
 
             {% if show.reviews %}
                 <div class="reviews-list">
-                    {% for review in show.reviews %}
-                        <div class="review-card mb-3 p-3" style="background: #fdfdfd; border-left: 4px solid #dc2626; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                {% with show.reviews|dictsortreversed:"is_pinned" as sorted_reviews %}
+                    {% for review in sorted_reviews %}
+                        <div class="review-card mb-3 p-3" style="border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); background: {% if review.is_pinned %}#fffbeb{% else %}#fdfdfd{% endif %}; border-left: 4px solid {% if review.is_pinned %}#f59e0b{% else %}#dc2626{% endif %};">
                             <div class="review-header d-flex justify-content-between">
-                                <strong>{{ review.user_name }}</strong>
+                                <div>
+                                    <strong>{{ review.user_name }}</strong>
+                                    {% if review.is_pinned %}
+                                        <span style="color: #f59e0b; margin-left: 0.5rem; font-weight: bold; font-size: 0.85rem;" title="{% trans 'Avis épinglé' %}">
+                                            <i class="ph-fill ph-push-pin"></i> ({% trans "Épinglé" %})
+                                        </span>
+                                    {% endif %}
+                                </div>
                                 <div class="stars" style="color: #ffc107;">
                                     {% for i in "12345" %}
                                         <i class="ph-fill ph-star{% if forloop.counter > review.stars %}-none{% endif %}"></i>
@@ -163,6 +176,7 @@
                             </div>
                         </div>
                     {% endfor %}
+                {% endwith %}
                 </div>
             {% else %}
                 <p class="text-muted">{% trans "Aucun avis pour le moment. Soyez le premier à partager votre critique !" %}</p>

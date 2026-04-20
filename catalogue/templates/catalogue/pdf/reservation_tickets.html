@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+    @page {
+        size: 210mm 80mm;
+        margin: 0;
+    }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+    .ticket-container {
+        width: 210mm;
+        height: 80mm;
+        display: flex;
+        background-color: #ffffff;
+        overflow: hidden;
+        page-break-after: always;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    
+    /* Partie gauche - Couleur & Logo vertical */
+    .ticket-stub-left {
+        width: 40mm;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-right: 1px dashed rgba(255,255,255,0.3);
+    }
+    .vertical-text {
+        transform: rotate(-90deg);
+        white-space: nowrap;
+        font-weight: 900;
+        font-size: 24px;
+        letter-spacing: 5px;
+        color: #e94560;
+    }
+
+    /* Partie centrale - Infos */
+    .ticket-main {
+        flex-grow: 1;
+        padding: 20px 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .show-title {
+        font-size: 26px;
+        font-weight: 800;
+        color: #1a1a2e;
+        margin: 0;
+        line-height: 1.1;
+        text-transform: uppercase;
+    }
+    .show-type {
+        font-size: 12px;
+        color: #e94560;
+        font-weight: bold;
+        margin-top: 5px;
+        letter-spacing: 1px;
+    }
+    .details-grid {
+        display: flex;
+        gap: 40px;
+        margin-top: 20px;
+    }
+    .info-group {
+        display: flex;
+        flex-direction: column;
+    }
+    .label {
+        font-size: 9px;
+        color: #999;
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-bottom: 3px;
+    }
+    .value {
+        font-size: 14px;
+        font-weight: 700;
+        color: #333;
+    }
+    .footer-admit {
+        margin-top: auto;
+        font-size: 10px;
+        color: #ccc;
+        letter-spacing: 3px;
+        font-weight: bold;
+    }
+
+    /* Partie droite - QR Code */
+    .ticket-stub-right {
+        width: 60mm;
+        background-color: #fafafa;
+        border-left: 2px dashed #ddd;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+    }
+    .qr-box {
+        background: white;
+        padding: 10px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+    }
+    .qr-box img {
+        width: 100px;
+        height: 100px;
+        display: block;
+    }
+    .ticket-id {
+        margin-top: 10px;
+        font-family: monospace;
+        font-size: 9px;
+        color: #666;
+    }
+    .price-badge {
+        margin-top: 5px;
+        background: #1a1a2e;
+        color: white;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+{% if single_ticket %}
+    {% with ticket=single_ticket %}
+    <div class="ticket-container">
+        <div class="ticket-stub-left">
+            <div class="vertical-text">THÉÂTRE PLUS</div>
+        </div>
+        <div class="ticket-main">
+            <div>
+                <h1 class="show-title">{{ ticket.representation_reservation.representation.show.title }}</h1>
+                <div class="show-type">{{ ticket.representation_reservation.price.type|upper }} PASS</div>
+            </div>
+            
+            <div class="details-grid">
+                <div class="info-group">
+                    <span class="label">DATE</span>
+                    <span class="value">{{ ticket.representation_reservation.representation.schedule|date:"d F Y" }}</span>
+                </div>
+                <div class="info-group">
+                    <span class="label">HEURE</span>
+                    <span class="value">{{ ticket.representation_reservation.representation.schedule|date:"H:i" }}</span>
+                </div>
+            </div>
+
+            <div class="info-group" style="margin-top: 15px;">
+                <span class="label">LIEU</span>
+                <span class="value">{{ ticket.representation_reservation.representation.location.designation }}</span>
+            </div>
+
+            <div class="footer-admit">ADMIT ONE - BILLET OFFICIEL</div>
+        </div>
+        <div class="ticket-stub-right">
+            <div class="qr-box">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TICKET-ID:{{ ticket.id }}" />
+            </div>
+            <div class="ticket-id">#{{ ticket.id|stringformat:"s"|slice:":8"|upper }}</div>
+            <div class="price-badge">{{ ticket.representation_reservation.price.price }} €</div>
+        </div>
+    </div>
+    {% endwith %}
+{% else %}
+    {% for rr in reservation.representation_reservations.all %}
+        {% for ticket in rr.tickets.all %}
+        <div class="ticket-container">
+            <div class="ticket-stub-left">
+                <div class="vertical-text">THÉÂTRE PLUS</div>
+            </div>
+            <div class="ticket-main">
+                <div>
+                    <h1 class="show-title">{{ rr.representation.show.title }}</h1>
+                    <div class="show-type">{{ rr.price.type|upper }} PASS</div>
+                </div>
+                
+                <div class="details-grid">
+                    <div class="info-group">
+                        <span class="label">DATE</span>
+                        <span class="value">{{ rr.representation.schedule|date:"d F Y" }}</span>
+                    </div>
+                    <div class="info-group">
+                        <span class="label">HEURE</span>
+                        <span class="value">{{ rr.representation.schedule|date:"H:i" }}</span>
+                    </div>
+                </div>
+
+                <div class="info-group" style="margin-top: 15px;">
+                    <span class="label">LIEU</span>
+                    <span class="value">{{ rr.representation.location.designation }}</span>
+                </div>
+
+                <div class="footer-admit">ADMIT ONE - RÉSERVATION #{{ reservation.id }}</div>
+            </div>
+            <div class="ticket-stub-right">
+                <div class="qr-box">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TICKET-ID:{{ ticket.id }}" />
+                </div>
+                <div class="ticket-id">#{{ ticket.id|stringformat:"s"|slice:":8"|upper }}</div>
+                <div class="price-badge">{{ rr.price.price }} €</div>
+            </div>
+        </div>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+
+</body>
+</html>
