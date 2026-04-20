@@ -690,9 +690,12 @@ def admin_show_create(request):
     View to create a new show in the custom admin dashboard.
     """
     if request.method == 'POST':
-        form = ShowForm(request.POST)
+        form = ShowForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            show = form.save(commit=False)
+            show.status = 'published'
+            show.save()
+            form.save_m2m()
             return redirect('admin_show_index')
     else:
         form = ShowForm()

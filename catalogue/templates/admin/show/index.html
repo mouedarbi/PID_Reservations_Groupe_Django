@@ -79,7 +79,7 @@
                     {% for show in shows %}
                     <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition">
                         <td class="px-6 py-4">
-                            <td class="px-6 py-4">
+                            <div class="flex items-center gap-4">
                                 {% if show.poster %}
                                 <img src="{{ show.poster.url }}" alt="{{ show.title }}" class="h-10 w-10 rounded object-cover">
                                 {% else %}
@@ -87,8 +87,7 @@
                                     <i class="ph ph-image text-xl"></i>
                                 </div>
                                 {% endif %}
-                            </td>
-
+                                <div>
                                     <div class="text-text font-medium">{{ show.title }}</div>
                                     <div class="text-xs text-muted">{{ show.slug }}</div>
                                 </div>

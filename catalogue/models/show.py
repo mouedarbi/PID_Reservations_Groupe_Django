@@ -25,6 +25,7 @@ class Show(models.Model):
     updated_at = models.DateTimeField(null=True)
     producer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='submitted_shows')
     status = models.CharField(max_length=20, choices=SHOW_STATUS, default='pending')
+    external_url = models.URLField(max_length=255, null=True, blank=True)
 
     artist_types = models.ManyToManyField(
         "ArtistType",
