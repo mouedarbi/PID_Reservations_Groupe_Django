@@ -23,7 +23,7 @@
         <!-- Main Edit Form -->
         <div class="card-event lg:col-span-2">
             <h3 class="mb-4 font-bold">{% trans "Informations du Spectacle" %}</h3>
-            <form method="post" class="space-y-4">
+            <form method="post" class="space-y-4" enctype="multipart/form-data">
                 {% csrf_token %}
                 
                 <div>
@@ -34,6 +34,17 @@
                 <div>
                     <label class="text-muted block text-sm font-medium">{% trans "Durée (min)" %}</label>
                     <input type="number" name="duration" value="{{ show.duration }}" class="bg-muted/20 border-border mt-1 block w-full rounded-md border p-2 text-text" required>
+                </div>
+
+                <div>
+                    <label class="text-muted block text-sm font-medium">{% trans "Image du spectacle" %}</label>
+                    {% if show.poster %}
+                        <div class="mt-1">
+                            <img src="{{ show.poster.url }}" alt="poster" class="max-h-32 rounded border border-border">
+                        </div>
+                    {% else %}
+                        <p class="text-xs italic text-muted">{% trans "Aucune image fournie." %}</p>
+                    {% endif %}
                 </div>
 
                 <div>
@@ -121,6 +132,19 @@
                 <h3 class="mb-2 text-sm font-bold">{% trans "Note du Producteur" %}</h3>
                 <p class="text-small text-muted">{{ show.description|default:"Pas de description fournie." }}</p>
             </div>
+
+            {% if show.external_url %}
+            <div class="card-event" style="border: 2px solid rgba(16, 185, 129, 0.2); background-color: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1.5rem;">
+                <h3 class="mb-2 text-sm font-bold" style="color: #047857;">{% trans "Lien Ticketmaster" %}</h3>
+                <p class="text-xs mb-3" style="color: #059669; line-height: 1.4;">
+                    <i class="ph ph-info"></i> {% trans "Vérifiez les tarifs officiels sur Ticketmaster avant de valider ce spectacle." %}
+                </p>
+                <a href="{{ show.external_url }}" target="_blank" class="flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-bold shadow-sm transition-all hover:opacity-90" 
+                   style="background-color: #10b981 !important; color: white !important; text-decoration: none !important; width: 100%; display: flex;">
+                    <i class="ph ph-arrow-square-out"></i> {% trans "Ouvrir Ticketmaster" %}
+                </a>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

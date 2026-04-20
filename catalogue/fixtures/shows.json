@@ -10,7 +10,7 @@
     "description": "Un homme est bloqué à l'aéroport.\n Questionné par les douaniers, il doit alors justifier son identité, et surtout prouver qu'il est haïtien - Qu'est-ce qu'être haïtien ?",
     "description_en": "A man is stuck at the airport. Questioned by customs, he must justify his identity and prove he is Haitian - What does it mean to be Haitian?",
     "description_nl": "Een man zit vast op het vliegveld. Ondervraagd door de douane, moet hij zijn identiteit rechtvaardigen en bewijzen dat hij Haïtiaan is - Wat betekent het om Haïtiaan te zijn?",
-    "poster_url": "ayiti.jpg",
+    "poster": "ayiti.jpg",
     "duration": 90,
     "created_in": 2010,
     "location": [
@@ -18,6 +18,7 @@
       "https://www.lavenerie.be"
     ],
     "bookable": true,
+    "status": "published",
     "created_at": "2025-01-07T17:41:03.509Z",
     "updated_at": null
   }
@@ -33,7 +34,7 @@
     "description": "Dans ce « thriller d'anticipation », des adultes semblent alimenter et véhiculer une crainte féroce envers les enfants âgés entre 10 et 12 ans.",
     "description_en": "In this 'anticipation thriller', adults seem to feed and convey a fierce fear towards children aged between 10 and 12.",
     "description_nl": "In deze 'anticipatiethriller' lijken volwassenen een felle angst voor kinderen tussen de 10 en 12 jaar te voeden en over te dragen.",
-    "poster_url": "cible.jpg",
+    "poster": "cible.jpg",
     "duration": 90,
     "created_in": 2012,
     "location": [
@@ -41,6 +42,7 @@
       null
     ],
     "bookable": true,
+    "status": "published",
     "created_at": "2025-01-07T17:41:15.554Z",
     "updated_at": null
   }
@@ -56,11 +58,12 @@
     "description": "Non peut-être ?!\nEntre Magritte (pour le surréalisme comique) et Maigret (pour le réalisme mélancolique), ce dixième opus semalien propose quatorze nouvelles chansons mêlées à de petits textes humoristiques et à quelques fortes images poétiques.",
     "description_en": "Not perhaps?! Between Magritte (for comic surrealism) and Maigret (for melancholic realism), this tenth Semalian opus offers fourteen new songs mixed with short humorous texts and some strong poetic images.",
     "description_nl": "Niet misschien?! Tussen Magritte (voor komisch surrealisme) en Maigret (voor melancholisch realisme), biedt dit tiende Semaliaanse opus veertien nieuwe liedjes vermengd met korte humoristische teksten en enkele sterke poëtische beelden.",
-    "poster_url": "ceci-nest-pas-un-chanteur-belge.jpg",
+    "poster": "ceci-nest-pas-un-chanteur-belge.jpg",
     "duration": 90,
     "created_in": 2014,
     "location": null,
     "bookable": false,
+    "status": "published",
     "created_at": "2025-01-07T17:41:15.585Z",
     "updated_at": null
   }
@@ -76,7 +79,7 @@
     "description": "A tour de rôle, Pierre se joue de ses oncles, tantes, grands-parents et surtout de sa mère.",
     "description_en": "In turn, Pierre plays with his uncles, aunts, grandparents and especially his mother.",
     "description_nl": "Om beurten speelt Pierre met zijn ooms, tantes, grootouders en vooral zijn moeder.",
-    "poster_url": "manneke.jpg",
+    "poster": "manneke.jpg",
     "duration": 90,
     "created_in": 2011,
     "location": [
@@ -84,6 +87,7 @@
       "http://www.lasamaritaine.be/"
     ],
     "bookable": true,
+    "status": "published",
     "created_at": "2025-01-07T17:41:40.894Z",
     "updated_at": null
   }

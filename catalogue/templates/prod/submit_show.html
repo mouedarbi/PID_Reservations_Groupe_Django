@@ -19,7 +19,7 @@
     <div class="container" style="max-width: 800px; margin: 0 auto; padding: 0 15px;">
         
         <div style="background: white; border-radius: 12px; border: 1px solid #e5e7eb; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-            <form method="post" id="submitShowForm">
+            <form method="post" id="submitShowForm" enctype="multipart/form-data">
                 {% csrf_token %}
                 
                 <div style="margin-bottom: 1.5rem;">
@@ -30,6 +30,18 @@
                 <div style="margin-bottom: 1.5rem;">
                     <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Description" %}</label>
                     <textarea name="description" rows="4" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">{{ show.description|default:'' }}</textarea>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Image du spectacle" %}</label>
+                    {% if show.poster %}
+                        <div style="margin-bottom: 10px;">
+                            <img src="{{ show.poster.url }}" alt="poster" style="max-height: 100px; border-radius: 4px;">
+                            <p style="font-size: 0.8rem; color: #6b7280;">{% trans "Image actuelle" %}</p>
+                        </div>
+                    {% endif %}
+                    <input type="file" name="poster" accept="image/*" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                    <p style="font-size: 0.8rem; color: #6b7280; margin-top: 5px;">{% trans "Sélectionnez une photo depuis votre ordinateur." %}</p>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">

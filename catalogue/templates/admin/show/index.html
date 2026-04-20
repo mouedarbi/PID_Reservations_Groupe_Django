@@ -79,12 +79,12 @@
                     {% for show in shows %}
                     <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition">
                         <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                {% if show.poster_url %}
-                                <img src="{{ show.poster_url }}" alt="{{ show.title }}" class="h-10 w-10 rounded object-cover">
+                            <div class="flex items-center gap-4">
+                                {% if show.poster %}
+                                <img src="{{ show.poster.url }}" alt="{{ show.title }}" class="h-10 w-10 rounded object-cover">
                                 {% else %}
-                                <div class="flex h-10 w-10 items-center justify-center rounded bg-gray-200 dark:bg-gray-700">
-                                    <i class="ph ph-image text-muted"></i>
+                                <div class="flex h-10 w-10 items-center justify-center rounded bg-gray-100 text-gray-400">
+                                    <i class="ph ph-image text-xl"></i>
                                 </div>
                                 {% endif %}
                                 <div>

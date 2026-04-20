@@ -42,9 +42,15 @@ class AdminUseCasesTest(TestCase):
         print("Step 1: Adding a new Locality...")
         response = self.client.post(reverse('admin_locality_create'), {
             'postal_code': '1410',
-            'locality': 'Waterloo'
+            'locality_fr': 'Waterloo',
+            'locality_en': 'Waterloo',
+            'locality_nl': 'Waterloo'
         })
-        self.assertTrue(Locality.objects.filter(locality='Waterloo').exists())
+        if response.status_code != 302:
+            print(f"Error creating locality: {response.status_code}")
+            if hasattr(response, 'context') and response.context and 'form' in response.context:
+                print(f"Form errors: {response.context['form'].errors}")
+        self.assertTrue(Locality.objects.filter(locality_fr='Waterloo').exists())
         waterloo = Locality.objects.get(locality='Waterloo')
 
         # 2. Création d'un lieu (Correction: ajout de phone)
@@ -81,7 +87,7 @@ class AdminUseCasesTest(TestCase):
             'slug': 'l-avare-2024',
             'title': 'L\'Avare 2024',
             'description': 'Classique revisité.',
-            'poster_url': 'https://test.be/poster.jpg',
+            'poster': 'https://test.be/poster.jpg',
             'duration': 90,
             'created_in': 2024,
             'location': location.id,
