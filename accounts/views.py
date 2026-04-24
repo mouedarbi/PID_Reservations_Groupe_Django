@@ -1,19 +1,15 @@
 from django.utils.translation import gettext as _
-from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import redirect, render
 from django.contrib import messages
-from .forms import UserSignUpForm
-from .forms import UserUpdateForm
+from .forms import UserSignUpForm, UserUpdateForm
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from catalogue.models import Affiliate, AffiliateTier
 
-
-from .forms import UserSignUpForm
 class UserUpdateView(UserPassesTestMixin, UpdateView):
     model = User
     form_class = UserUpdateForm
@@ -27,8 +23,6 @@ class UserUpdateView(UserPassesTestMixin, UpdateView):
     def handle_no_permission(self):
         messages.error(self.request, _("Vous n'avez pas l'autorisation d'accéder à cette page!"))
         return redirect('accounts:user-profile')
-
-
 
 class UserSignUpView(UserPassesTestMixin, CreateView):
     form_class = UserSignUpForm
@@ -50,15 +44,27 @@ def profile(request):
         "nl": _("Nederlands"),
     }
     
+    # Récupérer l'affiliation
+    affiliate, created = Affiliate.objects.get_or_create(user=request.user)
+    if not affiliate.tier:
+        free_tier = AffiliateTier.objects.filter(name='Free').first()
+        if free_tier:
+            affiliate.tier = free_tier
+            affiliate.save()
+
     # Secure against missing usermeta
+    from catalogue.models import UserMeta
+    user_meta, created_meta = UserMeta.objects.get_or_create(user=request.user, defaults={'langue': 'fr'})
+    
     try:
-        user_lang = request.user.usermeta.langue
+        user_lang = user_meta.langue
         lang_display = languages.get(user_lang, _("Non définie"))
     except Exception:
         lang_display = _("Non définie")
 
     return render(request, 'user/profile.html', {
         "user_language" : lang_display,
+        "affiliate": affiliate,
     })
 
 
@@ -84,6 +90,9 @@ def delete(request, pk):
 
     return redirect('frontend:home')
 
+from django.utils import timezone
+from catalogue.models import Affiliate, AffiliateTier, ApiRequestLog
+
 @login_required
 def affiliate_dashboard(request):
     """
@@ -99,10 +108,41 @@ def affiliate_dashboard(request):
             affiliate.tier = free_tier
             affiliate.save()
 
+    # Statistiques de consommation
+    today = timezone.now().date()
+    requests_today = ApiRequestLog.objects.filter(
+        affiliate=affiliate, 
+        created_at__date=today
+    ).count()
+
+    last_logs = ApiRequestLog.objects.filter(affiliate=affiliate)[:10]
+
     # Récupérer tous les plans pour l'affichage des offres
     all_tiers = AffiliateTier.objects.all().order_by('price')
 
     return render(request, 'user/api.html', {
         'affiliate': affiliate,
         'all_tiers': all_tiers,
+    })
+
+@login_required
+def affiliate_usage(request):
+    """
+    Affiche uniquement les statistiques de consommation de l'API.
+    """
+    affiliate, _ = Affiliate.objects.get_or_create(user=request.user)
+    
+    today = timezone.now().date()
+    requests_today = ApiRequestLog.objects.filter(
+        affiliate=affiliate, 
+        created_at__date=today
+    ).count()
+
+    last_logs = ApiRequestLog.objects.filter(affiliate=affiliate)[:20]
+
+    return render(request, 'user/api_usage.html', {
+        'affiliate': affiliate,
+        'requests_today': requests_today,
+        'last_logs': last_logs,
+        'usage_percent': (requests_today / affiliate.tier.api_limit_daily) * 100 if affiliate.tier and affiliate.tier.api_limit_daily > 0 else 0
     })
