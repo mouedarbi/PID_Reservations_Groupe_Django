@@ -4,7 +4,8 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .models import (
     Artist, ArtistType, ArtistTypeShow, Locality, Location, 
-    Price, Representation, Reservation, RepresentationReservation, Review, Show, Type, UserMeta, ShowPrice
+    Price, Representation, Reservation, RepresentationReservation, Review, Show, Type, UserMeta, ShowPrice,
+    Affiliate, AffiliateTier
 )
 
 # Register your models here.
@@ -21,6 +22,8 @@ admin.site.register(Review)
 admin.site.register(Show)
 admin.site.register(ShowPrice)
 admin.site.register(Type)
+admin.site.register(Affiliate)
+admin.site.register(AffiliateTier)
 
 # UserMeta registration as inline with User
 class UserMetaInLine(admin.StackedInline):

@@ -13,3 +13,4 @@ from .artist_type import *
 from .artist_type_show import *
 from .show_price import *
 from .ticket import *
+from .affiliation import *
