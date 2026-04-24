@@ -53,9 +53,11 @@ INSTALLED_APPS = [
     "payments",
     # ajout de rest_framework
     'rest_framework',
-    "rest_framework.authtoken",
-    "cart",
-]
+    'rest_framework.authtoken',
+    'cart',
+    'import_export',
+    ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

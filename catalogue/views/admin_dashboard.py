@@ -1345,3 +1345,101 @@ def admin_approve_show(request, pk):
         'show_prices': show_prices,
     }
     return render(request, 'admin/show/approve.html', context)
+
+
+import csv
+import io
+from django.http import HttpResponse
+
+@user_passes_test(is_admin)
+def admin_export_shows_csv(request):
+    """
+    Exporte la liste des spectacles en format CSV.
+    """
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="shows_export.csv"'
+    
+    # UTF-8 avec BOM pour Excel Windows
+    response.write(u'\ufeff'.encode('utf8'))
+    
+    writer = csv.writer(response, delimiter=';')
+    writer.writerow(['ID', 'Slug', 'Titre', 'Description', 'Image URL', 'Lieu', 'Réservable', 'Statut'])
+    
+    for show in Show.objects.all():
+        writer.writerow([
+            show.id, 
+            show.slug, 
+            show.title, 
+            show.description, 
+            show.poster_url, 
+            show.location.designation if show.location else '', 
+            show.bookable, 
+            show.status
+        ])
+    
+    return response
+
+@user_passes_test(is_admin)
+def admin_import_shows_csv(request):
+    """
+    Importe des spectacles à partir d'un fichier CSV.
+    """
+    if request.method == 'POST' and request.FILES.get('csv_file'):
+        csv_file = request.FILES['csv_file']
+        
+        # Vérification extension
+        if not csv_file.name.endswith('.csv'):
+            messages.error(request, "Le fichier doit être au format .csv")
+            return redirect('admin_show_index')
+            
+        try:
+            data_set = csv_file.read().decode('UTF-8-sig')
+            io_string = io.StringIO(data_set)
+            next(io_string) # Sauter l'en-tête
+            
+            count = 0
+            for column in csv.reader(io_string, delimiter=';'):
+                # Format attendu: Slug; Titre; Description; Image; Lieu_ID; Réservable(True/False); Statut
+                # On utilise update_or_create basé sur le slug
+                obj, created = Show.objects.update_or_create(
+                    slug=column[1],
+                    defaults={
+                        'title': column[2],
+                        'description': column[3],
+                        'poster_url': column[4],
+                        # Note: pour le lieu, on peut gérer par ID ou désignation
+                        'bookable': column[6].lower() == 'true',
+                        'status': column[7] if len(column) > 7 else 'published'
+                    }
+                )
+                count += 1
+            
+            messages.success(request, f"{count} spectacles traités avec succès.")
+        except Exception as e:
+            messages.error(request, f"Erreur lors de l'importation : {str(e)}")
+            
+    return redirect('admin_show_index')
+
+@user_passes_test(is_admin)
+def admin_export_representations_csv(request):
+    """
+    Exporte la liste des représentations en format CSV.
+    """
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="representations_export.csv"'
+    response.write(u'\ufeff'.encode('utf8'))
+    
+    writer = csv.writer(response, delimiter=';')
+    writer.writerow(['ID', 'Spectacle', 'Date/Heure', 'Lieu', 'Places Dispos', 'Total Places'])
+    
+    for rep in Representation.objects.all().select_related('show', 'location'):
+        writer.writerow([
+            rep.id, 
+            rep.show.title, 
+            rep.schedule.strftime('%Y-%m-%d %H:%M:%S'), 
+            rep.location.designation if rep.location else '', 
+            rep.available_seats, 
+            rep.total_seats
+        ])
+    
+    return response
