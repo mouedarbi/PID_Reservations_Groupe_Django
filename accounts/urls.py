@@ -11,6 +11,7 @@ urlpatterns = [
     path('profile/', views.profile, name='user-profile'),
     path('profile/<int:pk>/', UserUpdateView.as_view(), name='user-update'),
     path('profile/delete/<int:pk>/', views.delete, name='user-delete'),
+    path('profile/api/', views.affiliate_dashboard, name='user-api'),
 
     # Django Auth Views - Custom Templates
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),

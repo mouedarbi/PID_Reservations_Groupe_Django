@@ -37,6 +37,9 @@
                     <a href="{% url 'accounts:user-update' request.user.id %}" style="text-decoration: none; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; font-weight: 500;">
                         <i class="ph ph-user-edit"></i> {% trans "Modifier le profil" %}
                     </a>
+                    <a href="{% url 'accounts:user-api' %}" style="text-decoration: none; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; font-weight: 500;">
+                        <i class="ph ph-code"></i> {% trans "Accès API" %}
+                    </a>
                     <a href="{% url 'accounts:password_change' %}" style="text-decoration: none; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; font-weight: 500;">
                         <i class="ph ph-key"></i> {% trans "Mot de passe" %}
                     </a>

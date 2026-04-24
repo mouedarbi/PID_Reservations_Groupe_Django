@@ -10,6 +10,7 @@ from .forms import UserUpdateForm
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from catalogue.models import Affiliate, AffiliateTier
 
 
 from .forms import UserSignUpForm
@@ -82,3 +83,26 @@ def delete(request, pk):
     messages.error(request, _("Suppression interdite (méthode incorrecte)!"))
 
     return redirect('frontend:home')
+
+@login_required
+def affiliate_dashboard(request):
+    """
+    Gère l'espace API / Affiliation de l'utilisateur.
+    """
+    # Récupérer ou créer le profil d'affilié
+    affiliate, created = Affiliate.objects.get_or_create(user=request.user)
+    
+    # Assigner le plan Free par défaut si aucun plan n'est défini
+    if not affiliate.tier:
+        free_tier = AffiliateTier.objects.filter(name='Free').first()
+        if free_tier:
+            affiliate.tier = free_tier
+            affiliate.save()
+
+    # Récupérer tous les plans pour l'affichage des offres
+    all_tiers = AffiliateTier.objects.all().order_by('price')
+
+    return render(request, 'user/api.html', {
+        'affiliate': affiliate,
+        'all_tiers': all_tiers,
+    })
