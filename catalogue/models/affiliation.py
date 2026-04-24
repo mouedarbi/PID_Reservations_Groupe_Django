@@ -44,3 +44,33 @@ class Affiliate(models.Model):
     class Meta:
         verbose_name = "Affilié"
         verbose_name_plural = "Affiliés"
+
+class AffiliatePayment(models.Model):
+    """
+    Stocke les paiements spécifiques aux abonnements API.
+    """
+    affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE, related_name='payments')
+    stripe_session_id = models.CharField(max_length=255, unique=True)
+    stripe_payment_intent_id = models.CharField(max_length=255, blank=True, null=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    currency = models.CharField(max_length=3, default='EUR')
+    status = models.CharField(max_length=20, default='succeeded')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Pay API - {self.affiliate.user.username} ({self.amount}€)"
+
+class ApiRequestLog(models.Model):
+    """
+    Enregistre chaque appel à l'API pour le monitoring et les quotas.
+    """
+    affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE, related_name='usage_logs')
+    endpoint = models.CharField(max_length=255)
+    method = models.CharField(max_length=10)
+    status_code = models.IntegerField(default=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Log API"
+        verbose_name_plural = "Logs API"
+        ordering = ['-created_at']

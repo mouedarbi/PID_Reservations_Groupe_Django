@@ -1,6 +1,5 @@
 import stripe
 import os
-import traceback
 from django.conf import settings
 from django.shortcuts import render
 from django.urls import reverse
@@ -9,13 +8,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from cart.cart import Cart  # Utiliser la classe Cart existante
 from catalogue.models.setting import AppSetting
-from django.contrib import messages
-from django.utils import timezone
+
 from django.shortcuts import redirect
 from django.views import View
-from django.contrib.auth.models import User
-from catalogue.models import AffiliateTier, Affiliate
-
 
 class CreateCheckoutSessionView(View):
     def post(self, request):
@@ -60,63 +55,6 @@ class CreateCheckoutSessionView(View):
             # En cas d'erreur, on revient au panier
             return redirect('cart:cart_detail')
 
-
-class CreateAffiliateSessionView(View):
-    """
-    Gère la création d'une session Stripe pour l'achat d'un plan d'affiliation.
-    """
-    def post(self, request):
-        if not request.user.is_authenticated:
-            return redirect('accounts:login')
-
-        tier_id = request.POST.get('tier_id')
-        try:
-            tier = AffiliateTier.objects.get(id=tier_id)
-        except AffiliateTier.DoesNotExist:
-            messages.error(request, "Plan d'affiliation introuvable.")
-            return redirect('accounts:user-api')
-
-        # Si le plan est gratuit (Free), on change juste le plan sans passer par Stripe
-        if tier.price <= 0:
-            affiliate, created = Affiliate.objects.get_or_create(user=request.user)
-            affiliate.tier = tier
-            affiliate.save()
-            messages.success(request, f"Votre plan a été mis à jour vers : {tier.name}")
-            return redirect('accounts:user-api')
-
-        # Configuration Stripe
-        stripe.api_key = AppSetting.get_value('STRIPE_SECRET_KEY')
-        base_url = f"{request.scheme}://{request.get_host()}"
-
-        try:
-            checkout_session = stripe.checkout.Session.create(
-                payment_method_types=['card', 'bancontact', 'sepa_debit'],
-                line_items=[{
-                    'price_data': {
-                        'currency': 'eur',
-                        'product_data': {
-                            'name': f"Abonnement API - {tier.name}",
-                            'description': f"Accès API ThéâtrePlus (Limite: {tier.api_limit_daily} appels/jour)",
-                        },
-                        'unit_amount': int(tier.price * 100),
-                    },
-                    'quantity': 1,
-                }],
-                mode='payment',
-                metadata={
-                    'payment_type': 'affiliation_upgrade',
-                    'user_id': request.user.id,
-                    'tier_id': tier.id
-                },
-                success_url=base_url + reverse('payments:success') + "?session_id={CHECKOUT_SESSION_ID}",
-                cancel_url=base_url + reverse('accounts:user-api'),
-            )
-            return redirect(checkout_session.url, status=303)
-        except Exception as e:
-            messages.error(request, f"Erreur Stripe : {str(e)}")
-            return redirect('accounts:user-api')
-
-
 from catalogue.models.reservation import Reservation, RepresentationReservation
 from catalogue.models.representation import Representation
 from catalogue.models.price import Price
@@ -125,152 +63,71 @@ from catalogue.views.ticket import send_reservation_email
 from .models import Payment
 
 # Vues pour les pages de confirmation (HTML)
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
-
-
-@csrf_exempt
-def stripe_webhook(request):
-    """
-    Endpoint simplifié pour le test.
-    """
-    import json
-    payload = request.body
-    
-    try:
-        event = json.loads(payload)
-    except Exception as e:
-        return HttpResponse(status=400)
-
-    # Traitement de l'événement
-    if event.get('type') == 'checkout.session.completed':
-        session = event['data']['object']
-        metadata = session.get('metadata', {})
-        payment_type = metadata.get('payment_type')
-        
-        print(f"DEBUG Webhook: Type = {payment_type}")
-
-        if payment_type == 'affiliation_upgrade':
-            user_id = metadata.get('user_id')
-            tier_id = metadata.get('tier_id')
-            
-            try:
-                user = User.objects.get(id=user_id)
-                tier = AffiliateTier.objects.get(id=tier_id)
-                
-                affiliate, created = Affiliate.objects.get_or_create(user=user)
-                affiliate.tier = tier
-                affiliate.save()
-                
-                print(f"DEBUG Webhook: Plan {tier.name} activé pour {user.username}")
-                
-                # Enregistrer le paiement
-                Payment.objects.get_or_create(
-                    stripe_session_id=session.get('id'),
-                    defaults={
-                        'stripe_payment_intent_id': session.get('payment_intent'),
-                        'amount': session.get('amount_total', 0) / 100.0,
-                        'currency': session.get('currency', 'EUR').upper(),
-                        'status': "succeeded"
-                    }
-                )
-            except Exception as e:
-                print(f"DEBUG Webhook Erreur: {str(e)}")
-
-    return HttpResponse(status=200)
-
-
 def payment_success(request):
-    print("DEBUG: Entrée dans payment_success")
+    # On initialise le panier
     cart = Cart(request)
-    session_id = request.GET.get('session_id')
-    print(f"DEBUG: Session ID = {session_id}")
     
-    if session_id:
+    # On récupère l'ID de session Stripe
+    session_id = request.GET.get('session_id')
+    
+    # On vérifie que l'utilisateur est connecté et que le panier n'est pas vide
+    if request.user.is_authenticated and len(cart) > 0 and session_id:
         try:
             # On vérifie si ce paiement n'a pas déjà été traité pour éviter les doublons
             if not Payment.objects.filter(stripe_session_id=session_id).exists():
                 # On récupère les détails de la session depuis Stripe
                 stripe.api_key = AppSetting.get_value('STRIPE_SECRET_KEY')
                 session = stripe.checkout.Session.retrieve(session_id)
-                print(f"DEBUG: Session Stripe récupérée: {session.id}")
                 
-                # RÉCUPÉRATION DES MÉTADONNÉES
-                metadata = session.metadata
-                print(f"DEBUG: Metadata = {metadata}")
-                payment_type = metadata.get('payment_type', 'ticket_reservation')
+                # 1. Création de la réservation parente
+                reservation = Reservation.objects.create(
+                    user=request.user,
+                    status="paid"  # Statut de la réservation
+                )
+                
+                # 2. Création de la trace du paiement
+                Payment.objects.create(
+                    reservation=reservation,
+                    stripe_session_id=session_id,
+                    stripe_payment_intent_id=session.payment_intent,
+                    amount=session.amount_total / 100.0,
+                    currency=session.currency.upper(),
+                    status="succeeded"
+                )
+                
+                # 3. Création du détail pour chaque article du panier
+                for item in cart:
+                    # Vérification de sécurité pour le stock (double check au cas où)
+                    representation = item['representation']
+                    requested_quantity = item['quantity']
+                    
+                    if representation.available_seats < requested_quantity:
+                        # Cas critique : plus assez de places au moment du paiement
+                        # Normalement géré par Stripe/Panier mais sécurité ici
+                        raise ValueError(f"Plus assez de places pour {representation.show.title}")
 
-                # CAS 1 : UPGRADE AFFILIATION
-                if payment_type == 'affiliation_upgrade':
-                    user_id = int(metadata.get('user_id'))
-                    tier_id = int(metadata.get('tier_id'))
-                    
-                    user = User.objects.get(id=user_id)
-                    tier = AffiliateTier.objects.get(id=tier_id)
-                    
-                    affiliate, created = Affiliate.objects.get_or_create(user=user)
-                    affiliate.tier = tier
-                    affiliate.save()
-                    
-                    # On crée quand même une trace de paiement (optionnel mais recommandé)
-                    Payment.objects.create(
-                        stripe_session_id=session_id,
-                        stripe_payment_intent_id=session.payment_intent,
-                        amount=session.amount_total / 100.0,
-                        currency=session.currency.upper(),
-                        status="succeeded"
-                    )
-                    
-                    messages.success(request, f"Félicitations ! Votre accès API est maintenant en mode {tier.name}.")
-                    return render(request, 'payments/success_api.html', {'tier': tier})
-
-                # CAS 2 : RÉSERVATION DE TICKETS (Comportement original)
-                elif request.user.is_authenticated and len(cart) > 0:
-                    # 1. Création de la réservation parente
-                    reservation = Reservation.objects.create(
-                        user=request.user,
-                        status="paid"
-                    )
-                    
-                    # 2. Création de la trace du paiement
-                    Payment.objects.create(
+                    rep_res = RepresentationReservation.objects.create(
                         reservation=reservation,
-                        stripe_session_id=session_id,
-                        stripe_payment_intent_id=session.payment_intent,
-                        amount=session.amount_total / 100.0,
-                        currency=session.currency.upper(),
-                        status="succeeded"
+                        representation=representation,
+                        price=item['price_obj'],
+                        quantity=requested_quantity
                     )
                     
-                    # 3. Création du détail pour chaque article du panier
-                    for item in cart:
-                        representation = item['representation']
-                        requested_quantity = item['quantity']
-                        
-                        rep_res = RepresentationReservation.objects.create(
-                            reservation=reservation,
-                            representation=representation,
-                            price=item['price_obj'],
-                            quantity=requested_quantity
-                        )
-                        
-                        for _ in range(requested_quantity):
-                            Ticket.objects.create(representation_reservation=rep_res)
+                    # 4. Création des billets individuels
+                    for _ in range(requested_quantity):
+                        Ticket.objects.create(representation_reservation=rep_res)
 
-                        representation.available_seats -= requested_quantity
-                        representation.save()
-                        
-                    cart.clear()
-                    send_reservation_email(reservation)
-            else:
-                print(f"DEBUG: Paiement déjà traité pour session {session_id}")
+                    # MISE À JOUR DU STOCK (Places disponibles)
+                    representation.available_seats -= requested_quantity
+                    representation.save()
+                    
+                # 5. On vide le panier une fois payé et enregistré
+                cart.clear()
+
+                # 6. ENVOI DE L'EMAIL DE CONFIRMATION AVEC PDF
+                send_reservation_email(reservation)
         except Exception as e:
-            # LOG DE L'ERREUR DANS UN FICHIER
-            with open("stripe_debug.log", "a") as f:
-                f.write(f"\n--- Erreur le {timezone.now()} ---\n")
-                f.write(traceback.format_exc())
-                f.write("\n-------------------------------\n")
-            
+            # En cas d'erreur lors du traitement de la session Stripe
             print(f"Erreur lors de la validation du paiement: {e}")
             return render(request, 'payments/failed.html', {'error': str(e)})
         
