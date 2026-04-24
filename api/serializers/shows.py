@@ -24,6 +24,36 @@ class ShowSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 1
 
+    def to_representation(self, instance):
+        """
+        Personnalise les données retournées selon le niveau d'affiliation.
+        """
+        data = super().to_representation(instance)
+        request = self.context.get('request')
+        
+        # Par défaut, si pas de requête (ex: shell), on laisse tout
+        if not request:
+            return data
+
+        # Si l'utilisateur est un affilié
+        if hasattr(request, 'affiliate'):
+            tier = request.affiliate.tier.name if request.affiliate.tier else 'Free'
+            
+            # CAS FREE : On garde seulement titre et description
+            if tier == 'Free':
+                allowed_fields = ['id', 'title', 'description', 'slug']
+                return {field: data[field] for field in allowed_fields if field in data}
+            
+            # CAS STARTER : On ajoute le poster et les artistes (depth=1 inclut les artistes par défaut)
+            elif tier == 'Starter':
+                # On retire les représentations et les reviews pour le plan Starter
+                data.pop('representations', None)
+                data.pop('reviews', None)
+                data.pop('price', None)
+                return data
+                
+        return data
+
     def get_formatted_next_date(self, obj):
         from django.utils import timezone
         from django.utils.formats import date_format

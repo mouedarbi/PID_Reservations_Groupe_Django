@@ -1,0 +1,38 @@
+[
+{
+    "model": "catalogue.affiliatetier",
+    "pk": 1,
+    "fields": {
+        "name": "Free",
+        "description": "",
+        "price": "0.00",
+        "stripe_price_id": null,
+        "api_limit_daily": 100,
+        "can_access_full_data": false
+    }
+},
+{
+    "model": "catalogue.affiliatetier",
+    "pk": 2,
+    "fields": {
+        "name": "Starter",
+        "description": "",
+        "price": "10.00",
+        "stripe_price_id": null,
+        "api_limit_daily": 1000,
+        "can_access_full_data": true
+    }
+},
+{
+    "model": "catalogue.affiliatetier",
+    "pk": 3,
+    "fields": {
+        "name": "Premium",
+        "description": "",
+        "price": "50.00",
+        "stripe_price_id": null,
+        "api_limit_daily": 100000,
+        "can_access_full_data": true
+    }
+}
+]
