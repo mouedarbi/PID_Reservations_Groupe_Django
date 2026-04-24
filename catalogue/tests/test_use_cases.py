@@ -38,7 +38,7 @@ class PressCriticUseCaseTest(TestCase):
             slug='hamlet-2026',
             title='Hamlet',
             description='Une version moderne de Shakespeare',
-            poster_url='hamlet.jpg',
+            poster='hamlet.jpg',
             bookable=True,
             created_in=2026,
             location=cls.location

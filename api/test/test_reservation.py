@@ -31,7 +31,7 @@ class ReservationsAPITests(APITestCase):
             slug="test-show",
             title="Test Show",
             description="A test show",
-            poster_url="http://example.com/poster.jpg",
+            poster="http://example.com/poster.jpg",
             # price=50.0, # Removed as it does not exist in Show model
             bookable=True,
             created_in=2024 
