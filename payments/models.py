@@ -2,7 +2,7 @@ from django.db import models
 from catalogue.models.reservation import Reservation
 
 class Payment(models.Model):
-    reservation = models.OneToOneField(Reservation, on_delete=models.CASCADE, related_name='payment')
+    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE, related_name='payment', null=True, blank=True)
     stripe_session_id = models.CharField(max_length=255, unique=True, verbose_name="ID de session Stripe")
     stripe_payment_intent_id = models.CharField(max_length=255, blank=True, null=True, verbose_name="ID de paiement Stripe")
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Montant payé")

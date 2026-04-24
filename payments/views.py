@@ -1,5 +1,6 @@
 import stripe
 import os
+import traceback
 from django.conf import settings
 from django.shortcuts import render
 from django.urls import reverse
@@ -9,8 +10,10 @@ from rest_framework import status
 from cart.cart import Cart  # Utiliser la classe Cart existante
 from catalogue.models.setting import AppSetting
 from django.contrib import messages
+from django.utils import timezone
 from django.shortcuts import redirect
 from django.views import View
+from django.contrib.auth.models import User
 from catalogue.models import AffiliateTier, Affiliate
 
 
@@ -122,14 +125,67 @@ from catalogue.views.ticket import send_reservation_email
 from .models import Payment
 
 # Vues pour les pages de confirmation (HTML)
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+
+
+@csrf_exempt
+def stripe_webhook(request):
+    """
+    Endpoint simplifié pour le test.
+    """
+    import json
+    payload = request.body
+    
+    try:
+        event = json.loads(payload)
+    except Exception as e:
+        return HttpResponse(status=400)
+
+    # Traitement de l'événement
+    if event.get('type') == 'checkout.session.completed':
+        session = event['data']['object']
+        metadata = session.get('metadata', {})
+        payment_type = metadata.get('payment_type')
+        
+        print(f"DEBUG Webhook: Type = {payment_type}")
+
+        if payment_type == 'affiliation_upgrade':
+            user_id = metadata.get('user_id')
+            tier_id = metadata.get('tier_id')
+            
+            try:
+                user = User.objects.get(id=user_id)
+                tier = AffiliateTier.objects.get(id=tier_id)
+                
+                affiliate, created = Affiliate.objects.get_or_create(user=user)
+                affiliate.tier = tier
+                affiliate.save()
+                
+                print(f"DEBUG Webhook: Plan {tier.name} activé pour {user.username}")
+                
+                # Enregistrer le paiement
+                Payment.objects.get_or_create(
+                    stripe_session_id=session.get('id'),
+                    defaults={
+                        'stripe_payment_intent_id': session.get('payment_intent'),
+                        'amount': session.get('amount_total', 0) / 100.0,
+                        'currency': session.get('currency', 'EUR').upper(),
+                        'status': "succeeded"
+                    }
+                )
+            except Exception as e:
+                print(f"DEBUG Webhook Erreur: {str(e)}")
+
+    return HttpResponse(status=200)
+
+
 def payment_success(request):
-    # On initialise le panier
+    print("DEBUG: Entrée dans payment_success")
     cart = Cart(request)
-    
-    # On récupère l'ID de session Stripe
     session_id = request.GET.get('session_id')
+    print(f"DEBUG: Session ID = {session_id}")
     
-    # On vérifie que l'ID de session est présent
     if session_id:
         try:
             # On vérifie si ce paiement n'a pas déjà été traité pour éviter les doublons
@@ -137,15 +193,17 @@ def payment_success(request):
                 # On récupère les détails de la session depuis Stripe
                 stripe.api_key = AppSetting.get_value('STRIPE_SECRET_KEY')
                 session = stripe.checkout.Session.retrieve(session_id)
+                print(f"DEBUG: Session Stripe récupérée: {session.id}")
                 
                 # RÉCUPÉRATION DES MÉTADONNÉES
                 metadata = session.metadata
+                print(f"DEBUG: Metadata = {metadata}")
                 payment_type = metadata.get('payment_type', 'ticket_reservation')
 
                 # CAS 1 : UPGRADE AFFILIATION
                 if payment_type == 'affiliation_upgrade':
-                    user_id = metadata.get('user_id')
-                    tier_id = metadata.get('tier_id')
+                    user_id = int(metadata.get('user_id'))
+                    tier_id = int(metadata.get('tier_id'))
                     
                     user = User.objects.get(id=user_id)
                     tier = AffiliateTier.objects.get(id=tier_id)
@@ -204,7 +262,15 @@ def payment_success(request):
                         
                     cart.clear()
                     send_reservation_email(reservation)
+            else:
+                print(f"DEBUG: Paiement déjà traité pour session {session_id}")
         except Exception as e:
+            # LOG DE L'ERREUR DANS UN FICHIER
+            with open("stripe_debug.log", "a") as f:
+                f.write(f"\n--- Erreur le {timezone.now()} ---\n")
+                f.write(traceback.format_exc())
+                f.write("\n-------------------------------\n")
+            
             print(f"Erreur lors de la validation du paiement: {e}")
             return render(request, 'payments/failed.html', {'error': str(e)})
         
