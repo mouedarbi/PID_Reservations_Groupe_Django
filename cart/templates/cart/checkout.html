@@ -44,7 +44,7 @@
             <i class="ph ph-arrow-left"></i> {% trans "Modifier mon panier" %}
         </a>
         
-        <form action="{% url 'cart:cart_checkout' %}" method="post">
+        <form action="{% url 'payments:create-checkout-session' %}" method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-success" style="padding: 15px 40px; background-color: #28a745; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);">
                 {% trans "Confirmer et Payer" %} <i class="ph ph-credit-card"></i>

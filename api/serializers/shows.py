@@ -10,12 +10,16 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ['id', 'user_name', 'review', 'stars', 'validated', 'created_at']
+        fields = ['id', 'user_name', 'review', 'stars', 'validated', 'is_pinned', 'created_at']
 
 class ShowSerializer(serializers.ModelSerializer):
     price = serializers.SerializerMethodField()
     prices = PriceSerializer(many=True, read_only=True)
     artist_types = ArtistTypeSerializer(many=True, read_only=True)
+    has_multiple_prices = serializers.ReadOnlyField()
+    next_representation_date = serializers.ReadOnlyField()
+    formatted_next_date = serializers.SerializerMethodField()
+    poster = serializers.ImageField(use_url=True, required=False, allow_null=True)
     representations = RepresentationSerializer(many=True, read_only=True)
     reviews = serializers.SerializerMethodField()
 
@@ -23,6 +27,44 @@ class ShowSerializer(serializers.ModelSerializer):
         model = Show
         fields = '__all__'
         depth = 1
+
+    def to_representation(self, instance):
+        """
+        Personnalise les données retournées selon le niveau d'affiliation.
+        """
+        data = super().to_representation(instance)
+        request = self.context.get('request')
+        
+        # Par défaut, si pas de requête (ex: shell), on laisse tout
+        if not request:
+            return data
+
+        # Si l'utilisateur est un affilié
+        if hasattr(request, 'affiliate'):
+            tier = request.affiliate.tier.name if request.affiliate.tier else 'Free'
+            
+            # CAS FREE : On garde seulement titre et description
+            if tier == 'Free':
+                allowed_fields = ['id', 'title', 'description', 'slug']
+                return {field: data[field] for field in allowed_fields if field in data}
+            
+            # CAS STARTER : On ajoute le poster et les artistes (depth=1 inclut les artistes par défaut)
+            elif tier == 'Starter':
+                # On retire les représentations et les reviews pour le plan Starter
+                data.pop('representations', None)
+                data.pop('reviews', None)
+                data.pop('price', None)
+                return data
+                
+        return data
+
+    def get_formatted_next_date(self, obj):
+        from django.utils import timezone
+        from django.utils.formats import date_format
+        next_rep = obj.representations.filter(schedule__gte=timezone.now()).order_by('schedule').first()
+        if next_rep:
+            return date_format(next_rep.schedule, "d M Y")
+        return None
 
     def get_price(self, obj):
         # Retrieve all ShowPrice objects related to the current Show

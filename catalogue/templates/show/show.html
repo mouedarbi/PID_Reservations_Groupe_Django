@@ -7,9 +7,10 @@
 {% block content %}
     <h1>{{ show.title }}</h1>
 
-    {% if show.poster_url %}
-    <p><img src="{% static 'catalogue/images/' %}{{ show.poster_url }}" alt="{{ show.title }}" width="200"></p>
-    {% else %}
+    {% if show.poster %}
+    <p><img src="{{ show.poster.url }}" alt="{{ show.title }}" width="200"></p>
+    {% endif %}
+
     <canvas width="200" height="100" style="border:1px solid #000000;"></canvas>
     {% endif %}
     

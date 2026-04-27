@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Échec du paiement - ThéâtrePlus" %}{% endblock %}
+
+{% block content %}
+<section class="hero compact" style="padding-top: 120px; background: #6c757d; color: white; padding-bottom: 4rem; text-align: center;">
+    <div class="container">
+        <div style="font-size: 5rem; margin-bottom: 1.5rem;">
+            <i class="ph ph-prohibit"></i>
+        </div>
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 1rem;">{% trans "Échec du Paiement" %}</h1>
+        <p style="opacity: 0.9; font-size: 1.2rem;">{% trans "Votre transaction a été refusée par l'organisme bancaire." %}</p>
+    </div>
+</section>
+
+<section style="padding: 5rem 0; min-height: 50vh; text-align: center;">
+    <div class="container" style="max-width: 700px; margin: 0 auto; padding: 0 15px;">
+        <div class="card" style="background: white; border-radius: 20px; border: 1px solid #eee; padding: 3rem; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+            <h2 style="color: var(--secondary); margin-bottom: 1.5rem;">{% trans "Un problème est survenu" %}</h2>
+            <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 2.5rem;">
+                {% trans "Nous n'avons pas pu prélever le montant de votre commande. Cela peut être dû à un plafond atteint ou à une erreur de saisie." %}<br>
+                {% trans "Veuillez vérifier vos informations bancaires et réessayer." %}
+            </p>
+            
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{% url 'cart:cart_detail' %}" class="btn" style="background: var(--primary); color: white; padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: bold; transition: all 0.3s;">
+                    <i class="ph ph-arrow-counter-clockwise"></i> {% trans "Réessayer le paiement" %}
+                </a>
+                <a href="{% url 'frontend:home' %}" class="btn" style="background: var(--bg-light); color: var(--secondary); border: 1px solid var(--border-color); padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: bold; transition: all 0.3s;">
+                    {% trans "Retour à l'accueil" %}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}

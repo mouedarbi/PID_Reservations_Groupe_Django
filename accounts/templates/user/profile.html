@@ -18,38 +18,7 @@
         
         <div class="profile-grid" style="display: grid; grid-template-columns: 300px 1fr; gap: 3rem; align-items: start;">
             
-            <!-- Sidebar Infos Perso -->
-            <aside class="profile-info" style="background: var(--bg-light); border-radius: 15px; padding: 2rem; border: 1px solid var(--border-color);">
-                <div style="text-align: center; margin-bottom: 2rem;">
-                    <div style="width: 80px; height: 80px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; margin: 0 auto 1rem;">
-                        {{ user.username|slice:":1"|upper }}
-                    </div>
-                    <h3 style="margin: 0; color: var(--secondary);">{{ user.username }}</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">{{ user.email }}</p>
-                </div>
-
-                <div style="border-top: 1px solid var(--border-color); padding-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
-                    <div>
-                        <p style="color: var(--text-secondary); margin-bottom: 5px; font-size: 0.85rem;">{% trans "Langue préférée" %}</p>
-                        <p style="font-weight: 500; margin-bottom: 1rem;">{{ user_language }}</p>
-                    </div>
-                    
-                    <a href="{% url 'accounts:user-update' request.user.id %}" style="text-decoration: none; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; font-weight: 500;">
-                        <i class="ph ph-user-edit"></i> {% trans "Modifier le profil" %}
-                    </a>
-                    <a href="{% url 'accounts:password_change' %}" style="text-decoration: none; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; font-weight: 500;">
-                        <i class="ph ph-key"></i> {% trans "Mot de passe" %}
-                    </a>
-                    
-                    <form method="post" action="{% url 'accounts:user-delete' request.user.id %}" onsubmit="return confirm('{% trans "Êtes-vous sûr ?" %}')" style="margin-top: 1rem;">
-                        {% csrf_token %}
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" style="background: none; border: none; color: #dc3545; cursor: pointer; padding: 0; font-family: inherit; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <i class="ph ph-trash"></i> {% trans "Supprimer mon compte" %}
-                        </button>
-                    </form>
-                </div>
-            </aside>
+            {% include 'user/_sidebar.html' %}
 
             <!-- Liste des réservations -->
             <main class="reservations-list">
@@ -85,20 +54,26 @@
                                         {% endfor %}
                                     </td>
                                     <td style="padding: 1.2rem; text-align: center;">
-                                        {% if reservation.status == 'PAID' %}
+                                        {% if reservation.status|upper == 'PAID' %}
                                             <span style="background: #d4edda; color: #155724; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold;">{% trans "PAYÉ" %}</span>
-                                        {% elif reservation.status == 'PENDING' %}
+                                        {% elif reservation.status|upper == 'PENDING' %}
                                             <span style="background: #fff3cd; color: #856404; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold;">{% trans "ATTENTE" %}</span>
-                                        {% elif reservation.status == 'FAILED' %}
+                                        {% elif reservation.status|upper == 'FAILED' %}
                                             <span style="background: #f8d7da; color: #721c24; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold;">{% trans "ÉCHEC" %}</span>
                                         {% else %}
                                             <span style="background: #e9ecef; color: #6c757d; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold;">{{ reservation.status }}</span>
                                         {% endif %}
                                     </td>
                                     <td style="padding: 1.2rem; text-align: right;">
+                                        {% if reservation.status|upper == 'PAID' %}
+                                        <a href="{% url 'cart:reservation_detail' reservation.id %}" style="color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem;">
+                                            <i class="ph ph-ticket"></i> {% trans "Voir mes billets" %}
+                                        </a>
+                                        {% else %}
                                         <a href="{% url 'cart:reservation_detail' reservation.id %}" style="color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9rem;">
                                             <i class="ph ph-eye"></i> {% trans "Détails" %}
                                         </a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                                 {% endfor %}

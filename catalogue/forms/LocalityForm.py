@@ -4,4 +4,4 @@ from catalogue.models import Locality
 class LocalityForm(ModelForm):
     class Meta:
         model = Locality
-        fields = ['postal_code', 'locality']
+        fields = ['postal_code', 'locality_fr', 'locality_en', 'locality_nl']

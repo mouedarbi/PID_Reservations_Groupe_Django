@@ -4,6 +4,7 @@ from .views import (
     representations, prices, cart, checkout, reservations, tickets, reviews,
     producer, admin_api, affiliate, rss, public_api
 )
+from .feeds import LatestRepresentationsFeed
 
 app_name = 'api'
 
@@ -99,7 +100,7 @@ urlpatterns = [
     path('affiliate/subscription/', affiliate.AffiliateSubscriptionView.as_view(), name='affiliate-subscription'),
 
     # RSS
-    path('rss/next-representations/', rss.RssNextRepresentationsView.as_view(), name='rss-next-representations'),
+    path('rss/next-representations/', LatestRepresentationsFeed(), name='rss-next-representations'),
 
     # PUBLIC API
     path('public/shows/', public_api.PublicShowsView.as_view(), name='public-shows'),

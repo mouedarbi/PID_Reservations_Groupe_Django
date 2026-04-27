@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     "accounts",
     #ajout de catalogue
     "catalogue",
+    "payments",
     # ajout de rest_framework
     'rest_framework',
     "rest_framework.authtoken",
@@ -102,6 +104,20 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT'),
     }
 }
+
+# Configuration spécifique pour les tests
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'test_db',
+        'USER': os.getenv('DB_USER', 'root'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'mysecretpassword'),
+        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+        'PORT': os.getenv('DB_PORT', '3306'),
+        'TEST': {
+            'NAME': 'test_db', # Utiliser la base de données créée par le service MySQL du workflow
+        }
+    }
 
 
 # Password validation
@@ -158,6 +174,9 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -192,4 +211,15 @@ PASSWORD_CHANGE_REDIRECT_URL = 'accounts:user-profile'
 # Modeltranslation configuration
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'fr'
 MODELTRANSLATION_FALLBACK_LANGUAGES = ('fr', 'en', 'nl')
+
+# Configuration des E-mails
+# Par défaut, les mails s'affichent dans la console pour le développement.
+# Pour envoyer de vrais mails, changez EMAIL_BACKEND dans le .env
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@theatreplus.be')
 

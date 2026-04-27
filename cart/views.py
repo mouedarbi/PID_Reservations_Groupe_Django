@@ -66,80 +66,11 @@ def cart_checkout(request):
         return redirect('catalogue:show-index')
 
     if request.method == 'POST':
-        # SÉCURITÉ : On supprime les anciennes réservations 'PENDING' de l'utilisateur
-        # pour éviter les doublons en cas de rafraîchissement de page ou retour arrière.
-        Reservation.objects.filter(user=request.user, status='PENDING').delete()
-
-        # On groupe les articles du panier par représentation
-        items_by_rep = {}
-        for item in cart:
-            rep_id = item['representation'].id
-            if rep_id not in items_by_rep:
-                items_by_rep[rep_id] = []
-            items_by_rep[rep_id].append(item)
-
-        created_reservation_ids = []
-
-        # Pour chaque séance, on crée une réservation distincte
-        for rep_id, items in items_by_rep.items():
-            reservation = Reservation.objects.create(
-                user=request.user,
-                status='PENDING'
-            )
-            created_reservation_ids.append(str(reservation.id))
-
-            for item in items:
-                RepresentationReservation.objects.create(
-                    reservation=reservation,
-                    representation=item['representation'],
-                    price=item['price_obj'],
-                    quantity=item['quantity']
-                )
-        
-        # On passe la liste des IDs à la simulation de paiement (séparés par des virgules)
-        ids_str = ",".join(created_reservation_ids)
-        return redirect(f"/cart/payment/{ids_str}/")
+        # On ne crée plus les réservations ici car elles sont créées par Stripe lors du succès du paiement
+        # Redirection vers Stripe via le template
+        return redirect('cart:cart_detail')
 
     return render(request, 'cart/checkout.html', {'cart': cart})
-
-def payment_simulation(request, reservation_id):
-    """
-    Vue pour simuler le paiement d'une ou plusieurs réservations.
-    Note : reservation_id peut être une chaîne d'IDs séparés par des virgules.
-    """
-    # On gère le cas multi-réservations
-    id_list = str(reservation_id).split(',')
-    reservations = Reservation.objects.filter(id__in=id_list, user=request.user)
-    
-    if request.method == 'POST':
-        action = request.POST.get('action')
-        
-        if action == 'success':
-            for reservation in reservations:
-                reservation.status = 'PAID'
-                reservation.save()
-                
-                # Mise à jour des stocks
-                for rr in reservation.representation_reservations.all():
-                    rr.representation.available_seats -= rr.quantity
-                    rr.representation.save()
-            
-            cart = Cart(request)
-            cart.clear()
-            messages.success(request, _("Paiement réussi ! %(count)s réservation(s) validée(s).") % {'count': reservations.count()})
-            return redirect('accounts:user-profile')
-            
-        elif action == 'failure':
-            for reservation in reservations:
-                reservation.status = 'FAILED'
-                reservation.save()
-            messages.error(request, _("Le paiement a échoué."))
-            return redirect('cart:cart_detail')
-
-    return render(request, 'cart/payment_simulation.html', {
-        'reservations': reservations,
-        'is_multiple': len(id_list) > 1
-    })
 
 @login_required
 def reservation_detail(request, reservation_id):

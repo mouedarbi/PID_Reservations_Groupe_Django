@@ -1,12 +1,12 @@
 # Projet Réservations – Django 5
 
-##  Équipe de développement
+## Équipe de développement
 
-* **Mohamed Ouedarbi**
-* **Mpindu Mukandila Jean-Paul**
-* **YALAOUI Ghiles**
-* **Slavic Veaceslav Lisa**
-* *(+ ajouter les autres membres du groupe)*
+- **Mohamed Ouedarbi**
+- **Mpindu Mukandila Jean-Paul**
+- **YALAOUI Ghiles**
+- **Slavic Veaceslav Lisa**
+- _(+ ajouter les autres membres du groupe)_
 
 ---
 
@@ -15,23 +15,23 @@
 L’application **Projet Réservations** permet de gérer les réservations de spectacles pour une société de production.
 Elle comprend :
 
-* un **catalogue de spectacles**, artistes et lieux de représentation,
-* un système de **réservations en ligne**,
-* un **back-office administrateur** pour gérer les contenus,
-* une **API RESTful** destinée aux affiliés,
-* et une future **interface front-end ReactJS** pour le public.
+- un **catalogue de spectacles**, artistes et lieux de représentation,
+- un système de **réservations en ligne**,
+- un **back-office administrateur** pour gérer les contenus,
+- une **API RESTful** destinée aux affiliés,
+- et une future **interface front-end ReactJS** pour le public.
 
 Ce projet s’inscrit dans le cadre du **PID (Projet d’Intégration et Développement)** du Bachelier en Informatique de gestion.
-Il fait suite au *Starter Kit Django 5* (Itération 2 du PID).
+Il fait suite au _Starter Kit Django 5_ (Itération 2 du PID).
 
 ---
 
 ## Objectifs pédagogiques
 
-* Apprendre à structurer un projet Django complet.
-* Travailler collaborativement via GitHub (versioning).
-* Comprendre le mapping ORM, la gestion CRUD, l’authentification et les APIs.
-* Respecter les bonnes pratiques de déploiement et sécurité (Django 5).
+- Apprendre à structurer un projet Django complet.
+- Travailler collaborativement via GitHub (versioning).
+- Comprendre le mapping ORM, la gestion CRUD, l’authentification et les APIs.
+- Respecter les bonnes pratiques de déploiement et sécurité (Django 5).
 
 ---
 
@@ -49,7 +49,7 @@ README.md                   # Documentation du projet
 
 ## ⚙Installation et configuration
 
-###  Installation complète (environnement propre)
+### Installation complète (environnement propre)
 
 Pour une installation depuis zéro :
 
@@ -124,28 +124,28 @@ Cela évite de recréer un environnement virtuel et garantit que tous les membre
 
 ---
 
-##  Technologies utilisées
+## Technologies utilisées
 
-* Python **3.11+**
-* Django **5.0.14**
-* MySQL / MariaDB **11+**
-* Bootstrap 5
-* ReactJS (Itération 7 – Front-end)
-* Git / GitHub (collaboration)
+- Python **3.11+**
+- Django **5.0.14**
+- MySQL / MariaDB **11+**
+- Bootstrap 5
+- ReactJS (Itération 7 – Front-end)
+- Git / GitHub (collaboration)
 
 ---
 
-##  Itérations prévues
+## Itérations prévues
 
-| N° | Intitulé                   | Objectif                               |
-| -- | -------------------------- | -------------------------------------- |
-| 1  | Installation du framework  | Création du projet Django et dépôt Git |
-| 2  | Starter Kit                | CRUD simple (Artistes)                 |
-| 3  | Mapping relationnel simple | Entités Type, Locality, Price          |
-| 4  | Authentification           | Gestion des utilisateurs               |
-| 5  | Relations complexes        | Shows, Reservations, Relations         |
-| 6  | API RESTful                | Exposition sécurisée des données       |
-| 7  | Intégration Frontend       | Interface ReactJS                      |
+| N°  | Intitulé                   | Objectif                               |
+| --- | -------------------------- | -------------------------------------- |
+| 1   | Installation du framework  | Création du projet Django et dépôt Git |
+| 2   | Starter Kit                | CRUD simple (Artistes)                 |
+| 3   | Mapping relationnel simple | Entités Type, Locality, Price          |
+| 4   | Authentification           | Gestion des utilisateurs               |
+| 5   | Relations complexes        | Shows, Reservations, Relations         |
+| 6   | API RESTful                | Exposition sécurisée des données       |
+| 7   | Intégration Frontend       | Interface ReactJS                      |
 
 ---
 

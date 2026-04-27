@@ -1,22 +1,222 @@
 [
-  { "model": "catalogue.locality", "pk": 1, "fields": { "locality": "Bruxelles", "postal_code": "1000" } },
-  { "model": "catalogue.locality", "pk": 2, "fields": { "locality": "Etterbeek", "postal_code": "1040" } },
-  { "model": "catalogue.locality", "pk": 3, "fields": { "locality": "Ixelles", "postal_code": "1050" } },
-  { "model": "catalogue.locality", "pk": 4, "fields": { "locality": "Saint-Gilles", "postal_code": "1060" } },
-  { "model": "catalogue.locality", "pk": 5, "fields": { "locality": "Schaerbeek", "postal_code": "1030" } },
-  { "model": "catalogue.locality", "pk": 6, "fields": { "locality": "Molenbeek-Saint-Jean", "postal_code": "1080" } },
-  { "model": "catalogue.locality", "pk": 7, "fields": { "locality": "Anderlecht", "postal_code": "1070" } },
-  { "model": "catalogue.locality", "pk": 8, "fields": { "locality": "Uccle", "postal_code": "1180" } },
-  { "model": "catalogue.locality", "pk": 9, "fields": { "locality": "Watermael-Boitsfort", "postal_code": "1170" } },
-  { "model": "catalogue.locality", "pk": 10, "fields": { "locality": "Woluwe-Saint-Lambert", "postal_code": "1200" } },
-  { "model": "catalogue.locality", "pk": 11, "fields": { "locality": "Woluwe-Saint-Pierre", "postal_code": "1150" } },
-  { "model": "catalogue.locality", "pk": 12, "fields": { "locality": "Namur", "postal_code": "5000" } },
-  { "model": "catalogue.locality", "pk": 13, "fields": { "locality": "Liège", "postal_code": "4000" } },
-  { "model": "catalogue.locality", "pk": 14, "fields": { "locality": "Mons", "postal_code": "7000" } },
-  { "model": "catalogue.locality", "pk": 15, "fields": { "locality": "Charleroi", "postal_code": "6000" } },
-  { "model": "catalogue.locality", "pk": 16, "fields": { "locality": "Tournai", "postal_code": "7500" } },
-  { "model": "catalogue.locality", "pk": 17, "fields": { "locality": "Nivelles", "postal_code": "1400" } },
-  { "model": "catalogue.locality", "pk": 18, "fields": { "locality": "Louvain-la-Neuve", "postal_code": "1348" } },
-  { "model": "catalogue.locality", "pk": 19, "fields": { "locality": "Leuven", "postal_code": "3000" } },
-  { "model": "catalogue.locality", "pk": 20, "fields": { "locality": "Anvers", "postal_code": "2000" } }
+    {
+        "model": "catalogue.locality",
+        "pk": 1,
+        "fields": {
+            "locality": "Bruxelles",
+            "postal_code": "1000",
+            "locality_fr": "Bruxelles",
+            "locality_en": "Bruxelles",
+            "locality_nl": "Brussel"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 2,
+        "fields": {
+            "locality": "Etterbeek",
+            "postal_code": "1040",
+            "locality_fr": "Etterbeek",
+            "locality_en": "Etterbeek",
+            "locality_nl": "Etterbeek"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 3,
+        "fields": {
+            "locality": "Ixelles",
+            "postal_code": "1050",
+            "locality_fr": "Ixelles",
+            "locality_en": "Ixelles",
+            "locality_nl": "Elsene"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 4,
+        "fields": {
+            "locality": "Saint-Gilles",
+            "postal_code": "1060",
+            "locality_fr": "Saint-Gilles",
+            "locality_en": "Saint-Gilles",
+            "locality_nl": "Sint-Gillis"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 5,
+        "fields": {
+            "locality": "Schaerbeek",
+            "postal_code": "1030",
+            "locality_fr": "Schaerbeek",
+            "locality_en": "Schaerbeek",
+            "locality_nl": "Schaarbeek"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 6,
+        "fields": {
+            "locality": "Molenbeek-Saint-Jean",
+            "postal_code": "1080",
+            "locality_fr": "Molenbeek-Saint-Jean",
+            "locality_en": "Molenbeek-Saint-Jean",
+            "locality_nl": "Sint-Jans-Molenbeek"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 7,
+        "fields": {
+            "locality": "Anderlecht",
+            "postal_code": "1070",
+            "locality_fr": "Anderlecht",
+            "locality_en": "Anderlecht",
+            "locality_nl": "Anderlecht"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 8,
+        "fields": {
+            "locality": "Uccle",
+            "postal_code": "1180",
+            "locality_fr": "Uccle",
+            "locality_en": "Uccle",
+            "locality_nl": "Ukkel"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 9,
+        "fields": {
+            "locality": "Watermael-Boitsfort",
+            "postal_code": "1170",
+            "locality_fr": "Watermael-Boitsfort",
+            "locality_en": "Watermael-Boitsfort",
+            "locality_nl": "Watermaal-Bosvoorde"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 10,
+        "fields": {
+            "locality": "Woluwe-Saint-Lambert",
+            "postal_code": "1200",
+            "locality_fr": "Woluwe-Saint-Lambert",
+            "locality_en": "Woluwe-Saint-Lambert",
+            "locality_nl": "Sint-Lambrechts-Woluwe"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 11,
+        "fields": {
+            "locality": "Woluwe-Saint-Pierre",
+            "postal_code": "1150",
+            "locality_fr": "Woluwe-Saint-Pierre",
+            "locality_en": "Woluwe-Saint-Pierre",
+            "locality_nl": "Sint-Pieters-Woluwe"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 12,
+        "fields": {
+            "locality": "Namur",
+            "postal_code": "5000",
+            "locality_fr": "Namur",
+            "locality_en": "Namur",
+            "locality_nl": "Namen"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 13,
+        "fields": {
+            "locality": "Liège",
+            "postal_code": "4000",
+            "locality_fr": "Liège",
+            "locality_en": "Liège",
+            "locality_nl": "Luik"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 14,
+        "fields": {
+            "locality": "Mons",
+            "postal_code": "7000",
+            "locality_fr": "Mons",
+            "locality_en": "Mons",
+            "locality_nl": "Bergen"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 15,
+        "fields": {
+            "locality": "Charleroi",
+            "postal_code": "6000",
+            "locality_fr": "Charleroi",
+            "locality_en": "Charleroi",
+            "locality_nl": "Charleroi"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 16,
+        "fields": {
+            "locality": "Tournai",
+            "postal_code": "7500",
+            "locality_fr": "Tournai",
+            "locality_en": "Tournai",
+            "locality_nl": "Doornik"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 17,
+        "fields": {
+            "locality": "Nivelles",
+            "postal_code": "1400",
+            "locality_fr": "Nivelles",
+            "locality_en": "Nivelles",
+            "locality_nl": "Nijvel"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 18,
+        "fields": {
+            "locality": "Louvain-la-Neuve",
+            "postal_code": "1348",
+            "locality_fr": "Louvain-la-Neuve",
+            "locality_en": "Louvain-la-Neuve",
+            "locality_nl": "Louvain-la-Neuve"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 19,
+        "fields": {
+            "locality": "Leuven",
+            "postal_code": "3000",
+            "locality_fr": "Leuven",
+            "locality_en": "Leuven",
+            "locality_nl": "Leuven"
+        }
+    },
+    {
+        "model": "catalogue.locality",
+        "pk": 20,
+        "fields": {
+            "locality": "Anvers",
+            "postal_code": "2000",
+            "locality_fr": "Anvers",
+            "locality_en": "Anvers",
+            "locality_nl": "Antwerpen"
+        }
+    }
 ]

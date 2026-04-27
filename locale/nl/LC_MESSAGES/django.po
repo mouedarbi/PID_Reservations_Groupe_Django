@@ -1,602 +1,235 @@
 msgid ""
+
 msgstr ""
+
 "Project-Id-Version: PACKAGE VERSION\n"
+
 "Report-Msgid-Bugs-To: \n"
+
 "POT-Creation-Date: 2026-04-01 18:41+0000\n"
+
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+
 "Language-Team: LANGUAGE <LL@li.org>\n"
+
 "Language: nl\n"
+
 "MIME-Version: 1.0\n"
+
 "Content-Type: text/plain; charset=UTF-8\n"
+
 "Content-Transfer-Encoding: 8bit\n"
+
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+
+
 msgid "Réservez vos spectacles"
+
 msgstr "Reserveer uw voorstellingen"
 
-msgid "Accueil"
-msgstr "Home"
 
-msgid "Spectacles"
-msgstr "Voorstellingen"
 
-msgid "Lieux"
-msgstr "Locaties"
 
-msgid "À propos"
-msgstr "Over ons"
+msgid "Ma Consommation"
+msgstr "Mijn Verbruik"
 
-msgid "Mon Panier"
-msgstr "Mijn Winkelmandje"
+msgid "Espace Développeur"
+msgstr "Ontwikkelaarsruimte"
 
-msgid "Mon compte"
-msgstr "Mijn account"
+msgid "Gérez votre accès API et vos abonnements d'affiliation."
+msgstr "Beheer uw API-toegang en affiliate-abonnementen."
 
-msgid "Déconnexion"
-msgstr "Uitloggen"
+msgid "Consommation de l'API"
+msgstr "API Verbruik"
 
-msgid "Connexion"
-msgstr "Inloggen"
+msgid "Suivez l'utilisation de vos quotas en temps réel."
+msgstr "Volg uw quotaverbruik in realtime."
 
-msgid "Votre plateforme de référence pour réserver les meilleurs spectacles en Belgique. Vivez des moments inoubliables avec nous."
-msgstr "Uw referentieplatform voor het boeken van de beste voorstellingen in België. Beleef onvergetelijke momenten met ons."
+msgid "Votre Clé API"
+msgstr "Uw API-sleutel"
 
-msgid "Navigation"
-msgstr "Navigatie"
+msgid "Plan actuel :"
+msgstr "Huidig Plan:"
 
-msgid "Compte"
-msgstr "Account"
+msgid "Copier"
+msgstr "Kopiëren"
 
-msgid "Mon profil"
-msgstr "Mijn profiel"
+msgid "Gardez cette clé secrète. Elle vous permet d'authentifier vos requêtes vers notre API."
+msgstr "Houd deze sleutel geheim. Hiermee kunt u uw verzoeken aan onze API authenticeren."
 
-msgid "Inscription"
-msgstr "Registreren"
+msgid "Vous n'avez pas encore activé votre accès API."
+msgstr "U heeft uw API-toegang nog niet geactiveerd."
 
-msgid "Aide"
-msgstr "Help"
+msgid "Générer ma clé API Free"
+msgstr "Genereer mijn gratis API-sleutel"
 
-msgid "FAQ"
-msgstr "FAQ"
+msgid "Boostez votre accès"
+msgstr "Verbeter uw toegang"
 
-msgid "Contact"
-msgstr "Contact"
+msgid "appels / jour"
+msgstr "oproepen / dag"
 
-msgid "Conditions"
-msgstr "Voorwaarden"
+msgid "Données complètes"
+msgstr "Volledige gegevens"
 
-msgid "Confidentialité"
-msgstr "Privacy"
+msgid "Données limitées"
+msgstr "Beperkte gegevens"
 
-msgid "Tous droits réservés. | Projet PID - Version Alpha"
-msgstr "Alle rechten voorbehouden. | PID Project - Alpha Versie"
+msgid "Support prioritaire"
+msgstr "Prioritaire ondersteuning"
 
-msgid "Réservez vos billets pour les meilleurs événements"
-msgstr "Reserveer uw tickets voor de beste evenementen"
+msgid "S'abonner"
+msgstr "Abonneren"
 
-msgid "Concerts, théâtre, spectacles et bien plus encore"
-msgstr "Concerten, theater, voorstellingen en nog veel meer"
+msgid "Choisir ce plan"
+msgstr "Kies dit plan"
 
-msgid "Rechercher un spectacle, artiste ou lieu..."
-msgstr "Zoek een voorstelling, artiest of locatie..."
+msgid "Plan actif"
+msgstr "Actief plan"
 
-msgid "Tous les genres"
-msgstr "Alle genres"
+msgid "Statistiques d'utilisation"
+msgstr "Gebruiksstatistieken"
 
-msgid "Concert"
-msgstr "Concert"
+msgid "Utilisation aujourd'hui"
+msgstr "Gebruik vandaag"
 
-msgid "Théâtre"
-msgstr "Theater"
+msgid "Votre quota est réinitialisé chaque jour à minuit."
+msgstr "Uw quota wordt elke dag om middernacht gereset."
 
-msgid "Danse"
-msgstr "Dans"
-
-msgid "Comédie"
-msgstr "Komedie"
-
-msgid "Toutes les dates"
-msgstr "Alle datums"
-
-msgid "Ce week-end"
-msgstr "Dit weekend"
-
-msgid "Cette semaine"
-msgstr "Deze week"
-
-msgid "Ce mois-ci"
-msgstr "Deze maand"
-
-msgid "Rechercher"
-msgstr "Zoeken"
-
-msgid "Tous les événements"
-msgstr "Alle evenementen"
-
-msgid "Concerts"
-msgstr "Concerten"
-
-msgid "Théâtres"
-msgstr "Theaters"
-
-msgid "Festivals"
-msgstr "Festivals"
-
-msgid "Événements à venir"
-msgstr "Aankomende evenementen"
-
-msgid "Réservez vos billets dès maintenant"
-msgstr "Reserveer nu uw tickets"
-
-msgid "Disponible"
+msgid "Disponibles"
 msgstr "Beschikbaar"
 
-msgid "Complet"
-msgstr "Uitverkocht"
+msgid "Historique récent"
+msgstr "Recente geschiedenis"
 
-msgid "Non catégorisé"
-msgstr "Niet gecategoriseerd"
+msgid "Heure"
+msgstr "Tijd"
 
-msgid "Lieu inconnu"
-msgstr "Onbekende locatie"
+msgid "Méthode"
+msgstr "Methode"
 
-msgid "Date inconnue"
-msgstr "Onbekende datum"
+msgid "Réponse"
+msgstr "Antwoord"
 
-msgid "Aucun spectacle disponible pour le moment."
-msgstr "Geen voorstellingen beschikbaar op dit moment."
+msgid "Aucun appel enregistré au cours des dernières 24h."
+msgstr "Geen oproepen geregistreerd in de afgelopen 24 uur."
 
-msgid "Découvrez tous nos événements passionnants."
-msgstr "Ontdek al onze boeiende evenementen."
+msgid "Accès API"
+msgstr "API Toegang"
 
-msgid "Nos Spectacles"
-msgstr "Onze Voorstellingen"
+msgid "Ma Consommation"
+msgstr "Mijn Verbruik"
 
-msgid "Explorez les événements à venir et réservez vos billets."
-msgstr "Verken aankomende evenementen en reserveer uw tickets."
+msgid "Espace Développeur"
+msgstr "Ontwikkelaarsruimte"
 
-msgid "À propos de ThéâtrePlus"
-msgstr "Over ThéâtrePlus"
+msgid "Gérez votre accès API et vos abonnements d'affiliation."
+msgstr "Beheer uw API-toegang en affiliate-abonnementen."
 
-msgid "Découvrez notre mission et notre histoire"
-msgstr "Ontdek onze missie en geschiedenis"
+msgid "Consommation de l'API"
+msgstr "API Verbruik"
 
-msgid "Notre Mission"
-msgstr "Onze Missie"
+msgid "Suivez l'utilisation de vos quotas en temps réel."
+msgstr "Volg uw quotaverbruik in realtime."
 
-msgid "ThéâtrePlus a été créé dans le but de simplifier l'accès à la culture et aux arts de la scène. Notre objectif est de connecter les passionnés de théâtre, de danse, de musique et de tous les arts vivants avec les événements qui leur correspondent, en offrant une plateforme intuitive et fiable pour la découverte et la réservation."
-msgstr "ThéâtrePlus is opgericht met als doel de toegang tot cultuur en podiumkunsten te vereenvoudigen. Ons doel is om liefhebbers van theater, dans, muziek en alle podiumkunsten te verbinden met de evenementen die bij hen passen, door een intuïtief en betrouwbaar platform te bieden voor ontdekking en boeking."
+msgid "Votre Clé API"
+msgstr "Uw API-sleutel"
 
-msgid "Notre Histoire"
-msgstr "Onze Geschiedenis"
+msgid "Plan actuel :"
+msgstr "Huidig Plan:"
 
-msgid "Né d'une passion commune pour le spectacle vivant, ThéâtrePlus est le fruit d'un projet étudiant visant à résoudre les difficultés rencontrées par les spectateurs pour trouver et réserver des places pour des événements. Nous aspirons à devenir la référence pour tous les amateurs de culture en Belgique."
-msgstr "ThéâtrePlus is ontstaan uit een gezamenlijke passie voor live-optredens en is het resultaat van een studentenproject gericht op het oplossen van de moeilijkheden die toeschouwers ondervinden bij het vinden en boeken van tickets voor evenementen. Wij streven ernaar de referentie te worden voor alle cultuurliefhebbers in België."
+msgid "Copier"
+msgstr "Kopiëren"
 
-msgid "Vous n'avez pas l'autorisation d'accéder à cette page!"
-msgstr "U heeft geen toestemming om deze pagina te openen!"
+msgid "Gardez cette clé secrète. Elle vous permet d'authentifier vos requêtes vers notre API."
+msgstr "Houd deze sleutel geheim. Hiermee kunt u uw verzoeken aan onze API authenticeren."
 
-msgid "Vous êtes déjà inscrit!"
-msgstr "U bent al geregistreerd!"
+msgid "Vous n'avez pas encore activé votre accès API."
+msgstr "U heeft uw API-toegang nog niet geactiveerd."
 
-msgid "Français"
-msgstr "Frans"
+msgid "Générer ma clé API Free"
+msgstr "Genereer mijn gratis API-sleutel"
 
-msgid "English"
-msgstr "Engels"
+msgid "Boostez votre accès"
+msgstr "Verbeter uw toegang"
 
-msgid "Nederlands"
-msgstr "Nederlands"
+msgid "appels / jour"
+msgstr "oproepen / dag"
 
-msgid "Non définie"
-msgstr "Niet gedefinieerd"
+msgid "Données complètes"
+msgstr "Volledige gegevens"
 
-msgid "Utilisateur supprimé avec succès."
-msgstr "Gebruiker succesvol verwijderd."
+msgid "Données limitées"
+msgstr "Beperkte gegevens"
 
-msgid "Suppression d'un autre compte interdite!"
-msgstr "Het verwijderen van een ander account is verboden!"
+msgid "Support prioritaire"
+msgstr "Prioritaire ondersteuning"
 
-msgid "Suppression interdite (méthode incorrecte)!"
-msgstr "Verwijdering verboden (onjuiste methode)!"
+msgid "S'abonner"
+msgstr "Abonneren"
 
-msgid "Nos Lieux"
-msgstr "Onze Locaties"
+msgid "Choisir ce plan"
+msgstr "Kies dit plan"
 
-msgid "Découvrez les salles qui accueillent nos événements passionnants."
-msgstr "Ontdek de zalen waar onze boeiende evenementen plaatsvinden."
+msgid "Plan actif"
+msgstr "Actief plan"
 
-msgid "Aucun lieu n'est répertorié pour le moment."
-msgstr "Er zijn momenteel geen locaties vermeld."
+msgid "Statistiques d'utilisation"
+msgstr "Gebruiksstatistieken"
 
-msgid "Retour à l'accueil"
-msgstr "Terug naar home"
+msgid "Utilisation aujourd'hui"
+msgstr "Gebruik vandaag"
 
-msgid "Description"
-msgstr "Beschrijving"
+msgid "Votre quota est réinitialisé chaque jour à minuit."
+msgstr "Uw quota wordt elke dag om middernacht gereset."
 
-msgid "Aucune description disponible."
-msgstr "Geen beschrijving beschikbaar."
+msgid "Disponibles"
+msgstr "Beschikbaar"
 
-msgid "Lieu :"
-msgstr "Locatie :"
+msgid "Historique récent"
+msgstr "Recente geschiedenis"
 
-msgid "Lieu non défini"
-msgstr "Onbekende locatie"
+msgid "Heure"
+msgstr "Tijd"
 
-msgid "Durée :"
-msgstr "Duur :"
+msgid "Méthode"
+msgstr "Methode"
 
-msgid "minutes"
-msgstr "minuten"
+msgid "Réponse"
+msgstr "Antwoord"
 
-msgid "Année de création :"
-msgstr "Jaar van creatie :"
+msgid "Aucun appel enregistré au cours des dernières 24h."
+msgstr "Geen oproepen geregistreerd in de afgelopen 24 uur."
 
-msgid "Prix à partir de :"
-msgstr "Prijs vanaf :"
+msgid "Abonnement API Réussi - ThéâtrePlus"
+msgstr "API-abonnement geslaagd - ThéâtrePlus"
 
-msgid "Réserver mes places"
-msgstr "Reserveer mijn plaatsen"
+msgid "Paiement Réussi !"
+msgstr "Betaling Geslaagd!"
 
-msgid "Prochaines représentations"
-msgstr "Volgende voorstellingen"
+msgid "Votre abonnement API a été mis à jour avec succès."
+msgstr "Uw API-abonnement is succesvol bijgewerkt."
 
-msgid "Dernières places :"
-msgstr "Laatste plaatsen :"
+msgid "Bienvenue dans le plan"
+msgstr "Welkom bij het plan"
 
-msgid "COMPLET"
-msgstr "UITVERKOCHT"
+msgid "Votre accès API a été instantanément mis à niveau. Vous pouvez désormais effectuer jusqu'à"
+msgstr "Uw API-toegang is direct geüpgraded. U kunt nu maximaal"
 
-msgid "places disponibles"
-msgstr "beschikbare plaatsen"
+msgid "Résumé de vos avantages :"
+msgstr "Samenvatting van uw voordelen:"
 
-msgid "Réserver"
-msgstr "Reserveren"
+msgid "Accès complet aux données (artistes, prix...)"
+msgstr "Volledige toegang tot gegevens (artiesten, prijzen...)"
 
-msgid "Aucune représentation n'est prévue pour le moment."
-msgstr "Geen voorstellingen gepland op dit moment."
+msgid "Accès limité aux données de base"
+msgstr "Beperkte toegang tot basisgegevens"
 
-msgid "Critiques & Avis"
-msgstr "Recensies"
+msgid "Retourner à l'Espace API"
+msgstr "Terug naar API-ruimte"
 
-msgid "Soumettre une critique"
-msgstr "Schrijf een recensie"
-
-msgid "Modifier"
-msgstr "Bewerken"
-
-msgid "Supprimer"
-msgstr "Verwijderen"
-
-msgid "Aucun avis pour le moment. Soyez le premier à partager votre critique !"
-msgstr "Nog geen recensies. Deel als eerste uw mening!"
-
-msgid "Spectacle introuvable"
-msgstr "Voorstelling niet gevonden"
-
-msgid "Liste des spectacles"
-msgstr "Voorstellingen Lijst"
-
-msgid "Fiche d'un spectacle"
-msgstr "Voorstelling Profiel"
-
-msgid "Spectacle créé avec succès."
-msgstr "Voorstelling succesvol aangemaakt."
-
-msgid "Veuillez corriger les erreurs ci-dessous."
-msgstr "Corrigeer de onderstaande fouten."
-
-msgid "Spectacle modifié avec succès."
-msgstr "Voorstelling succesvol gewijzigd."
-
-msgid "Spectacle supprimé avec succès."
-msgstr "Voorstelling succesvol verwijderd."
-
-msgid "Liste des lieux de spectacle"
-msgstr "Locaties Lijst"
-
-msgid "Fiche d'un lieu de spectacle"
-msgstr "Locatie Profiel"
-
-msgid "Lieu créé avec succès."
-msgstr "Locatie succesvol aangemaakt."
-
-msgid "Lieu modifié avec succès."
-msgstr "Locatie succesvol gewijzigd."
-
-msgid "Lieu supprimé avec succès."
-msgstr "Locatie succesvol verwijderd."
-
-msgid "Spectacle inexistant"
-msgstr "Voorstelling bestaat niet"
-
-msgid "Lieu inexistant"
-msgstr "Locatie bestaat niet"
-
-msgid "Désolé, nous n'avons pas pu trouver les détails de ce spectacle."
-msgstr "Sorry, we konden de details van deze voorstelling niet vinden."
-
-msgid "Retour à la liste"
-msgstr "Terug naar de lijst"
-
-msgid "Réservable"
-msgstr "Reserveerbaar"
-
-msgid "Non réservable"
-msgstr "Niet reserveerbaar"
-
-msgid "Catalogue des Spectacles"
-msgstr "Voorstellingen Catalogus"
-
-msgid "Bienvenue à ThéâtrePlus"
-msgstr "Welkom bij ThéâtrePlus"
-
-msgid "Nos Lieux de Spectacles"
-msgstr "Onze Locaties"
-
-msgid "Détails du Spectacle"
-msgstr "Details van de Voorstelling"
-
-
-msgid "PAYÉ"
-msgstr "BETAALD"
-
-msgid "EN ATTENTE"
-msgstr "IN AFWACHTING"
-
-msgid "ÉCHOUÉ"
-msgstr "MISLUKT"
-
-msgid "Nom d'utilisateur"
-msgstr "Gebruikersnaam"
-
-msgid "Email"
-msgstr "Email"
-
-msgid "Langue préférée"
-msgstr "Voorkeurstaal"
-
-msgid "Sécurité"
-msgstr "Beveiliging"
-
-msgid "Détails"
-msgstr "Details"
-
-msgid "ATTENTE"
-msgstr "WACHTEN"
-
-msgid "Action"
-msgstr "Actie"
-
-msgid "Adresse :"
-msgstr "Adres:"
-
-msgid "Attention :"
-msgstr "Opgelet:"
-
-msgid "Aucun spectacle trouvé"
-msgstr "Geen voorstelling gevonden"
-
-msgid "Aucun tarif n'est disponible pour ce spectacle."
-msgstr "Er is geen tarief beschikbaar voor deze voorstelling."
-
-msgid "Aucune représentation n'est prévue pour le moment dans ce lieu."
-msgstr "Er is momenteel geen voorstelling gepland op deze locatie."
-
-msgid "Bonjour,"
-msgstr "Hallo,"
-
-msgid "Confirmation de commande"
-msgstr "Bestellingsbevestiging"
-
-msgid "Confirmation de votre commande"
-msgstr "Bestellingsbevestiging"
-
-msgid "Confirmer et Payer"
-msgstr "Bevestigen en Betalen"
-
-msgid "Continuer mes achats"
-msgstr "Verder winkelen"
-
-msgid "DERNIÈRES PLACES :"
-msgstr "LAATSTE PLAATSEN:"
-
-msgid "Date"
-msgstr "Datum"
-
-msgid "Date :"
-msgstr "Datum:"
-
-msgid "Découvrir les spectacles"
-msgstr "Ontdek de voorstellingen"
-
-msgid "Détails de votre réservation"
-msgstr "Details van uw reservatie"
-
-msgid "Détails et informations pratiques du lieu"
-msgstr "Details en praktische informatie van de locatie"
-
-msgid "Finalisez votre réservation et préparez-vous pour le spectacle."
-msgstr "Rond uw reservatie af en bereid u voor op de voorstelling."
-
-msgid "Frais de service"
-msgstr "Servicekosten"
-
-msgid "Gérez vos informations et consultez vos réservations."
-msgstr "Beheer uw informatie en bekijk uw reservaties."
-
-msgid "ID"
-msgstr "ID"
-
-msgid "Il ne reste que {{ count }} places pour cette séance. Ne tardez pas !"
-msgstr "Er zijn nog maar {{ count }} plaatsen over voor deze sessie. Wacht niet te lang!"
-
-msgid "Il semble que vous n'ayez pas encore choisi de spectacle."
-msgstr "Het lijkt erop dat u nog geen voorstelling heeft gekozen."
-
-msgid "Imprimer mon billet"
-msgstr "Mijn ticket afdrukken"
-
-msgid "Informations"
-msgstr "Informatie"
-
-msgid "Mes Réservations"
-msgstr "Mijn Reservaties"
-
-msgid "Modifier le profil"
-msgstr "Profiel bewerken"
-
-msgid "Modifier mon panier"
-msgstr "Mijn winkelmandje bewerken"
-
-msgid "Mon Profil - ThéâtrePlus"
-msgstr "Mijn Profiel - ThéâtrePlus"
-
-msgid "Montant Total :"
-msgstr "Totaalbedrag:"
-
-msgid "Montant à débiter"
-msgstr "Te debiteren bedrag"
-
-msgid "Mot de passe"
-msgstr "Wachtwoord"
-
-msgid "Note : Cette page est une simulation à but de test uniquement. Aucune transaction réelle ne sera effectuée."
-msgstr "Opmerking: Deze pagina is alleen voor testdoeleinden gesimuleerd. Er wordt geen echte transactie uitgevoerd."
-
-msgid "OFFERT"
-msgstr "GRATIS"
-
-msgid "Paiement sécurisé via notre plateforme"
-msgstr "Veilige betaling via ons platform"
-
-msgid "Passerelle de Paiement"
-msgstr "Betalingsgateway"
-
-msgid "Places"
-msgstr "Plaatsen"
-
-msgid "Prix"
-msgstr "Prijs"
-
-msgid "Prix :"
-msgstr "Prijs:"
-
-msgid "Prochain spectacle"
-msgstr "Volgende voorstelling"
-
-msgid "Quantité"
-msgstr "Aantal"
-
-msgid "Retour au spectacle"
-msgstr "Terug naar voorstelling"
-
-msgid "Retour à la liste des lieux"
-msgstr "Terug naar locatielijst"
-
-msgid "Retour à mon profil"
-msgstr "Terug naar mijn profiel"
-
-msgid "Récapitulatif"
-msgstr "Overzicht"
-
-msgid "Récapitulatif des billets"
-msgstr "Overzicht van de tickets"
-
-msgid "Réservation"
-msgstr "Reservatie"
-
-msgid "Résumé"
-msgstr "Samenvatting"
-
-msgid "Simulation de la transaction pour la réservation"
-msgstr "Transactiesimulatie voor de reservatie"
-
-msgid "Simulation de paiement"
-msgstr "Betalingssimulatie"
-
-msgid "Simuler un PAIEMENT RÉUSSI"
-msgstr "Simuleer een GESLAAGDE BETALING"
-
-msgid "Simuler un ÉCHEC DE PAIEMENT"
-msgstr "Simuleer een MISLUKTE BETALING"
-
-msgid "Site Web :"
-msgstr "Website:"
-
-msgid "Sous-total"
-msgstr "Subtotaal"
-
-msgid "Spectacle / Séance"
-msgstr "Voorstelling / Sessie"
-
-msgid "Spectacle(s)"
-msgstr "Voorstelling(en)"
-
-msgid "Statut"
-msgstr "Status"
-
-msgid "Supprimer mon compte"
-msgstr "Mijn account verwijderen"
-
-msgid "Sélectionnez vos places"
-msgstr "Selecteer uw plaatsen"
-
-msgid "TOTAL À PAYER :"
-msgstr "TOTAAL TE BETALEN:"
-
-msgid "Tarif"
-msgstr "Tarief"
-
-msgid "Total"
-msgstr "Totaal"
-
-msgid "Téléphone :"
-msgstr "Telefoon:"
-
-msgid "VOIR LE PANIER"
-msgstr "WINKELMANDJE BEKIJKEN"
-
-msgid "Valider la commande"
-msgstr "Bestelling bevestigen"
-
-msgid "Veuillez vérifier les détails de votre réservation avant de procéder au paiement."
-msgstr "Controleer de details van uw reservatie voordat u doorgaat naar de betaling."
-
-msgid "Visiter le site officiel"
-msgstr "Bezoek de officiële website"
-
-msgid "Voir le spectacle"
-msgstr "Voorstelling bekijken"
-
-msgid "Voir mon panier"
-msgstr "Mijn winkelmandje bekijken"
-
-msgid "Votre Panier"
-msgstr "Uw Winkelmandje"
-
-msgid "Votre Panier - ThéâtrePlus"
-msgstr "Uw Winkelmandje - ThéâtrePlus"
-
-msgid "Votre panier est vide"
-msgstr "Uw winkelmandje is leeg"
-
-msgid "Vous n'avez pas encore effectué de réservation."
-msgstr "U heeft nog geen reservatie gemaakt."
-
-msgid "du"
-msgstr "van"
-
-msgid "place(s) à"
-msgstr "plaats(en) op"
-
-msgid "ÉCHEC"
-msgstr "MISLUKT"
-
-msgid "Événement"
-msgstr "Evenement"
-
-msgid "Êtes-vous sûr ?"
-msgstr "Bent u zeker?"
+msgid "Mon Profil"
+msgstr "Mijn Profiel"

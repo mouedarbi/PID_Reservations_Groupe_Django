@@ -23,7 +23,7 @@ Toutes les vues de liste (index) et de détail pour les modèles clés ont été
     -   Le template `catalogue/templates/admin/show/detail.html` a été adapté pour inclure les formulaires d'ajout et de suppression fonctionnels.
 -   **Corrections d'erreurs** :
     -   Correction d'une `NameError` (modèle `Price` non importé) dans `catalogue/views/admin_dashboard.py`.
-    -   Correction d'une `IndentationError` et d'un problème de formatage dans `reservations/urls.py`.
+    -   Correction d'une `IndentationError` and d'un problème de formatage dans `reservations/urls.py`.
     -   Correction d'une `ModuleNotFoundError` pour l'import de `ShowPrice` dans `admin_show_detail`.
     -   Correction d'une `NoReverseMatch` pour le lien d'édition des spectacles dans `catalogue/templates/admin/show/index.html`.
 
@@ -118,6 +118,130 @@ Cette session a permis de finaliser l'implémentation des fonctionnalités CRUD 
 - **Étape 2 : Validation** -> Transformation du panier session en objet `Reservation` avec statut `PENDING`.
 - **Étape 3 : Paiement (Simulation)** -> Interface de test avec choix [Succès / Échec] pour valider le comportement du système avant l'intégration d'une API réelle (Stripe/PayPal).
 
-### 4. Admin Dashboard (Vues spécialisées)
-- **Gestion des Réservations** : Focus sur le manager (Qui a payé ? Qui faut-il relancer ?).
-- **Audit des Paiements** : Nouveau menu dans "Paramètres" pour consulter les logs techniques de `PaymentTransaction` (essentiel pour le support client).
+## Date: lundi 6 avril 2026
+
+### Progress Summary - Importation de Données via API Externe
+
+Cette session a été consacrée à l'enrichissement de la base de données par l'importation de données réelles provenant d'une API publique (ODWB).
+
+#### 1. Implémentation de la Commande de Gestion (`import_locations`)
+
+Pour automatiser l'ajout de lieux de spectacles, une commande de gestion Django personnalisée a été créée :
+-   **Fichier créé** : `catalogue/management/commands/import_locations.py`.
+-   **Source des données** : API de l'Open Data Wallonie-Bruxelles (ODWB) recensant les salles de concert et théâtres.
+-   **Technologie utilisée** : Bibliothèque `requests` pour les appels HTTP et `BaseCommand` de Django pour l'intégration au CLI `manage.py`.
+
+#### 2. Logique d'Importation et Mapping des Données
+
+Le script a été conçu pour transformer les données brutes de l'API en objets Django cohérents avec le schéma existant :
+-   **Localités** : Création automatique ou récupération des objets `Locality` en utilisant le code postal et la ville fournis par l'API.
+-   **Lieux (Locations)** :
+    *   **Mapping des champs** : `salle` -> `designation`, `adresse` -> `address`, `site_web` -> `website`, `telephone` -> `phone`.
+    *   **Génération de Slugs** : Utilisation de `slugify` pour générer des slugs uniques, avec un système de compteur incrémental pour éviter les collisions en cas de noms identiques.
+
+#### 3. Gestion de l'Intégrité et des Doublons
+
+Un point crucial a été d'assurer que l'importation n'interfère pas avec les données existantes des fixtures :
+-   **Méthode de vérification** : Le script recherche d'abord si une salle avec la même `designation` existe déjà.
+-   **Comportement** : 
+    *   Si la salle existe déjà (ex: issue des fixtures JSON), elle est **mise à jour** avec les dernières informations de l'API.
+    *   Si elle est nouvelle, elle est **créée**.
+-   **Résultat du premier import** : 99 nouveaux lieux créés et 1 lieu mis à jour (**Espace Magh**), sans créer de doublons avec les données de démonstration initiales.
+
+#### 4. Utilisation
+
+La commande peut être relancée à tout moment pour synchroniser la base de données locale avec les mises à jour de l'API ODWB :
+```bash
+python manage.py import_locations
+```
+
+## Date: lundi 13 avril 2026
+
+### Progress Summary - Espace Producteur & Modération Admin
+
+Cette session a été consacrée à l'implémentation d'un workflow collaboratif entre les producteurs et l'administration pour la publication de nouveaux spectacles.
+
+#### 1. Évolutions du Modèle de Données (Backend)
+
+Pour supporter ce nouveau flux, plusieurs modèles ont été enrichis :
+- **Modèle `Show`** : Ajout d'une relation `producer` (ForeignKey vers `User`) et d'un champ `status` (`pending`, `published`).
+- **Modèle `Location`** : Ajout du champ `capacity` pour définir la jauge maximale de chaque salle.
+- **Modèle `Representation`** : Ajout de `total_seats` pour garder une trace du quota initial de billets.
+- **Mise à jour de l'Importer** : Le script `import_locations` récupère désormais la capacité réelle des salles via le champ `jauge_maximale` de l'API ODWB.
+
+#### 2. Espace Producteur (Dashboard Dédié)
+
+Création d'une interface sécurisée pour les utilisateurs du groupe `PRODUCER` :
+- **Tableau de bord** : Vue synthétique des spectacles partagés avec statistiques de ventes (tickets vendus, places restantes) et état de publication.
+- **Soumission de Spectacle** : Formulaire interactif permettant de proposer un spectacle (titre, durée, salle, date, heure, nombre de tickets).
+- **Validation Frontend** : Intégration de JavaScript pour afficher dynamiquement la capacité de la salle sélectionnée et interdire une mise en vente supérieure à la jauge réelle.
+- **Modération des Avis** : Interface permettant aux producteurs de gérer (approuver/rejeter) les critiques concernant uniquement leurs propres productions.
+
+#### 3. Flux de Modération Administrateur
+
+Renforcement du contrôle éditorial via le Dashboard Admin :
+- **Système d'Alerte** : Ajout d'un compteur "Spectacles en attente" sur la page d'accueil de l'administration.
+- **Interface de Validation** : Vue dédiée permettant à l'admin d'examiner les propositions des producteurs, de modifier les détails techniques si nécessaire, et d'affecter les tarifs (VIP, Standard, etc.).
+- **Publication** : Le passage au statut `published` rend le spectacle visible et réservable pour le grand public.
+
+#### 4. Intégration et Sécurité
+
+- **Rôles** : Utilisation du groupe `PRODUCER` pour filtrer l'accès aux fonctionnalités et garantir qu'un producteur ne peut modifier que ses propres données.
+- **Interface Utilisateur** : Distinction visuelle claire dans le profil utilisateur entre les liens "Administration" (staff) et "Espace Producteur" (group producer).
+
+### Correctifs et Ajustements (Post-Implémentation)
+
+- **Fix Dashboard Admin** : Résolution d'une `TemplateSyntaxError` causée par l'absence du tag `{% load i18n %}` dans le template principal du dashboard.
+- **Données de Capacité** : Correction d'un bug où la capacité des salles restait à 0. Lancement d'un script de maintenance pour synchroniser les 106 lieux avec les données réelles de l'API ODWB.
+- **Sécurité et Rôles** : Affinement de la visibilité des liens dans le profil utilisateur pour éviter qu'un super-administrateur ne voit le menu "Espace Producteur", clarifiant ainsi les périmètres d'action de chaque rôle.
+- **Fix IntegrityError** : Résolution d'une erreur lors de l'ajout de tarifs dans le dashboard admin. Le champ `quantity_total` du modèle `ShowPrice` a été réintégré et synchronisé avec la base de données (migration faked pour correspondre à l'état réel de MySQL).
+- **Fix ValueError** : Correction d'un crash dans la validation des spectacles où le système tentait de parser des dates/heures vides lors de l'ajout d'un simple tarif. La mise à jour de la séance est désormais optionnelle.
+- **UI Modernisation** : Refonte visuelle de la page "Demandes Producteurs" et de l'interface d'approbation pour une cohérence parfaite avec la charte graphique du nouveau dashboard administrateur.
+- **Fix Persistance Approbation** : Correction d'un bug de perte de données (titre, lieu, durée) lors de l'actualisation ou de l'ajout de tarifs sur la page de validation administrateur.
+- **Amélioration Modération Avis** : Affichage explicite des étoiles (notation numérique et graphique) pour le producteur lors de la modération des commentaires.
+- **Support des Images (Posters)** : Ajout de la gestion du champ `poster_url` dans le flux de soumission producteur et d'approbation admin, permettant l'affichage d'images personnalisées par spectacle.
+- **Logique d'affichage Frontend** : Implémentation du libellé "à partir de" pour les prix et correction du bug "Date inconnue" sur les cartes de spectacles grâce à une nouvelle propriété API `formatted_next_date`.
+
+## Date: lundi 20 avril 2026
+
+### Progress Summary - Système d'Upload d'Images Local
+
+Cette session a été consacrée à la migration du système d'images des spectacles d'un modèle basé sur des URLs externes vers un système d'upload de fichiers locaux.
+
+#### 1. Configuration de l'Environnement (Media)
+- **Paramétrage Django** : Configuration de `MEDIA_URL` et `MEDIA_ROOT` dans `reservations/settings.py` pour définir l'emplacement de stockage des fichiers téléchargés.
+- **Serveur de Media** : Ajout des routes statiques pour les fichiers média dans `reservations/urls.py` afin de permettre l'affichage des images en mode développement.
+
+#### 2. Évolution du Modèle Show
+- **Migration ImageField** : Remplacement du champ `poster_url` (CharField) par un champ `poster` de type `ImageField` avec stockage dans le dossier `/posters/`.
+- **Synchronisation API** : Mise à jour de `ShowSerializer` pour inclure le champ `poster` et generer des URLs d'images valides pour le frontend.
+
+#### 3. Workflow de Soumission (Producteurs)
+- **Upload Direct** : Mise à jour des formulaires `prod_submit_show` et `prod_edit_show` pour supporter l'envoi de fichiers binaires depuis l'ordinateur du producteur (ajout de `enctype="multipart/form-data"`).
+- **Traitement des Fichiers** : Modification des vues du dashboard producteur pour intercepter et sauvegarder les fichiers via `request.FILES`.
+
+#### 4. Interface de Validation (Administration)
+- **Lecture seule** : Modification de la vue d'approbation admin pour afficher la photo téléchargée par le producteur sans permettre à l'administrateur de la modifier ou de la supprimer, garantissant l'intégrité de la proposition visuelle originale.
+
+#### 5. Mise à jour Frontend
+- **Affichage Dynamique** : Adaptation de tous les templates clients (`home.html`, `show_list.html`, `show_detail.html`) pour utiliser `show.poster.url` avec un système de fallback (image par défaut) si aucun poster n'est disponible.
+
+## Date: mardi 21 avril 2026
+
+### Progress Summary - Système d'Épinglage des Avis (Reviews)
+
+Cette session a été consacrée à l'ajout d'une fonctionnalité permettant aux producteurs de mettre en avant certains avis spectateurs sur la page de leurs spectacles.
+
+#### 1. Évolution du Modèle Review
+- **Nouveau champ** : Ajout d'un champ boolean `is_pinned` (défaut: `False`) au modèle `Review`.
+- **Migration** : Création et application de la migration `0040_review_is_pinned.py`.
+
+#### 2. Interface de Modération (Producteur)
+- **Gestion de l'épinglage** : Ajout d'une vue `pin_review` permettant aux producteurs de toggler (activer/désactiver) l'état d'épinglage d'un avis.
+- **Sécurité** : Mise en place d'une vérification stricte garantissant qu'un producteur ne peut épingler que les avis liés à ses propres spectacles.
+- **Amélioration UI** : Mise à jour du template `moderate_reviews.html` avec un nouveau bouton d'épingle. Le style a été affiné pour offrir un retour visuel clair (fond jaune ambre et icône remplie) lorsqu'un avis est épinglé.
+
+#### 3. Affichage Frontend (Détail du Spectacle)
+- **Priorisation** : Modification de la logique d'affichage dans `show_detail.html` pour que les avis épinglés apparaissent systématiquement en haut de la liste (tri par `is_pinned` décroissant).
+- **Mise en évidence** : Les avis épinglés bénéficient désormais d'une bordure ambre, d'un fond légèrement teinté et d'un badge visuel **"Épinglé"** avec une icône de punaise à côté du nom de l'utilisateur.
+- **Compatibilité API** : Mise à jour du `ReviewSerializer` dans `api/serializers/shows.py` pour inclure le champ `is_pinned`, assurant ainsi la persistance de l'information lors du chargement dynamique des données.

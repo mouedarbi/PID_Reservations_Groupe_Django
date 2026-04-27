@@ -4,11 +4,11 @@
   "pk": 1,
   "fields": {
     "user": 1,
-    "show": [
-      "ayiti",
-      2010
-    ],
+    "show": ["ayiti", 2010],
     "review": "Excellent.",
+    "review_fr": "Excellent.",
+    "review_en": "Excellent.",
+    "review_nl": "Uitstekend.",
     "stars": 5,
     "validated": true,
     "created_at": "2025-01-07T17:41:03.509Z",
@@ -20,13 +20,13 @@
   "pk": 2,
   "fields": {
     "user": 1,
-    "show": [
-      "cible-mouvante",
-      2012
-    ],
+    "show": ["cible-mouvante", 2012],
     "review": "Pas mal.",
+    "review_fr": "Pas mal.",
+    "review_en": "Not bad.",
+    "review_nl": "Niet slecht.",
     "stars": 3,
-    "validated": false,
+    "validated": true,
     "created_at": "2025-01-07T17:41:03.509Z",
     "updated_at": null
   }
@@ -36,11 +36,11 @@
   "pk": 3,
   "fields": {
     "user": 2,
-    "show": [
-      "ayiti",
-      2010
-    ],
+    "show": ["ayiti", 2010],
     "review": "Magnifique!",
+    "review_fr": "Magnifique!",
+    "review_en": "Magnificent!",
+    "review_nl": "Prachtig!",
     "stars": 5,
     "validated": true,
     "created_at": "2025-01-07T17:41:03.509Z",

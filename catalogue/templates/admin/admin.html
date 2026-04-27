@@ -96,6 +96,16 @@
                                     </li>
                                 </ul>
                             </li>
+
+                            <li class="parent-item">
+                                <a href="{% url 'admin_pending_shows' %}" class="nav-btn flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
+                                    <i class="ph ph-hand-pointing text-2xl text-red-600"></i>
+                                    <span class="nav-text">Demandes Producteurs</span>
+                                    {% if pending_shows_count > 0 %}
+                                        <span class="ml-auto bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ pending_shows_count }}</span>
+                                    {% endif %}
+                                </a>
+                            </li>
                             
                             <li class="parent-item">
                                 <button class="nav-btn flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100" aria-expanded="false">
@@ -180,6 +190,12 @@
                                         <a href="{% url 'admin_price_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
                                             <i class="ph ph-currency-circle-dollar text-2xl"></i>
                                             <span>Prix</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'admin_settings' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                            <i class="ph ph-gear text-2xl"></i>
+                                            <span>Configuration API</span>
                                         </a>
                                     </li>
                                 </ul>

@@ -44,11 +44,15 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
 
-      - name: Run Migrations (simulate migrations check)
+      - name: Install Playwright Browsers and Deps
         run: |
-          python manage.py migrate
+          python -m playwright install chromium --with-deps
+
+      - name: Run Migrations
+        run: |
           python manage.py makemigrations
+          python manage.py migrate --run-syncdb
 
       - name: Run Tests
         run: |
-          python manage.py test api.tests
+          python manage.py test api.tests --keepdb
