@@ -15,6 +15,9 @@ class ApiKeyAuthentication(authentication.BaseAuthentication):
         except Affiliate.DoesNotExist:
             raise exceptions.AuthenticationFailed('Clé API invalide ou compte inactif.')
 
+        if not affiliate.tier:
+            raise exceptions.AuthenticationFailed('Aucun plan (tier) n\'est associé à ce compte API.')
+
         # VÉRIFICATION DU QUOTA (Optionnel mais recommandé)
         today = timezone.now().date()
         requests_today = ApiRequestLog.objects.filter(
