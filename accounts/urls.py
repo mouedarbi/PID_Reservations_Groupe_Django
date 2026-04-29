@@ -13,6 +13,7 @@ urlpatterns = [
     path('profile/delete/<int:pk>/', views.delete, name='user-delete'),
     path('profile/api/', views.affiliate_dashboard, name='user-api'),
     path('profile/api/usage/', views.affiliate_usage, name='user-api-usage'),
+    path('become-producer/', views.become_producer, name='become_producer'),
 
     # Django Auth Views - Custom Templates
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),

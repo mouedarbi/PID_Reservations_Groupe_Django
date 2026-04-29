@@ -1240,6 +1240,47 @@ def admin_ticketmaster_sync_live(request):
     return StreamingHttpResponse(stream_logs(), content_type='text/plain')
 
 @user_passes_test(is_admin)
+def admin_producer_requests(request):
+    """
+    Vue pour lister les demandes pour devenir producteur.
+    """
+    from catalogue.models import ProducerRequest
+    pending_requests = ProducerRequest.objects.filter(status='pending').order_by('-created_at')
+    
+    context = {
+        'page_title': 'Demandes Producteurs Juniors',
+        'title': 'Producteurs Juniors',
+        'pending_requests': pending_requests,
+    }
+    return render(request, 'admin/producer_request/pending.html', context)
+
+@user_passes_test(is_admin)
+def admin_producer_request_action(request, pk, action):
+    """
+    Vue pour approuver ou rejeter une demande de producteur.
+    """
+    from catalogue.models import ProducerRequest
+    from django.contrib.auth.models import Group
+    
+    req = get_object_or_404(ProducerRequest, pk=pk)
+    
+    if action == 'approve':
+        req.status = 'approved'
+        req.save()
+        # Add user to PRODUCER group
+        producer_group, _ = Group.objects.get_or_create(name='PRODUCER')
+        req.user.groups.add(producer_group)
+        from django.contrib import messages
+        messages.success(request, f"La demande de {req.first_name} {req.last_name} a été acceptée. L'utilisateur est maintenant Producteur.")
+    elif action == 'reject':
+        req.status = 'rejected'
+        req.save()
+        from django.contrib import messages
+        messages.success(request, f"La demande de {req.first_name} {req.last_name} a été refusée.")
+        
+    return redirect('admin_producer_requests')
+
+@user_passes_test(is_admin)
 def admin_pending_shows(request):
     """
     Vue pour lister les spectacles en attente de validation.
