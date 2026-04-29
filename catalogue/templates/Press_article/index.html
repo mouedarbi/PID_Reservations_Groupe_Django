@@ -1,0 +1,37 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 font-serif">Revue de Presse</h1>
+        <p class="lead text-muted">Retrouvez les dernières critiques et analyses de nos experts.</p>
+        <hr style="width: 100px; margin: auto; border-top: 3px solid #2980b9;">
+    </div>
+
+    <div class="row">
+        {% for article in articles %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    {% if article.image %}
+                        <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}" style="height: 250px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h2 class="h4 card-title">{{ article.title }}</h2>
+                        <h6 class="text-primary mb-2">{{ article.show.title }}</h6>
+                        <p class="card-text text-muted">
+                            {{ article.content|truncatewords:30|safe|linebreaks }}
+                        </p>
+                    </div>
+                    <div class="card-footer bg-white border-0 d-flex justify-content-between align-items: center;">
+                        <small class="text-muted">Par {{ article.author.username }} le {{ article.created_at|date:"d M Y" }}</small>
+                        </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center">
+                <p class="lead">Aucun article de presse n'a encore été publié.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
