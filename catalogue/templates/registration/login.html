@@ -1,0 +1,40 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<h2>Connexion</h2>
+
+{% if form.errors %}
+<p>Votre login et mot de passe ne correspondent pas. Veuillez réesssayer.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Votre compte ne vous donne pas accès à cette page. Pour continuer,
+    veuillez vous connecter avec un compte d'accès suffisant.</p>
+    {% else %}
+    <p>Veuillez vous connecter pour voir cette page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <table>
+    <tr>
+        <td>{{ form.username.label_tag }}</td>
+        <td>{{ form.username }}</td>
+    </tr>
+    <tr>
+        <td>{{ form.password.label_tag }}</td>
+        <td>{{ form.password }}</td>
+    </tr>
+    </table>
+
+    <input type="submit" value="Se connecter">
+    <input type="hidden" name="next" value="{{ next }}">
+</form>
+
+{# Assumes you set up the password_reset view in your URLconf #}
+<p><a href="{% url 'password_reset' %}">Mot de passe oublié?</a></p>
+
+{% endblock %}
+

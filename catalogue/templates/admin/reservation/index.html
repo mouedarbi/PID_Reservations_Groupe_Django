@@ -1,0 +1,125 @@
+{% extends "admin/admin.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-main-style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-1.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-2.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
+            <p class="text-small mt-1">Consultez et gérez les réservations des clients.</p>
+        </div>
+        <div>
+            <!-- Actions globales possibles (ex: Exporter) -->
+            <button class="flex items-center gap-2 rounded-lg bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300 transition dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700">
+                <i class="ph ph-download-simple"></i>
+                <span>Exporter csv</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="border-border mb-6 rounded-lg border bg-bg p-4 dark:bg-[#040b1a]">
+        <form method="GET" class="flex flex-col gap-4 md:flex-row md:items-center">
+            <div class="relative flex-1">
+                <input type="text" name="q" value="{{ search_query|default:'' }}" placeholder="Rechercher par utilisateur ou statut..." class="border-border bg-input focus:ring-primary w-full rounded-md border py-2 pr-4 pl-10 transition-colors duration-200 focus:ring-2 focus:outline-none">
+                <i class="ph ph-magnifying-glass text-xl text-muted absolute top-1/2 left-3 -translate-y-1/2 transform"></i>
+            </div>
+            <button type="submit" class="rounded-lg bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300 transition dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700">
+                Filtrer
+            </button>
+            {% if search_query %}
+            <a href="{% url 'admin_reservation_index' %}" class="text-blue-600 hover:underline text-sm">Réinitialiser</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- Reservations Table -->
+    <div class="border-border overflow-hidden rounded-lg border bg-bg dark:bg-[#040b1a]">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 dark:bg-gray-900/50">
+                    <tr>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">ID</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Client</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Date</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Tickets</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Total</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Statut</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+                    {% for res in reservations %}
+                    <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition">
+                        <td class="px-6 py-4">
+                            <div class="text-text font-medium">#{{ res.id }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-text font-medium">{{ res.user.username }}</div>
+                            <div class="text-xs text-muted">{{ res.user.email }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-text">{{ res.booking_date|date:"d/m/Y H:i" }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                                {{ res.total_tickets|default:"0" }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 font-medium text-text">
+                            {{ res.total_amount|default:"0.00" }} €
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if res.status == 'Confirmed' or res.status == 'Payé' or res.status == 'Paye' %}
+                            <span class="inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-300">
+                                <span class="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+                                {{ res.status }}
+                            </span>
+                            {% elif res.status == 'Pending' or res.status == 'En attente' %}
+                            <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
+                                <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                                {{ res.status }}
+                            </span>
+                            {% else %}
+                            <span class="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-800 dark:text-gray-300">
+                                <span class="h-1.5 w-1.5 rounded-full bg-gray-500"></span>
+                                {{ res.status }}
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <a href="{% url 'admin_reservation_detail' res.id %}" class="text-blue-600 hover:text-blue-800 transition" title="Détails">
+                                    <i class="ph ph-eye text-xl"></i>
+                                </a>
+                                <a href="{% url 'admin_reservation_edit' res.id %}" class="text-amber-600 hover:text-amber-800 transition" title="Modifier">
+                                    <i class="ph ph-pencil-simple text-xl"></i>
+                                </a>
+                                <a href="{% url 'admin_generic_delete' 'reservation' res.id %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?')" class="text-red-600 hover:text-red-800 transition" title="Supprimer">
+                                    <i class="ph ph-trash text-xl"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="px-6 py-10 text-center text-muted italic">
+                            Aucune réservation trouvée.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{{ location.designation|default:location.slug|capfirst }}{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>{{ location.designation|default:location.slug|capfirst }}</h1>
+                <p>{% trans "Détails et informations pratiques du lieu" %}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="location-details-section" style="padding: 60px 0; background: var(--bg-main, #ffffff);">
+        <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 0 20px;">
+            <div class="details-card" style="background: var(--bg-card, #ffffff); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-color, #e9ecef); padding: 40px;">
+                
+                <div style="display: grid; grid-template-columns: 1fr; gap: 40px;">
+                    <!-- Colonne Infos -->
+                    <div>
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 25px; color: var(--secondary, #1d3557); border-bottom: 2px solid var(--primary, #e63946); display: inline-block;">
+                            {% trans "Informations" %}
+                        </h2>
+                        
+                        <div style="margin-bottom: 20px; display: flex; align-items: flex-start; gap: 15px; color: var(--text-primary, #2b2d42); font-size: 1.1rem;">
+                            <span style="font-size: 1.5rem;">📍</span>
+                            <span>
+                                <strong>{% trans "Adresse :" %}</strong><br>
+                                {{ location.address }}<br>
+                                {{ location.locality.postal_code }} {{ location.locality.locality }}
+                            </span>
+                        </div>
+
+                        {% if location.phone %}
+                        <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 15px; color: var(--text-primary, #2b2d42); font-size: 1.1rem;">
+                            <span style="font-size: 1.5rem;">📞</span>
+                            <span><strong>{% trans "Téléphone :" %}</strong> {{ location.phone }}</span>
+                        </div>
+                        {% endif %}
+
+                        {% if location.website %}
+                        <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 15px; color: var(--text-primary, #2b2d42); font-size: 1.1rem;">
+                            <span style="font-size: 1.5rem;">🌐</span>
+                            <span><strong>{% trans "Site Web :" %}</strong> <a href="{{ location.website }}" target="_blank" style="color: var(--primary, #e63946); text-decoration: none; font-weight: 600;">{% trans "Visiter le site officiel" %}</a></span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Section Prochain Spectacle -->
+                    <div style="background: var(--bg-light, #f8f9fa); border-radius: 12px; padding: 30px; border: 1px solid var(--border-color, #e9ecef);">
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 20px; color: var(--secondary, #1d3557);">
+                            {% trans "Prochain spectacle" %}
+                        </h2>
+                        
+                        {% if next_representation %}
+                        <div class="next-show-content">
+                            <h3 style="font-size: 1.5rem; margin-bottom: 10px; color: var(--primary, #e63946);">{{ next_representation.show.title }}</h3>
+                            <p style="color: var(--text-secondary, #6c757d); margin-bottom: 8px;">
+                                <strong>{% trans "Date :" %}</strong> {{ next_representation.schedule|date:"d F Y" }} {% trans "à" %} {{ next_representation.schedule|date:"H:i" }}
+                            </p>
+                            <p style="color: var(--text-secondary, #6c757d); margin-bottom: 8px;">
+                                <strong>{% trans "Lieu :" %}</strong> {{ next_representation.location.designation }}
+                            </p>
+                            <p style="color: var(--text-secondary, #6c757d); margin-bottom: 20px;">
+                                <strong>{% trans "Prix :" %}</strong> {{ next_representation.show.price|default:'N/A' }}€
+                            </p>
+                            <a href="{% url 'frontend:show_detail' next_representation.show.id %}" class="btn-primary" style="padding: 12px 25px; background: var(--primary, #e63946); color: white; text-decoration: none; border-radius: 50px; font-weight: 600; display: inline-block;">
+                                {% trans "Voir le spectacle" %}
+                            </a>
+                        </div>
+                        {% else %}
+                        <p style="color: var(--text-secondary, #6c757d); font-style: italic;">{% trans "Aucune représentation n'est prévue pour le moment dans ce lieu." %}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border-color, #e9ecef); text-align: center;">
+                    <a href="{% url 'frontend:location_list' %}" style="color: var(--text-secondary, #6c757d); text-decoration: none; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.9rem;">
+                        ← {% trans "Retour à la liste des lieux" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

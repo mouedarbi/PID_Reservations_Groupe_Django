@@ -1,0 +1,1 @@
+from .artists import ArtistSerializer

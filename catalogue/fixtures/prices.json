@@ -1,0 +1,92 @@
+[
+  {
+    "model": "catalogue.price",
+    "pk": 1,
+    "fields": {
+      "type": "children",
+      "type_en": "children",
+      "type_nl": "kinderen",
+      "price": 6.00,
+      "description": "Tarif enfant (-12 ans), applicable dans les centres culturels.",
+      "description_en": "Child rate (-12 years), applicable in cultural centers.",
+      "description_nl": "Kindertarief (-12 jaar), van toepassing in culturele centra.",
+      "start_date": "2024-01-01",
+      "end_date": "2024-12-31"
+    }
+  },
+  {
+    "model": "catalogue.price",
+    "pk": 2,
+    "fields": {
+      "type": "student",
+      "type_en": "student",
+      "type_nl": "student",
+      "price": 8.50,
+      "description": "Tarif étudiant (carte valide), similaire aux réductions théâtres/cinémas.",
+      "description_en": "Student rate (valid card), similar to theater/cinema discounts.",
+      "description_nl": "Studententarief (geldige kaart), vergelijkbaar met kortingen in theaters/bioscopen.",
+      "start_date": "2024-01-01",
+      "end_date": "2024-12-31"
+    }
+  },
+  {
+    "model": "catalogue.price",
+    "pk": 3,
+    "fields": {
+      "type": "senior",
+      "type_en": "senior",
+      "type_nl": "senior",
+      "price": 10.00,
+      "description": "Tarif senior (+65), aligné sur les réductions en salles bruxelloises.",
+      "description_en": "Senior rate (+65), aligned with discounts in Brussels venues.",
+      "description_nl": "Seniorentarief (+65), in lijn met kortingen in Brusselse zalen.",
+      "start_date": "2024-01-01",
+      "end_date": "2024-12-31"
+    }
+  },
+  {
+    "model": "catalogue.price",
+    "pk": 4,
+    "fields": {
+      "type": "article 27",
+      "type_en": "article 27",
+      "type_nl": "artikel 27",
+      "price": 1.25,
+      "description": "Tarif Article 27 pour bénéficiaires CPAS.",
+      "description_en": "Article 27 rate for social aid beneficiaries.",
+      "description_nl": "Artikel 27 tarief voor ontvangers van sociale bijstand.",
+      "start_date": "2024-01-01",
+      "end_date": "2024-12-31"
+    }
+  },
+  {
+    "model": "catalogue.price",
+    "pk": 5,
+    "fields": {
+      "type": "adult",
+      "type_en": "adult",
+      "type_nl": "volwassene",
+      "price": 15.00,
+      "description": "Tarif standard adulte.",
+      "description_en": "Standard adult rate.",
+      "description_nl": "Standaard volwassenentarief.",
+      "start_date": "2024-01-01",
+      "end_date": "2024-12-31"
+    }
+  },
+  {
+    "model": "catalogue.price",
+    "pk": 6,
+    "fields": {
+      "type": "VIP",
+      "type_en": "VIP",
+      "type_nl": "VIP",
+      "price": 30.00,
+      "description": "Tarif VIP incluant placement privilégié.",
+      "description_en": "VIP rate including preferred seating.",
+      "description_nl": "VIP-tarief inclusief voorkeurszitplaatsen.",
+      "start_date": "2024-01-01",
+      "end_date": "2024-12-31"
+    }
+  }
+]

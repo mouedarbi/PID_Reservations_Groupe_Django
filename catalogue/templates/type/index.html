@@ -1,0 +1,12 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Liste des types{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <ul>
+    {% for type in types %}
+        <li>{{ type.type }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

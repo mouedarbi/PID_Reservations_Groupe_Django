@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Confirmation de commande" %}{% endblock %}
+
+{% block content %}
+<div class="checkout-container" style="max-width: 800px; margin: 0 auto; padding: 140px 1rem 4rem;">
+    <h1>{% trans "Confirmation de votre commande" %}</h1>
+    <p>{% trans "Veuillez vérifier les détails de votre réservation avant de procéder au paiement." %}</p>
+
+    <div class="order-summary" style="background: white; border-radius: 12px; border: 1px solid #ddd; overflow: hidden; margin-top: 2rem;">
+        <div style="padding: 1rem 1.5rem; background-color: #f8f9fa; border-bottom: 1px solid #ddd;">
+            <h2 style="margin: 0; font-size: 1.2rem;">{% trans "Récapitulatif" %}</h2>
+        </div>
+        
+        <table style="width: 100%; border-collapse: collapse;">
+            <tbody>
+                {% for item in cart %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 15px;">
+                        <strong>{{ item.representation.show.title }}</strong><br>
+                        <small>{{ item.representation.schedule|date:"d/m/Y H:i" }}</small>
+                    </td>
+                    <td style="padding: 15px; text-align: right;">
+                        {{ item.quantity }} x {{ item.price_obj.type|title }}
+                    </td>
+                    <td style="padding: 15px; text-align: right; font-weight: bold;">
+                        {{ item.total_price }} €
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr style="background-color: #f8f9fa; font-size: 1.3rem;">
+                    <td colspan="2" style="padding: 15px; text-align: right; font-weight: bold;">{% trans "TOTAL À PAYER :" %}</td>
+                    <td style="padding: 15px; text-align: right; font-weight: bold; color: #28a745;">{{ cart.get_total_price }} €</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div style="margin-top: 2rem; display: flex; justify-content: space-between; align-items: center;">
+        <a href="{% url 'cart:cart_detail' %}" style="color: #666; text-decoration: none;">
+            <i class="ph ph-arrow-left"></i> {% trans "Modifier mon panier" %}
+        </a>
+        
+        <form action="{% url 'payments:create-checkout-session' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success" style="padding: 15px 40px; background-color: #28a745; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);">
+                {% trans "Confirmer et Payer" %} <i class="ph ph-credit-card"></i>
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

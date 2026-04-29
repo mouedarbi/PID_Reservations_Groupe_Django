@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Espace Producteur" %} - ThéâtrePlus{% endblock %}
+
+{% block content %}
+<section class="hero compact" style="padding-top: 120px; background: #0284c7; color: white; padding-bottom: 3rem;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem;">{% trans "Espace Producteur" %}</h1>
+        <p style="opacity: 0.9; font-size: 1.1rem;">{% trans "Gérez vos spectacles et suivez vos performances." %}</p>
+    </div>
+</section>
+
+<section class="producer-dashboard" style="padding: 4rem 0;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h2 style="margin: 0;">{% trans "Mes Spectacles" %}</h2>
+            <div style="display: flex; gap: 1rem;">
+                <a href="{% url 'catalogue:prod_moderate_reviews' %}" class="btn" style="background: #f59e0b; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                    <i class="ph ph-chat-centered-text"></i> {% trans "Modérer les avis" %}
+                </a>
+                <a href="{% url 'catalogue:prod_submit_show' %}" class="btn" style="background: #0284c7; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                    <i class="ph ph-plus-circle"></i> {% trans "Partager un spectacle" %}
+                </a>
+            </div>
+        </div>
+
+        <div style="background: white; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead style="background: #f9fafb; border-bottom: 1px solid #e5e7eb;">
+                    <tr>
+                        <th style="padding: 1.2rem; text-align: left; color: #374151;">{% trans "Spectacle" %}</th>
+                        <th style="padding: 1.2rem; text-align: center; color: #374151;">{% trans "État" %}</th>
+                        <th style="padding: 1.2rem; text-align: center; color: #374151;">{% trans "Tickets vendus" %}</th>
+                        <th style="padding: 1.2rem; text-align: center; color: #374151;">{% trans "Places restantes" %}</th>
+                        <th style="padding: 1.2rem; text-align: right; color: #374151;">{% trans "Action" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in shows_with_stats %}
+                    <tr style="border-bottom: 1px solid #f3f4f6;">
+                        <td style="padding: 1.2rem;">
+                            <strong style="color: #111827; font-size: 1.1rem;">{{ item.show.title }}</strong><br>
+                            <span style="font-size: 0.85rem; color: #6b7280;">
+                                <i class="ph ph-map-pin"></i> {{ item.show.location.designation }}
+                            </span>
+                        </td>
+                        <td style="padding: 1.2rem; text-align: center;">
+                            {% if item.show.status == 'published' %}
+                                <span style="background: #dcfce7; color: #166534; padding: 4px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;">{% trans "Publié" %}</span>
+                            {% else %}
+                                <span style="background: #fef9c3; color: #854d0e; padding: 4px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;">{% trans "En attente" %}</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 1.2rem; text-align: center; font-weight: 600; color: #0284c7;">
+                            {{ item.stats.total_sold }}
+                        </td>
+                        <td style="padding: 1.2rem; text-align: center; font-weight: 600; color: #059669;">
+                            {{ item.stats.remaining_seats }}
+                        </td>
+                        <td class="padding: 1.2rem; text-align: right;">
+                            <a href="{% url 'frontend:show_detail' item.show.id %}" style="color: #6b7280; text-decoration: none; margin-right: 1rem;" title="{% trans 'Voir sur le site' %}">
+                                <i class="ph ph-eye" style="font-size: 1.2rem;"></i>
+                            </a>
+                            <a href="{% url 'catalogue:prod_edit_show' item.show.id %}" style="color: #0284c7; text-decoration: none;" title="{% trans 'Modifier' %}">
+                                <i class="ph ph-note-pencil" style="font-size: 1.2rem;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" style="padding: 3rem; text-align: center; color: #9ca3af; font-style: italic;">
+                            {% trans "Vous n'avez pas encore partagé de spectacle." %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

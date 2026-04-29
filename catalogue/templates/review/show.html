@@ -1,0 +1,26 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <p><strong>Show:</strong> {{ review.show.title }}</p>
+    <p><strong>User:</strong> {{ review.user.username }}</p>
+    <p><strong>Review:</strong> {{ review.review }}</p>
+    <p><strong>Stars:</strong> {{ review.stars }}</p>
+    <p><strong>Validated:</strong> {{ review.validated|yesno:"Yes,No" }}</p>
+    <p><strong>Created at:</strong> {{ review.created_at }}</p>
+    <p><strong>Updated at:</strong> {{ review.updated_at|default:"-" }}</p>
+
+    {% if perms.catalogue.change_review or request.user == review.user %}
+        <a href="{% url 'catalogue:review-edit' review.id %}" class="btn btn-warning">Modifier</a>
+    {% endif %}
+    {% if perms.catalogue.delete_review or request.user == review.user %}
+        <form action="{% url 'catalogue:review-delete' review.id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type'submit" class="btn btn-danger">Supprimer</button>
+        </form>
+    {% endif %}
+
+    <a href="{% url 'catalogue:review-index' %}">Back to list</a>
+{% endblock %}

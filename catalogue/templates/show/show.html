@@ -1,0 +1,74 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ show.title }}</h1>
+
+    {% if show.poster %}
+    <p><img src="{{ show.poster.url }}" alt="{{ show.title }}" width="200"></p>
+    {% endif %}
+
+    <canvas width="200" height="100" style="border:1px solid #000000;"></canvas>
+    {% endif %}
+    
+    {% if show.location %}
+    <p><strong>Lieu de création:</strong> {{ show.location.designation }}</p>
+    {% endif %}
+        
+    <p><strong>Durée :</strong> {{ show.duration }} minutes</p>
+    <p><strong>Année de création :</strong> {{ show.created_in }}</p>
+        
+    {% if show.bookable %}
+    <p><em>Réservable</em></p>
+    
+    <section class="representations-list" style="margin-top: 2rem;">
+        <h2>Prochaines séances</h2>
+        {% if show.representations.all %}
+            <ul style="list-style: none; padding: 0;">
+                {% for representation in show.representations.all %}
+                <li style="margin-bottom: 1rem; padding: 1rem; border: 1px solid #eee; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; background-color: #fff;">
+                    <div>
+                        <strong style="font-size: 1.1rem;">{{ representation.schedule|date:"d F Y" }} à {{ representation.schedule|date:"H:i" }}</strong><br>
+                        <span style="color: #666;">
+                            <i class="ph ph-map-pin"></i>
+                            {% if representation.location %}
+                                {{ representation.location.designation }}
+                            {% else %}
+                                {{ show.location.designation }}
+                            {% endif %}
+                        </span>
+                        <div style="margin-top: 5px;">
+                            <small class="{% if representation.available_seats < 10 %}text-danger font-weight-bold{% endif %}">
+                                <i class="ph ph-users"></i> {{ representation.available_seats }} places disponibles
+                            </small>
+                        </div>
+                    </div>
+                    <a href="{% url 'catalogue:representation-show' representation.id %}" class="btn btn-primary" style="background-color: #28a745; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold;">
+                        Réserver mes places
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p><em>Aucune représentation prévue pour le moment.</em></p>
+        {% endif %}
+    </section>
+    {% else %}
+    <p><em>Non réservable</em></p>
+    {% endif %}
+
+    {% if perms.catalogue.change_show %}
+        <a href="{% url 'catalogue:show-edit' show.id %}" class="btn btn-warning">Modifier</a>
+    {% endif %}
+    {% if perms.catalogue.delete_show %}
+        <form action="{% url 'catalogue:show-delete' show.id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form>
+    {% endif %}
+
+    <nav><a href="{% url 'catalogue:show-index' %}">Retour à l'index</a></nav>
+{% endblock %}

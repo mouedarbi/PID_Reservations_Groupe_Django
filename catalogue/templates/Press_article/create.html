@@ -1,0 +1,43 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Rédiger un article de presse</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label class="form-label">Titre de l'article</label>
+                    {{ form.title }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Spectacle concerné</label>
+                    {{ form.show }}
+                    <div class="form-text">Choisissez le spectacle sur lequel porte votre article.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Contenu de l'article</label>
+                    {{ form.content }}
+                    <div class="form-text">Vous pouvez utiliser des balises HTML (ex: &lt;b&gt;gras&lt;/b&gt;) pour la mise en forme.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Image d'illustration</label>
+                    {{ form.image }}
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success">Soumettre pour validation</button>
+                    <a href="{% url 'catalogue:my-articles' %}" class="btn btn-secondary">Annuler</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

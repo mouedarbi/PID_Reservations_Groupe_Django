@@ -1,0 +1,209 @@
+[
+    {
+        "model": "catalogue.location",
+        "fields": {
+            "slug": "art-center",
+            "designation": "Art Center",
+            "designation_fr": "Art Center",
+            "designation_en": "Art Center",
+            "designation_nl": "Kunstcentrum",
+            "address": "123 Rue de l'Art",
+            "address_fr": "123 Rue de l'Art",
+            "address_en": "123 Rue de l'Art",
+            "address_nl": "Kunststraat 123",
+            "locality": [
+                "1000",
+                "Bruxelles"
+            ],
+            "website": null,
+            "phone": null,
+            "capacity": 100
+        }
+    },
+    {
+        "model": "catalogue.location",
+        "fields": {
+            "slug": "atrium",
+            "designation": "Atrium",
+            "designation_fr": "Atrium",
+            "designation_en": "Atrium",
+            "designation_nl": "Atrium",
+            "address": "15 Rue du Commerce",
+            "address_fr": "15 Rue du Commerce",
+            "address_en": "15 Rue du Commerce",
+            "address_nl": "Handelsstraat 15",
+            "locality": [
+                "1000",
+                "Bruxelles"
+            ],
+            "website": null,
+            "phone": null,
+            "capacity": 100
+        }
+    },
+    {
+        "model": "catalogue.location",
+        "fields": {
+            "slug": "opera-house",
+            "designation": "Opera House",
+            "designation_fr": "Opera House",
+            "designation_en": "Opera House",
+            "designation_nl": "Operagebouw",
+            "address": "1 Place de l'Opéra",
+            "address_fr": "1 Place de l'Opéra",
+            "address_en": "1 Place de l'Opéra",
+            "address_nl": "Operaplein 1",
+            "locality": [
+                "1040",
+                "Etterbeek"
+            ],
+            "website": null,
+            "phone": null,
+            "capacity": 100
+        }
+    },
+    {
+        "model": "catalogue.location",
+        "fields": {
+            "slug": "espace-delvaux-la-venerie",
+            "designation": "Espace Delvaux",
+            "designation_fr": "Espace Delvaux",
+            "designation_en": "Espace Delvaux",
+            "designation_nl": "Espace Delvaux",
+            "address": "3 Rue Gratès",
+            "address_fr": "3 Rue Gratès",
+            "address_en": "3 Rue Gratès",
+            "address_nl": "Gratèsstraat 3",
+            "locality": null,
+            "website": "https://www.lavenerie.be",
+            "phone": null,
+            "capacity": 100
+        }
+    },
+    {
+        "model": "catalogue.location",
+        "fields": {
+            "slug": "dexia-art-center",
+            "designation": "Dexia Art Center",
+            "designation_fr": "Dexia Art Center",
+            "designation_en": "Dexia Art Center",
+            "designation_nl": "Dexia Art Center",
+            "address": "50 Rue de l'Ecuyer",
+            "address_fr": "50 Rue de l'Ecuyer",
+            "address_en": "50 Rue de l'Ecuyer",
+            "address_nl": "Schildknaapstraat 50",
+            "locality": [
+                "1000",
+                "Bruxelles"
+            ],
+            "website": null,
+            "phone": null,
+            "capacity": 100
+        }
+    },
+    {
+        "model": "catalogue.location",
+        "fields": {
+            "slug": "la-samaritaine",
+            "designation": "La Samaritaine",
+            "designation_fr": "La Samaritaine",
+            "designation_en": "La Samaritaine",
+            "designation_nl": "La Samaritaine",
+            "address": "16 Rue de la Samaritaine",
+            "address_fr": "16 Rue de la Samaritaine",
+            "address_en": "16 Rue de la Samaritaine",
+            "address_nl": "Samaritainestraat 16",
+            "locality": [
+                "1000",
+                "Bruxelles"
+            ],
+            "website": "http://www.lasamaritaine.be/",
+            "phone": null,
+            "capacity": 100
+        }
+    },
+    {
+        "model": "catalogue.location",
+        "fields": {
+            "slug": "espace-magh",
+            "designation": "Espace Magh",
+            "designation_fr": "Espace Magh",
+            "designation_en": "Espace Magh",
+            "designation_nl": "Espace Magh",
+            "address": "17 Rue du Poinçon",
+            "address_fr": "17 Rue du Poinçon",
+            "address_en": "17 Rue du Poinçon",
+            "address_nl": "Priemstraat 17",
+            "locality": [
+                "1000",
+                "Bruxelles"
+            ],
+            "website": null,
+            "phone": null,
+            "capacity": 100
+        }
+    },
+    {
+        "model": "catalogue.location",
+        "fields": {
+            "slug": "cirque-royal",
+            "designation": "Cirque Royal",
+            "designation_fr": "Cirque Royal",
+            "designation_en": "Cirque Royal",
+            "designation_nl": null,
+            "address": "R de l'Enseignement-Onderrichtsstraat 81",
+            "address_fr": "R de l'Enseignement-Onderrichtsstraat 81",
+            "address_en": "R de l'Enseignement-Onderrichtsstraat 81",
+            "address_nl": null,
+            "locality": [
+                "1000",
+                "Bruxelles"
+            ],
+            "website": null,
+            "phone": null,
+            "capacity": 100
+        }
+    },
+    {
+        "model": "catalogue.location",
+        "fields": {
+            "slug": "cirque-royal-club",
+            "designation": "Cirque Royal Club",
+            "designation_fr": "Cirque Royal Club",
+            "designation_en": "Cirque Royal Club",
+            "designation_nl": null,
+            "address": "R de l'Enseignement-Onderrichtsstraat 81",
+            "address_fr": "R de l'Enseignement-Onderrichtsstraat 81",
+            "address_en": "R de l'Enseignement-Onderrichtsstraat 81",
+            "address_nl": null,
+            "locality": [
+                "1000",
+                "Bruxelles"
+            ],
+            "website": null,
+            "phone": null,
+            "capacity": 100
+        }
+    },
+    {
+        "model": "catalogue.location",
+        "fields": {
+            "slug": "grand-place-de-bruxelles",
+            "designation": "Grand-Place de Bruxelles",
+            "designation_fr": "Grand-Place de Bruxelles",
+            "designation_en": "Grand-Place de Bruxelles",
+            "designation_nl": null,
+            "address": "Entrance: rue Charles Buls",
+            "address_fr": "Entrance: rue Charles Buls",
+            "address_en": "Entrance: rue Charles Buls",
+            "address_nl": null,
+            "locality": [
+                "1000",
+                "Bruxelles"
+            ],
+            "website": null,
+            "phone": null,
+            "capacity": 100
+        }
+    }
+]

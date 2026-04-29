@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Consommation API - ThéâtrePlus" %}{% endblock %}
+
+{% block content %}
+<section class="hero compact" style="padding-top: 120px; background: var(--secondary); color: white; padding-bottom: 3rem;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem;">{% trans "Consommation de l'API" %}</h1>
+        <p style="opacity: 0.9; font-size: 1.1rem;">{% trans "Suivez l'utilisation de vos quotas en temps réel." %}</p>
+    </div>
+</section>
+
+<section class="api-section" style="padding: 4rem 0;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        <div class="profile-grid" style="display: grid; grid-template-columns: 300px 1fr; gap: 3rem; align-items: start;">
+            
+            {% include 'user/_sidebar.html' %}
+
+            <!-- Contenu Consommation -->
+            <main>
+                <div style="background: white; border-radius: 15px; padding: 2.5rem; border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 3rem;">
+                    <h2 style="margin-top: 0; color: var(--secondary); margin-bottom: 1.5rem;">{% trans "Statistiques d'utilisation" %}</h2>
+                    
+                    <div style="margin-bottom: 3rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem;">
+                            <span style="font-weight: 600; font-size: 1.1rem;">{% trans "Utilisation aujourd'hui" %}</span>
+                            <span style="color: var(--text-secondary); font-weight: bold;">{{ requests_today }} / {{ affiliate.tier.api_limit_daily }}</span>
+                        </div>
+                        <div style="width: 100%; height: 20px; background: #f0f0f0; border-radius: 10px; overflow: hidden; border: 1px solid #e0e0e0;">
+                            <div style="width: {{ usage_percent }}%; height: 100%; background: {% if usage_percent > 90 %}#dc3545{% elif usage_percent > 70 %}#ffc107{% else %}#28a745{% endif %}; transition: width 1s ease-in-out;"></div>
+                        </div>
+                        <p style="margin-top: 0.8rem; color: var(--text-secondary); font-size: 0.9rem;">
+                            {% trans "Votre quota est réinitialisé chaque jour à minuit." %}
+                        </p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                        <div style="padding: 1.5rem; background: #f8f9fa; border-radius: 12px; text-align: center;">
+                            <h5 style="margin: 0; color: var(--text-secondary); text-transform: uppercase; font-size: 0.75rem;">{% trans "Plan Actuel" %}</h5>
+                            <p style="margin: 10px 0 0; font-size: 1.25rem; font-weight: bold; color: var(--secondary);">{{ affiliate.tier.name }}</p>
+                        </div>
+                        <div style="padding: 1.5rem; background: #f8f9fa; border-radius: 12px; text-align: center;">
+                            <h5 style="margin: 0; color: var(--text-secondary); text-transform: uppercase; font-size: 0.75rem;">{% trans "Disponibles" %}</h5>
+                            <p style="margin: 10px 0 0; font-size: 1.25rem; font-weight: bold; color: #28a745;">
+                                {% with remaining=affiliate.tier.api_limit_daily|add:"-"|add:requests_today %}
+                                    {{ remaining|default:0 }}
+                                {% endwith %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: white; border-radius: 15px; padding: 2.5rem; border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+                    <h3 style="margin-top: 0; color: var(--secondary); margin-bottom: 1.5rem;">{% trans "Historique récent" %}</h3>
+                    {% if last_logs %}
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="border-bottom: 2px solid var(--bg-light); text-align: left;">
+                                        <th style="padding: 1rem;">{% trans "Heure" %}</th>
+                                        <th style="padding: 1rem;">{% trans "Méthode" %}</th>
+                                        <th style="padding: 1rem;">{% trans "Endpoint" %}</th>
+                                        <th style="padding: 1rem;">{% trans "Réponse" %}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for log in last_logs %}
+                                        <tr style="border-bottom: 1px solid #f8f9fa;">
+                                            <td style="padding: 1rem; color: var(--text-secondary);">{{ log.created_at|date:"d/m H:i:s" }}</td>
+                                            <td style="padding: 1rem;"><span style="background: #eee; padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8rem;">{{ log.method }}</span></td>
+                                            <td style="padding: 1rem; font-family: 'Courier New', Courier, monospace; font-size: 0.9rem;">{{ log.endpoint }}</td>
+                                            <td style="padding: 1rem;"><span style="color: {% if log.status_code == 200 %}#28a745{% else %}#dc3545{% endif %}; font-weight: bold;">{{ log.status_code }}</span></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                            <i class="ph ph-browser" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                            <p>{% trans "Aucun appel enregistré au cours des dernières 24h." %}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </main>
+        </div>
+    </div>
+</section>
+
+<style>
+    @media (max-width: 992px) {
+        .profile-grid { grid-template-columns: 1fr !important; }
+    }
+</style>
+{% endblock %}

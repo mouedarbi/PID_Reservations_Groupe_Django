@@ -1,0 +1,58 @@
+name: Django CI
+
+on:
+  push:
+    branches: [ main, pre-production ]
+  pull_request:
+    branches: [ main, pre-production ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: mysecretpassword
+          MYSQL_DATABASE: test_db
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    # ENV VARIABLES POUR DJANGO
+    env:
+      DB_NAME: test_db
+      DB_USER: root
+      DB_PASSWORD: mysecretpassword
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install -r requirements.txt
+
+      - name: Install Playwright Browsers and Deps
+        run: |
+          python -m playwright install chromium --with-deps
+
+      - name: Run Migrations
+        run: |
+          python manage.py makemigrations
+          python manage.py migrate --run-syncdb
+
+      - name: Run Tests
+        run: |
+          python manage.py test api.tests --keepdb

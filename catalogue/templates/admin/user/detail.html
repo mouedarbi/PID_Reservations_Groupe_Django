@@ -1,0 +1,154 @@
+{% extends "admin/admin.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
+            <p class="text-small mt-1">Profil détaillé et historique de l'utilisateur.</p>
+        </div>
+        <div class="flex gap-2">
+            <a href="{% url 'admin_user_edit' user_obj.id %}" class="flex items-center gap-2 rounded-lg bg-amber-600 px-4 py-2 text-white hover:bg-amber-700 transition">
+                <i class="ph ph-pencil-simple"></i>
+                <span>Modifier le profil</span>
+            </a>
+            <a href="{% url 'admin_user_index' %}" class="flex items-center gap-2 rounded-lg bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300 transition dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700">
+                <i class="ph ph-arrow-left"></i>
+                <span>Retour</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <!-- Infos Utilisateur -->
+        <div class="lg:col-span-1 space-y-6">
+            <div class="border-border overflow-hidden rounded-lg border bg-bg p-6 dark:bg-[#040b1a]">
+                <div class="flex flex-col items-center mb-6">
+                    <div class="flex h-20 w-20 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 text-2xl font-bold mb-3">
+                        {{ user_obj.username|slice:":1"|upper }}
+                    </div>
+                    <h3 class="text-xl font-bold text-text">{{ user_obj.username }}</h3>
+                    <p class="text-sm text-muted">{{ user_obj.email }}</p>
+                </div>
+                
+                <div class="space-y-4 border-t border-border pt-4">
+                    <div>
+                        <span class="text-xs font-semibold text-muted uppercase tracking-wider">Nom complet</span>
+                        <p class="text-text">{{ user_obj.first_name }} {{ user_obj.last_name|default:"" }}</p>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold text-muted uppercase tracking-wider">Date d'inscription</span>
+                        <p class="text-text">{{ user_obj.date_joined|date:"d/m/Y H:i" }}</p>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold text-muted uppercase tracking-wider">Statut du compte</span>
+                        <div class="mt-1">
+                            {% if user_obj.is_active %}
+                            <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-400">Actif</span>
+                            {% else %}
+                            <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900/30 dark:text-red-400">Inactif</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold text-muted uppercase tracking-wider">Droits d'accès</span>
+                        <div class="mt-1">
+                            {% if user_obj.is_staff %}
+                            <span class="inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">Administrateur</span>
+                            {% else %}
+                            <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">Membre</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold text-muted uppercase tracking-wider">Groupes</span>
+                        <div class="mt-1 flex flex-wrap gap-1">
+                            {% for group in user_obj.groups.all %}
+                            <span class="bg-gray-100 dark:bg-gray-800 text-text text-xs px-2 py-1 rounded">{{ group.name }}</span>
+                            {% empty %}
+                            <span class="text-xs italic text-muted">Aucun groupe</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historique : Réservations et Avis -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Réservations -->
+            <div class="border-border overflow-hidden rounded-lg border bg-bg dark:bg-[#040b1a]">
+                <div class="bg-gray-50 dark:bg-gray-900/50 px-6 py-4 border-b border-border">
+                    <h3 class="text-lg font-bold text-text">Historique des réservations</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 dark:bg-gray-900/50">
+                            <tr>
+                                <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">ID</th>
+                                <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Date</th>
+                                <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Places</th>
+                                <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Total</th>
+                                <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+                            {% for res in reservations %}
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition">
+                                <td class="px-6 py-4 text-sm text-text font-medium">#{{ res.id }}</td>
+                                <td class="px-6 py-4 text-sm text-text">{{ res.booking_date|date:"d/m/Y" }}</td>
+                                <td class="px-6 py-4 text-sm text-text text-center">{{ res.total_tickets|default:0 }}</td>
+                                <td class="px-6 py-4 text-sm text-text font-bold">{{ res.total_amount|default:0 }} €</td>
+                                <td class="px-6 py-4 text-right">
+                                    <a href="{% url 'admin_reservation_detail' res.id %}" class="text-blue-600 hover:text-blue-800 transition">
+                                        <i class="ph ph-eye text-xl"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="px-6 py-10 text-center text-muted italic">Aucune réservation trouvée.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Avis -->
+            <div class="border-border overflow-hidden rounded-lg border bg-bg dark:bg-[#040b1a]">
+                <div class="bg-gray-50 dark:bg-gray-900/50 px-6 py-4 border-b border-border">
+                    <h3 class="text-lg font-bold text-text">Derniers avis publiés</h3>
+                </div>
+                <div class="p-6 space-y-4">
+                    {% for review in reviews %}
+                    <div class="border-b border-border pb-4 last:border-0 last:pb-0">
+                        <div class="flex justify-between items-start mb-1">
+                            <h4 class="font-bold text-text">{{ review.show.title }}</h4>
+                            <span class="text-xs text-muted">{{ review.created_at|date:"d/m/Y" }}</span>
+                        </div>
+                        <p class="text-sm text-text italic">"{{ review.review }}"</p>
+                        <div class="mt-2">
+                            {% if review.validated %}
+                            <span class="text-green-600 text-xs flex items-center gap-1"><i class="ph ph-check-circle"></i> Validé</span>
+                            {% else %}
+                            <span class="text-amber-600 text-xs flex items-center gap-1"><i class="ph ph-clock"></i> En attente</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-center text-muted italic">Aucun avis publié.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,255 @@
+/* Global admin styles */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #f8fafc;
+  color: #334155;
+  line-height: 1.5;
+}
+
+/* Layout */
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+#sidebar {
+  width: 256px;
+  transition: all 0.3s ease;
+}
+
+#sidebar.collapsed {
+  width: 64px;
+}
+
+/* Main content */
+#main-content {
+  flex: 1;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #334155;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Tables */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-table th {
+  background-color: #f8fafc;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.admin-table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+/* Status badges */
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-active {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.status-pending {
+  background-color: #fef9c3;
+  color: #ca8a04;
+}
+
+.status-completed {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.status-cancelled {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+/* Cards */
+.admin-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-card-header {
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.admin-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* Alerts */
+.alert {
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.alert-success {
+  background-color: #dcfce7;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.alert-error {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.alert-warning {
+  background-color: #fef9c3;
+  color: #ca8a04;
+  border: 1px solid #fde68a;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.pagination-link {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #334155;
+  transition: all 0.2s;
+}
+
+.pagination-link:hover,
+.pagination-link.active {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #sidebar {
+    position: fixed;
+    left: -256px;
+    height: 100vh;
+    z-index: 1000;
+  }
+  
+  #sidebar.active {
+    left: 0;
+  }
+  
+  #main-content {
+    margin-left: 0;
+  }
+  
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+  
+  .admin-table th,
+  .admin-table td {
+    padding: 8px;
+  }
+}

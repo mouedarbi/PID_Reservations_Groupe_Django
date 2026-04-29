@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<style>
+    /* Format ticket standard international : 200mm x 75mm */
+    @page {
+        size: 200mm 75mm;
+        margin: 0;
+    }
+    body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+        width: 200mm;
+        height: 75mm;
+    }
+    .ticket-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        background-color: #ffffff;
+        page-break-after: always;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    /* FILIGRANE GAUCHE */
+    .watermark {
+        position: absolute;
+        top: 50%;
+        left: 30%;
+        transform: translate(-50%, -50%) rotate(-15deg);
+        font-size: 80px;
+        font-weight: 900;
+        color: rgba(0, 0, 0, 0.03); /* Très léger */
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* PARTIE GAUCHE (Clair - Info Spectacle) */
+    .stub-left {
+        width: 140mm;
+        background-color: #ffffff;
+        color: #1a1a2e;
+        padding: 20px 30px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        z-index: 1;
+    }
+    .stub-left::after {
+        content: "";
+        position: absolute;
+        top: 0; right: -1px;
+        width: 2px; height: 100%;
+        border-right: 2px dashed #ddd;
+        z-index: 10;
+    }
+    .show-title {
+        font-size: 26px;
+        font-weight: 800;
+        margin: 0;
+        line-height: 1.1;
+        text-transform: uppercase;
+        color: #1a1a2e;
+    }
+    .show-type {
+        font-size: 10px;
+        font-weight: bold;
+        color: #ff4d4d;
+        letter-spacing: 2px;
+        margin-top: 3px;
+        text-transform: uppercase;
+    }
+    
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-top: 15px;
+    }
+    .info-group {
+        display: flex;
+        flex-direction: column;
+    }
+    .label {
+        font-size: 8px;
+        color: #999;
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-bottom: 1px;
+    }
+    .value {
+        font-size: 13px;
+        font-weight: 700;
+        color: #333;
+    }
+
+    /* BARRE DE CONTACT (Bas Gauche) */
+    .contact-bar {
+        border-top: 1px solid #eee;
+        padding-top: 10px;
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 9px;
+        color: #777;
+        font-weight: 500;
+    }
+    .contact-item {
+        display: inline-block;
+    }
+
+    /* PARTIE DROITE (Sombre - Souche de sécurité) */
+    .stub-right {
+        width: 60mm;
+        background: linear-gradient(135deg, #1e2f46 0%, #0d1a2a 100%);
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        text-align: center;
+        z-index: 2;
+    }
+    .qr-box {
+        background: white;
+        padding: 8px;
+        border-radius: 4px;
+    }
+    .qr-box img {
+        width: 100px;
+        height: 100px;
+        display: block;
+    }
+    .ticket-id {
+        margin-top: 12px;
+        font-family: 'Courier New', monospace;
+        font-size: 9px;
+        font-weight: bold;
+        color: rgba(255,255,255,0.8);
+    }
+    .price-circle {
+        margin-top: 8px;
+        background-color: #ff4d4d;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: bold;
+    }
+    .stub-admit {
+        margin-top: auto;
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 3px;
+        color: rgba(255,255,255,0.2);
+    }
+</style>
+</head>
+<body>
+
+{% if single_ticket %}
+    {% with ticket=single_ticket %}
+    <div class="ticket-container">
+        <div class="watermark">THÉÂTRE PLUS</div>
+        
+        <div class="stub-left">
+            <div>
+                <h1 class="show-title">{{ ticket.representation_reservation.representation.show.title }}</h1>
+                <div class="show-type">{{ ticket.representation_reservation.price.type|upper }} PASS</div>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-group">
+                    <span class="label">Date</span>
+                    <span class="value">{{ ticket.representation_reservation.representation.schedule|date:"d F Y" }}</span>
+                </div>
+                <div class="info-group">
+                    <span class="label">Heure</span>
+                    <span class="value">{{ ticket.representation_reservation.representation.schedule|date:"H:i" }}</span>
+                </div>
+                <div class="info-group">
+                    <span class="label">Lieu</span>
+                    <span class="value">{{ ticket.representation_reservation.representation.location.designation }}</span>
+                    <span style="font-size: 10px; color: #666; font-weight: 500;">{{ ticket.representation_reservation.representation.location.address }}</span>
+                </div>
+                <div class="info-group">
+                    <span class="label">Client</span>
+                    <span class="value">{{ ticket.representation_reservation.reservation.user.username }}</span>
+                </div>
+            </div>
+
+            <div class="contact-bar">
+                <span class="contact-item">www.theatreplus.be</span>
+                <span class="contact-item">info@theatreplus.be</span>
+                <span class="contact-item">+32 (0) 2 555 12 34</span>
+            </div>
+        </div>
+
+        <div class="stub-right">
+            <div class="qr-box">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TICKET-ID:{{ ticket.id }}">
+            </div>
+            <div class="ticket-id">#{{ ticket.id|stringformat:"s"|slice:":8"|upper }}</div>
+            <div class="price-circle">{{ ticket.representation_reservation.price.price }} €</div>
+            <div class="stub-admit">ADMIT ONE</div>
+        </div>
+    </div>
+    {% endwith %}
+{% else %}
+    {% for rr in reservation.representation_reservations.all %}
+        {% for ticket in rr.tickets.all %}
+        <div class="ticket-container">
+            <div class="watermark">THÉÂTRE PLUS</div>
+            
+            <div class="stub-left">
+                <div>
+                    <h1 class="show-title">{{ rr.representation.show.title }}</h1>
+                    <div class="show-type">{{ rr.price.type|upper }} PASS</div>
+                </div>
+                
+                <div class="info-grid">
+                    <div class="info-group">
+                        <span class="label">Date</span>
+                        <span class="value">{{ rr.representation.schedule|date:"d F Y" }}</span>
+                    </div>
+                    <div class="info-group">
+                        <span class="label">Heure</span>
+                        <span class="value">{{ rr.representation.schedule|date:"H:i" }}</span>
+                    </div>
+                    <div class="info-group">
+                        <span class="label">Lieu</span>
+                        <span class="value">{{ rr.representation.location.designation }}</span>
+                        <span style="font-size: 10px; color: #666; font-weight: 500;">{{ rr.representation.location.address }}</span>
+                    </div>
+                    <div class="info-group">
+                        <span class="label">Réservation</span>
+                        <span class="value">#{{ reservation.id }}</span>
+                    </div>
+                </div>
+
+                <div class="contact-bar">
+                    <span class="contact-item">www.theatreplus.be</span>
+                    <span class="contact-item">info@theatreplus.be</span>
+                    <span class="contact-item">+32 (0) 2 555 12 34</span>
+                </div>
+            </div>
+
+            <div class="stub-right">
+                <div class="qr-box">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TICKET-ID:{{ ticket.id }}">
+                </div>
+                <div class="ticket-id">#{{ ticket.id|stringformat:"s"|slice:":8"|upper }}</div>
+                <div class="price-circle">{{ rr.price.price }} €</div>
+                <div class="stub-admit">ADMIT ONE</div>
+            </div>
+        </div>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+
+</body>
+</html>

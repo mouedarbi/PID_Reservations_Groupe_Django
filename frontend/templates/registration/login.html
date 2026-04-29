@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+<section class="auth-section" style="padding: 50px 0; min-height: 60vh;">
+    <div class="container" style="max-width: 400px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; text-align: center;">Connexion</h2>
+
+        {% if form.errors %}
+            <div style="background: #fee2e2; color: #b91c1c; padding: 10px; border-radius: 4px; margin-bottom: 20px; font-size: 0.9rem;">
+                Votre login et mot de passe ne correspondent pas.
+            </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'accounts:login' %}">
+            {% csrf_token %}
+            <div style="margin-bottom: 15px;">
+                <label for="{{ form.username.id_for_label }}" style="display: block; margin-bottom: 5px; font-weight: 500;">Nom d'utilisateur</label>
+                <input type="text" name="username" id="{{ form.username.id_for_label }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" required>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label for="{{ form.password.id_for_label }}" style="display: block; margin-bottom: 5px; font-weight: 500;">Mot de passe</label>
+                <input type="password" name="password" id="{{ form.password.id_for_label }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" required>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; border: none; border-radius: 4px; cursor: pointer;">Se connecter</button>
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+
+        <div style="margin-top: 20px; text-align: center; font-size: 0.9rem;">
+            <p><a href="{% url 'accounts:password_reset' %}" style="color: #666;">Mot de passe oublié ?</a></p>
+            <p style="margin-top: 10px;">Pas encore de compte ? <a href="{% url 'accounts:user-signup' %}" style="color: #6366f1; font-weight: 600;">S'inscrire</a></p>
+        </div>
+    </div>
+</section>
+{% endblock %}

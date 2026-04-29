@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Mon Accès API - ThéâtrePlus" %}{% endblock %}
+
+{% block content %}
+<section class="hero compact" style="padding-top: 120px; background: var(--secondary); color: white; padding-bottom: 3rem;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem;">{% trans "Espace Développeur" %}</h1>
+        <p style="opacity: 0.9; font-size: 1.1rem;">{% trans "Gérez votre accès API et vos abonnements d'affiliation." %}</p>
+    </div>
+</section>
+
+<section class="api-section" style="padding: 4rem 0;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        <div class="profile-grid" style="display: grid; grid-template-columns: 300px 1fr; gap: 3rem; align-items: start;">
+            
+            {% include 'user/_sidebar.html' %}
+
+            <!-- Contenu API -->
+            <main>
+                <div style="background: white; border-radius: 15px; padding: 2.5rem; border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 3rem;">
+                    <h2 style="margin-top: 0; color: var(--secondary); margin-bottom: 1.5rem;">{% trans "Votre Clé API" %}</h2>
+                    <p style="margin-bottom: 2rem;">{% trans "Plan actuel :" %} <strong style="color: var(--primary); font-size: 1.2rem;">{{ affiliate.tier.name|default:"Free" }}</strong></p>
+                    
+                    {% if affiliate.api_key %}
+                        <div style="background: #f8f9fa; border: 1px dashed #dee2e6; padding: 1.5rem; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                            <code id="apiKey" style="font-size: 1.2rem; color: var(--primary); font-weight: bold; letter-spacing: 1px;">{{ affiliate.api_key }}</code>
+                            <button onclick="copyApiKey()" style="background: var(--secondary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem;">
+                                <i class="ph ph-copy"></i> {% trans "Copier" %}
+                            </button>
+                        </div>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                            <i class="ph ph-info"></i> {% trans "Gardez cette clé secrète. Elle vous permet d'authentifier vos requêtes vers notre API." %}
+                        </p>
+                    {% else %}
+                        <div style="text-align: center; padding: 2rem;">
+                            <p>{% trans "Vous n'avez pas encore activé votre accès API." %}</p>
+                            <form method="post" action="{% url 'accounts:user-api' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary" style="background: var(--primary); color: white; padding: 0.8rem 2rem; border-radius: 50px; border: none; font-weight: bold; cursor: pointer;">
+                                    {% trans "Générer ma clé API Free" %}
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Plans d'abonnement -->
+                <h2 style="color: var(--secondary); margin-bottom: 2rem;">{% trans "Boostez votre accès" %}</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                    {% for tier in all_tiers %}
+                        <div style="background: white; border-radius: 15px; padding: 2rem; border: 2px solid {% if affiliate.tier == tier %}var(--primary){% else %}var(--border-color){% endif %}; position: relative; display: flex; flex-direction: column;">
+                            {% if affiliate.tier == tier %}
+                                <span style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 2px 15px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase;">{% trans "Plan Actuel" %}</span>
+                            {% endif %}
+                            
+                            <h3 style="margin-top: 0; color: var(--secondary); text-align: center;">{{ tier.name }}</h3>
+                            <div style="text-align: center; margin-bottom: 1.5rem;">
+                                <span style="font-size: 2rem; font-weight: bold; color: var(--primary);">{{ tier.price }}€</span>
+                                <span style="color: var(--text-secondary);">/ {% trans "mois" %}</span>
+                            </div>
+                            
+                            <ul style="list-style: none; padding: 0; margin: 0 0 2rem 0; flex-grow: 1;">
+                                <li style="margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="ph ph-check-circle" style="color: #28a745;"></i> {{ tier.api_limit_daily }} {% trans "appels / jour" %}
+                                </li>
+                                <li style="margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="ph ph-check-circle" style="color: #28a745;"></i> 
+                                    {% if tier.can_access_full_data %}
+                                        {% trans "Données complètes" %}
+                                    {% else %}
+                                        {% trans "Données limitées" %}
+                                    {% endif %}
+                                </li>
+                                <li style="margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="ph ph-check-circle" style="color: #28a745;"></i> {% trans "Support prioritaire" %}
+                                </li>
+                            </ul>
+
+                            {% if affiliate.tier != tier %}
+                                <form action="{% url 'payments:affiliate-create-session' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="tier_id" value="{{ tier.id }}">
+                                    <button type="submit" style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 2px solid var(--primary); background: transparent; color: var(--primary); font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                                        {% if tier.price > 0 %}
+                                            {% trans "S'abonner" %}
+                                        {% else %}
+                                            {% trans "Choisir ce plan" %}
+                                        {% endif %}
+                                    </button>
+                                </form>
+                            {% else %}
+                                <button disabled style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 2px solid #ccc; background: #eee; color: #888; font-weight: bold; cursor: not-allowed;">
+                                    {% trans "Plan actif" %}
+                                </button>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </main>
+        </div>
+    </div>
+</section>
+
+<script>
+function copyApiKey() {
+    const apiKey = document.getElementById('apiKey').innerText;
+    navigator.clipboard.writeText(apiKey).then(() => {
+        alert('{% trans "Clé API copiée dans le presse-papier !" %}');
+    });
+}
+</script>
+
+<style>
+    @media (max-width: 992px) {
+        .profile-grid { grid-template-columns: 1fr !important; }
+    }
+</style>
+{% endblock %}

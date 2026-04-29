@@ -1,0 +1,16 @@
+{%extends 'layouts/base.html'%}
+
+{%block title %} Modifier un artist {% endblock %}
+
+{% block content %}
+    <H2>Modifier un artiste</H2>
+    <form action="{%url 'catalogue:artist-edit' artist.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name ="_method" value="PUT">
+        {{ form }}
+        <button> Modifier</button>
+        <a href="{%url 'catalogue:artist-show' artist.id %}"> Annuler</a>
+
+    </form>
+    <nav><a href="{%url 'catalogue:artist-index' %}"> Retour à la l'index</a></nav>
+{% endblock %}

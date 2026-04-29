@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Modérer les avis" %} - ThéâtrePlus{% endblock %}
+
+{% block content %}
+<section class="hero compact" style="padding-top: 120px; background: #f59e0b; color: white; padding-bottom: 3rem;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem;">{% trans "Modération des avis" %}</h1>
+        <p style="opacity: 0.9; font-size: 1.1rem;">{% trans "Consultez et validez les retours de vos spectateurs." %}</p>
+    </div>
+</section>
+
+<section class="moderate-reviews" style="padding: 4rem 0;">
+    <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 0 15px;">
+        
+        <div style="margin-bottom: 2rem;">
+            <a href="{% url 'catalogue:prod_dashboard' %}" style="text-decoration: none; color: #374151; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph ph-arrow-left"></i> {% trans "Retour au tableau de bord" %}
+            </a>
+        </div>
+
+        <div style="display: grid; gap: 1.5rem;">
+            {% for review in reviews %}
+            <div style="background: white; border-radius: 12px; border: 1px solid #e5e7eb; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.03); display: flex; justify-content: space-between; align-items: flex-start;">
+                <div style="flex: 1;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                        <strong style="color: #111827;">{{ review.user.username }}</strong>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <span style="color: #f59e0b; display: flex; gap: 2px;">
+                                {% for i in "12345"|make_list %}
+                                    {% if forloop.counter <= review.stars %}
+                                        <i class="ph-fill ph-star"></i>
+                                    {% else %}
+                                        <i class="ph ph-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                            <span style="font-weight: bold; color: #f59e0b; font-size: 0.9rem;">({{ review.stars }}/5)</span>
+                        </div>
+                        <span style="font-size: 0.85rem; color: #6b7280;">{{ review.created_at|date:"d/m/Y H:i" }}</span>
+                    </div>
+                    <p style="font-weight: 600; color: #0284c7; margin: 0 0 0.5rem 0;">{{ review.show.title }}</p>
+                    <p style="color: #374151; line-height: 1.5; margin: 0;">{{ review.review }}</p>
+                    
+                    <div style="margin-top: 1rem;">
+                        {% if review.validated %}
+                            <span style="background: #dcfce7; color: #166534; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: bold;">{% trans "APPROUVÉ" %}</span>
+                        {% elif review.validated == False %}
+                            <span style="background: #fee2e2; color: #991b1b; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: bold;">{% trans "REJETÉ" %}</span>
+                        {% else %}
+                            <span style="background: #f3f4f6; color: #374151; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: bold;">{% trans "EN ATTENTE" %}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 0.5rem; margin-left: 2rem;">
+                    <form method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="review_id" value="{{ review.id }}">
+                        <button type="submit" name="action" value="approve" style="background: #10b981; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;" title="{% trans 'Approuver' %}">
+                            <i class="ph ph-check"></i>
+                        </button>
+                        <button type="submit" name="action" value="reject" style="background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;" title="{% trans 'Rejeter' %}">
+                            <i class="ph ph-x"></i>
+                        </button>
+                    </form>
+                    <a href="{% url 'catalogue:prod_pin_review' review.id %}" style="background: {% if review.is_pinned %}#fef3c7{% else %}#f3f4f6{% endif %}; color: {% if review.is_pinned %}#f59e0b{% else %}#6b7280{% endif %}; border: 1px solid {% if review.is_pinned %}#f59e0b{% else %}#d1d5db{% endif %}; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;" title="{% if review.is_pinned %}{% trans 'Désépingler' %}{% else %}{% trans 'Épingler' %}{% endif %}">
+                        <i class="{% if review.is_pinned %}ph-fill{% else %}ph{% endif %} ph-push-pin" style="font-size: 1.2rem;"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div style="text-align: center; padding: 4rem; background: #f9fafb; border-radius: 12px; border: 2px dashed #e5e7eb;">
+                <p style="color: #6b7280; font-style: italic;">{% trans "Aucun avis à modérer pour vos spectacles." %}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}
