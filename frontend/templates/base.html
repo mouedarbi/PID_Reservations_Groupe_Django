@@ -77,6 +77,9 @@
                     </a>
                 </li>
                 {% if user.is_authenticated %}
+                    {% if not user.is_superuser and not user.is_staff and user.groups.all.0.name != 'PRODUCER' %}
+                        <li><a href="{% url 'accounts:become_producer' %}" style="color: #f59e0b; font-weight: bold;"><i class="ph ph-star"></i> {% trans "Devenir Producteur?" %}</a></li>
+                    {% endif %}
                     <li><a href="{% url 'accounts:user-profile' %}">{% trans "Mon compte" %}</a></li>
                     <li>
                         <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display: none;">
