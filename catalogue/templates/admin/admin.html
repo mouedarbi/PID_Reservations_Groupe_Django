@@ -44,7 +44,7 @@
                         </h5>
                         <ul class="tabs space-y-1">
                             <li class="parent-item">
-                                <a href="{% url 'admin_dashboard' %}" class="nav-btn flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
+                                <a href="{% url 'admin_dashboard' %}" class="flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
                                     <i class="ph ph-house text-2xl"></i>
                                     <span class="nav-text">Accueil</span>
                                 </a>
@@ -73,23 +73,14 @@
                             </li>
                             
                             <li class="parent-item">
-                                <button class="nav-btn flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100" aria-expanded="false">
+                                <a href="{% url 'admin_reservation_index' %}" class="flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
                                     <i class="ph ph-ticket text-2xl"></i>
                                     <span class="nav-text">Réservations</span>
-                                    <i class="ph ph-caret-down ml-auto transition-transform duration-300"></i>
-                                </button>
-                                <ul class="sub-nav mt-1 ml-6 max-h-0 space-y-1 overflow-hidden transition-all duration-300">
-                                    <li>
-                                        <a href="{% url 'admin_reservation_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
-                                            <i class="ph ph-shopping-cart text-2xl"></i>
-                                            <span>Réservations</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                </a>
                             </li>
 
                             <li class="parent-item">
-                                <a href="{% url 'admin_pending_shows' %}" class="nav-btn flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
+                                <a href="{% url 'admin_pending_shows' %}" class="flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
                                     <i class="ph ph-hand-pointing text-2xl text-red-600"></i>
                                     <span class="nav-text">Demandes Producteurs</span>
                                     {% if pending_shows_count > 0 %}
@@ -99,26 +90,17 @@
                             </li>
 
                             <li class="parent-item">
-                                <a href="{% url 'admin_producer_requests' %}" class="nav-btn flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
+                                <a href="{% url 'admin_producer_requests' %}" class="flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
                                     <i class="ph ph-graduation-cap text-2xl text-blue-600"></i>
                                     <span class="nav-text">Producteurs Juniors</span>
                                 </a>
                             </li>
                             
                             <li class="parent-item">
-                                <button class="nav-btn flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100" aria-expanded="false">
+                                <a href="{% url 'admin_user_index' %}" class="flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
                                     <i class="ph ph-users text-2xl"></i>
                                     <span class="nav-text">Utilisateurs</span>
-                                    <i class="ph ph-caret-down ml-auto transition-transform duration-300"></i>
-                                </button>
-                                <ul class="sub-nav mt-1 ml-6 max-h-0 space-y-1 overflow-hidden transition-all duration-300">
-                                    <li>
-                                        <a href="{% url 'admin_user_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
-                                            <i class="ph ph-user text-2xl"></i>
-                                            <span>Utilisateurs</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                </a>
                             </li>
                             
                             <li class="parent-item">
@@ -231,14 +213,14 @@
                         
                         <!-- Bouton notification -->
                         <div class="relative" id="notification-wrapper">
-                            <button id="notification-btn" class="relative cursor-pointer rounded-xl p-1 transition-colors md:p-2.5 flex items-center">
+                            <button id="custom-notification-btn" class="relative cursor-pointer rounded-xl p-1 transition-colors md:p-2.5 flex items-center">
                                 <i class="ph ph-bell text-xl sm:text-2xl"></i>
                             </button>
                             
-                            <div id="notification-dropdown" class="bg-bg border-border absolute top-18 -right-28 z-10 hidden w-64 rounded-lg border p-2 md:-right-32">
+                            <div id="custom-notification-dropdown" class="bg-bg border-border absolute top-18 -right-28 z-50 hidden w-64 rounded-lg border p-2 md:-right-32 shadow-lg">
                                 <div id="notification-list" class="custom-scrollbar max-h-96 overflow-y-auto">
                                     <div class="p-4 text-center text-sm text-muted">
-                                        Aucune notification actuellement
+                                        Vous n'avez aucune notification pour l'instant
                                     </div>
                                 </div>
                             </div>
@@ -250,13 +232,13 @@
                         </button>
                         
                         <div class="relative">
-                            <button id="user-menu-trigger-aside" class="px-2 py-1 sm:px-3 sm:py-2 rounded-2xl flex items-center gap-2 cursor-pointer transition-transform duration-200">
+                            <button id="custom-user-menu-trigger" class="px-2 py-1 sm:px-3 sm:py-2 rounded-2xl flex items-center gap-2 cursor-pointer transition-transform duration-200">
                                 <img src="{% static 'admin/images/user-avatar.jpg' %}" alt="avatar" class="size-8 object-cover rounded-full">
                                 
-                                <i id="user-menu-icon-aside" class="ph ph-caret-down text-text text-xl transition-transform duration-200"></i>
+                                <i id="custom-user-menu-icon" class="ph ph-caret-down text-text text-xl transition-transform duration-200"></i>
                             </button>
                             
-                            <div id="user-menu-dropdown-aside" class="absolute right-0 top-14 px-3 py-4 bg-border rounded-lg w-48 space-y-4 z-50 hidden shadow-lg">
+                            <div id="custom-user-menu-dropdown" class="absolute right-0 top-14 px-3 py-4 bg-border rounded-lg w-48 space-y-4 z-50 hidden shadow-lg">
                                 <a href="{% url 'frontend:home' %}" class="flex items-center gap-2 text-text hover:text-blue-500 transition-colors">
                                     <i class="ph ph-house"></i>
                                     <p>Revenir au site</p>
@@ -285,7 +267,7 @@
     
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{% static 'admin/js/admin-custom.js' %}"></script>
+    <script src="{% static 'admin/js/admin-custom.js' %}?v=3"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
