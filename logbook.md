@@ -245,3 +245,25 @@ Cette session a été consacrée à l'ajout d'une fonctionnalité permettant aux
 - **Priorisation** : Modification de la logique d'affichage dans `show_detail.html` pour que les avis épinglés apparaissent systématiquement en haut de la liste (tri par `is_pinned` décroissant).
 - **Mise en évidence** : Les avis épinglés bénéficient désormais d'une bordure ambre, d'un fond légèrement teinté et d'un badge visuel **"Épinglé"** avec une icône de punaise à côté du nom de l'utilisateur.
 - **Compatibilité API** : Mise à jour du `ReviewSerializer` dans `api/serializers/shows.py` pour inclure le champ `is_pinned`, assurant ainsi la persistance de l'information lors du chargement dynamique des données.
+
+## Date: mercredi 29 avril 2026
+
+### Progress Summary - Demandes pour Devenir Producteur
+
+Cette session a été consacrée à la mise en place d'un système permettant aux utilisateurs classiques de postuler pour devenir producteurs.
+
+#### 1. Système de Demande (Frontend)
+- **Point d'entrée** : Ajout d'un lien "Devenir Producteur ?" dans la barre de navigation, visible uniquement pour les utilisateurs connectés non-staff et non-producteurs.
+- **Formulaire Utilisateur** : Création de la page de soumission (`become_producer.html`) et du formulaire `ProducerRequestForm` permettant aux candidats de saisir leurs informations (Nom, Prénom, Email, Téléphone, Adresse, Présentation, Motivation).
+- **Protection anti-spam** : Une fois la demande soumise, le système bloque la création d'une nouvelle demande et affiche un message d'attente à l'utilisateur.
+
+#### 2. Modèle de Données (Backend)
+- **Modèle `ProducerRequest`** : Création du modèle pour stocker les demandes avec des champs dédiés (first_name, last_name, email, phone, address, presentation, motivation) et un système de statut (`pending`, `approved`, `rejected`).
+- **Liaisons** : Le modèle est relié à l'utilisateur Django (`User`).
+
+#### 3. Modération par l'Administrateur
+- **Dashboard Admin** : Intégration d'une nouvelle section "Producteurs Juniors" dans le menu de gauche.
+- **Vue d'examen** : Mise à jour visuelle du template `producer_request/pending.html` pour correspondre à l'esthétique moderne du dashboard admin (mode sombre, couleurs, cartes, tableaux structurés).
+- **Interface Modale** : L'examen d'une demande ouvre désormais une fenêtre modale (Modal) claire affichant toutes les informations du candidat (présentation, motivation, coordonnées) sans quitter la liste.
+- **Action de validation** : L'admin peut "Refuser" ou "Accepter". En cas d'acceptation, l'utilisateur est automatiquement ajouté au groupe `PRODUCER` et gagne accès à son propre Espace Producteur.
+
