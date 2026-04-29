@@ -3,7 +3,11 @@
 from django.urls import path
 from .views import artist, type, price, locality, location, representation, review, ticket, producer_dashboard
 from .views.show_ import index as show_index, show as show_detail, create as show_create, edit as show_edit, delete as show_delete
-from .views.admin_dashboard import admin_show_index, admin_representation_index
+from .views.admin_dashboard import (
+    admin_show_index, admin_representation_index,
+    admin_export_shows_csv, admin_import_shows_csv,
+    admin_export_representations_csv
+)
 
 app_name='catalogue'
 
@@ -60,4 +64,9 @@ urlpatterns = [
     path('ticket/<uuid:ticket_id>', ticket.ticket_detail, name='ticket-detail'),
     path('ticket/<uuid:ticket_id>/pdf', ticket.ticket_pdf, name='ticket-pdf'),
     path('reservation/<int:reservation_id>/pdf', ticket.reservation_pdf, name='reservation-pdf'),
+
+    # Admin Export/Import CSV
+    path('admin/show/export-csv/', admin_export_shows_csv, name='admin_show_export_csv'),
+    path('admin/show/import-csv/', admin_import_shows_csv, name='admin_show_import_csv'),
+    path('admin/representation/export-csv/', admin_export_representations_csv, name='admin_representation_export_csv'),
 ]
