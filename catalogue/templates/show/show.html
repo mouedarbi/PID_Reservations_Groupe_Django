@@ -7,12 +7,15 @@
 {% block content %}
     <h1>{{ show.title }}</h1>
 
+    <div class="show-description">
+        <p>{{ show.description }}</p>
+    </div>
+
     {% if show.poster %}
     <p><img src="{{ show.poster.url }}" alt="{{ show.title }}" width="200"></p>
     {% endif %}
 
     <canvas width="200" height="100" style="border:1px solid #000000;"></canvas>
-    {% endif %}
     
     {% if show.location %}
     <p><strong>Lieu de création:</strong> {{ show.location.designation }}</p>
