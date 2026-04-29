@@ -267,3 +267,9 @@ Cette session a été consacrée à la mise en place d'un système permettant au
 - **Interface Modale** : L'examen d'une demande ouvre désormais une fenêtre modale (Modal) claire affichant toutes les informations du candidat (présentation, motivation, coordonnées) sans quitter la liste.
 - **Action de validation** : L'admin peut "Refuser" ou "Accepter". En cas d'acceptation, l'utilisateur est automatiquement ajouté au groupe `PRODUCER` et gagne accès à son propre Espace Producteur.
 
+#### 4. Améliorations de l'UI/UX du Dashboard Administrateur
+- **Simplification de la Sidebar** : Remplacement des menus déroulants redondants ("Vue d'ensemble > Accueil", "Réservations > Réservations", "Utilisateurs > Utilisateurs") par des liens directs et clairs pour améliorer la navigation.
+- **Menu Profil Admin (En-tête)** : L'icône de profil en haut à droite est désormais cliquable et fonctionnelle. Elle affiche un menu contextuel permettant de "Revenir au site" (accès direct au front-end tout en restant connecté) et de "Se déconnecter" (redirection propre vers l'accueil via le système Django).
+- **Notifications** : L'icône des notifications a été rendue interactive et affiche désormais un état vide élégant ("Aucune notification actuellement") en l'absence d'alertes.
+
+
