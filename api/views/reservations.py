@@ -34,13 +34,14 @@ class ReservationsDetailView(generics.RetrieveDestroyAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrAdmin]
-    lookup_field = 'id'
+    lookup_field = 'pk'
 
     def perform_destroy(self, instance):
-        # Restore seats
-        representation = instance.representation
-        representation.available_seats += instance.quantity
-        representation.save()
+        # Restore seats for each representation in the reservation
+        for rep_res in instance.representation_reservations.all():
+            representation = rep_res.representation
+            representation.available_seats += rep_res.quantity
+            representation.save()
         instance.delete()
 
 class MyReservationsView(generics.ListAPIView):
