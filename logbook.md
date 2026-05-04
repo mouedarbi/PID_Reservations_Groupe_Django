@@ -275,4 +275,33 @@ Cette session a été consacrée à la mise en place d'un système permettant au
 #### 5. Optimisations et Correctifs
 - **Transition de Rôle** : Lors de l'approbation d'un producteur, l'utilisateur est maintenant correctement basculé du groupe "MEMBER" vers le groupe "PRODUCER", assurant la mise à jour immédiate de ses droits et de son interface.
 - **Performance et Stabilité** : Suppression de scripts de rechargement inutiles qui provoquaient des ralentissements sur certaines pages.
-- **Correctifs d'Interactivité** : Résolution des conflits d'IDs dans le JavaScript pour garantir le bon fonctionnement des menus déroulants (profil et notifications) sur l'ensemble du dashboard.
+- **Correctifs d'Interactivity** : Résolution des conflits d'IDs dans le JavaScript pour garantir le bon fonctionnement des menus déroulants (profil et notifications) sur l'ensemble du dashboard.
+
+## Date: lundi 4 mai 2026
+
+### Progress Summary - Système de Notifications Admin & Correctifs
+
+Cette session a été consacrée à l'implémentation complète d'un système de notifications pour le dashboard d'administration, permettant un suivi en temps réel des activités critiques.
+
+#### 1. Système de Notifications (Backend)
+- **Modèle `Notification`** : Création du modèle pour stocker les alertes avec types catégorisés (`new_user`, `producer_request`, `new_show`), messages formatés HTML et liens de redirection dynamiques.
+- **Automatisation via Signals** : Implémentation de triggers automatiques dans `catalogue/signals.py` qui génèrent une notification admin lors de :
+    - L'inscription d'un nouvel utilisateur.
+    - La soumission d'une demande pour devenir producteur.
+    - La soumission d'un nouveau spectacle par un producteur pour approbation.
+- **Context Processor** : Création de `admin_notifications` pour injecter les notifications non lues et le compteur global dans tous les templates du dashboard admin.
+
+#### 2. Interface Utilisateur & Interactivité (Admin Dashboard)
+- **Topbar Dynamique** : Mise à jour du bouton cloche dans `admin.html` pour afficher un badge rouge avec le nombre exact de notifications non lues et un menu déroulant affichant les 10 alertes les plus récentes.
+- **Gestion des Lectures** : Implémentation d'une vue de redirection qui marque une notification comme lue avant d'envoyer l'administrateur vers la page concernée (ex: fiche du spectacle à approuver).
+- **Historique Complet** : Création d'une page dédiée `admin_notifications` avec pagination pour consulter l'ensemble des notifications passées.
+- **Action Groupée** : Ajout d'une fonctionnalité "Tout marquer comme lu" pour une gestion rapide du flux d'alertes.
+
+#### 3. Correctifs de Base de Données
+- **Migration Manquante** : Résolution d'une `ProgrammingError (1146)` causée par l'absence de la table `catalogue_notification`. 
+- **Actions** : Génération et application de la migration `0046_notification.py` pour synchroniser le schéma MySQL avec le nouveau modèle.
+
+#### 4. Intégration Git
+- Organisation des changements en commits structurés.
+- **Push Final** : Synchronisation de l'ensemble du travail sur le dépôt distant.
+
