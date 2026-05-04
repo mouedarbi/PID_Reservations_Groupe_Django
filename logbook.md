@@ -274,3 +274,4 @@ Cette session a été consacrée à la mise en place d'un système permettant au
 
 
 `nnotification & photo de profil : revenir au site et d�connexion
+`nnotification & photo de profil : revenir au site et d�connexion
