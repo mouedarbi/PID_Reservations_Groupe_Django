@@ -1270,6 +1270,12 @@ def admin_producer_request_action(request, pk, action):
         # Add user to PRODUCER group
         producer_group, _ = Group.objects.get_or_create(name='PRODUCER')
         req.user.groups.add(producer_group)
+        
+        # Remove user from MEMBER group if they are in it
+        member_group = Group.objects.filter(name='MEMBER').first()
+        if member_group:
+            req.user.groups.remove(member_group)
+            
         from django.contrib import messages
         messages.success(request, f"La demande de {req.first_name} {req.last_name} a été acceptée. L'utilisateur est maintenant Producteur.")
     elif action == 'reject':
