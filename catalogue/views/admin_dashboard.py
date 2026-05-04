@@ -1490,3 +1490,4 @@ def admin_export_representations_csv(request):
         ])
     
     return response
+`n@user_passes_test(is_admin)`ndef admin_mark_notification_read(request, pk):`n    \"\"\"`n    Marque une notification comme lue et redirige vers son lien.`n    \"\"\"`n    from catalogue.models import Notification`n    notification = get_object_or_404(Notification, pk=pk)`n    notification.is_read = True`n    notification.save()`n    `n    if notification.link:`n        return redirect(notification.link)`n    return redirect(\"admin_dashboard\")
