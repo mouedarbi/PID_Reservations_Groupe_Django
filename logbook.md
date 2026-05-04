@@ -273,3 +273,4 @@ Cette session a été consacrée à la mise en place d'un système permettant au
 - **Notifications** : L'icône des notifications a été rendue interactive et affiche désormais un état vide élégant ("Aucune notification actuellement") en l'absence d'alertes.
 
 
+`nnotification & photo de profil : revenir au site et d�connexion
