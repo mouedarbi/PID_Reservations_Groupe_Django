@@ -215,14 +215,42 @@
                         <div class="relative" id="notification-wrapper">
                             <button id="custom-notification-btn" class="relative cursor-pointer rounded-xl p-1 transition-colors md:p-2.5 flex items-center">
                                 <i class="ph ph-bell text-xl sm:text-2xl"></i>
+                                {% if unread_notifications_count > 0 %}
+                                    <span class="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white">
+                                        {{ unread_notifications_count }}
+                                    </span>
+                                {% endif %}
                             </button>
                             
-                            <div id="custom-notification-dropdown" class="bg-bg border-border absolute top-18 -right-28 z-50 hidden w-64 rounded-lg border p-2 md:-right-32 shadow-lg">
-                                <div id="notification-list" class="custom-scrollbar max-h-96 overflow-y-auto">
-                                    <div class="p-4 text-center text-sm text-muted">
-                                        Vous n'avez aucune notification pour l'instant
-                                    </div>
+                            <div id="custom-notification-dropdown" class="bg-bg border-border absolute top-18 -right-28 z-50 hidden w-80 rounded-lg border p-2 md:-right-32 shadow-lg">
+                                <div class="border-border border-b p-3">
+                                    <h4 class="text-sm font-bold">Notifications</h4>
                                 </div>
+                                <div id="notification-list" class="custom-scrollbar max-h-96 overflow-y-auto">
+                                    {% for notification in admin_notifications %}
+                                        <a href="{% url 'admin_mark_notification_read' notification.id %}" class="block border-border border-b p-3 hover:bg-gray-100 last:border-0 transition-colors">
+                                            <div class="flex flex-col gap-1">
+                                                <div class="flex items-center justify-between">
+                                                    <span class="text-xs font-bold text-blue-600 uppercase">{{ notification.get_type_display }}</span>
+                                                    <span class="text-[10px] text-muted">{{ notification.created_at|timesince }} ago</span>
+                                                </div>
+                                                <p class="text-sm leading-tight text-text">
+                                                    {{ notification.message|safe }}
+                                                </p>
+                                            </div>
+                                        </a>
+                                    {% empty %}
+                                        <div class="p-8 text-center text-sm text-muted">
+                                            <i class="ph ph-bell-slash text-4xl mb-2 block opacity-20"></i>
+                                            Vous n'avez aucune notification pour l'instant
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% if admin_notifications %}
+                                <div class="p-2 text-center">
+                                    <a href="#" class="text-xs text-blue-600 hover:underline">Voir toutes les notifications</a>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                         
