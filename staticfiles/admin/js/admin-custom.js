@@ -87,11 +87,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Toggle notification dropdown
-    const notificationBtn = document.getElementById('notification-btn');
-    const notificationDropdown = document.getElementById('notification-dropdown');
+    const notificationBtn = document.getElementById('custom-notification-btn');
+    const notificationDropdown = document.getElementById('custom-notification-dropdown');
     
     if (notificationBtn && notificationDropdown) {
-        notificationBtn.addEventListener('click', function() {
+        notificationBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
             notificationDropdown.classList.toggle('hidden');
         });
         
@@ -104,11 +105,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Toggle user menu
-    const userMenuTrigger = document.getElementById('user-menu-trigger-aside');
-    const userMenuDropdown = document.getElementById('user-menu-dropdown-aside');
+    const userMenuTrigger = document.getElementById('custom-user-menu-trigger');
+    const userMenuDropdown = document.getElementById('custom-user-menu-dropdown');
     
     if (userMenuTrigger && userMenuDropdown) {
-        userMenuTrigger.addEventListener('click', function() {
+        userMenuTrigger.addEventListener('click', function(e) {
+            e.stopPropagation();
             userMenuDropdown.classList.toggle('hidden');
         });
         
