@@ -10,7 +10,7 @@ def notify_new_user(sender, instance, created, **kwargs):
         Notification.objects.create(
             type='new_user',
             title='Nouvel Utilisateur',
-            message=f"✨ <b>{instance.username}</b> vient de rejoindre ThéâtrePlus ! Bienvenue à notre nouveau membre.",
+            message=f"<b>{instance.username}</b> vient de rejoindre ThéâtrePlus ! Bienvenue à notre nouveau membre.",
             link=reverse('admin_user_index')
         )
 
@@ -20,7 +20,7 @@ def notify_producer_request(sender, instance, created, **kwargs):
         Notification.objects.create(
             type='producer_request',
             title='Demande Producteur',
-            message=f"📄 <b>{instance.user.username}</b> a soumis une candidature pour devenir producteur.",
+            message=f"<b>{instance.user.username}</b> a soumis une candidature pour devenir producteur.",
             link=reverse('admin_producer_requests')
         )
 
@@ -31,6 +31,6 @@ def notify_new_show(sender, instance, created, **kwargs):
         Notification.objects.create(
             type='new_show',
             title='Nouveau Spectacle',
-            message=f"🎬 <b>{producer_name}</b> a soumis le spectacle '<b>{instance.title}</b>' pour approbation.",
+            message=f"<b>{producer_name}</b> a soumis le spectacle '<b>{instance.title}</b>' pour approbation.",
             link=reverse('admin_approve_show', args=[instance.pk])
         )
