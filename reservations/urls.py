@@ -34,7 +34,7 @@ from catalogue.views.admin_dashboard import (
     admin_group_index, admin_group_create, admin_group_edit, admin_group_detail,
     admin_generic_delete, admin_settings, admin_payment_index, admin_ticketmaster_sync,
     admin_ticketmaster_sync_live, admin_pending_shows, admin_approve_show,
-    admin_producer_requests, admin_producer_request_action
+    admin_producer_requests, admin_producer_request_action, admin_mark_notification_read
 )
 
 
@@ -130,6 +130,9 @@ urlpatterns = [
 
     # Generic Delete (Soft Delete)
     path('admin-dashboard/delete/<str:model_name>/<int:pk>/', admin_generic_delete, name='admin_generic_delete'),
+    
+    # Notifications
+    path('admin-dashboard/notifications/mark-read/<int:pk>/', admin_mark_notification_read, name='admin_mark_notification_read'),
 
     path('accounts/', include('accounts.urls')), # All accounts/auth related URLs will be handled here
     
