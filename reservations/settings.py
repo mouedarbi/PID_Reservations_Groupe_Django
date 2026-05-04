@@ -85,6 +85,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
                 "cart.context_processors.cart",
+                "catalogue.context_processors.admin_notifications",
             ],
         },
     },
