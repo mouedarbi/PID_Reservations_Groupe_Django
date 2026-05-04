@@ -1500,7 +1500,37 @@ def admin_mark_notification_read(request, pk):
     notification = get_object_or_404(Notification, pk=pk)
     notification.is_read = True
     notification.save()
-    
+
     if notification.link:
         return redirect(notification.link)
     return redirect("admin_dashboard")
+
+@user_passes_test(is_admin)
+def admin_notifications(request):
+    """
+    Affiche la liste complète des notifications.
+    """
+    from catalogue.models import Notification
+    from django.core.paginator import Paginator
+
+    notifications_list = Notification.objects.all()
+    paginator = Paginator(notifications_list, 20) # Show 20 notifications per page
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'admin/notifications.html', {
+        'page_obj': page_obj,
+    })
+
+@user_passes_test(is_admin)
+def admin_mark_all_notifications_read(request):
+    """
+    Marque toutes les notifications non lues comme lues.
+    """
+    from catalogue.models import Notification
+    from django.contrib import messages
+    Notification.objects.filter(is_read=False).update(is_read=True)
+
+    messages.success(request, "Toutes les notifications ont été marquées comme lues.")
+    return redirect('admin_notifications')
