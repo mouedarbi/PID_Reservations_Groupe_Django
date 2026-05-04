@@ -15,3 +15,4 @@ from .show_price import *
 from .ticket import *
 from .producer_request import *
 from .affiliation import *
+from .notification import *
