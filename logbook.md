@@ -305,3 +305,29 @@ Cette session a été consacrée à l'implémentation complète d'un système de
 - Organisation des changements en commits structurés.
 - **Push Final** : Synchronisation de l'ensemble du travail sur le dépôt distant.
 
+## Date: mardi 5 mai 2026
+
+### Progress Summary - Refactorisation des Assets & Correctifs CI
+
+Cette session a été focalisée sur la réorganisation structurelle des fichiers statiques du projet et la résolution de bugs bloquant l'intégration continue (CI).
+
+#### 1. Refactorisation Majeure des Assets (Dossier `static`)
+- **Centralisation** : Création d'un dossier `static/` à la racine du projet pour regrouper de manière cohérente toutes les ressources non dynamiques.
+- **Migration des fichiers** : Déplacement (et non simple copie) de l'ensemble des fichiers CSS, JS et images vers ce nouvel emplacement :
+    - Les assets du dashboard admin (autrefois dans `catalogue/templates/static/admin`).
+    - Les fichiers globaux du frontend.
+    - Les diagrammes de documentation (`docs/analyse/`).
+    - Les images de spectacles (`media/posters/`).
+- **Fusion `staticfiles`** : Intégration des fichiers collectés dans le nouveau dossier racine pour simplifier la gestion des environnements.
+- **Mise à jour de la configuration** : Modification de `reservations/settings.py` pour redéfinir `STATICFILES_DIRS` et `MEDIA_ROOT` vers la nouvelle structure, garantissant le bon fonctionnement des serveurs de développement et de production.
+
+#### 2. Résolution des Erreurs d'Encodage MySQL (Fix CI)
+- **Identification du bug** : Analyse d'une `OperationalError (1366)` lors de l'exécution des tests automatisés sur GitHub Actions, causée par l'utilisation de caractères Unicode 4-octets (emojis) dans les messages de notification.
+- **Action corrective** : Suppression systématique des emojis (🎬, ✨, 📄) dans `catalogue/signals.py` pour assurer une compatibilité totale avec les bases de données MySQL utilisant l'encodage `utf8` standard.
+
+#### 3. Maintenance Git & Synchronisation
+- **Nettoyage** : Suppression des dossiers sources obsolètes après le déplacement des fichiers pour maintenir un dépôt propre.
+- **Versionning local** : Synchronisation forcée de la branche locale avec la branche distante `dev_ghiles` pour garantir l'intégrité du code source sur tous les postes de travail.
+- **Commits structurés** : Enregistrement des changements par modules fonctionnels pour faciliter le suivi des révisions.
+
+
