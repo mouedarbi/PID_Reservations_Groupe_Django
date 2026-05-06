@@ -1,146 +1,1976 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
 msgid ""
-
 msgstr ""
-
 "Project-Id-Version: PACKAGE VERSION\n"
-
 "Report-Msgid-Bugs-To: \n"
-
-"POT-Creation-Date: 2026-04-01 18:41+0000\n"
-
+"POT-Creation-Date: 2026-05-07 00:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-
 "Language-Team: LANGUAGE <LL@li.org>\n"
-
-"Language: nl\n"
-
+"Language: \n"
 "MIME-Version: 1.0\n"
-
 "Content-Type: text/plain; charset=UTF-8\n"
-
 "Content-Transfer-Encoding: 8bit\n"
-
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: .\accounts\forms\ProducerRequestForm.py:10
+#: .\catalogue\templates\admin\producer_request\pending.html:70
+msgid "Prénom"
+msgstr "Voornaam"
 
-msgid "Réservez vos spectacles"
+#: .\accounts\forms\ProducerRequestForm.py:12
+#: .\catalogue\templates\admin\producer_request\pending.html:29
+#: .\catalogue\templates\admin\producer_request\pending.html:72
+msgid "Email"
+msgstr "E-mail"
 
-msgstr "Reserveer uw voorstellingen"
+#: .\accounts\forms\ProducerRequestForm.py:13
+#: .\catalogue\templates\admin\producer_request\pending.html:73
+msgid "Téléphone"
+msgstr "Telefoon"
 
-msgid "Ma Consommation"
-msgstr "Mijn Verbruik"
+#: .\accounts\forms\ProducerRequestForm.py:14
+#: .\catalogue\templates\admin\producer_request\pending.html:74
+msgid "Adresse"
+msgstr "Adres"
 
-msgid "Espace Développeur"
-msgstr "Ontwikkelaarsruimte"
+#: .\accounts\forms\ProducerRequestForm.py:15
+msgid "Présentez-vous"
+msgstr "Stel jezelf voor"
 
-msgid "Gérez votre accès API et vos abonnements d'affiliation."
-msgstr "Beheer uw API-toegang en affiliate-abonnementen."
+#: .\accounts\forms\ProducerRequestForm.py:16
+msgid "Votre motivation"
+msgstr "Uw motivatie"
 
-msgid "Consommation de l'API"
-msgstr "API Verbruik"
+#: .\accounts\forms\ProducerRequestForm.py:24
+msgid "Présentez-vous brièvement (max 500 caractères)..."
+msgstr "Stel jezelf kort voor (max 500 tekens)..."
 
-msgid "Suivez l'utilisation de vos quotas en temps réel."
-msgstr "Volg uw quotaverbruik in realtime."
+#: .\accounts\forms\ProducerRequestForm.py:25
+msgid "Qu'avez-vous l'intention de proposer ?"
+msgstr "Wat bent u van plan voor te stellen?"
 
-msgid "Votre Clé API"
-msgstr "Uw API-sleutel"
+#: .\accounts\templates\user\_sidebar.html:11
+msgid "Administrateur"
+msgstr "Beheerder"
 
-msgid "Plan actuel :"
-msgstr "Huidig Plan:"
+#: .\accounts\templates\user\_sidebar.html:13
+#: .\catalogue\templates\admin\show\pending.html:29
+msgid "Producteur"
+msgstr "Producent"
 
-msgid "Copier"
-msgstr "Kopiëren"
+#: .\accounts\templates\user\_sidebar.html:15
+msgid "Critique de Presse"
+msgstr "Persrecensent"
 
-msgid "Gardez cette clé secrète. Elle vous permet d'authentifier vos requêtes vers notre API."
-msgstr "Houd deze sleutel geheim. Hiermee kunt u uw verzoeken aan onze API authenticeren."
+#: .\accounts\templates\user\_sidebar.html:17
+msgid "Membre"
+msgstr "Lid"
 
-msgid "Vous n'avez pas encore activé votre accès API."
-msgstr "U heeft uw API-toegang nog niet geactiveerd."
+#: .\accounts\templates\user\_sidebar.html:37
+msgid "Langue préférée"
+msgstr "Voorkeurstaal"
 
-msgid "Générer ma clé API Free"
-msgstr "Genereer mijn gratis API-sleutel"
-
-msgid "Boostez votre accès"
-msgstr "Verbeter uw toegang"
-
-msgid "appels / jour"
-msgstr "oproepen / dag"
-
-msgid "Données complètes"
-msgstr "Volledige gegevens"
-
-msgid "Données limitées"
-msgstr "Beperkte gegevens"
-
-msgid "Support prioritaire"
-msgstr "Prioritaire ondersteuning"
-
-msgid "S'abonner"
-msgstr "Abonneren"
-
-msgid "Choisir ce plan"
-msgstr "Kies dit plan"
-
-msgid "Plan actif"
-msgstr "Actief plan"
-
-msgid "Statistiques d'utilisation"
-msgstr "Gebruiksstatistieken"
-
-msgid "Utilisation aujourd'hui"
-msgstr "Gebruik vandaag"
-
-msgid "Votre quota est réinitialisé chaque jour à minuit."
-msgstr "Uw quota wordt elke dag om middernacht gereset."
-
-msgid "Disponibles"
-msgstr "Beschikbaar"
-
-msgid "Historique récent"
-msgstr "Recente geschiedenis"
-
-msgid "Heure"
-msgstr "Tijd"
-
-msgid "Méthode"
-msgstr "Methode"
-
-msgid "Réponse"
-msgstr "Antwoord"
-
-msgid "Aucun appel enregistré au cours des dernières 24h."
-msgstr "Geen oproepen geregistreerd in de afgelopen 24 uur."
-
-msgid "Paiement Réussi !"
-msgstr "Betaling Geslaagd!"
-
-msgid "Votre abonnement API a été mis à jour avec succès."
-msgstr "Uw API-abonnement is succesvol bijgewerkt."
-
-msgid "Bienvenue dans le plan"
-msgstr "Welkom bij het plan"
-
-msgid "Votre accès API a été instantanément mis à niveau. Vous pouvez désormais effectuer jusqu'à"
-msgstr "Uw API-toegang is direct geüpgraded. U kunt nu maximaal"
-
-msgid "Résumé de vos avantages :"
-msgstr "Samenvatting van uw voordelen:"
-
-msgid "Accès complet aux données (artistes, prix...)"
-msgstr "Volledige toegang tot gegevens (artiesten, prijzen...)"
-
-msgid "Accès limité aux données de base"
-msgstr "Beperkte toegang tot basisgegevens"
-
-msgid "Retourner à l'Espace API"
-msgstr "Terug naar API-ruimte"
-
+#: .\accounts\templates\user\_sidebar.html:42
+#: .\payments\templates\payments\success_api.html:40
 msgid "Mon Profil"
 msgstr "Mijn Profiel"
 
+#: .\accounts\templates\user\_sidebar.html:45
+msgid "Modifier le profil"
+msgstr "Profiel bewerken"
+
+#: .\accounts\templates\user\_sidebar.html:48
 msgid "Accès API"
 msgstr "API Toegang"
 
+#: .\accounts\templates\user\_sidebar.html:51
+msgid "Ma Consommation"
+msgstr "Mijn Verbruik"
+
+#: .\accounts\templates\user\_sidebar.html:54
+msgid "Mot de passe"
+msgstr "Wachtwoord"
+
+#: .\accounts\templates\user\_sidebar.html:59
+msgid "Administration"
+msgstr "Administratie"
+
+#: .\accounts\templates\user\_sidebar.html:67
+#: .\catalogue\templates\prod\prod_dashboard.html:4
+#: .\catalogue\templates\prod\prod_dashboard.html:9
+#: .\frontend\templates\base.html:172
+msgid "Espace Producteur"
+msgstr "Producentenruimte"
+
+#: .\accounts\templates\user\_sidebar.html:72
+msgid "Mes articles de presse"
+msgstr "Mijn persartikelen"
+
+#: .\accounts\templates\user\_sidebar.html:79
+msgid "Devenir Critique de Presse ?"
+msgstr "Persrecensent worden?"
+
+#: .\accounts\templates\user\_sidebar.html:84
+msgid "Êtes-vous sûr ?"
+msgstr "Weet u het zeker?"
+
+#: .\accounts\templates\user\_sidebar.html:88
+msgid "Supprimer mon compte"
+msgstr "Mijn account verwijderen"
+
+#: .\accounts\templates\user\api.html:5
+msgid "Mon Accès API - ThéâtrePlus"
+msgstr "Mijn API-toegang - ThéâtrePlus"
+
+#: .\accounts\templates\user\api.html:10
+msgid "Espace Développeur"
+msgstr "Ontwikkelaarsruimte"
+
+#: .\accounts\templates\user\api.html:11
+msgid "Gérez votre accès API et vos abonnements d'affiliation."
+msgstr "Beheer uw API-toegang en affiliate-abonnementen."
+
+#: .\accounts\templates\user\api.html:24
+msgid "Votre Clé API"
+msgstr "Uw API-sleutel"
+
+#: .\accounts\templates\user\api.html:25
+msgid "Plan actuel :"
+msgstr "Huidig plan:"
+
+#: .\accounts\templates\user\api.html:31
+msgid "Copier"
+msgstr "Kopiëren"
+
+#: .\accounts\templates\user\api.html:35
+msgid ""
+"Gardez cette clé secrète. Elle vous permet d'authentifier vos requêtes vers "
+"notre API."
+msgstr ""
+
+#: .\accounts\templates\user\api.html:39
+msgid "Vous n'avez pas encore activé votre accès API."
+msgstr "U heeft uw API-toegang nog niet geactiveerd."
+
+#: .\accounts\templates\user\api.html:43
+msgid "Générer ma clé API Free"
+msgstr "Genereer mijn gratis API-sleutel"
+
+#: .\accounts\templates\user\api.html:51
+msgid "Boostez votre accès"
+msgstr "Verbeter uw toegang"
+
+#: .\accounts\templates\user\api.html:56
+#: .\accounts\templates\user\api_usage.html:41
+msgid "Plan Actuel"
+msgstr "Huidig Plan"
+
+#: .\accounts\templates\user\api.html:62
+msgid "mois"
+msgstr "maand"
+
+#: .\accounts\templates\user\api.html:67
+#: .\payments\templates\payments\success_api.html:29
+msgid "appels / jour"
+msgstr "oproepen / dag"
+
+#: .\accounts\templates\user\api.html:72
+msgid "Données complètes"
+msgstr "Volledige gegevens"
+
+#: .\accounts\templates\user\api.html:74
+msgid "Données limitées"
+msgstr "Beperkte gegevens"
+
+#: .\accounts\templates\user\api.html:78
+msgid "Support prioritaire"
+msgstr "Prioritaire ondersteuning"
+
+#: .\accounts\templates\user\api.html:88
+msgid "S'abonner"
+msgstr "Abonneren"
+
+#: .\accounts\templates\user\api.html:90
+msgid "Choisir ce plan"
+msgstr "Kies dit plan"
+
+#: .\accounts\templates\user\api.html:96
+msgid "Plan actif"
+msgstr "Actief plan"
+
+#: .\accounts\templates\user\api.html:111
+msgid "Clé API copiée dans le presse-papier !"
+msgstr "API-sleutel gekopieerd naar klembord!"
+
+#: .\accounts\templates\user\api_usage.html:5
+msgid "Consommation API - ThéâtrePlus"
+msgstr "API Verbruik - ThéâtrePlus"
+
+#: .\accounts\templates\user\api_usage.html:10
+msgid "Consommation de l'API"
+msgstr "API Verbruik"
+
+#: .\accounts\templates\user\api_usage.html:11
+msgid "Suivez l'utilisation de vos quotas en temps réel."
+msgstr "Volg uw quotaverbruik in realtime."
+
+#: .\accounts\templates\user\api_usage.html:24
+msgid "Statistiques d'utilisation"
+msgstr "Gebruiksstatistieken"
+
+#: .\accounts\templates\user\api_usage.html:28
+msgid "Utilisation aujourd'hui"
+msgstr "Gebruik vandaag"
+
+#: .\accounts\templates\user\api_usage.html:35
+msgid "Votre quota est réinitialisé chaque jour à minuit."
+msgstr "Uw quota wordt elke dag om middernacht gereset."
+
+#: .\accounts\templates\user\api_usage.html:45
+msgid "Disponibles"
+msgstr "Beschikbaar"
+
+#: .\accounts\templates\user\api_usage.html:56
+msgid "Historique récent"
+msgstr "Recente geschiedenis"
+
+#: .\accounts\templates\user\api_usage.html:62
+#: .\catalogue\templates\admin\show\approve.html:69
+#: .\catalogue\templates\prod\submit_show.html:70
+msgid "Heure"
+msgstr "Tijd"
+
+#: .\accounts\templates\user\api_usage.html:63
+msgid "Méthode"
+msgstr "Methode"
+
+#: .\accounts\templates\user\api_usage.html:64
+msgid "Endpoint"
+msgstr "Eindpunt"
+
+#: .\accounts\templates\user\api_usage.html:65
+msgid "Réponse"
+msgstr "Antwoord"
+
+#: .\accounts\templates\user\api_usage.html:83
+msgid "Aucun appel enregistré au cours des dernières 24h."
+msgstr "Geen oproepen geregistreerd in de afgelopen 24 uur."
+
+#: .\accounts\templates\user\become_critic.html:4
+#: .\accounts\templates\user\become_critic.html:9
+#: .\frontend\templates\press_article_list.html:16
+msgid "Devenir Critique de Presse"
+msgstr "Persrecensent worden"
+
+#: .\accounts\templates\user\become_critic.html:10
+msgid "Partagez vos analyses et critiques professionnelles sur ThéâtrePlus."
+msgstr "Deel uw professionele analyses en recensies op ThéâtrePlus."
+
+#: .\accounts\templates\user\become_critic.html:22
+#: .\accounts\templates\user\become_producer.html:22
+msgid "Demande en cours de traitement"
+msgstr "Aanvraag wordt verwerkt"
+
+#: .\accounts\templates\user\become_critic.html:27
+#: .\accounts\templates\user\become_producer.html:27
+#: .\frontend\templates\location_list.html:45
+#: .\payments\templates\payments\cancel.html:31
+#: .\payments\templates\payments\failed.html:31
+#: .\payments\templates\payments\success.html:31
+msgid "Retour à l'accueil"
+msgstr "Terug naar home"
+
+#: .\accounts\templates\user\become_critic.html:32
+msgid "Soumettre votre candidature"
+msgstr "Uw kandidatuur indienen"
+
+#: .\accounts\templates\user\become_critic.html:80
+msgid "Envoyer ma candidature"
+msgstr "Mijn kandidatuur verzenden"
+
+#: .\accounts\templates\user\become_producer.html:4
+#: .\accounts\templates\user\become_producer.html:9
+#: .\frontend\templates\base.html:188
+msgid "Devenir Producteur"
+msgstr "Producent worden"
+
+#: .\accounts\templates\user\become_producer.html:10
+msgid "Proposez vos propres spectacles sur ThéâtrePlus."
+msgstr "Stel uw eigen voorstellingen voor op ThéâtrePlus."
+
+#: .\accounts\templates\user\become_producer.html:32
+msgid "Soumettre votre demande"
+msgstr "Uw aanvraag indienen"
+
+#: .\accounts\templates\user\become_producer.html:76
+msgid "Maximum 500 caractères."
+msgstr "Maximaal 500 tekens."
+
+#: .\accounts\templates\user\become_producer.html:87
+msgid "Soumettre ma demande"
+msgstr "Mijn aanvraag indienen"
+
+#: .\accounts\templates\user\profile.html:5
+msgid "Mon Profil - ThéâtrePlus"
+msgstr "Mijn Profiel - ThéâtrePlus"
+
+#: .\accounts\templates\user\profile.html:11
+msgid "Bonjour,"
+msgstr "Hallo,"
+
+#: .\accounts\templates\user\profile.html:12
+msgid "Gérez vos informations et consultez vos réservations."
+msgstr "Beheer uw informatie en bekijk uw reserveringen."
+
+#: .\accounts\templates\user\profile.html:25
+msgid "Mes Réservations"
+msgstr "Mijn reserveringen"
+
+#: .\accounts\templates\user\profile.html:32
+msgid "ID"
+msgstr "ID"
+
+#: .\accounts\templates\user\profile.html:33
+#: .\catalogue\templates\admin\payment\index.html:36
+#: .\catalogue\templates\admin\show\approve.html:65
+#: .\catalogue\templates\prod\submit_show.html:66
+msgid "Date"
+msgstr "Datum"
+
+#: .\accounts\templates\user\profile.html:34
+msgid "Spectacle(s)"
+msgstr "Voorstelling(en)"
+
+#: .\accounts\templates\user\profile.html:35
+#: .\catalogue\templates\admin\payment\index.html:35
+msgid "Statut"
+msgstr "Status"
+
+#: .\accounts\templates\user\profile.html:36
+#: .\catalogue\templates\prod\prod_dashboard.html:40
+msgid "Action"
+msgstr "Actie"
+
+#: .\accounts\templates\user\profile.html:49
+msgid "place(s) à"
+msgstr "plaats(en) aan"
+
+#: .\accounts\templates\user\profile.html:53
+msgid "Aucun spectacle trouvé"
+msgstr "Geen voorstelling gevonden"
+
+#: .\accounts\templates\user\profile.html:58
+#: .\cart\templates\cart\reservation_detail.html:22
+msgid "PAYÉ"
+msgstr "BETAALD"
+
+#: .\accounts\templates\user\profile.html:60
+msgid "ATTENTE"
+msgstr "WACHTEND"
+
+#: .\accounts\templates\user\profile.html:62
+msgid "ÉCHEC"
+msgstr "MISLUKT"
+
+#: .\accounts\templates\user\profile.html:70
+#: .\payments\templates\payments\success.html:28
+msgid "Voir mes billets"
+msgstr "Mijn tickets bekijken"
+
+#: .\accounts\templates\user\profile.html:74
+msgid "Détails"
+msgstr "Details"
+
+#: .\accounts\templates\user\profile.html:86
+msgid "Vous n'avez pas encore effectué de réservation."
+msgstr "U heeft nog geen reservering gemaakt."
+
+#: .\accounts\templates\user\profile.html:87
+#: .\cart\templates\cart\detail.html:103
+msgid "Découvrir les spectacles"
+msgstr "Ontdek de voorstellingen"
+
+#: .\accounts\views.py:24
+msgid "Vous n'avez pas l'autorisation d'accéder à cette page!"
+msgstr "U heeft geen toestemming om deze pagina te bekijken!"
+
+#: .\accounts\views.py:36
+msgid "Vous êtes déjà inscrit!"
+msgstr "U bent al geregistreerd!"
+
+#: .\accounts\views.py:42
+msgid "Français"
+msgstr "Frans"
+
+#: .\accounts\views.py:43 .\reservations\settings.py:160
+msgid "English"
+msgstr "Engels"
+
+#: .\accounts\views.py:44
+msgid "Nederlands"
+msgstr "Nederlands"
+
+#: .\accounts\views.py:61 .\accounts\views.py:63
+msgid "Non définie"
+msgstr "Niet gedefinieerd"
+
+#: .\accounts\views.py:81
+msgid "Utilisateur supprimé avec succès."
+msgstr "Gebruiker succesvol verwijderd."
+
+#: .\accounts\views.py:85
+msgid "Suppression d'un autre compte interdite!"
+msgstr "Verwijderen van een ander account niet toegestaan!"
+
+#: .\accounts\views.py:89
+msgid "Suppression interdite (méthode incorrecte)!"
+msgstr "Verwijderen niet toegestaan (onjuiste methode)!"
+
+#: .\accounts\views.py:157
+msgid "Vous êtes déjà producteur."
+msgstr "U bent al producent."
+
+#: .\accounts\views.py:192
+msgid "Vous êtes déjà critique de presse."
+msgstr "U bent al persrecensent."
+
+#: .\cart\templates\cart\checkout.html:4
+msgid "Confirmation de commande"
+msgstr "Bestelbevestiging"
+
+#: .\cart\templates\cart\checkout.html:8
+msgid "Confirmation de votre commande"
+msgstr "Bevestiging van uw bestelling"
+
+#: .\cart\templates\cart\checkout.html:13
+msgid "Récapitulatif"
+msgstr "Overzicht"
+
+#: .\cart\templates\cart\checkout.html:35
+msgid "TOTAL À PAYER :"
+msgstr "TOTAAL TE BETALEN:"
+
+#: .\cart\templates\cart\checkout.html:44
+msgid "Modifier mon panier"
+msgstr "Mijn winkelmandje bewerken"
+
+#: .\cart\templates\cart\checkout.html:50
+msgid "Confirmer et Payer"
+msgstr "Bevestigen en betalen"
+
+#: .\cart\templates\cart\detail.html:5
+msgid "Votre Panier - ThéâtrePlus"
+msgstr "Uw Winkelmandje - ThéâtrePlus"
+
+#: .\cart\templates\cart\detail.html:11
+msgid "Votre Panier"
+msgstr "Uw Winkelmandje"
+
+#: .\cart\templates\cart\detail.html:12
+msgid "Finalisez votre réservation et préparez-vous pour le spectacle."
+msgstr "Rond uw reservering af en bereid u voor op de voorstelling."
+
+#: .\cart\templates\cart\detail.html:25
+msgid "Événement"
+msgstr "Evenement"
+
+#: .\cart\templates\cart\detail.html:26
+msgid "Tarif"
+msgstr "Tarief"
+
+#: .\cart\templates\cart\detail.html:27
+msgid "Quantité"
+msgstr "Aantal"
+
+#: .\cart\templates\cart\detail.html:28
+msgid "Prix"
+msgstr "Prijs"
+
+#: .\cart\templates\cart\detail.html:38
+#: .\catalogue\templates\representation\show.html:25
+#: .\frontend\templates\location_detail.html:63
+msgid "à"
+msgstr "te"
+
+#: .\cart\templates\cart\detail.html:52
+#: .\catalogue\templates\prod\moderate_press_articles.html:80
+#: .\frontend\templates\show_detail.html:220
+msgid "Supprimer"
+msgstr "Verwijderen"
+
+#: .\cart\templates\cart\detail.html:63
+msgid "Continuer mes achats"
+msgstr "Verder winkelen"
+
+#: .\cart\templates\cart\detail.html:70
+msgid "Résumé"
+msgstr "Samenvatting"
+
+#: .\cart\templates\cart\detail.html:73
+msgid "Sous-total"
+msgstr "Subtotaal"
+
+#: .\cart\templates\cart\detail.html:77
+msgid "Frais de service"
+msgstr "Servicekosten"
+
+#: .\cart\templates\cart\detail.html:78
+msgid "OFFERT"
+msgstr "GRATIS"
+
+#: .\cart\templates\cart\detail.html:82
+#: .\cart\templates\cart\reservation_detail.html:34
+msgid "Total"
+msgstr "Totaal"
+
+#: .\cart\templates\cart\detail.html:87
+msgid "Valider la commande"
+msgstr "Bestelling bevestigen"
+
+#: .\cart\templates\cart\detail.html:91
+msgid "Paiement sécurisé via notre plateforme"
+msgstr "Veilig betalen via ons platform"
+
+#: .\cart\templates\cart\detail.html:100
+msgid "Votre panier est vide"
+msgstr "Uw winkelmandje is leeg"
+
+#: .\cart\templates\cart\detail.html:101
+msgid "Il semble que vous n'ayez pas encore choisi de spectacle."
+msgstr "Het lijkt erop dat u nog geen voorstelling heeft gekozen."
+
+#: .\cart\templates\cart\payment_simulation.html:4
+msgid "Simulation de paiement"
+msgstr "Betalingssimulatie"
+
+#: .\cart\templates\cart\payment_simulation.html:13
+msgid "Passerelle de Paiement"
+msgstr "Betalingsgateway"
+
+#: .\cart\templates\cart\payment_simulation.html:14
+msgid "Simulation de la transaction pour la réservation"
+msgstr "Simulatie van de transactie voor de reservering"
+
+#: .\cart\templates\cart\payment_simulation.html:17
+msgid "Montant à débiter"
+msgstr "Te debiteren bedrag"
+
+#: .\cart\templates\cart\payment_simulation.html:24
+msgid "Simuler un PAIEMENT RÉUSSI"
+msgstr "Simuleer een GESLAAGDE BETALING"
+
+#: .\cart\templates\cart\payment_simulation.html:28
+msgid "Simuler un ÉCHEC DE PAIEMENT"
+msgstr "Simuleer een MISLUKTE BETALING"
+
+#: .\cart\templates\cart\reservation_detail.html:5
+#: .\cart\templates\cart\reservation_detail.html:11
+#: .\catalogue\templates\admin\payment\index.html:32
+msgid "Réservation"
+msgstr "Reservering"
+
+#: .\cart\templates\cart\reservation_detail.html:10
+msgid "Détails de votre réservation"
+msgstr "Details van uw reservering"
+
+#: .\cart\templates\cart\reservation_detail.html:11
+msgid "du"
+msgstr "van"
+
+#: .\cart\templates\cart\reservation_detail.html:20
+msgid "Récapitulatif des billets"
+msgstr "Ticketoverzicht"
+
+#: .\cart\templates\cart\reservation_detail.html:23
+#: .\catalogue\templates\prod\moderate_press_articles.html:42
+#: .\catalogue\templates\prod\moderate_reviews.html:52
+msgid "EN ATTENTE"
+msgstr "IN AFWACHTING"
+
+#: .\cart\templates\cart\reservation_detail.html:24
+msgid "ÉCHOUÉ"
+msgstr "MISLUKT"
+
+#: .\cart\templates\cart\reservation_detail.html:32
+msgid "Spectacle / Séance"
+msgstr "Voorstelling / Sessie"
+
+#: .\cart\templates\cart\reservation_detail.html:33
+msgid "Places"
+msgstr "Plaatsen"
+
+#: .\cart\templates\cart\reservation_detail.html:63
+msgid "Billets individuels (QR Codes) :"
+msgstr "Individuele tickets (QR-codes):"
+
+#: .\cart\templates\cart\reservation_detail.html:68
+msgid "Billet"
+msgstr "Ticket"
+
+#: .\cart\templates\cart\reservation_detail.html:80
+msgid "Montant Total :"
+msgstr "Totaalbedrag:"
+
+#: .\cart\templates\cart\reservation_detail.html:89
+msgid "Retour à mon profil"
+msgstr "Terug naar mijn profiel"
+
+#: .\cart\templates\cart\reservation_detail.html:93
+#: .\catalogue\templates\catalogue\ticket_detail.html:74
+msgid "Imprimer"
+msgstr "Printen"
+
+#: .\cart\templates\cart\reservation_detail.html:98
+msgid "Télécharger tous les billets (PDF)"
+msgstr "Download alle tickets (PDF)"
+
+#: .\cart\templates\cart\reservation_detail.html:107
+msgid "Un exemplaire de vos billets a été envoyé à votre adresse e-mail"
+msgstr "Een kopie van uw tickets is verzonden naar uw e-mailadres"
+
+#: .\cart\templates\cart\reservation_detail.html:108
+msgid "Vous pouvez les consulter même si vous n'avez plus accès à internet."
+msgstr "U kunt ze bekijken, zelfs als u geen internettoegang meer heeft."
+
+#: .\cart\views.py:25
+#, python-format
+msgid "Désolé, il ne reste que %(seats)s places disponibles."
+msgstr "Sorry, er zijn nog maar %(seats)s plaatsen beschikbaar."
+
+#: .\cart\views.py:65
+msgid "Votre panier est vide."
+msgstr "Uw winkelmandje is leeg."
+
+#: .\catalogue\templates\admin\critic_request\pending.html:18
+msgid "Gérez les candidatures pour devenir critique de presse."
+msgstr "Beheer de kandidaturen om persrecensent te worden."
+
+#: .\catalogue\templates\admin\critic_request\pending.html:27
+msgid "Candidat"
+msgstr "Kandidaat"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:28
+#: .\catalogue\templates\admin\critic_request\pending.html:75
+msgid "Média / Journal"
+msgstr "Media / Krant"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:29
+#: .\catalogue\templates\admin\payment\index.html:31
+#: .\catalogue\templates\admin\producer_request\pending.html:28
+msgid "Utilisateur"
+msgstr "Gebruiker"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:30
+#: .\catalogue\templates\admin\producer_request\pending.html:30
+#: .\catalogue\templates\admin\show\pending.html:31
+msgid "Date Soumission"
+msgstr "Datum van indiening"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:31
+#: .\catalogue\templates\admin\producer_request\pending.html:31
+#: .\catalogue\templates\admin\show\pending.html:32
+msgid "Actions"
+msgstr "Acties"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:62
+#: .\catalogue\templates\admin\producer_request\pending.html:59
+#: .\catalogue\templates\admin\show\pending.html:69
+msgid "Examiner"
+msgstr "Beoordelen"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:70
+msgid "Détails de la candidature"
+msgstr "Details van de kandidatuur"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:73
+#: .\catalogue\templates\admin\producer_request\pending.html:27
+msgid "Nom complet"
+msgstr "Volledige naam"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:74
+msgid "Profession"
+msgstr "Beroep"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:76
+msgid "Site Web"
+msgstr "Website"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:80
+msgid "Non fourni"
+msgstr "Niet verstrekt"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:86
+#: .\catalogue\templates\admin\producer_request\pending.html:83
+msgid "Motivation"
+msgstr "Motivatie"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:92
+#: .\catalogue\templates\admin\producer_request\pending.html:89
+msgid "Fermer"
+msgstr "Sluiten"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:95
+msgid "Êtes-vous sûr de vouloir refuser cette candidature ?"
+msgstr "Weet u zeker dat u deze kandidatuur wilt weigeren?"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:98
+#: .\catalogue\templates\admin\producer_request\pending.html:95
+msgid "Refuser"
+msgstr "Weigeren"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:105
+#: .\catalogue\templates\admin\producer_request\pending.html:102
+msgid "Accepter"
+msgstr "Accepteren"
+
+#: .\catalogue\templates\admin\critic_request\pending.html:114
+msgid "Aucune candidature en attente."
+msgstr "Geen kandidaturen in de wacht."
+
+#: .\catalogue\templates\admin\dashboard.html:149
+msgid "Voir Tout"
+msgstr "Alles bekijken"
+
+#: .\catalogue\templates\admin\payment\index.html:11
+msgid "Historique des Paiements Stripe"
+msgstr "Stripe Betalingsgeschiedenis"
+
+#: .\catalogue\templates\admin\payment\index.html:19
+msgid "Rechercher par utilisateur ou ID Stripe..."
+msgstr "Zoeken op gebruiker of Stripe ID..."
+
+#: .\catalogue\templates\admin\payment\index.html:33
+msgid "Montant"
+msgstr "Bedrag"
+
+#: .\catalogue\templates\admin\payment\index.html:34
+msgid "ID Session Stripe"
+msgstr "Stripe Sessie ID"
+
+#: .\catalogue\templates\admin\payment\index.html:66
+msgid "Succès"
+msgstr "Succes"
+
+#: .\catalogue\templates\admin\payment\index.html:76
+msgid "Aucun paiement trouvé."
+msgstr "Geen betalingen gevonden."
+
+#: .\catalogue\templates\admin\producer_request\pending.html:18
+msgid "Gérez les demandes des utilisateurs pour devenir producteur."
+msgstr "Beheer de aanvragen van gebruikers om producent te worden."
+
+#: .\catalogue\templates\admin\producer_request\pending.html:67
+msgid "Détails de la demande"
+msgstr "Details van de aanvraag"
+
+#: .\catalogue\templates\admin\producer_request\pending.html:78
+msgid "Présentation"
+msgstr "Presentatie"
+
+#: .\catalogue\templates\admin\producer_request\pending.html:92
+msgid "Êtes-vous sûr de vouloir refuser cette demande ?"
+msgstr "Weet u zeker dat u deze aanvraag wilt weigeren?"
+
+#: .\catalogue\templates\admin\producer_request\pending.html:111
+msgid "Aucune demande en attente."
+msgstr "Geen aanvragen in de wacht."
+
+#: .\catalogue\templates\admin\show\approve.html:17
+#: .\frontend\templates\show_detail.html:238
+msgid "Retour à la liste"
+msgstr "Terug naar lijst"
+
+#: .\catalogue\templates\admin\show\approve.html:25
+msgid "Informations du Spectacle"
+msgstr "Informatie over de voorstelling"
+
+#: .\catalogue\templates\admin\show\approve.html:30
+msgid "Titre"
+msgstr "Titel"
+
+#: .\catalogue\templates\admin\show\approve.html:35
+msgid "Durée (min)"
+msgstr "Duur (min)"
+
+#: .\catalogue\templates\admin\show\approve.html:40
+#: .\catalogue\templates\prod\submit_show.html:36
+msgid "Image du spectacle"
+msgstr "Afbeelding van de voorstelling"
+
+#: .\catalogue\templates\admin\show\approve.html:46
+msgid "Aucune image fournie."
+msgstr "Geen afbeelding verstrekt."
+
+#: .\catalogue\templates\admin\show\approve.html:51
+#: .\catalogue\templates\admin\show\pending.html:30
+#: .\catalogue\templates\catalogue\ticket_detail.html:37
+msgid "Lieu"
+msgstr "Locatie"
+
+#: .\catalogue\templates\admin\show\approve.html:60
+msgid "Première Séance"
+msgstr "Eerste sessie"
+
+#: .\catalogue\templates\admin\show\approve.html:74
+msgid "Nombre de tickets autorisés"
+msgstr "Toegestaan aantal tickets"
+
+#: .\catalogue\templates\admin\show\approve.html:81
+#: .\catalogue\templates\review\edit.html:50
+#: .\catalogue\templates\user\submit_press_article.html:51
+msgid "Enregistrer les modifications"
+msgstr "Wijzigingen opslaan"
+
+#: .\catalogue\templates\admin\show\approve.html:84
+msgid "Publier maintenant"
+msgstr "Nu publiceren"
+
+#: .\catalogue\templates\admin\show\approve.html:93
+msgid "Gestion des Tarifs"
+msgstr "Tariefbeheer"
+
+#: .\catalogue\templates\admin\show\approve.html:102
+msgid "Aucun tarif associé."
+msgstr "Geen tarief gekoppeld."
+
+#: .\catalogue\templates\admin\show\approve.html:108
+msgid "Affecter un nouveau prix"
+msgstr "Nieuwe prijs toewijzen"
+
+#: .\catalogue\templates\admin\show\approve.html:111
+msgid "Choisir un type de prix"
+msgstr "Kies een prijstype"
+
+#: .\catalogue\templates\admin\show\approve.html:117
+msgid "Ajouter ce tarif"
+msgstr "Voeg dit tarief toe"
+
+#: .\catalogue\templates\admin\show\approve.html:123
+msgid "Créer un nouveau type de prix"
+msgstr "Nieuw prijstype aanmaken"
+
+#: .\catalogue\templates\admin\show\approve.html:127
+msgid "Un spectacle doit avoir au moins un tarif pour être publié."
+msgstr "Een voorstelling moet minstens één tarief hebben om te worden gepubliceerd."
+
+#: .\catalogue\templates\admin\show\approve.html:132
+msgid "Note du Producteur"
+msgstr "Producentennote"
+
+#: .\catalogue\templates\admin\show\approve.html:138
+msgid "Lien Ticketmaster"
+msgstr "Ticketmaster-link"
+
+#: .\catalogue\templates\admin\show\approve.html:144
+msgid "Ouvrir Ticketmaster"
+msgstr "Open Ticketmaster"
+
+#: .\catalogue\templates\admin\show\pending.html:18
+msgid "Gérez les nouvelles propositions des producteurs."
+msgstr "Beheer de nieuwe voorstellen van de producenten."
+
+#: .\catalogue\templates\admin\show\pending.html:28
+#: .\catalogue\templates\prod\moderate_press_articles.html:52
+#: .\catalogue\templates\prod\prod_dashboard.html:36
+msgid "Spectacle"
+msgstr "Voorstelling"
+
+#: .\catalogue\templates\admin\show\pending.html:60
+msgid "Non défini"
+msgstr "Niet gedefinieerd"
+
+#: .\catalogue\templates\admin\show\pending.html:76
+msgid "Aucun spectacle en attente."
+msgstr "Geen voorstellingen in de wacht."
+
+#: .\catalogue\templates\catalogue\ticket_detail.html:4
+msgid "Mon Billet - ThéâtrePlus"
+msgstr "Mijn ticket - ThéâtrePlus"
+
+#: .\catalogue\templates\catalogue\ticket_detail.html:14
+msgid "BILLET D'ENTRÉE"
+msgstr "TOEGANGSTICKET"
+
+#: .\catalogue\templates\catalogue\ticket_detail.html:15
+msgid "La culture à portée de main"
+msgstr "Cultuur binnen handbereik"
+
+#: .\catalogue\templates\catalogue\ticket_detail.html:32
+msgid "Date & Heure"
+msgstr "Datum & Tijd"
+
+#: .\catalogue\templates\catalogue\ticket_detail.html:42
+msgid "Type de place"
+msgstr "Type plaats"
+
+#: .\catalogue\templates\catalogue\ticket_detail.html:46
+msgid "Client"
+msgstr "Klant"
+
+#: .\catalogue\templates\catalogue\ticket_detail.html:71
+msgid "Retour à mes réservations"
+msgstr "Terug naar mijn reserveringen"
+
+#: .\catalogue\templates\catalogue\ticket_detail.html:77
+msgid "Télécharger mon billet (PDF)"
+msgstr "Download mijn ticket (PDF)"
+
+#: .\catalogue\templates\prod\moderate_press_articles.html:4
+msgid "Gérer les Articles de Presse"
+msgstr "Persartikelen beheren"
+
+#: .\catalogue\templates\prod\moderate_press_articles.html:9
+#: .\frontend\templates\press_article_detail.html:11
+#: .\frontend\templates\press_article_list.html:11
+#: .\frontend\templates\show_detail.html:148 .\frontend\views.py:194
+msgid "Articles de Presse"
+msgstr "Persartikelen"
+
+#: .\catalogue\templates\prod\moderate_press_articles.html:10
+msgid "Modérez les articles rédigés par les critiques sur vos spectacles."
+msgstr "Modereer de artikelen geschreven door recensenten over uw voorstellingen."
+
+#: .\catalogue\templates\prod\moderate_press_articles.html:19
+#: .\catalogue\templates\prod\moderate_reviews.html:19
+msgid "Retour au tableau de bord"
+msgstr "Terug naar dashboard"
+
+#: .\catalogue\templates\prod\moderate_press_articles.html:34
+#: .\frontend\templates\show_detail.html:161
+msgid "Par"
+msgstr "Door"
+
+#: .\catalogue\templates\prod\moderate_press_articles.html:40
+msgid "PUBLIÉ"
+msgstr "GEPUBLICEERD"
+
+#: .\catalogue\templates\prod\moderate_press_articles.html:45
+#: .\frontend\templates\show_detail.html:155
+msgid "ÉPINGLÉ"
+msgstr "VASTGEZET"
+
+#: .\catalogue\templates\prod\moderate_press_articles.html:66
+msgid "Approuver l'article"
+msgstr "Artikel goedkeuren"
+
+#: .\catalogue\templates\prod\moderate_press_articles.html:70
+msgid "Retirer de la publication"
+msgstr "Uit publicatie halen"
+
+#: .\catalogue\templates\prod\moderate_press_articles.html:76
+#: .\catalogue\templates\prod\moderate_reviews.html:68
+msgid "Désépingler"
+msgstr "Vastzetten ongedaan maken"
+
+#: .\catalogue\templates\prod\moderate_press_articles.html:76
+msgid "Épingler en haut"
+msgstr "Bovenaan vastzetten"
+
+#: .\catalogue\templates\prod\moderate_press_articles.html:79
+msgid "Supprimer définitivement cet article ?"
+msgstr "Dit artikel definitief verwijderen?"
+
+#: .\catalogue\templates\prod\moderate_reviews.html:4
+#: .\catalogue\templates\prod\prod_dashboard.html:21
+msgid "Modérer les avis"
+msgstr "Beoordelingen modereren"
+
+#: .\catalogue\templates\prod\moderate_reviews.html:9
+msgid "Modération des avis"
+msgstr "Beoordelingen modereren"
+
+#: .\catalogue\templates\prod\moderate_reviews.html:10
+msgid "Consultez et validez les retours de vos spectateurs."
+msgstr "Bekijk en valideer de feedback van uw toeschouwers."
+
+#: .\catalogue\templates\prod\moderate_reviews.html:48
+msgid "APPROUVÉ"
+msgstr "GOEDGEKEURD"
+
+#: .\catalogue\templates\prod\moderate_reviews.html:50
+msgid "REJETÉ"
+msgstr "AFGEWEZEN"
+
+#: .\catalogue\templates\prod\moderate_reviews.html:61
+msgid "Approuver"
+msgstr "Goedkeuren"
+
+#: .\catalogue\templates\prod\moderate_reviews.html:64
+msgid "Rejeter"
+msgstr "Afwijzen"
+
+#: .\catalogue\templates\prod\moderate_reviews.html:68
+msgid "Épingler"
+msgstr "Vastzetten"
+
+#: .\catalogue\templates\prod\moderate_reviews.html:75
+msgid "Aucun avis à modérer pour vos spectacles."
+msgstr "Geen beoordelingen om te modereren voor uw voorstellingen."
+
+#: .\catalogue\templates\prod\prod_dashboard.html:10
+msgid "Gérez vos spectacles et suivez vos performances."
+msgstr "Beheer uw voorstellingen en volg uw prestaties."
+
+#: .\catalogue\templates\prod\prod_dashboard.html:18
+msgid "Mes Spectacles"
+msgstr "Mijn voorstellingen"
+
+#: .\catalogue\templates\prod\prod_dashboard.html:24
+#: .\frontend\templates\base.html:136
+msgid "Articles de presse"
+msgstr "Persartikelen"
+
+#: .\catalogue\templates\prod\prod_dashboard.html:27
+#: .\catalogue\templates\prod\submit_show.html:4
+#: .\catalogue\templates\prod\submit_show.html:10
+msgid "Partager un spectacle"
+msgstr "Een voorstelling delen"
+
+#: .\catalogue\templates\prod\prod_dashboard.html:37
+msgid "État"
+msgstr "Status"
+
+#: .\catalogue\templates\prod\prod_dashboard.html:38
+msgid "Tickets vendus"
+msgstr "Verkochte tickets"
+
+#: .\catalogue\templates\prod\prod_dashboard.html:39
+msgid "Places restantes"
+msgstr "Resterende plaatsen"
+
+#: .\catalogue\templates\prod\prod_dashboard.html:54
+#: .\catalogue\templates\user\press_articles.html:49
+msgid "Publié"
+msgstr "Gepubliceerd"
+
+#: .\catalogue\templates\prod\prod_dashboard.html:56
+#: .\catalogue\templates\user\press_articles.html:51
+msgid "En attente"
+msgstr "In afwachting"
+
+#: .\catalogue\templates\prod\prod_dashboard.html:66
+msgid "Voir sur le site"
+msgstr "Op de site bekijken"
+
+#: .\catalogue\templates\prod\prod_dashboard.html:69
+#: .\catalogue\templates\user\press_articles.html:68
+#: .\frontend\templates\show_detail.html:215
+msgid "Modifier"
+msgstr "Bewerken"
+
+#: .\catalogue\templates\prod\prod_dashboard.html:77
+msgid "Vous n'avez pas encore partagé de spectacle."
+msgstr "U heeft nog geen voorstelling gedeeld."
+
+#: .\catalogue\templates\prod\submit_show.html:4
+#: .\catalogue\templates\prod\submit_show.html:10
+msgid "Modifier le spectacle"
+msgstr "Voorstelling bewerken"
+
+#: .\catalogue\templates\prod\submit_show.html:13
+msgid "Mettez à jour les informations de votre spectacle."
+msgstr "Werk de informatie van uw voorstelling bij."
+
+#: .\catalogue\templates\prod\submit_show.html:13
+msgid "Proposez votre spectacle à l'administration."
+msgstr "Stel uw voorstelling voor aan de administratie."
+
+#: .\catalogue\templates\prod\submit_show.html:26
+msgid "Titre du spectacle"
+msgstr "Titel van de voorstelling"
+
+#: .\catalogue\templates\prod\submit_show.html:31
+#: .\frontend\templates\show_detail.html:60
+msgid "Description"
+msgstr "Beschrijving"
+
+#: .\catalogue\templates\prod\submit_show.html:40
+msgid "Image actuelle"
+msgstr "Huidige afbeelding"
+
+#: .\catalogue\templates\prod\submit_show.html:44
+msgid "Sélectionnez une photo depuis votre ordinateur."
+msgstr "Selecteer een foto van uw computer."
+
+#: .\catalogue\templates\prod\submit_show.html:49
+msgid "Durée (minutes)"
+msgstr "Duur (minuten)"
+
+#: .\catalogue\templates\prod\submit_show.html:53
+msgid "Salle / Lieu"
+msgstr "Zaal / Locatie"
+
+#: .\catalogue\templates\prod\submit_show.html:55
+msgid "Choisir une salle"
+msgstr "Kies een zaal"
+
+#: .\catalogue\templates\prod\submit_show.html:76
+msgid "Nombre de tickets"
+msgstr "Aantal tickets"
+
+#: .\catalogue\templates\prod\submit_show.html:79
+msgid "Le nombre de tickets ne peut pas dépasser la capacité de la salle."
+msgstr "Het aantal tickets mag de capaciteit van de zaal niet overschrijden."
+
+#: .\catalogue\templates\prod\submit_show.html:85
+msgid "Enregistrer"
+msgstr "Opslaan"
+
+#: .\catalogue\templates\prod\submit_show.html:85
+msgid "Publier le Spectacle"
+msgstr "Voorstelling publiceren"
+
+#: .\catalogue\templates\prod\submit_show.html:88
+#: .\catalogue\templates\user\submit_press_article.html:54
+msgid "Annuler"
+msgstr "Annuleren"
+
+#: .\catalogue\templates\prod\submit_show.html:111
+#: .\catalogue\templates\prod\submit_show.html:143
+msgid "Capacité de la salle :"
+msgstr "Zaalcapaciteit:"
+
+#: .\catalogue\templates\prod\submit_show.html:111
+#: .\catalogue\templates\prod\submit_show.html:143
+msgid "places"
+msgstr "plaatsen"
+
+#: .\catalogue\templates\representation\show.html:15
+msgid "VOIR LE PANIER"
+msgstr "WINKELMANDJE BEKIJKEN"
+
+#: .\catalogue\templates\representation\show.html:39
+msgid "Sélectionnez vos places"
+msgstr "Selecteer uw plaatsen"
+
+#: .\catalogue\templates\representation\show.html:42
+#: .\frontend\templates\show_detail.html:121
+msgid "COMPLET"
+msgstr "VOLGEBOEKT"
+
+#: .\catalogue\templates\representation\show.html:45
+msgid "DERNIÈRES PLACES :"
+msgstr "LAATSTE PLAATSEN:"
+
+#: .\catalogue\templates\representation\show.html:49
+#: .\frontend\templates\show_detail.html:123
+msgid "places disponibles"
+msgstr "beschikbare plaatsen"
+
+#: .\catalogue\templates\representation\show.html:81
+#: .\frontend\templates\show_detail.html:129
+msgid "Réserver"
+msgstr "Reserveren"
+
+#: .\catalogue\templates\representation\show.html:90
+msgid "Aucun tarif n'est disponible pour ce spectacle."
+msgstr "Er zijn geen tarieven beschikbaar voor deze voorstelling."
+
+#: .\catalogue\templates\representation\show.html:98
+msgid "Attention :"
+msgstr "Let op:"
+
+#: .\catalogue\templates\representation\show.html:98
+#, python-format
+msgid "Il ne reste que %(count)s places pour cette séance. Ne tardez pas !"
+msgstr "Er zijn nog maar %(count)s plaatsen voor deze sessie. Wacht niet te lang!"
+
+#: .\catalogue\templates\representation\show.html:104
+msgid "Retour au spectacle"
+msgstr "Terug naar voorstelling"
+
+#: .\catalogue\templates\representation\show.html:107
+msgid "Voir mon panier"
+msgstr "Mijn winkelmandje bekijken"
+
+#: .\catalogue\templates\review\create.html:4
+#: .\frontend\templates\show_detail.html:181
+msgid "Soumettre une critique"
+msgstr "Een recensie indienen"
+
+#: .\catalogue\templates\review\create.html:13
+#: .\catalogue\templates\review\edit.html:13 .\frontend\templates\base.html:135
+#: .\frontend\templates\base.html:253 .\frontend\templates\show_detail.html:21
+msgid "Spectacles"
+msgstr "Voorstellingen"
+
+#: .\catalogue\templates\review\create.html:14
+msgid "Soumission de critique"
+msgstr "Recensie indienen"
+
+#: .\catalogue\templates\review\create.html:21
+msgid "Votre Critique"
+msgstr "Uw Recensie"
+
+#: .\catalogue\templates\review\create.html:22
+msgid "Partagez votre avis sur"
+msgstr "Deel uw mening over"
+
+#: .\catalogue\templates\review\create.html:37
+msgid "Quelle note donneriez-vous ?"
+msgstr "Welk cijfer zou u geven?"
+
+#: .\catalogue\templates\review\create.html:46
+msgid "Veuillez choisir une note."
+msgstr "Kies een cijfer."
+
+#: .\catalogue\templates\review\create.html:51
+#: .\catalogue\templates\review\edit.html:42
+msgid "Votre commentaire"
+msgstr "Uw reactie"
+
+#: .\catalogue\templates\review\create.html:59
+msgid "Publier ma critique"
+msgstr "Mijn recensie publiceren"
+
+#: .\catalogue\templates\review\create.html:60
+msgid "Annuler et revenir au spectacle"
+msgstr "Annuleren en terug naar de voorstelling"
+
+#: .\catalogue\templates\review\delete_confirm.html:4
+msgid "Confirmer la suppression"
+msgstr "Verwijdering bevestigen"
+
+#: .\catalogue\templates\review\delete_confirm.html:13
+msgid "Supprimer cet avis ?"
+msgstr "Deze beoordeling verwijderen?"
+
+#: .\catalogue\templates\review\delete_confirm.html:23
+msgid "Oui, supprimer définitivement"
+msgstr "Ja, definitief verwijderen"
+
+#: .\catalogue\templates\review\delete_confirm.html:24
+msgid "Non, garder mon avis"
+msgstr "Nee, bewaar mijn beoordeling"
+
+#: .\catalogue\templates\review\edit.html:4
+msgid "Modifier ma critique"
+msgstr "Mijn recensie bewerken"
+
+#: .\catalogue\templates\review\edit.html:14
+msgid "Modification de critique"
+msgstr "Wijziging van recensie"
+
+#: .\catalogue\templates\review\edit.html:21
+msgid "Modifier mon avis"
+msgstr "Mijn beoordeling bewerken"
+
+#: .\catalogue\templates\review\edit.html:22
+msgid "Mise à jour pour"
+msgstr "Update voor"
+
+#: .\catalogue\templates\review\edit.html:31
+msgid "Note"
+msgstr "Cijfer"
+
+#: .\catalogue\templates\review\edit.html:51
+msgid "Annuler et revenir"
+msgstr "Annuleren en terugkeren"
+
+#: .\catalogue\templates\user\press_articles.html:4
+#: .\catalogue\templates\user\press_articles.html:11
+msgid "Mes Articles de Presse"
+msgstr "Mijn persartikelen"
+
+#: .\catalogue\templates\user\press_articles.html:12
+msgid "Gérez vos critiques et analyses de spectacles."
+msgstr "Beheer uw recensies en analyses van voorstellingen."
+
+#: .\catalogue\templates\user\press_articles.html:15
+msgid "Rédiger un article"
+msgstr "Een artikel schrijven"
+
+#: .\catalogue\templates\user\press_articles.html:30
+msgid "Liste de mes articles"
+msgstr "Lijst van mijn artikelen"
+
+#: .\catalogue\templates\user\press_articles.html:77
+msgid "Vous n'avez pas encore rédigé d'article."
+msgstr "U heeft nog geen artikel geschreven."
+
+#: .\catalogue\templates\user\press_articles.html:78
+msgid "Commencer maintenant"
+msgstr "Nu beginnen"
+
+#: .\catalogue\templates\user\submit_press_article.html:25
+msgid "Sélectionnez le spectacle sur lequel porte votre article."
+msgstr "Selecteer de voorstelling waarover uw artikel gaat."
+
+#: .\catalogue\templates\user\submit_press_article.html:38
+msgid "Un court texte d'accroche qui sera visible dans les listes."
+msgstr "Een korte introductietekst die zichtbaar zal zijn in lijsten."
+
+#: .\catalogue\templates\user\submit_press_article.html:45
+msgid "Le corps de votre article. Soyez précis et constructif."
+msgstr "De inhoud van uw artikel. Wees nauwkeurig en constructief."
+
+#: .\catalogue\templates\user\submit_press_article.html:51
+msgid "Publier l'article"
+msgstr "Artikel publiceren"
+
+#: .\catalogue\views\location.py:12
+msgid "Liste des lieux de spectacle"
+msgstr "Lijst van locaties"
+
+#: .\catalogue\views\location.py:19
+msgid "Lieu inexistant"
+msgstr "Locatie bestaat niet"
+
+#: .\catalogue\views\location.py:21
+msgid "Fiche d'un lieu de spectacle"
+msgstr "Informatieblad van een locatie"
+
+#: .\catalogue\views\location.py:31
+msgid "Lieu créé avec succès."
+msgstr "Locatie succesvol aangemaakt."
+
+#: .\catalogue\views\location.py:34 .\catalogue\views\location.py:52
+#: .\catalogue\views\review.py:71 .\catalogue\views\review.py:100
+#: .\catalogue\views\show_.py:34 .\catalogue\views\show_.py:52
+msgid "Veuillez corriger les erreurs ci-dessous."
+msgstr "Corrigeer de onderstaande fouten."
+
+#: .\catalogue\views\location.py:49
+msgid "Lieu modifié avec succès."
+msgstr "Locatie succesvol gewijzigd."
+
+#: .\catalogue\views\location.py:65
+msgid "Lieu supprimé avec succès."
+msgstr "Locatie succesvol verwijderd."
+
+#: .\catalogue\views\review.py:13
+msgid "Liste des critiques"
+msgstr "Lijst van recensies"
+
+#: .\catalogue\views\review.py:20
+msgid "Critique inexistante"
+msgstr "Recensie bestaat niet"
+
+#: .\catalogue\views\review.py:22
+msgid "Fiche d'une critique"
+msgstr "Informatieblad van een recensie"
+
+#: .\catalogue\views\review.py:41
+msgid "Veuillez choisir un spectacle pour laisser un commentaire."
+msgstr "Kies een voorstelling om een reactie achter te laten."
+
+#: .\catalogue\views\review.py:51
+msgid "Vous ne pouvez commenter que les spectacles auxquels vous avez assisté."
+msgstr "U kunt alleen reageren op voorstellingen die u heeft bezocht."
+
+#: .\catalogue\views\review.py:68
+msgid "Votre avis a été soumis avec succès et sera publié après validation."
+msgstr "Uw beoordeling is succesvol ingediend en zal na validatie worden gepubliceerd."
+
+#: .\catalogue\views\review.py:83
+msgid "Seul l'auteur peut modifier son message."
+msgstr "Alleen de auteur kan dit bericht wijzigen."
+
+#: .\catalogue\views\review.py:97
+msgid "Critique modifiée avec succès."
+msgstr "Recensie succesvol gewijzigd."
+
+#: .\catalogue\views\review.py:113
+msgid "Vous n'êtes pas autorisé à supprimer ce message."
+msgstr "U bent niet gemachtigd om dit bericht te verwijderen."
+
+#: .\catalogue\views\review.py:119
+msgid "Message supprimé avec succès."
+msgstr "Bericht succesvol verwijderd."
+
+#: .\catalogue\views\show_.py:12
+msgid "Liste des spectacles"
+msgstr "Lijst van voorstellingen"
+
+#: .\catalogue\views\show_.py:19
+msgid "Spectacle inexistant"
+msgstr "Voorstelling bestaat niet"
+
+#: .\catalogue\views\show_.py:21
+msgid "Fiche d'un spectacle"
+msgstr "Informatieblad van een voorstelling"
+
+#: .\catalogue\views\show_.py:31
+msgid "Spectacle créé avec succès."
+msgstr "Voorstelling succesvol aangemaakt."
+
+#: .\catalogue\views\show_.py:49
+msgid "Spectacle modifié avec succès."
+msgstr "Voorstelling succesvol gewijzigd."
+
+#: .\catalogue\views\show_.py:65
+msgid "Spectacle supprimé avec succès."
+msgstr "Voorstelling succesvol verwijderd."
+
+#: .\catalogue\views\ticket.py:39
+msgid "Cette réservation n'est pas encore payée."
+msgstr "Deze reservering is nog niet betaald."
+
+#: .\catalogue\views\ticket.py:94
+msgid "Vos billets officiels - ThéâtrePlus"
+msgstr "Uw officiële tickets - ThéâtrePlus"
+
+#: .\frontend\templates\about.html:4 .\frontend\templates\about.html:11
+#: .\frontend\views.py:151
+msgid "À propos de ThéâtrePlus"
+msgstr "Over ThéâtrePlus"
+
+#: .\frontend\templates\about.html:12
+msgid "Découvrez notre mission et notre histoire"
+msgstr "Ontdek onze missie en onze geschiedenis"
+
+#: .\frontend\templates\about.html:20
+msgid "Notre Mission"
+msgstr "Onze Missie"
+
+#: .\frontend\templates\about.html:25
+msgid "Notre Histoire"
+msgstr "Onze Geschiedenis"
+
+#: .\frontend\templates\base.html:7
+msgid "Réservez vos spectacles"
+msgstr "Reserveer uw voorstellingen"
+
+#: .\frontend\templates\base.html:134 .\frontend\templates\base.html:252
+msgid "Accueil"
+msgstr "Home"
+
+#: .\frontend\templates\base.html:137 .\frontend\templates\base.html:254
+msgid "Lieux"
+msgstr "Locaties"
+
+#: .\frontend\templates\base.html:138 .\frontend\templates\base.html:255
+msgid "À propos"
+msgstr "Over ons"
+
+#: .\frontend\templates\base.html:140
+msgid "Mon Panier"
+msgstr "Mijn Winkelmandje"
+
+#: .\frontend\templates\base.html:151
+msgid "Mon compte"
+msgstr "Mijn account"
+
+#: .\frontend\templates\base.html:157 .\frontend\templates\base.html:262
+msgid "Mon profil"
+msgstr "Mijn profiel"
+
+#: .\frontend\templates\base.html:164
+msgid "Dashboard Admin"
+msgstr "Admin Dashboard"
+
+#: .\frontend\templates\base.html:180
+msgid "Mes articles"
+msgstr "Mijn artikelen"
+
+#: .\frontend\templates\base.html:199 .\frontend\templates\base.html:267
+msgid "Déconnexion"
+msgstr "Uitloggen"
+
+#: .\frontend\templates\base.html:205 .\frontend\templates\base.html:270
+msgid "Connexion"
+msgstr "Inloggen"
+
+#: .\frontend\templates\base.html:250
+msgid "Navigation"
+msgstr "Navigatie"
+
+#: .\frontend\templates\base.html:259
+msgid "Compte"
+msgstr "Account"
+
+#: .\frontend\templates\base.html:271
+msgid "Inscription"
+msgstr "Registreren"
+
+#: .\frontend\templates\base.html:276
+msgid "Aide"
+msgstr "Help"
+
+#: .\frontend\templates\base.html:278
+msgid "FAQ"
+msgstr "Veelgestelde vragen"
+
+#: .\frontend\templates\base.html:279
+msgid "Contact"
+msgstr "Contact"
+
+#: .\frontend\templates\base.html:280
+msgid "Conditions"
+msgstr "Voorwaarden"
+
+#: .\frontend\templates\base.html:281
+msgid "Confidentialité"
+msgstr "Privacy"
+
+#: .\frontend\templates\base.html:286
+msgid "Tous droits réservés. | Projet PID - Version Alpha"
+msgstr "Alle rechten voorbehouden. | Project PID - Alpha-versie"
+
+#: .\frontend\templates\home.html:9
+msgid "Réservez vos billets pour les meilleurs événements"
+msgstr "Reserveer uw tickets voor de beste evenementen"
+
+#: .\frontend\templates\home.html:10
+msgid "Concerts, théâtre, spectacles et bien plus encore"
+msgstr "Concerten, theater, shows en nog veel meer"
+
+#: .\frontend\templates\home.html:19
+msgid "Rechercher un spectacle, artiste ou lieu..."
+msgstr "Zoek een voorstelling, artiest of locatie..."
+
+#: .\frontend\templates\home.html:22
+msgid "Tous les genres"
+msgstr "Alle genres"
+
+#: .\frontend\templates\home.html:23
+msgid "Concert"
+msgstr "Concert"
+
+#: .\frontend\templates\home.html:24 .\frontend\templates\home.html:54
+#: .\frontend\templates\show_list.html:31
+msgid "Théâtre"
+msgstr "Theater"
+
+#: .\frontend\templates\home.html:25 .\frontend\templates\home.html:58
+#: .\frontend\templates\show_list.html:35
+msgid "Danse"
+msgstr "Dans"
+
+#: .\frontend\templates\home.html:26 .\frontend\templates\home.html:62
+#: .\frontend\templates\show_list.html:39
+msgid "Comédie"
+msgstr "Komedie"
+
+#: .\frontend\templates\home.html:29
+msgid "Toutes les dates"
+msgstr "Alle data"
+
+#: .\frontend\templates\home.html:30
+msgid "Ce week-end"
+msgstr "Dit weekend"
+
+#: .\frontend\templates\home.html:31
+msgid "Cette semaine"
+msgstr "Deze week"
+
+#: .\frontend\templates\home.html:32
+msgid "Ce mois-ci"
+msgstr "Deze maand"
+
+#: .\frontend\templates\home.html:34
+msgid "Rechercher"
+msgstr "Zoeken"
+
+#: .\frontend\templates\home.html:46 .\frontend\templates\show_list.html:23
+msgid "Tous les événements"
+msgstr "Alle evenementen"
+
+#: .\frontend\templates\home.html:50 .\frontend\templates\show_list.html:27
+msgid "Concerts"
+msgstr "Concerten"
+
+#: .\frontend\templates\home.html:66 .\frontend\templates\show_list.html:43
+msgid "Festivals"
+msgstr "Festivals"
+
+#: .\frontend\templates\home.html:75
+msgid "Événements à venir"
+msgstr "Komende evenementen"
+
+#: .\frontend\templates\home.html:76
+msgid "Réservez vos billets dès maintenant"
+msgstr "Reserveer nu uw tickets"
+
+#: .\frontend\templates\home.html:90 .\frontend\templates\show_list.html:68
+msgid "Disponible"
+msgstr "Beschikbaar"
+
+#: .\frontend\templates\home.html:92 .\frontend\templates\show_detail.html:90
+#: .\frontend\templates\show_detail.html:131
+#: .\frontend\templates\show_list.html:70
+msgid "Complet"
+msgstr "Volgeboekt"
+
+#: .\frontend\templates\home.html:102 .\frontend\templates\show_list.html:80
+msgid "Non catégorisé"
+msgstr "Niet gecategoriseerd"
+
+#: .\frontend\templates\home.html:112 .\frontend\templates\show_list.html:90
+msgid "Lieu inconnu"
+msgstr "Onbekende locatie"
+
+#: .\frontend\templates\home.html:118 .\frontend\templates\show_list.html:96
+msgid "Date inconnue"
+msgstr "Onbekende datum"
+
+#: .\frontend\templates\home.html:121 .\frontend\templates\show_detail.html:81
+#: .\frontend\templates\show_list.html:99
+msgid "à partir de"
+msgstr "vanaf"
+
+#: .\frontend\templates\home.html:129 .\frontend\templates\show_list.html:108
+msgid "Aucun spectacle disponible pour le moment."
+msgstr "Geen voorstellingen beschikbaar op dit moment."
+
+#: .\frontend\templates\location_detail.html:13
+msgid "Détails et informations pratiques du lieu"
+msgstr "Details en praktische informatie van de locatie"
+
+#: .\frontend\templates\location_detail.html:26
+msgid "Informations"
+msgstr "Informatie"
+
+#: .\frontend\templates\location_detail.html:32
+msgid "Adresse :"
+msgstr "Adres:"
+
+#: .\frontend\templates\location_detail.html:41
+msgid "Téléphone :"
+msgstr "Telefoon:"
+
+#: .\frontend\templates\location_detail.html:48
+msgid "Site Web :"
+msgstr "Website:"
+
+#: .\frontend\templates\location_detail.html:48
+msgid "Visiter le site officiel"
+msgstr "Bezoek de officiële site"
+
+#: .\frontend\templates\location_detail.html:56
+msgid "Prochain spectacle"
+msgstr "Volgende voorstelling"
+
+#: .\frontend\templates\location_detail.html:63
+msgid "Date :"
+msgstr "Datum:"
+
+#: .\frontend\templates\location_detail.html:66
+#: .\frontend\templates\show_detail.html:66
+msgid "Lieu :"
+msgstr "Locatie:"
+
+#: .\frontend\templates\location_detail.html:69
+#: .\frontend\templates\show_detail.html:80
+msgid "Prix :"
+msgstr "Prijs:"
+
+#: .\frontend\templates\location_detail.html:72
+msgid "Voir le spectacle"
+msgstr "Voorstelling bekijken"
+
+#: .\frontend\templates\location_detail.html:76
+msgid "Aucune représentation n'est prévue pour le moment dans ce lieu."
+msgstr "Er zijn momenteel geen voorstellingen gepland op deze locatie."
+
+#: .\frontend\templates\location_detail.html:83
+msgid "Retour à la liste des lieux"
+msgstr "Terug naar locatielijst"
+
+#: .\frontend\templates\location_list.html:4
+#: .\frontend\templates\location_list.html:11
+msgid "Nos Lieux"
+msgstr "Onze Locaties"
+
+#: .\frontend\templates\location_list.html:12
+msgid "Découvrez les salles qui accueillent nos événements passionnants."
+msgstr "Ontdek de zalen waar onze spannende evenementen plaatsvinden."
+
+#: .\frontend\templates\location_list.html:38
+msgid "Aucun lieu n'est répertorié pour le moment."
+msgstr "Er zijn momenteel geen locaties geregistreerd."
+
+#: .\frontend\templates\press_article_detail.html:43
+msgid "Critique invité"
+msgstr "Gastrecensent"
+
+#: .\frontend\templates\press_article_detail.html:56
+msgid "Retour aux articles"
+msgstr "Terug naar artikelen"
+
+#: .\frontend\templates\press_article_list.html:12
+msgid "L'actualité et les critiques de la scène théâtrale."
+msgstr "Het nieuws en de recensies van de theaterwereld."
+
+#: .\frontend\templates\press_article_list.html:56
+msgid "Lire la suite"
+msgstr "Lees meer"
+
+#: .\frontend\templates\press_article_list.html:64
+msgid "Aucun article pour le moment"
+msgstr "Nog geen artikelen"
+
+#: .\frontend\templates\press_article_list.html:65
+msgid "Revenez bientôt pour découvrir nos dernières critiques de presse."
+msgstr "Kom snel terug om onze nieuwste persrecensies te ontdekken."
+
+#: .\frontend\templates\press_article_list.html:72
+#, python-format
+msgid "<strong>%(count)s</strong> articles publiés"
+msgstr "<strong>%(count)s</strong> artikelen gepubliceerd"
+
+#: .\frontend\templates\press_article_list.html:78
+#: .\frontend\templates\press_article_list.html:82
+#: .\frontend\templates\show_list.html:120
+#: .\frontend\templates\show_list.html:124
+msgid "Précédent"
+msgstr "Vorige"
+
+#: .\frontend\templates\press_article_list.html:87
+#: .\frontend\templates\show_list.html:129
+msgid "Page"
+msgstr "Pagina"
+
+#: .\frontend\templates\press_article_list.html:87
+#: .\frontend\templates\show_list.html:129
+msgid "sur"
+msgstr "op"
+
+#: .\frontend\templates\press_article_list.html:92
+#: .\frontend\templates\press_article_list.html:96
+#: .\frontend\templates\show_list.html:134
+#: .\frontend\templates\show_list.html:138
+msgid "Suivant"
+msgstr "Volgende"
+
+#: .\frontend\templates\show_detail.html:33
+msgid "Modifier dans le Dashboard Admin"
+msgstr "Bewerken in het Admin Dashboard"
+
+#: .\frontend\templates\show_detail.html:34
+msgid "Éditer (Admin)"
+msgstr "Bewerken (Admin)"
+
+#: .\frontend\templates\show_detail.html:37
+msgid "Modifier dans mon Espace Producteur"
+msgstr "Bewerken in mijn Producentenruimte"
+
+#: .\frontend\templates\show_detail.html:38
+msgid "Éditer"
+msgstr "Bewerken"
+
+#: .\frontend\templates\show_detail.html:47
+msgid "Réservable"
+msgstr "Boekbaar"
+
+#: .\frontend\templates\show_detail.html:49
+msgid "Non réservable"
+msgstr "Niet boekbaar"
+
+#: .\frontend\templates\show_detail.html:61
+msgid "Aucune description disponible."
+msgstr "Geen beschrijving beschikbaar."
+
+#: .\frontend\templates\show_detail.html:70
+msgid "Lieu non défini"
+msgstr "Locatie niet gedefinieerd"
+
+#: .\frontend\templates\show_detail.html:74
+msgid "Durée :"
+msgstr "Duur:"
+
+#: .\frontend\templates\show_detail.html:74
+msgid "minutes"
+msgstr "minuten"
+
+#: .\frontend\templates\show_detail.html:77
+msgid "Année de création :"
+msgstr "Jaar van creatie:"
+
+#: .\frontend\templates\show_detail.html:88
+msgid "Réserver mes places"
+msgstr "Mijn plaatsen reserveren"
+
+#: .\frontend\templates\show_detail.html:98
+msgid "Prochaines représentations"
+msgstr "Volgende voorstellingen"
+
+#: .\frontend\templates\show_detail.html:118
+msgid "Dernières places :"
+msgstr "Laatste plaatsen:"
+
+#: .\frontend\templates\show_detail.html:139
+msgid "Aucune représentation n'est prévue pour le moment."
+msgstr "Er zijn momenteel geen voorstellingen gepland."
+
+#: .\frontend\templates\show_detail.html:178
+msgid "Critiques & Avis"
+msgstr "Recensies & Beoordelingen"
+
+#: .\frontend\templates\show_detail.html:195
+msgid "Avis épinglé"
+msgstr "Vastgezette beoordeling"
+
+#: .\frontend\templates\show_detail.html:196
+msgid "Épinglé"
+msgstr "Vastgezet"
+
+#: .\frontend\templates\show_detail.html:230
+msgid "Aucun avis pour le moment. Soyez le premier à partager votre critique !"
+msgstr "Nog geen beoordelingen. Deel als eerste uw mening!"
+
+#: .\frontend\templates\show_detail.html:236 .\frontend\views.py:102
+msgid "Spectacle introuvable"
+msgstr "Voorstelling niet gevonden"
+
+#: .\frontend\templates\show_detail.html:237
+msgid "Désolé, nous n'avons pas pu trouver les détails de ce spectacle."
+msgstr "Sorry, we konden de details van deze voorstelling niet vinden."
+
+#: .\frontend\templates\show_list.html:12
+msgid "Découvrez tous nos événements passionnants."
+msgstr "Ontdek al onze spannende evenementen."
+
+#: .\frontend\templates\show_list.html:52
+msgid "Nos Spectacles"
+msgstr "Onze Voorstellingen"
+
+#: .\frontend\templates\show_list.html:53
+msgid "Explorez les événements à venir et réservez vos billets."
+msgstr "Ontdek de komende evenementen en reserveer uw tickets."
+
+#: .\frontend\templates\show_list.html:114
+#, python-format
+msgid "<strong>%(count)s</strong> spectacles trouvés"
+msgstr "<strong>%(count)s</strong> voorstellingen gevonden"
+
+#: .\frontend\views.py:36
+msgid "Bienvenue à ThéâtrePlus"
+msgstr "Welkom bij ThéâtrePlus"
+
+#: .\frontend\views.py:79
+msgid "Catalogue des Spectacles"
+msgstr "Catalogus van voorstellingen"
+
+#: .\frontend\views.py:102
+msgid "Détails du Spectacle"
+msgstr "Details van de voorstelling"
+
+#: .\frontend\views.py:123
+msgid "Nos Lieux de Spectacles"
+msgstr "Onze Theaterlocaties"
+
+#: .\frontend\views.py:215
+msgid "Article de Presse"
+msgstr "Persartikel"
+
+#: .\frontend\views.py:215
+msgid "Article introuvable"
+msgstr "Artikel niet gevonden"
+
+#: .\payments\templates\payments\cancel.html:4
+msgid "Commande annulée - ThéâtrePlus"
+msgstr "Bestelling geannuleerd - ThéâtrePlus"
+
+#: .\payments\templates\payments\cancel.html:12
+msgid "Commande annulée"
+msgstr "Bestelling geannuleerd"
+
+#: .\payments\templates\payments\cancel.html:13
+msgid "Vous avez choisi d'interrompre le processus de paiement."
+msgstr "U heeft ervoor gekozen om het betalingsproces te onderbreken."
+
+#: .\payments\templates\payments\cancel.html:20
+msgid "Besoin de plus de temps ?"
+msgstr "Meer tijd nodig?"
+
+#: .\payments\templates\payments\cancel.html:28
+msgid "Retourner au panier"
+msgstr "Terug naar winkelmandje"
+
+#: .\payments\templates\payments\failed.html:4
+msgid "Échec du paiement - ThéâtrePlus"
+msgstr "Betaling mislukt - ThéâtrePlus"
+
+#: .\payments\templates\payments\failed.html:12
+msgid "Échec du Paiement"
+msgstr "Betaling Mislukt"
+
+#: .\payments\templates\payments\failed.html:13
+msgid "Votre transaction a été refusée par l'organisme bancaire."
+msgstr "Uw transactie is geweigerd door de bank."
+
+#: .\payments\templates\payments\failed.html:20
+msgid "Un problème est survenu"
+msgstr "Er is een probleem opgetreden"
+
+#: .\payments\templates\payments\failed.html:23
+msgid "Veuillez vérifier vos informations bancaires et réessayer."
+msgstr "Controleer uw bankgegevens en probeer het opnieuw."
+
+#: .\payments\templates\payments\failed.html:28
+msgid "Réessayer le paiement"
+msgstr "Betaling opnieuw proberen"
+
+#: .\payments\templates\payments\success.html:4
+msgid "Paiement réussi - ThéâtrePlus"
+msgstr "Betaling geslaagd - ThéâtrePlus"
+
+#: .\payments\templates\payments\success.html:12
+msgid "Commande validée !"
+msgstr "Bestelling bevestigd!"
+
+#: .\payments\templates\payments\success.html:13
+msgid "Votre paiement a été traité avec succès."
+msgstr "Uw betaling is succesvol verwerkt."
+
+#: .\payments\templates\payments\success.html:20
+msgid "Merci pour votre réservation"
+msgstr "Bedankt voor uw reservering"
+
+#: .\payments\templates\payments\success.html:23
+msgid "Un e-mail récapitulatif vous a également été envoyé."
+msgstr "Er is ook een e-mail met een overzicht naar u verzonden."
+
+#: .\payments\templates\payments\success_api.html:5
 msgid "Abonnement API Réussi - ThéâtrePlus"
-msgstr "API-abonnement geslaagd - ThéâtrePlus"
+msgstr "API Abonnement Geslaagd - ThéâtrePlus"
+
+#: .\payments\templates\payments\success_api.html:13
+msgid "Paiement Réussi !"
+msgstr "Betaling Geslaagd!"
+
+#: .\payments\templates\payments\success_api.html:14
+msgid "Votre abonnement API a été mis à jour avec succès."
+msgstr "Uw API-abonnement is succesvol bijgewerkt."
+
+#: .\payments\templates\payments\success_api.html:21
+msgid "Bienvenue dans le plan"
+msgstr "Welkom bij het plan"
+
+#: .\payments\templates\payments\success_api.html:23
+msgid "appels par jour."
+msgstr "oproepen per dag."
+
+#: .\payments\templates\payments\success_api.html:27
+msgid "Résumé de vos avantages :"
+msgstr "Overzicht van uw voordelen:"
+
+#: .\payments\templates\payments\success_api.html:30
+msgid "Accès complet aux données (artistes, prix...)"
+msgstr "Volledige toegang tot gegevens (artiesten, prijzen...)"
+
+#: .\payments\templates\payments\success_api.html:30
+msgid "Accès limité aux données de base"
+msgstr "Beperkte toegang tot basisgegevens"
+
+#: .\payments\templates\payments\success_api.html:31
+msgid "Support technique prioritaire"
+msgstr "Prioritaire technische ondersteuning"
+
+#: .\payments\templates\payments\success_api.html:37
+msgid "Retourner à l'Espace API"
+msgstr "Terug naar API-ruimte"
+
+#: .\reservations\settings.py:159
+msgid "French"
+msgstr "Frans"
+
+#: .\reservations\settings.py:161
+msgid "Dutch"
+msgstr "Nederlands"

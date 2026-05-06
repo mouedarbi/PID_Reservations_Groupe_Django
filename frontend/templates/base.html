@@ -129,7 +129,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">ThéâtrePlus</div>
+            <a href="{% url 'frontend:home' %}" class="logo" style="text-decoration: none; color: inherit;">ThéâtrePlus</a>
             <ul class="nav-links">
                 <li><a href="{% url 'frontend:home' %}">{% trans "Accueil" %}</a></li>
                 <li><a href="{% url 'frontend:show_list' %}">{% trans "Spectacles" %}</a></li> 
