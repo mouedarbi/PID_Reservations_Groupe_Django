@@ -1,0 +1,132 @@
+
+--- Erreur le 2026-04-24 16:26:17.331396+00:00 ---
+Traceback (most recent call last):
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 171, in __getattr__
+    return self[k]
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 224, in __getitem__
+    raise err
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 203, in __getitem__
+    return self._data[k]
+KeyError: 'get'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\payments\views.py", line 146, in payment_success
+    payment_type = metadata.get('payment_type', 'ticket_reservation')
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 173, in __getattr__
+    raise AttributeError(*err.args) from err
+AttributeError: get
+
+-------------------------------
+
+--- Erreur le 2026-04-24 16:29:23.395984+00:00 ---
+Traceback (most recent call last):
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 171, in __getattr__
+    return self[k]
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 224, in __getitem__
+    raise err
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 203, in __getitem__
+    return self._data[k]
+KeyError: 'get'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\payments\views.py", line 146, in payment_success
+    payment_type = metadata.get('payment_type', 'ticket_reservation')
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 173, in __getattr__
+    raise AttributeError(*err.args) from err
+AttributeError: get
+
+-------------------------------
+
+--- Erreur le 2026-04-24 16:31:17.045491+00:00 ---
+Traceback (most recent call last):
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 171, in __getattr__
+    return self[k]
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 224, in __getitem__
+    raise err
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 203, in __getitem__
+    return self._data[k]
+KeyError: 'get'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\payments\views.py", line 146, in payment_success
+    payment_type = metadata.get('payment_type', 'ticket_reservation')
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 173, in __getattr__
+    raise AttributeError(*err.args) from err
+AttributeError: get
+
+-------------------------------
+
+--- Erreur le 2026-04-24 16:33:07.016809+00:00 ---
+Traceback (most recent call last):
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 171, in __getattr__
+    return self[k]
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 224, in __getitem__
+    raise err
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 203, in __getitem__
+    return self._data[k]
+KeyError: 'get'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\payments\views.py", line 207, in payment_success
+    payment_type = metadata.get('payment_type', 'ticket_reservation')
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 173, in __getattr__
+    raise AttributeError(*err.args) from err
+AttributeError: get
+
+-------------------------------
+
+--- Erreur le 2026-04-24 16:37:46.306627+00:00 ---
+Traceback (most recent call last):
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 171, in __getattr__
+    return self[k]
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 224, in __getitem__
+    raise err
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 203, in __getitem__
+    return self._data[k]
+KeyError: 'get'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\payments\views.py", line 195, in payment_success
+    metadata = session.get('metadata', {})
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 173, in __getattr__
+    raise AttributeError(*err.args) from err
+AttributeError: get
+
+--- Erreur le 2026-04-24 16:40:41.419631+00:00 ---
+Traceback (most recent call last):
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 171, in __getattr__
+    return self[k]
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 224, in __getitem__
+    raise err
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 203, in __getitem__
+    return self._data[k]
+KeyError: 'get'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\payments\views.py", line 199, in payment_success
+    payment_type = metadata.get('payment_type', 'ticket_reservation')
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 173, in __getattr__
+    raise AttributeError(*err.args) from err
+AttributeError: get
+
+--- Erreur le 2026-04-24 16:43:57.593053+00:00 ---
+Traceback (most recent call last):
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\payments\views.py", line 198, in payment_success
+    metadata = dict(getattr(session, 'metadata', {}))
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 224, in __getitem__
+    raise err
+  File "C:\Users\moued\Documents\BACHELIER_ICC\3eme\PID\PROJET_DE GROUPE\venv\lib\site-packages\stripe\_stripe_object.py", line 203, in __getitem__
+    return self._data[k]
+KeyError: 0

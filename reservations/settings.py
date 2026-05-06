@@ -203,6 +203,8 @@ REST_FRAMEWORK = {
         # Exige l'authentification pour toutes les requêtes
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 8,
 }
 
 

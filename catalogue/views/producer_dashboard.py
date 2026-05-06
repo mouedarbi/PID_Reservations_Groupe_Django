@@ -38,45 +38,58 @@ def prod_submit_show(request):
         date_str = request.POST.get('date')
         time_str = request.POST.get('time')
         location_id = request.POST.get('location')
-        ticket_count = int(request.POST.get('ticket_count', 0))
+        ticket_count_str = request.POST.get('ticket_count', '0')
 
-        location = get_object_or_404(Location, id=location_id)
+        try:
+            ticket_count = int(ticket_count_str) if ticket_count_str else 0
+            location = get_object_or_404(Location, id=location_id)
 
-        # Validation : tickets <= location capacity
-        if ticket_count > location.capacity:
-            messages.error(request, f"Le nombre de tickets ({ticket_count}) ne peut pas dépasser la capacité de la salle ({location.capacity}).")
-            locations = Location.objects.all()
-            return render(request, 'prod/submit_show.html', {'locations': locations})
+            # Validation : tickets <= location capacity
+            if ticket_count > location.capacity:
+                messages.error(request, f"Le nombre de tickets ({ticket_count}) ne peut pas dépasser la capacité de la salle ({location.capacity}).")
+                return render(request, 'prod/submit_show.html', {
+                    'locations': Location.objects.all(),
+                    'show': {'title': title, 'description': description, 'duration': duration, 'location_id': int(location_id)},
+                    'representation': {'total_seats': ticket_count, 'schedule': f"{date_str}T{time_str}"}
+                })
 
-        # Create Show (Pending)
-        slug = slugify(title)[:50] + "-" + str(int(time.time()))
-        show = Show.objects.create(
-            slug=slug,
-            title=title,
-            description=description,
-            poster=poster,
-            duration=duration,
-            location=location,
-            producer=request.user,
-            status='pending',
-            created_in=timezone.now().year,
-            bookable=False # Not bookable until admin adds prices and publishes
-        )
+            # Create Show (Pending)
+            slug = slugify(title)[:50] + "-" + str(int(time.time()))
+            show = Show.objects.create(
+                slug=slug,
+                title=title,
+                description=description,
+                poster=poster,
+                duration=duration,
+                location=location,
+                producer=request.user,
+                status='pending',
+                created_in=timezone.now().year,
+                bookable=False
+            )
 
-        # Create first Representation (Pending approval too)
-        schedule_str = f"{date_str} {time_str}"
-        schedule = timezone.make_aware(timezone.datetime.strptime(schedule_str, "%Y-%m-%d %H:%M"))
-        
-        Representation.objects.create(
-            show=show,
-            schedule=schedule,
-            location=location,
-            available_seats=ticket_count,
-            total_seats=ticket_count
-        )
+            # Create first Representation
+            schedule_str = f"{date_str} {time_str}"
+            schedule = timezone.make_aware(timezone.datetime.strptime(schedule_str, "%Y-%m-%d %H:%M"))
+            
+            Representation.objects.create(
+                show=show,
+                schedule=schedule,
+                location=location,
+                available_seats=ticket_count,
+                total_seats=ticket_count
+            )
 
-        messages.success(request, "Votre spectacle a été soumis avec succès et est en attente d'approbation par l'administrateur.")
-        return redirect('catalogue:prod_dashboard')
+            messages.success(request, "Votre spectacle a été soumis avec succès et est en attente d'approbation par l'administrateur.")
+            return redirect('catalogue:prod_dashboard')
+
+        except Exception as e:
+            messages.error(request, f"Une erreur est survenue lors de la soumission : {str(e)}")
+            return render(request, 'prod/submit_show.html', {
+                'locations': Location.objects.all(),
+                'show': {'title': title, 'description': description, 'duration': duration, 'location_id': int(location_id) if location_id else None},
+                'representation': {'total_seats': ticket_count_str, 'schedule': f"{date_str}T{time_str}" if date_str and time_str else None}
+            })
 
     locations = Location.objects.all()
     return render(request, 'prod/submit_show.html', {'locations': locations})

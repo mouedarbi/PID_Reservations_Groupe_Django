@@ -17,13 +17,19 @@ def home(request):
     try:
         response = requests.get(api_url, headers=headers)
         response.raise_for_status()
-        shows_data = response.json()
+        data = response.json()
+        
+        # Handle paginated response
+        if isinstance(data, dict) and 'results' in data:
+            shows_data = data['results'][:4] # Limit to 4 shows for home page
+        else:
+            shows_data = data
+            
     except requests.exceptions.RequestException as e:
         print(f"Error fetching shows for home page from API: {e}")
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON from API: {e}")
         print(f"Response text: {response.text}")
-
 
     context = {
         'shows': shows_data,
@@ -33,24 +39,43 @@ def home(request):
 
 def show_list(request):
     """
-    View for displaying a list of shows fetched from the API.
+    View for displaying a list of shows fetched from the API with pagination.
     """
+    page_num = request.GET.get('page', 1)
     base_url = request.build_absolute_uri('/')[:-1]
-    api_url = f"{base_url}/api/shows/"
+    api_url = f"{base_url}/api/shows/?page={page_num}"
     headers = {'Accept-Language': request.LANGUAGE_CODE}
+    
     shows_data = []
+    pagination_data = {}
+    
     try:
         response = requests.get(api_url, headers=headers)
-        response.raise_for_status()  # Raise an exception for HTTP errors
-        shows_data = response.json()
+        response.raise_for_status()
+        data = response.json()
+        
+        if isinstance(data, dict) and 'results' in data:
+            shows_data = data['results']
+            count = data.get('count', 0)
+            page_size = 8  # Doit correspondre à PAGE_SIZE dans settings.py
+            total_pages = (count + page_size - 1) // page_size if count > 0 else 1
+            
+            pagination_data = {
+                'count': count,
+                'next': data.get('next'),
+                'previous': data.get('previous'),
+                'current_page': int(page_num),
+                'total_pages': total_pages,
+            }
+        else:
+            shows_data = data
+            
     except requests.exceptions.RequestException as e:
-        # Handle API request errors (e.g., connection refused, 404, 500)
         print(f"Error fetching shows from API: {e}")
-        # Optionally, pass an error message to the template
-        # return render(request, 'show_list.html', {'error_message': 'Could not fetch shows.'})
 
     context = {
         'shows': shows_data,
+        'pagination': pagination_data,
         'page_title': _('Catalogue des Spectacles'),
     }
     return render(request, 'show_list.html', context)

@@ -39,9 +39,9 @@ class ShowSerializer(serializers.ModelSerializer):
         if hasattr(request, 'affiliate'):
             tier = request.affiliate.tier.name if request.affiliate.tier else 'Free'
             
-            # CAS FREE : On garde seulement titre et description
+            # CAS FREE : On garde l'ID et les infos de base pour l'affichage catalogue
             if tier == 'Free':
-                allowed_fields = ['id', 'title', 'description', 'slug']
+                allowed_fields = ['id', 'title', 'description', 'slug', 'formatted_next_date', 'price', 'poster']
                 return {field: data[field] for field in allowed_fields if field in data}
             
             # CAS STARTER : On ajoute le poster et les artistes (depth=1 inclut les artistes par défaut)
