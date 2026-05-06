@@ -24,15 +24,10 @@ msgstr ""
 
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-
-
 msgid "Réservez vos spectacles"
 
 msgstr "Book your shows"
 
-
-
-
 msgid "Ma Consommation"
 msgstr "My Usage"
 
@@ -116,96 +111,6 @@ msgstr "Response"
 
 msgid "Aucun appel enregistré au cours des dernières 24h."
 msgstr "No calls recorded in the last 24 hours."
-
-msgid "Accès API"
-msgstr "API Access"
-
-msgid "Ma Consommation"
-msgstr "My Usage"
-
-msgid "Espace Développeur"
-msgstr "Developer Space"
-
-msgid "Gérez votre accès API et vos abonnements d'affiliation."
-msgstr "Manage your API access and affiliate subscriptions."
-
-msgid "Consommation de l'API"
-msgstr "API Consumption"
-
-msgid "Suivez l'utilisation de vos quotas en temps réel."
-msgstr "Track your quota usage in real time."
-
-msgid "Votre Clé API"
-msgstr "Your API Key"
-
-msgid "Plan actuel :"
-msgstr "Current Plan:"
-
-msgid "Copier"
-msgstr "Copy"
-
-msgid "Gardez cette clé secrète. Elle vous permet d'authentifier vos requêtes vers notre API."
-msgstr "Keep this key secret. It allows you to authenticate your requests to our API."
-
-msgid "Vous n'avez pas encore activé votre accès API."
-msgstr "You have not activated your API access yet."
-
-msgid "Générer ma clé API Free"
-msgstr "Generate my Free API Key"
-
-msgid "Boostez votre accès"
-msgstr "Boost your access"
-
-msgid "appels / jour"
-msgstr "calls / day"
-
-msgid "Données complètes"
-msgstr "Full data"
-
-msgid "Données limitées"
-msgstr "Limited data"
-
-msgid "Support prioritaire"
-msgstr "Priority support"
-
-msgid "S'abonner"
-msgstr "Subscribe"
-
-msgid "Choisir ce plan"
-msgstr "Choose this plan"
-
-msgid "Plan actif"
-msgstr "Active plan"
-
-msgid "Statistiques d'utilisation"
-msgstr "Usage statistics"
-
-msgid "Utilisation aujourd'hui"
-msgstr "Usage today"
-
-msgid "Votre quota est réinitialisé chaque jour à minuit."
-msgstr "Your quota is reset every day at midnight."
-
-msgid "Disponibles"
-msgstr "Available"
-
-msgid "Historique récent"
-msgstr "Recent history"
-
-msgid "Heure"
-msgstr "Time"
-
-msgid "Méthode"
-msgstr "Method"
-
-msgid "Réponse"
-msgstr "Response"
-
-msgid "Aucun appel enregistré au cours des dernières 24h."
-msgstr "No calls recorded in the last 24 hours."
-
-msgid "Abonnement API Réussi - ThéâtrePlus"
-msgstr "API Subscription Successful - ThéâtrePlus"
 
 msgid "Paiement Réussi !"
 msgstr "Payment Successful!"
@@ -233,3 +138,9 @@ msgstr "Return to API Space"
 
 msgid "Mon Profil"
 msgstr "My Profile"
+
+msgid "Accès API"
+msgstr "API Access"
+
+msgid "Abonnement API Réussi - ThéâtrePlus"
+msgstr "API Subscription Successful - ThéâtrePlus"

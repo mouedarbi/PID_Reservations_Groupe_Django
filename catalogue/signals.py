@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
-from catalogue.models import ProducerRequest, Show, Notification
+from catalogue.models import ProducerRequest, Show, Notification, CriticRequest, PressArticle
 from django.urls import reverse
 
 @receiver(post_save, sender=User)
@@ -24,6 +24,16 @@ def notify_producer_request(sender, instance, created, **kwargs):
             link=reverse('admin_producer_requests')
         )
 
+@receiver(post_save, sender=CriticRequest)
+def notify_critic_request(sender, instance, created, **kwargs):
+    if created:
+        Notification.objects.create(
+            type='critic_request',
+            title='Demande Critique',
+            message=f"<b>{instance.user.username}</b> souhaite devenir critique de presse pour ThéâtrePlus.",
+            link=reverse('admin_critic_requests')
+        )
+
 @receiver(post_save, sender=Show)
 def notify_new_show(sender, instance, created, **kwargs):
     if created and instance.status == 'pending':
@@ -33,4 +43,17 @@ def notify_new_show(sender, instance, created, **kwargs):
             title='Nouveau Spectacle',
             message=f"<b>{producer_name}</b> a soumis le spectacle '<b>{instance.title}</b>' pour approbation.",
             link=reverse('admin_approve_show', args=[instance.pk])
+        )
+
+@receiver(post_save, sender=PressArticle)
+def notify_new_press_article(sender, instance, created, **kwargs):
+    if created:
+        # Note: Cette notification est pour l'admin, mais le producteur devrait aussi être notifié.
+        # Pour l'instant, on garde le système de notification admin existant.
+        critic_name = instance.user.username
+        Notification.objects.create(
+            type='new_article',
+            title='Nouvel Article de Presse',
+            message=f"<b>{critic_name}</b> a rédigé un article sur '<b>{instance.show.title}</b>'.",
+            link=reverse('admin_dashboard') # Placeholder admin link
         )

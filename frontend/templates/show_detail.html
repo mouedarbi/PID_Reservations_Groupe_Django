@@ -141,6 +141,37 @@
             {% endif %}
         </div>
 
+        <!-- Press Articles Section -->
+        {% if show.press_articles %}
+        <div class="press-articles-section mt-5" id="presse">
+            <h3 style="border-bottom: 2px solid #dc2626; padding-bottom: 0.5rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph ph-newspaper-clipping" style="color: #dc2626;"></i> {% trans "Articles de Presse" %}
+            </h3>
+            <div style="display: grid; gap: 2rem;">
+                {% for article in show.press_articles %}
+                <article class="press-article" style="background: white; border-radius: 12px; border: 1px solid var(--border-color); padding: 2rem; position: relative; transition: box-shadow 0.3s; {% if article.is_pinned %}border-left: 5px solid #dc2626;{% endif %}">
+                    {% if article.is_pinned %}
+                    <div style="position: absolute; top: -10px; right: 20px; background: #dc2626; color: white; padding: 4px 12px; border-radius: 999px; font-size: 0.7rem; font-weight: bold; display: flex; align-items: center; gap: 4px; box-shadow: 0 4px 10px rgba(220,38,38,0.3);">
+                        <i class="ph-fill ph-push-pin"></i> {% trans "ÉPINGLÉ" %}
+                    </div>
+                    {% endif %}
+                    
+                    <h4 style="margin: 0 0 1rem 0; font-size: 1.5rem; font-family: 'Playfair Display', serif; color: var(--secondary);">{{ article.title }}</h4>
+                    <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 1.5rem;">
+                        {% trans "Par" %} <strong>{{ article.user_name }}</strong> • {{ article.created_at|date:"d F Y" }}
+                    </p>
+                    
+                    <div style="color: #4b5563; font-style: italic; font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem; background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                        {{ article.summary }}
+                    </div>
+                    
+                    <div class="article-content" style="color: #374151; line-height: 1.8; white-space: pre-wrap;">{{ article.content }}</div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
         <!-- Section Critiques & Avis -->
         <div class="reviews-section mt-5">
             <div class="d-flex justify-content-between align-items-center mb-4">

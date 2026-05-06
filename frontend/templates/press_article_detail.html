@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<section class="hero compact" style="padding-top: 120px; background: #dc2626; color: white; padding-bottom: 3rem;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        <nav aria-label="breadcrumb" style="margin-bottom: 1.5rem;">
+            <ol style="display: flex; list-style: none; padding: 0; margin: 0; gap: 0.5rem; font-size: 0.9rem;">
+                <li><a href="{% url 'frontend:press_article_list' %}" style="color: white; text-decoration: none; opacity: 0.8;">{% trans "Articles de Presse" %}</a></li>
+                <li style="opacity: 0.6;">/</li>
+                <li style="font-weight: bold;">{{ article.title }}</li>
+            </ol>
+        </nav>
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 1rem; line-height: 1.2;">{{ article.title }}</h1>
+        <div style="display: flex; align-items: center; gap: 1.5rem; font-size: 1.1rem; opacity: 0.9;">
+            <span style="display: flex; align-items: center; gap: 0.5rem;"><i class="ph ph-user"></i> {{ article.user_name }}</span>
+            <span style="display: flex; align-items: center; gap: 0.5rem;"><i class="ph ph-calendar"></i> {{ article.created_at|date:"d F Y" }}</span>
+            <span style="display: flex; align-items: center; gap: 0.5rem;"><i class="ph ph-tag"></i> {{ article.show_title }}</span>
+        </div>
+    </div>
+</section>
+
+<section class="article-detail-section" style="padding: 5rem 0; background: white;">
+    <div class="container" style="max-width: 800px; margin: 0 auto; padding: 0 15px;">
+        
+        <div class="article-lead" style="font-size: 1.4rem; color: #475569; font-style: italic; line-height: 1.6; margin-bottom: 3rem; border-left: 5px solid #dc2626; padding-left: 2rem;">
+            {{ article.summary }}
+        </div>
+
+        <div class="article-body" style="font-size: 1.2rem; color: #1e293b; line-height: 1.8; white-space: pre-wrap;">
+            {{ article.content }}
+        </div>
+
+        <div class="article-footer" style="margin-top: 5rem; padding-top: 3rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div style="width: 50px; height: 50px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #dc2626;">
+                    {{ article.user_name|slice:":1"|upper }}
+                </div>
+                <div>
+                    <p style="margin: 0; font-weight: bold; color: var(--secondary);">{{ article.user_name }}</p>
+                    <p style="margin: 0; font-size: 0.9rem; color: #64748b;">{% trans "Critique invité" %}</p>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 1rem;">
+                <a href="https://twitter.com/share?text={{ article.title }}" target="_blank" style="color: #64748b; font-size: 1.5rem;"><i class="ph ph-twitter-logo"></i></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" style="color: #64748b; font-size: 1.5rem;"><i class="ph ph-facebook-logo"></i></a>
+                <a href="javascript:window.print()" style="color: #64748b; font-size: 1.5rem;"><i class="ph ph-printer"></i></a>
+            </div>
+        </div>
+
+        <div style="margin-top: 4rem; text-align: center;">
+            <a href="{% url 'frontend:press_article_list' %}" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; color: #dc2626; font-weight: bold;">
+                <i class="ph ph-arrow-left"></i> {% trans "Retour aux articles" %}
+            </a>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

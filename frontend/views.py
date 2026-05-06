@@ -152,3 +152,67 @@ def about(request):
     }
     return render(request, 'about.html', context)
 
+def press_article_list(request):
+    """
+    View for displaying a list of press articles with pagination.
+    """
+    page_num = request.GET.get('page', 1)
+    base_url = request.build_absolute_uri('/')[:-1]
+    api_url = f"{base_url}/api/press-articles/?page={page_num}"
+    headers = {'Accept-Language': request.LANGUAGE_CODE}
+    
+    articles_data = []
+    pagination_data = {}
+    
+    try:
+        response = requests.get(api_url, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+        
+        if isinstance(data, dict) and 'results' in data:
+            articles_data = data['results']
+            count = data.get('count', 0)
+            page_size = 4
+            total_pages = (count + page_size - 1) // page_size if count > 0 else 1
+            
+            pagination_data = {
+                'count': count,
+                'next': data.get('next'),
+                'previous': data.get('previous'),
+                'current_page': int(page_num),
+                'total_pages': total_pages,
+            }
+        else:
+            articles_data = data
+            
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching articles from API: {e}")
+
+    context = {
+        'articles': articles_data,
+        'pagination': pagination_data,
+        'page_title': _('Articles de Presse'),
+    }
+    return render(request, 'press_article_list.html', context)
+
+def press_article_detail(request, pk):
+    """
+    View for displaying a full press article.
+    """
+    base_url = request.build_absolute_uri('/')[:-1]
+    api_url = f"{base_url}/api/press-articles/{pk}/"
+    headers = {'Accept-Language': request.LANGUAGE_CODE}
+    article_data = None
+    try:
+        response = requests.get(api_url, headers=headers)
+        response.raise_for_status()
+        article_data = response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching article detail from API: {e}")
+
+    context = {
+        'article': article_data,
+        'page_title': article_data.get('title', _('Article de Presse')) if article_data else _('Article introuvable'),
+    }
+    return render(request, 'press_article_detail.html', context)
+

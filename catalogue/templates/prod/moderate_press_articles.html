@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Gérer les Articles de Presse" %} - ThéâtrePlus{% endblock %}
+
+{% block content %}
+<section class="hero compact" style="padding-top: 120px; background: #0284c7; color: white; padding-bottom: 3rem;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem;">{% trans "Articles de Presse" %}</h1>
+        <p style="opacity: 0.9; font-size: 1.1rem;">{% trans "Modérez les articles rédigés par les critiques sur vos spectacles." %}</p>
+    </div>
+</section>
+
+<section class="moderate-press-articles" style="padding: 4rem 0;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        
+        <div style="margin-bottom: 2rem;">
+            <a href="{% url 'catalogue:prod_dashboard' %}" style="text-decoration: none; color: #374151; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph ph-arrow-left"></i> {% trans "Retour au tableau de bord" %}
+            </a>
+        </div>
+
+        <div style="display: grid; gap: 2rem;">
+            {% for article in articles %}
+            <div style="background: white; border-radius: 12px; border: 1px solid #e5e7eb; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                    <div style="display: flex; gap: 1.5rem; align-items: center;">
+                        <div style="width: 60px; height: 60px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: #0284c7; border: 2px solid #e2e8f0;">
+                            {{ article.user.username|slice:":1"|upper }}
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; font-size: 1.3rem; color: var(--secondary);">{{ article.title }}</h3>
+                            <p style="margin: 3px 0 0 0; color: #64748b; font-size: 0.9rem;">
+                                {% trans "Par" %} <strong>{{ article.user.username }}</strong> • {{ article.created_at|date:"d/m/Y H:i" }}
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        {% if article.validated %}
+                            <span style="background: #dcfce7; color: #166534; padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: bold;">{% trans "PUBLIÉ" %}</span>
+                        {% else %}
+                            <span style="background: #fef3c7; color: #92400e; padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: bold;">{% trans "EN ATTENTE" %}</span>
+                        {% endif %}
+                        {% if article.is_pinned %}
+                            <span style="background: #e0f2fe; color: #075985; padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: bold; margin-left: 5px;"><i class="ph-fill ph-push-pin"></i> {% trans "ÉPINGLÉ" %}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div style="border-left: 4px solid #0284c7; padding-left: 1.5rem; margin-bottom: 1.5rem;">
+                    <p style="font-weight: 600; color: #0284c7; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em;">
+                        {% trans "Spectacle" %} : {{ article.show.title }}
+                    </p>
+                    <p style="font-style: italic; color: #475569; font-size: 1rem; line-height: 1.6;">
+                        {{ article.summary }}
+                    </p>
+                </div>
+
+                <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border: 1px solid #f1f5f9; margin-bottom: 2rem;">
+                    <div style="color: #334155; line-height: 1.8; white-space: pre-wrap;">{{ article.content }}</div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; border-top: 1px solid #f1f5f9; pt-4; mt-4;">
+                    {% if not article.validated %}
+                    <a href="{% url 'catalogue:prod_validate_press_article' article.id 'approve' %}" class="btn-success" style="background: #10b981; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="ph ph-check-circle"></i> {% trans "Approuver l'article" %}
+                    </a>
+                    {% else %}
+                    <a href="{% url 'catalogue:prod_validate_press_article' article.id 'reject' %}" class="btn-warning" style="background: #f59e0b; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="ph ph-minus-circle"></i> {% trans "Retirer de la publication" %}
+                    </a>
+                    {% endif %}
+
+                    <a href="{% url 'catalogue:prod_validate_press_article' article.id 'pin' %}" style="background: white; color: #64748b; border: 1px solid #d1d5db; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="{% if article.is_pinned %}ph-fill{% else %}ph{% endif %} ph-push-pin"></i> 
+                        {% if article.is_pinned %}{% trans "Désépingler" %}{% else %}{% trans "Épingler en haut" %}{% endif %}
+                    </a>
+
+                    <a href="{% url 'catalogue:prod_validate_press_article' article.id 'delete' %}" onclick="return confirm('{% trans "Supprimer définitivement cet article ?" %}')" style="margin-left: auto; color: #ef4444; font-weight: 600; font-size: 0.9rem; text-decoration: none; display: flex; align-items: center; gap: 0.3rem;">
+                        <i class="ph ph-trash"></i> {% trans "Supprimer" %}
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div style="text-align: center; padding: 5rem; background: #f9fafb; border-radius: 12px; border: 2px dashed #e5e7eb;">
+                <i class="ph ph-newspaper" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 1rem;"></i>
+                <p style="color: #64748b; font-size: 1.1rem;">{% trans "Aucun article de presse n'a été rédigé pour vos spectacles pour le moment." %}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from catalogue.models import Show, Location, Representation, Review
+from catalogue.models import Show, Location, Representation, Review, PressArticle
 from catalogue.forms.ShowForm import ShowForm
 from catalogue.utils.stats import get_show_stats
 from django.utils.text import slugify
@@ -164,6 +164,46 @@ def prod_moderate_reviews(request):
         return redirect('catalogue:prod_moderate_reviews')
 
     return render(request, 'prod/moderate_reviews.html', {'reviews': reviews})
+
+@login_required
+@user_passes_test(is_producer)
+def prod_moderate_press_articles(request):
+    """
+    Vue permettant au producteur de modérer les articles de presse sur ses spectacles.
+    """
+    articles = PressArticle.objects.filter(show__producer=request.user).select_related('user', 'show').order_by('-created_at')
+    
+    context = {
+        'page_title': 'Gérer les Articles de Presse',
+        'articles': articles,
+    }
+    return render(request, 'prod/moderate_press_articles.html', context)
+
+@login_required
+@user_passes_test(is_producer)
+def prod_validate_press_article(request, pk, action):
+    """
+    Vue pour approuver, refuser ou épingler un article de presse.
+    """
+    article = get_object_or_404(PressArticle, pk=pk, show__producer=request.user)
+    
+    if action == 'approve':
+        article.validated = True
+        messages.success(request, f"L'article '{article.title}' a été approuvé.")
+    elif action == 'reject':
+        article.validated = False
+        messages.warning(request, f"L'article '{article.title}' a été mis en attente.")
+    elif action == 'pin':
+        article.is_pinned = not article.is_pinned
+        status = "épinglé" if article.is_pinned else "désépinglé"
+        messages.info(request, f"L'article a été {status}.")
+    elif action == 'delete':
+        article.delete()
+        messages.error(request, "L'article a été supprimé.")
+        return redirect('catalogue:prod_moderate_press_articles')
+        
+    article.save()
+    return redirect('catalogue:prod_moderate_press_articles')
 
 @login_required
 @user_passes_test(is_producer)

@@ -24,15 +24,10 @@ msgstr ""
 
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-
-
 msgid "Réservez vos spectacles"
 
 msgstr "Reserveer uw voorstellingen"
 
-
-
-
 msgid "Ma Consommation"
 msgstr "Mijn Verbruik"
 
@@ -116,96 +111,6 @@ msgstr "Antwoord"
 
 msgid "Aucun appel enregistré au cours des dernières 24h."
 msgstr "Geen oproepen geregistreerd in de afgelopen 24 uur."
-
-msgid "Accès API"
-msgstr "API Toegang"
-
-msgid "Ma Consommation"
-msgstr "Mijn Verbruik"
-
-msgid "Espace Développeur"
-msgstr "Ontwikkelaarsruimte"
-
-msgid "Gérez votre accès API et vos abonnements d'affiliation."
-msgstr "Beheer uw API-toegang en affiliate-abonnementen."
-
-msgid "Consommation de l'API"
-msgstr "API Verbruik"
-
-msgid "Suivez l'utilisation de vos quotas en temps réel."
-msgstr "Volg uw quotaverbruik in realtime."
-
-msgid "Votre Clé API"
-msgstr "Uw API-sleutel"
-
-msgid "Plan actuel :"
-msgstr "Huidig Plan:"
-
-msgid "Copier"
-msgstr "Kopiëren"
-
-msgid "Gardez cette clé secrète. Elle vous permet d'authentifier vos requêtes vers notre API."
-msgstr "Houd deze sleutel geheim. Hiermee kunt u uw verzoeken aan onze API authenticeren."
-
-msgid "Vous n'avez pas encore activé votre accès API."
-msgstr "U heeft uw API-toegang nog niet geactiveerd."
-
-msgid "Générer ma clé API Free"
-msgstr "Genereer mijn gratis API-sleutel"
-
-msgid "Boostez votre accès"
-msgstr "Verbeter uw toegang"
-
-msgid "appels / jour"
-msgstr "oproepen / dag"
-
-msgid "Données complètes"
-msgstr "Volledige gegevens"
-
-msgid "Données limitées"
-msgstr "Beperkte gegevens"
-
-msgid "Support prioritaire"
-msgstr "Prioritaire ondersteuning"
-
-msgid "S'abonner"
-msgstr "Abonneren"
-
-msgid "Choisir ce plan"
-msgstr "Kies dit plan"
-
-msgid "Plan actif"
-msgstr "Actief plan"
-
-msgid "Statistiques d'utilisation"
-msgstr "Gebruiksstatistieken"
-
-msgid "Utilisation aujourd'hui"
-msgstr "Gebruik vandaag"
-
-msgid "Votre quota est réinitialisé chaque jour à minuit."
-msgstr "Uw quota wordt elke dag om middernacht gereset."
-
-msgid "Disponibles"
-msgstr "Beschikbaar"
-
-msgid "Historique récent"
-msgstr "Recente geschiedenis"
-
-msgid "Heure"
-msgstr "Tijd"
-
-msgid "Méthode"
-msgstr "Methode"
-
-msgid "Réponse"
-msgstr "Antwoord"
-
-msgid "Aucun appel enregistré au cours des dernières 24h."
-msgstr "Geen oproepen geregistreerd in de afgelopen 24 uur."
-
-msgid "Abonnement API Réussi - ThéâtrePlus"
-msgstr "API-abonnement geslaagd - ThéâtrePlus"
 
 msgid "Paiement Réussi !"
 msgstr "Betaling Geslaagd!"
@@ -233,3 +138,9 @@ msgstr "Terug naar API-ruimte"
 
 msgid "Mon Profil"
 msgstr "Mijn Profiel"
+
+msgid "Accès API"
+msgstr "API Toegang"
+
+msgid "Abonnement API Réussi - ThéâtrePlus"
+msgstr "API-abonnement geslaagd - ThéâtrePlus"

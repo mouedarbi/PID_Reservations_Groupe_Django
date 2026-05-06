@@ -1278,13 +1278,80 @@ def admin_producer_request_action(request, pk, action):
             
         from django.contrib import messages
         messages.success(request, f"La demande de {req.first_name} {req.last_name} a été acceptée. L'utilisateur est maintenant Producteur.")
+    
     elif action == 'reject':
         req.status = 'rejected'
         req.save()
         from django.contrib import messages
-        messages.success(request, f"La demande de {req.first_name} {req.last_name} a été refusée.")
+        messages.warning(request, f"La demande de {req.first_name} {req.last_name} a été rejetée.")
         
     return redirect('admin_producer_requests')
+
+@user_passes_test(is_admin)
+def admin_critic_requests(request):
+    """
+    Vue pour lister les demandes pour devenir critique de presse.
+    """
+    from catalogue.models import CriticRequest
+    pending_requests = CriticRequest.objects.filter(status='pending').order_by('-created_at')
+    
+    context = {
+        'page_title': 'Demandes Critiques de Presse',
+        'title': 'Critiques de Presse',
+        'pending_requests': pending_requests,
+    }
+    return render(request, 'admin/critic_request/pending.html', context)
+
+@user_passes_test(is_admin)
+def admin_critic_request_action(request, pk, action):
+    """
+    Vue pour approuver ou rejeter une demande de critique.
+    """
+    from catalogue.models import CriticRequest, Notification
+    from django.contrib.auth.models import Group
+    
+    req = get_object_or_404(CriticRequest, pk=pk)
+    
+    if request.method == 'POST':
+        if action == 'approve':
+            req.status = 'approved'
+            req.save()
+            # Add user to PRESS_CRITIC group
+            critic_group, _ = Group.objects.get_or_create(name='PRESS_CRITIC')
+            req.user.groups.add(critic_group)
+            
+            # Remove user from MEMBER group if they are in it
+            member_group = Group.objects.filter(name='MEMBER').first()
+            if member_group:
+                req.user.groups.remove(member_group)
+                
+            messages.success(request, f"La demande de {req.first_name} {req.last_name} a été acceptée.")
+            
+            # Notifier l'utilisateur
+            Notification.objects.create(
+                user=req.user,
+                type='info',
+                title='Candidature Acceptée',
+                message="Félicitations ! Votre demande pour devenir critique de presse a été acceptée. Vous pouvez maintenant rédiger des articles."
+            )
+        
+        elif action == 'reject':
+            req.status = 'rejected'
+            req.save()
+            messages.warning(request, f"La demande de {req.first_name} {req.last_name} a été rejetée.")
+            
+            # Notifier l'utilisateur
+            Notification.objects.create(
+                user=req.user,
+                type='info',
+                title='Candidature Refusée',
+                message="Votre demande pour devenir critique de presse a été examinée et n'a pas été retenue pour le moment."
+            )
+            
+        return redirect('admin_critic_requests')
+    
+    return redirect('admin_critic_requests')
+
 
 @user_passes_test(is_admin)
 def admin_pending_shows(request):
