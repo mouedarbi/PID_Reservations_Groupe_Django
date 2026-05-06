@@ -44,19 +44,10 @@
                         </h5>
                         <ul class="tabs space-y-1">
                             <li class="parent-item">
-                                <button class="nav-btn flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100" aria-expanded="false">
-                                    <i class="ph ph-layout text-2xl"></i>
-                                    <span class="nav-text">Vue d'ensemble</span>
-                                    <i class="ph ph-caret-down ml-auto transition-transform duration-300"></i>
-                                </button>
-                                <ul class="sub-nav mt-1 ml-6 max-h-0 space-y-1 overflow-hidden transition-all duration-300">
-                                    <li>
-                                        <a href="{% url 'admin_dashboard' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
-                                            <i class="ph ph-house text-2xl"></i>
-                                            <span>Accueil</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                <a href="{% url 'admin_dashboard' %}" class="flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
+                                    <i class="ph ph-house text-2xl"></i>
+                                    <span class="nav-text">Accueil</span>
+                                </a>
                             </li>
                             
                             <li class="parent-item">
@@ -82,23 +73,14 @@
                             </li>
                             
                             <li class="parent-item">
-                                <button class="nav-btn flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100" aria-expanded="false">
+                                <a href="{% url 'admin_reservation_index' %}" class="flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
                                     <i class="ph ph-ticket text-2xl"></i>
                                     <span class="nav-text">Réservations</span>
-                                    <i class="ph ph-caret-down ml-auto transition-transform duration-300"></i>
-                                </button>
-                                <ul class="sub-nav mt-1 ml-6 max-h-0 space-y-1 overflow-hidden transition-all duration-300">
-                                    <li>
-                                        <a href="{% url 'admin_reservation_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
-                                            <i class="ph ph-shopping-cart text-2xl"></i>
-                                            <span>Réservations</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                </a>
                             </li>
 
                             <li class="parent-item">
-                                <a href="{% url 'admin_pending_shows' %}" class="nav-btn flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
+                                <a href="{% url 'admin_pending_shows' %}" class="flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
                                     <i class="ph ph-hand-pointing text-2xl text-red-600"></i>
                                     <span class="nav-text">Demandes Producteurs</span>
                                     {% if pending_shows_count > 0 %}
@@ -106,21 +88,19 @@
                                     {% endif %}
                                 </a>
                             </li>
+
+                            <li class="parent-item">
+                                <a href="{% url 'admin_producer_requests' %}" class="flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
+                                    <i class="ph ph-graduation-cap text-2xl text-blue-600"></i>
+                                    <span class="nav-text">Producteurs Juniors</span>
+                                </a>
+                            </li>
                             
                             <li class="parent-item">
-                                <button class="nav-btn flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100" aria-expanded="false">
+                                <a href="{% url 'admin_user_index' %}" class="flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
                                     <i class="ph ph-users text-2xl"></i>
                                     <span class="nav-text">Utilisateurs</span>
-                                    <i class="ph ph-caret-down ml-auto transition-transform duration-300"></i>
-                                </button>
-                                <ul class="sub-nav mt-1 ml-6 max-h-0 space-y-1 overflow-hidden transition-all duration-300">
-                                    <li>
-                                        <a href="{% url 'admin_user_index' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
-                                            <i class="ph ph-user text-2xl"></i>
-                                            <span>Utilisateurs</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                </a>
                             </li>
                             
                             <li class="parent-item">
@@ -233,37 +213,44 @@
                         
                         <!-- Bouton notification -->
                         <div class="relative" id="notification-wrapper">
-                            <button id="notification-btn" class="relative cursor-pointer rounded-xl p-1 transition-colors md:p-2.5 flex items-center">
-                                <i class="ph ph-bell-ringing text-xl sm:text-2xl"></i>
-                                <span class="absolute top-1.5 right-1 h-2 w-2 rounded-full bg-red-500 md:right-1.5"></span>
+                            <button id="custom-notification-btn" class="relative cursor-pointer rounded-xl p-1 transition-colors md:p-2.5 flex items-center">
+                                <i class="ph ph-bell text-xl sm:text-2xl"></i>
+                                {% if unread_notifications_count > 0 %}
+                                    <span class="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white">
+                                        {{ unread_notifications_count }}
+                                    </span>
+                                {% endif %}
                             </button>
                             
-                            <div id="notification-dropdown" class="bg-bg border-border absolute top-18 -right-28 z-10 hidden w-64 rounded-lg border p-2 md:-right-32">
-                                <div id="notification-list" class="custom-scrollbar max-h-96 overflow-y-auto">
-                                    <a href="#" class="border-border hover:bg-bg flex items-start gap-3 border-b p-2 transition">
-                                        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 text-red-500">
-                                            <i class="ph ph-bell-ringing text-xl"></i>
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="text-text text-xs font-semibold sm:text-sm">
-                                                Nouvelle <span class="font-semibold">réservation</span> reçue
-                                            </p>
-                                            <p class="mt-1 text-[10px] text-gray-500 sm:text-xs">Il y a 5 minutes</p>
-                                        </div>
-                                    </a>
-                                    
-                                    <a href="#" class="border-border hover:bg-bg flex items-start gap-3 border-b p-2 transition">
-                                        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 text-green-500">
-                                            <i class="ph ph-bell-ringing text-xl"></i>
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="text-text text-xs sm:text-sm">
-                                                <span class="font-semibold">Avis</span> en attente de validation
-                                            </p>
-                                            <p class="mt-1 text-[10px] text-gray-500 sm:text-xs">Il y a 1 heure</p>
-                                        </div>
-                                    </a>
+                            <div id="custom-notification-dropdown" class="bg-bg border-border absolute top-18 -right-28 z-50 hidden w-80 rounded-lg border p-2 md:-right-32 shadow-lg">
+                                <div class="border-border border-b p-3">
+                                    <h4 class="text-sm font-bold">Notifications</h4>
                                 </div>
+                                <div id="notification-list" class="custom-scrollbar max-h-96 overflow-y-auto">
+                                    {% for notification in admin_notifications %}
+                                        <a href="{% url 'admin_mark_notification_read' notification.id %}" class="block border-border border-b p-3 hover:bg-gray-100 last:border-0 transition-colors">
+                                            <div class="flex flex-col gap-1">
+                                                <div class="flex items-center justify-between">
+                                                    <span class="text-xs font-bold text-blue-600 uppercase">{{ notification.get_type_display }}</span>
+                                                    <span class="text-[10px] text-muted">{{ notification.created_at|timesince }} ago</span>
+                                                </div>
+                                                <p class="text-sm leading-tight text-text">
+                                                    {{ notification.message|safe }}
+                                                </p>
+                                            </div>
+                                        </a>
+                                    {% empty %}
+                                        <div class="p-8 text-center text-sm text-muted">
+                                            <i class="ph ph-bell-slash text-4xl mb-2 block opacity-20"></i>
+                                            Vous n'avez aucune notification pour l'instant
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% if admin_notifications %}
+                                <div class="p-2 text-center">
+                                    <a href="{% url 'admin_notifications' %}" class="text-xs text-blue-600 hover:underline">Voir toutes les notifications</a>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                         
@@ -273,26 +260,24 @@
                         </button>
                         
                         <div class="relative">
-                            <button id="user-menu-trigger-aside" class="px-2 py-1 sm:px-3 sm:py-2 rounded-2xl flex items-center gap-2 cursor-pointer transition-transform duration-200">
+                            <button id="custom-user-menu-trigger" class="px-2 py-1 sm:px-3 sm:py-2 rounded-2xl flex items-center gap-2 cursor-pointer transition-transform duration-200">
                                 <img src="{% static 'admin/images/user-avatar.jpg' %}" alt="avatar" class="size-8 object-cover rounded-full">
                                 
-                                <i id="user-menu-icon-aside" class="ph ph-caret-down text-text text-xl transition-transform duration-200"></i>
+                                <i id="custom-user-menu-icon" class="ph ph-caret-down text-text text-xl transition-transform duration-200"></i>
                             </button>
                             
-                            <div id="user-menu-dropdown-aside" class="absolute right-0 top-14 px-3 py-4 bg-border rounded-lg w-40 space-y-4 z-50 hidden">
-                                <a href="{% url 'admin:password_change' %}" class="flex items-center gap-2 text-text">
-                                    <i class="ph ph-user"></i>
-                                    <p>Profil</p>
+                            <div id="custom-user-menu-dropdown" class="absolute right-0 top-14 px-3 py-4 bg-border rounded-lg w-48 space-y-4 z-50 hidden shadow-lg">
+                                <a href="{% url 'frontend:home' %}" class="flex items-center gap-2 text-text hover:text-blue-500 transition-colors">
+                                    <i class="ph ph-house"></i>
+                                    <p>Revenir au site</p>
                                 </a>
                                 
-                                <a href="{% url 'admin:password_change' %}" class="flex items-center gap-2 text-text">
-                                    <i class="ph ph-gear"></i>
-                                    <p>Paramètres</p>
-                                </a>
-                                
-                                <a href="{% url 'admin:logout' %}" class="flex items-center gap-2 text-red-500 hover:text-red-600">
+                                <form id="admin-logout-form" action="{% url 'accounts:logout' %}" method="post" style="display: none;">
+                                    {% csrf_token %}
+                                </form>
+                                <a href="javascript:document.getElementById('admin-logout-form').submit();" class="flex items-center gap-2 text-red-500 hover:text-red-600 transition-colors">
                                     <i class="ph ph-sign-out"></i>
-                                    <p>Déconnexion</p>
+                                    <p>Se déconnecter</p>
                                 </a>
                             </div>
                         </div>
@@ -310,7 +295,7 @@
     
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{% static 'admin/js/admin-custom.js' %}"></script>
+    <script src="{% static 'admin/js/admin-custom.js' %}?v=4"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

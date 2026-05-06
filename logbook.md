@@ -196,7 +196,7 @@ Renforcement du contrôle éditorial via le Dashboard Admin :
 - **Sécurité et Rôles** : Affinement de la visibilité des liens dans le profil utilisateur pour éviter qu'un super-administrateur ne voit le menu "Espace Producteur", clarifiant ainsi les périmètres d'action de chaque rôle.
 - **Fix IntegrityError** : Résolution d'une erreur lors de l'ajout de tarifs dans le dashboard admin. Le champ `quantity_total` du modèle `ShowPrice` a été réintégré et synchronisé avec la base de données (migration faked pour correspondre à l'état réel de MySQL).
 - **Fix ValueError** : Correction d'un crash dans la validation des spectacles où le système tentait de parser des dates/heures vides lors de l'ajout d'un simple tarif. La mise à jour de la séance est désormais optionnelle.
-- **UI Modernisation** : Refonte visuelle de la page "Demandes Producteurs" et de l'interface d'approbation pour une cohérence parfaite avec la charte graphique du nouveau dashboard administrateur.
+- **UI Modernisation** : Refonte visuelle de la page "Demandes Producteurs" et de l'interface d'approbation pour une coherence parfaite avec la charte graphique du nouveau dashboard administrateur.
 - **Fix Persistance Approbation** : Correction d'un bug de perte de données (titre, lieu, durée) lors de l'actualisation ou de l'ajout de tarifs sur la page de validation administrateur.
 - **Amélioration Modération Avis** : Affichage explicite des étoiles (notation numérique et graphique) pour le producteur lors de la modération des commentaires.
 - **Support des Images (Posters)** : Ajout de la gestion du champ `poster_url` dans le flux de soumission producteur et d'approbation admin, permettant l'affichage d'images personnalisées par spectacle.
@@ -245,3 +245,89 @@ Cette session a été consacrée à l'ajout d'une fonctionnalité permettant aux
 - **Priorisation** : Modification de la logique d'affichage dans `show_detail.html` pour que les avis épinglés apparaissent systématiquement en haut de la liste (tri par `is_pinned` décroissant).
 - **Mise en évidence** : Les avis épinglés bénéficient désormais d'une bordure ambre, d'un fond légèrement teinté et d'un badge visuel **"Épinglé"** avec une icône de punaise à côté du nom de l'utilisateur.
 - **Compatibilité API** : Mise à jour du `ReviewSerializer` dans `api/serializers/shows.py` pour inclure le champ `is_pinned`, assurant ainsi la persistance de l'information lors du chargement dynamique des données.
+
+## Date: mercredi 29 avril 2026
+
+### Progress Summary - Demandes pour Devenir Producteur
+
+Cette session a été consacrée à la mise en place d'un système permettant aux utilisateurs classiques de postuler pour devenir producteurs.
+
+#### 1. Système de Demande (Frontend)
+- **Point d'entrée** : Ajout d'un lien "Devenir Producteur ?" dans la barre de navigation, visible uniquement pour les utilisateurs connectés non-staff et non-producteurs.
+- **Formulaire Utilisateur** : Création de la page de soumission (`become_producer.html`) et du formulaire `ProducerRequestForm` permettant aux candidats de saisir leurs informations (Nom, Prénom, Email, Téléphone, Adresse, Présentation, Motivation).
+- **Protection anti-spam** : Une fois la demande soumise, le système bloque la création d'une nouvelle demande et affiche un message d'attente à l'utilisateur.
+
+#### 2. Modèle de Données (Backend)
+- **Modèle `ProducerRequest`** : Création du modèle pour stocker les demandes avec des champs dédiés (first_name, last_name, email, phone, address, presentation, motivation) et un système de statut (`pending`, `approved`, `rejected`).
+- **Liaisons** : Le modèle est relié à l'utilisateur Django (`User`).
+
+#### 3. Modération par l'Administrateur
+- **Dashboard Admin** : Intégration d'une nouvelle section "Producteurs Juniors" dans le menu de gauche.
+- **Vue d'examen** : Mise à jour visuelle du template `producer_request/pending.html` pour correspondre à l'esthétique moderne du dashboard admin (mode sombre, couleurs, cartes, tableaux structurés).
+- **Interface Modale** : L'examen d'une demande ouvre désormais une fenêtre modale (Modal) claire affichant toutes les informations du candidat (présentation, motivation, coordonnées) sans quitter la liste.
+- **Action de validation** : L'admin peut "Refuser" ou "Accepter". En cas d'acceptation, l'utilisateur est automatiquement ajouté au groupe `PRODUCER` et gagne accès à son propre Espace Producteur.
+
+#### 4. Améliorations de l'UI/UX du Dashboard Administrateur
+- **Simplification de la Sidebar** : Remplacement des menus déroulants redondants ("Vue d'ensemble > Accueil", "Réservations > Réservations", "Utilisateurs > Utilisateurs") par des liens directs et clairs pour améliorer la navigation.
+- **Menu Profil Admin (En-tête)** : L'icône de profil en haut à droite est désormais cliquable et fonctionnelle. Elle affiche un menu contextuel permettant de "Revenir au site" (accès direct au front-end tout en restant connecté) et de "Se déconnecter" (redirection propre vers l'accueil via le système Django).
+- **Notifications** : L'icône des notifications a été rendue interactive et affiche désormais un état vide élégant ("Vous n'avez aucune notification pour l'instant") en l'absence d'alertes.
+
+#### 5. Optimisations et Correctifs
+- **Transition de Rôle** : Lors de l'approbation d'un producteur, l'utilisateur est maintenant correctement basculé du groupe "MEMBER" vers le groupe "PRODUCER", assurant la mise à jour immédiate de ses droits et de son interface.
+- **Performance et Stabilité** : Suppression de scripts de rechargement inutiles qui provoquaient des ralentissements sur certaines pages.
+- **Correctifs d'Interactivity** : Résolution des conflits d'IDs dans le JavaScript pour garantir le bon fonctionnement des menus déroulants (profil et notifications) sur l'ensemble du dashboard.
+
+## Date: lundi 4 mai 2026
+
+### Progress Summary - Système de Notifications Admin & Correctifs
+
+Cette session a été consacrée à l'implémentation complète d'un système de notifications pour le dashboard d'administration, permettant un suivi en temps réel des activités critiques.
+
+#### 1. Système de Notifications (Backend)
+- **Modèle Notification** : Création du modèle pour stocker les alertes avec types catégorisés (new_user, producer_request, new_show), messages formatés HTML et liens de redirection dynamiques.
+- **Automatisation via Signals** : Implémentation de triggers automatiques dans catalogue/signals.py qui génèrent une notification admin lors de :
+    - L'inscription d'un nouvel utilisateur.
+    - La soumission d'une demande pour devenir producteur.
+    - La soumission d'un nouveau spectacle par un producteur pour approbation.
+- **Context Processor** : Création de admin_notifications pour injecter les notifications non lues et le compteur global dans tous les templates du dashboard admin.
+
+#### 2. Interface Utilisateur & Interactivité (Admin Dashboard)
+- **Topbar Dynamique** : Mise à jour du bouton cloche dans admin.html pour afficher un badge rouge avec le nombre exact de notifications non lues et un menu déroulant affichant les 10 alertes les plus récentes.
+- **Gestion des Lectures** : Implémentation d'une vue de redirection qui marque une notification comme lue avant d'envoyer l'administrateur vers la page concernée (ex: fiche du spectacle à approuver).
+- **Historique Complet** : Création d'une page dédiée admin_notifications avec pagination pour consulter l'ensemble des notifications passées.
+- **Action Groupée** : Ajout d'une fonctionnalité "Tout marquer comme lu" pour une gestion rapide du flux d'alertes.
+
+#### 3. Correctifs de Base de Données
+- **Migration Manquante** : Résolution d'une `ProgrammingError (1146)` causée par l'absence de la table `catalogue_notification`. 
+- **Actions** : Génération et application de la migration `0046_notification.py` pour synchroniser le schéma MySQL avec le nouveau modèle.
+
+#### 4. Intégration Git
+- Organisation des changements en commits structurés.
+- **Push Final** : Synchronisation de l'ensemble du travail sur le dépôt distant.
+
+## Date: mardi 5 mai 2026
+
+### Progress Summary - Refactorisation des Assets & Correctifs CI
+
+Cette session a été focalisée sur la réorganisation structurelle des fichiers statiques du projet et la résolution de bugs bloquant l'intégration continue (CI).
+
+#### 1. Refactorisation Majeure des Assets (Dossier `static`)
+- **Centralisation** : Création d'un dossier `static/` à la racine du projet pour regrouper de manière cohérente toutes les ressources non dynamiques.
+- **Migration des fichiers** : Déplacement (et non simple copie) de l'ensemble des fichiers CSS, JS et images vers ce nouvel emplacement :
+    - Les assets du dashboard admin (autrefois dans `catalogue/templates/static/admin`).
+    - Les fichiers globaux du frontend.
+    - Les diagrammes de documentation (`docs/analyse/`).
+    - Les images de spectacles (`media/posters/`).
+- **Fusion `staticfiles`** : Intégration des fichiers collectés dans le nouveau dossier racine pour simplifier la gestion des environnements.
+- **Mise à jour de la configuration** : Modification de `reservations/settings.py` pour redéfinir `STATICFILES_DIRS` et `MEDIA_ROOT` vers la nouvelle structure, garantissant le bon fonctionnement des serveurs de développement et de production.
+
+#### 2. Résolution des Erreurs d'Encodage MySQL (Fix CI)
+- **Identification du bug** : Analyse d'une `OperationalError (1366)` lors de l'exécution des tests automatisés sur GitHub Actions, causée par l'utilisation de caractères Unicode 4-octets (emojis) dans les messages de notification.
+- **Action corrective** : Suppression systématique des emojis (🎬, ✨, 📄) dans `catalogue/signals.py` pour assurer une compatibilité totale avec les bases de données MySQL utilisant l'encodage `utf8` standard.
+
+#### 3. Maintenance Git & Synchronisation
+- **Nettoyage** : Suppression des dossiers sources obsolètes après le déplacement des fichiers pour maintenir un dépôt propre.
+- **Versionning local** : Synchronisation forcée de la branche locale avec la branche distante `dev_ghiles` pour garantir l'intégrité du code source sur tous les postes de travail.
+- **Commits structurés** : Enregistrement des changements par modules fonctionnels pour faciliter le suivi des révisions.
+
+

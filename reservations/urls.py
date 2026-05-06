@@ -33,7 +33,8 @@ from catalogue.views.admin_dashboard import (
     admin_user_create, admin_user_edit, admin_user_detail,
     admin_group_index, admin_group_create, admin_group_edit, admin_group_detail,
     admin_generic_delete, admin_settings, admin_payment_index, admin_ticketmaster_sync,
-    admin_ticketmaster_sync_live, admin_pending_shows, admin_approve_show
+    admin_ticketmaster_sync_live, admin_pending_shows, admin_approve_show,
+    admin_producer_requests, admin_producer_request_action, admin_mark_notification_read, admin_notifications, admin_mark_all_notifications_read
 )
 
 
@@ -46,6 +47,10 @@ urlpatterns = [
     
     # Settings
     path('admin-dashboard/settings/', admin_settings, name='admin_settings'),
+    
+    # Producer Requests
+    path('admin-dashboard/producer-requests/', admin_producer_requests, name='admin_producer_requests'),
+    path('admin-dashboard/producer-requests/<int:pk>/<str:action>/', admin_producer_request_action, name='admin_producer_request_action'),
     
     # Shows
     path('admin-dashboard/shows/', admin_show_index, name='admin_show_index'),
@@ -125,6 +130,11 @@ urlpatterns = [
 
     # Generic Delete (Soft Delete)
     path('admin-dashboard/delete/<str:model_name>/<int:pk>/', admin_generic_delete, name='admin_generic_delete'),
+    
+    # Notifications
+    path('admin-dashboard/notifications/', admin_notifications, name='admin_notifications'),
+    path('admin-dashboard/notifications/mark-read/<int:pk>/', admin_mark_notification_read, name='admin_mark_notification_read'),
+    path('admin-dashboard/notifications/mark-all-read/', admin_mark_all_notifications_read, name='admin_mark_all_notifications_read'),
 
     path('accounts/', include('accounts.urls')), # All accounts/auth related URLs will be handled here
     
