@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-07 00:28+0200\n"
+"POT-Creation-Date: 2026-05-07 12:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,10 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: .\accounts\forms\ProducerRequestForm.py:10
+#: .\accounts\forms\UserUpdateForm.py:30
 #: .\catalogue\templates\admin\producer_request\pending.html:70
 msgid "Prénom"
 msgstr "Voornaam"
+
+#: .\accounts\forms\ProducerRequestForm.py:11
+#: .\accounts\forms\UserUpdateForm.py:31
+#: .\catalogue\templates\admin\producer_request\pending.html:71
+msgid "Nom"
+msgstr ""
 
 #: .\accounts\forms\ProducerRequestForm.py:12
 #: .\catalogue\templates\admin\producer_request\pending.html:29
@@ -54,6 +62,27 @@ msgstr "Stel jezelf kort voor (max 500 tekens)..."
 msgid "Qu'avez-vous l'intention de proposer ?"
 msgstr "Wat bent u van plan voor te stellen?"
 
+#: .\accounts\forms\UserUpdateForm.py:12
+msgid "Choisissez votre langue"
+msgstr "Kies uw taal"
+
+#: .\accounts\forms\UserUpdateForm.py:13 .\accounts\views.py:42
+msgid "Français"
+msgstr "Frans"
+
+#: .\accounts\forms\UserUpdateForm.py:14 .\accounts\views.py:43
+#: .\reservations\settings.py:160
+msgid "English"
+msgstr "Engels"
+
+#: .\accounts\forms\UserUpdateForm.py:15 .\accounts\views.py:44
+msgid "Nederlands"
+msgstr "Nederlands"
+
+#: .\accounts\forms\UserUpdateForm.py:29
+msgid "Login"
+msgstr "Gebruikersnaam"
+
 #: .\accounts\templates\user\_sidebar.html:11
 msgid "Administrateur"
 msgstr "Beheerder"
@@ -81,6 +110,7 @@ msgid "Mon Profil"
 msgstr "Mijn Profiel"
 
 #: .\accounts\templates\user\_sidebar.html:45
+#: .\frontend\templates\user\update.html:4
 msgid "Modifier le profil"
 msgstr "Profiel bewerken"
 
@@ -93,6 +123,7 @@ msgid "Ma Consommation"
 msgstr "Mijn Verbruik"
 
 #: .\accounts\templates\user\_sidebar.html:54
+#: .\frontend\templates\registration\login.html:24
 msgid "Mot de passe"
 msgstr "Wachtwoord"
 
@@ -276,6 +307,12 @@ msgstr "Deel uw professionele analyses en recensies op ThéâtrePlus."
 msgid "Demande en cours de traitement"
 msgstr "Aanvraag wordt verwerkt"
 
+#: .\accounts\templates\user\become_critic.html:24
+msgid ""
+"Vous avez déjà soumis une demande pour devenir critique. Notre équipe "
+"l'examine actuellement. Vous serez notifié dès qu'une décision sera prise."
+msgstr ""
+
 #: .\accounts\templates\user\become_critic.html:27
 #: .\accounts\templates\user\become_producer.html:27
 #: .\frontend\templates\location_list.html:45
@@ -288,6 +325,12 @@ msgstr "Terug naar home"
 #: .\accounts\templates\user\become_critic.html:32
 msgid "Soumettre votre candidature"
 msgstr "Uw kandidatuur indienen"
+
+#: .\accounts\templates\user\become_critic.html:35
+msgid ""
+"Veuillez remplir ce formulaire pour rejoindre notre réseau de critiques de "
+"presse."
+msgstr ""
 
 #: .\accounts\templates\user\become_critic.html:80
 msgid "Envoyer ma candidature"
@@ -303,9 +346,21 @@ msgstr "Producent worden"
 msgid "Proposez vos propres spectacles sur ThéâtrePlus."
 msgstr "Stel uw eigen voorstellingen voor op ThéâtrePlus."
 
+#: .\accounts\templates\user\become_producer.html:24
+msgid ""
+"Vous avez déjà soumis une demande pour devenir producteur. Notre équipe "
+"l'examine actuellement. Vous serez notifié dès qu'une décision sera prise."
+msgstr ""
+
 #: .\accounts\templates\user\become_producer.html:32
 msgid "Soumettre votre demande"
 msgstr "Uw aanvraag indienen"
+
+#: .\accounts\templates\user\become_producer.html:35
+msgid ""
+"Veuillez remplir ce formulaire. Assurez-vous que vos informations sont "
+"correctes."
+msgstr ""
 
 #: .\accounts\templates\user\become_producer.html:76
 msgid "Maximum 500 caractères."
@@ -403,18 +458,6 @@ msgstr "U heeft geen toestemming om deze pagina te bekijken!"
 msgid "Vous êtes déjà inscrit!"
 msgstr "U bent al geregistreerd!"
 
-#: .\accounts\views.py:42
-msgid "Français"
-msgstr "Frans"
-
-#: .\accounts\views.py:43 .\reservations\settings.py:160
-msgid "English"
-msgstr "Engels"
-
-#: .\accounts\views.py:44
-msgid "Nederlands"
-msgstr "Nederlands"
-
 #: .\accounts\views.py:61 .\accounts\views.py:63
 msgid "Non définie"
 msgstr "Niet gedefinieerd"
@@ -435,9 +478,41 @@ msgstr "Verwijderen niet toegestaan (onjuiste methode)!"
 msgid "Vous êtes déjà producteur."
 msgstr "U bent al producent."
 
+#: .\accounts\views.py:163
+msgid ""
+"Vous avez déjà soumis une demande pour devenir producteur. Elle est en cours "
+"d'examen."
+msgstr ""
+
+#: .\accounts\views.py:172
+#, fuzzy
+#| msgid "Votre avis a été soumis avec succès et sera publié après validation."
+msgid ""
+"Votre demande pour devenir producteur a été soumise avec succès. Elle est en "
+"attente d'approbation."
+msgstr ""
+"Uw beoordeling is succesvol ingediend en zal na validatie worden "
+"gepubliceerd."
+
 #: .\accounts\views.py:192
 msgid "Vous êtes déjà critique de presse."
 msgstr "U bent al persrecensent."
+
+#: .\accounts\views.py:198
+msgid ""
+"Vous avez déjà soumis une demande pour devenir critique. Elle est en cours "
+"d'examen."
+msgstr ""
+
+#: .\accounts\views.py:207
+#, fuzzy
+#| msgid "Votre avis a été soumis avec succès et sera publié après validation."
+msgid ""
+"Votre demande pour devenir critique a été soumise avec succès. Elle est en "
+"attente d'approbation."
+msgstr ""
+"Uw beoordeling is succesvol ingediend en zal na validatie worden "
+"gepubliceerd."
 
 #: .\cart\templates\cart\checkout.html:4
 msgid "Confirmation de commande"
@@ -446,6 +521,12 @@ msgstr "Bestelbevestiging"
 #: .\cart\templates\cart\checkout.html:8
 msgid "Confirmation de votre commande"
 msgstr "Bevestiging van uw bestelling"
+
+#: .\cart\templates\cart\checkout.html:9
+msgid ""
+"Veuillez vérifier les détails de votre réservation avant de procéder au "
+"paiement."
+msgstr ""
 
 #: .\cart\templates\cart\checkout.html:13
 msgid "Récapitulatif"
@@ -568,6 +649,12 @@ msgstr "Simuleer een GESLAAGDE BETALING"
 msgid "Simuler un ÉCHEC DE PAIEMENT"
 msgstr "Simuleer een MISLUKTE BETALING"
 
+#: .\cart\templates\cart\payment_simulation.html:33
+msgid ""
+"Note : Cette page est une simulation à but de test uniquement. Aucune "
+"transaction réelle ne sera effectuée."
+msgstr ""
+
 #: .\cart\templates\cart\reservation_detail.html:5
 #: .\cart\templates\cart\reservation_detail.html:11
 #: .\catalogue\templates\admin\payment\index.html:32
@@ -641,6 +728,13 @@ msgstr "U kunt ze bekijken, zelfs als u geen internettoegang meer heeft."
 #, python-format
 msgid "Désolé, il ne reste que %(seats)s places disponibles."
 msgstr "Sorry, er zijn nog maar %(seats)s plaatsen beschikbaar."
+
+#: .\cart\views.py:33
+#, python-format
+msgid ""
+"Ajouté : %(qty)s x %(type)s. Vous pouvez continuer vos achats ou aller au "
+"panier."
+msgstr ""
 
 #: .\cart\views.py:65
 msgid "Votre panier est vide."
@@ -723,6 +817,12 @@ msgstr "Weet u zeker dat u deze kandidatuur wilt weigeren?"
 msgid "Refuser"
 msgstr "Weigeren"
 
+#: .\catalogue\templates\admin\critic_request\pending.html:102
+msgid ""
+"Êtes-vous sûr de vouloir accepter ce critique ? Il pourra désormais "
+"soumettre des articles de presse."
+msgstr ""
+
 #: .\catalogue\templates\admin\critic_request\pending.html:105
 #: .\catalogue\templates\admin\producer_request\pending.html:102
 msgid "Accepter"
@@ -776,6 +876,12 @@ msgstr "Presentatie"
 msgid "Êtes-vous sûr de vouloir refuser cette demande ?"
 msgstr "Weet u zeker dat u deze aanvraag wilt weigeren?"
 
+#: .\catalogue\templates\admin\producer_request\pending.html:99
+msgid ""
+"Êtes-vous sûr de vouloir accepter cette demande ? L\\'utilisateur aura "
+"désormais accès à l\\'Espace Producteur."
+msgstr ""
+
 #: .\catalogue\templates\admin\producer_request\pending.html:111
 msgid "Aucune demande en attente."
 msgstr "Geen aanvragen in de wacht."
@@ -823,6 +929,7 @@ msgstr "Toegestaan aantal tickets"
 #: .\catalogue\templates\admin\show\approve.html:81
 #: .\catalogue\templates\review\edit.html:50
 #: .\catalogue\templates\user\submit_press_article.html:51
+#: .\frontend\templates\user\update.html:29
 msgid "Enregistrer les modifications"
 msgstr "Wijzigingen opslaan"
 
@@ -856,7 +963,8 @@ msgstr "Nieuw prijstype aanmaken"
 
 #: .\catalogue\templates\admin\show\approve.html:127
 msgid "Un spectacle doit avoir au moins un tarif pour être publié."
-msgstr "Een voorstelling moet minstens één tarief hebben om te worden gepubliceerd."
+msgstr ""
+"Een voorstelling moet minstens één tarief hebben om te worden gepubliceerd."
 
 #: .\catalogue\templates\admin\show\approve.html:132
 msgid "Note du Producteur"
@@ -865,6 +973,11 @@ msgstr "Producentennote"
 #: .\catalogue\templates\admin\show\approve.html:138
 msgid "Lien Ticketmaster"
 msgstr "Ticketmaster-link"
+
+#: .\catalogue\templates\admin\show\approve.html:140
+msgid ""
+"Vérifiez les tarifs officiels sur Ticketmaster avant de valider ce spectacle."
+msgstr ""
 
 #: .\catalogue\templates\admin\show\approve.html:144
 msgid "Ouvrir Ticketmaster"
@@ -912,6 +1025,12 @@ msgstr "Type plaats"
 msgid "Client"
 msgstr "Klant"
 
+#: .\catalogue\templates\catalogue\ticket_detail.html:63
+msgid ""
+"Veuillez présenter ce billet à l'entrée du spectacle, sous format numérique "
+"ou papier."
+msgstr ""
+
 #: .\catalogue\templates\catalogue\ticket_detail.html:71
 msgid "Retour à mes réservations"
 msgstr "Terug naar mijn reserveringen"
@@ -933,7 +1052,8 @@ msgstr "Persartikelen"
 
 #: .\catalogue\templates\prod\moderate_press_articles.html:10
 msgid "Modérez les articles rédigés par les critiques sur vos spectacles."
-msgstr "Modereer de artikelen geschreven door recensenten over uw voorstellingen."
+msgstr ""
+"Modereer de artikelen geschreven door recensenten over uw voorstellingen."
 
 #: .\catalogue\templates\prod\moderate_press_articles.html:19
 #: .\catalogue\templates\prod\moderate_reviews.html:19
@@ -974,6 +1094,11 @@ msgstr "Bovenaan vastzetten"
 #: .\catalogue\templates\prod\moderate_press_articles.html:79
 msgid "Supprimer définitivement cet article ?"
 msgstr "Dit artikel definitief verwijderen?"
+
+#: .\catalogue\templates\prod\moderate_press_articles.html:87
+msgid ""
+"Aucun article de presse n'a été rédigé pour vos spectacles pour le moment."
+msgstr ""
 
 #: .\catalogue\templates\prod\moderate_reviews.html:4
 #: .\catalogue\templates\prod\prod_dashboard.html:21
@@ -1178,7 +1303,8 @@ msgstr "Let op:"
 #: .\catalogue\templates\representation\show.html:98
 #, python-format
 msgid "Il ne reste que %(count)s places pour cette séance. Ne tardez pas !"
-msgstr "Er zijn nog maar %(count)s plaatsen voor deze sessie. Wacht niet te lang!"
+msgstr ""
+"Er zijn nog maar %(count)s plaatsen voor deze sessie. Wacht niet te lang!"
 
 #: .\catalogue\templates\representation\show.html:104
 msgid "Retour au spectacle"
@@ -1240,6 +1366,12 @@ msgstr "Verwijdering bevestigen"
 msgid "Supprimer cet avis ?"
 msgstr "Deze beoordeling verwijderen?"
 
+#: .\catalogue\templates\review\delete_confirm.html:14
+msgid ""
+"Cette action est irréversible. Êtes-vous sûr de vouloir supprimer votre "
+"critique pour le spectacle"
+msgstr ""
+
 #: .\catalogue\templates\review\delete_confirm.html:23
 msgid "Oui, supprimer définitivement"
 msgstr "Ja, definitief verwijderen"
@@ -1296,6 +1428,11 @@ msgstr "U heeft nog geen artikel geschreven."
 #: .\catalogue\templates\user\press_articles.html:78
 msgid "Commencer maintenant"
 msgstr "Nu beginnen"
+
+#: .\catalogue\templates\user\submit_press_article.html:10
+msgid ""
+"Utilisez cet espace pour rédiger une critique détaillée et professionnelle."
+msgstr ""
 
 #: .\catalogue\templates\user\submit_press_article.html:25
 msgid "Sélectionnez le spectacle sur lequel porte votre article."
@@ -1365,7 +1502,9 @@ msgstr "U kunt alleen reageren op voorstellingen die u heeft bezocht."
 
 #: .\catalogue\views\review.py:68
 msgid "Votre avis a été soumis avec succès et sera publié après validation."
-msgstr "Uw beoordeling is succesvol ingediend en zal na validatie worden gepubliceerd."
+msgstr ""
+"Uw beoordeling is succesvol ingediend en zal na validatie worden "
+"gepubliceerd."
 
 #: .\catalogue\views\review.py:83
 msgid "Seul l'auteur peut modifier son message."
@@ -1415,6 +1554,18 @@ msgstr "Deze reservering is nog niet betaald."
 msgid "Vos billets officiels - ThéâtrePlus"
 msgstr "Uw officiële tickets - ThéâtrePlus"
 
+#: .\catalogue\views\ticket.py:95
+#, python-format
+msgid ""
+"Bonjour %(name)s,\n"
+"\n"
+"Merci pour votre achat ! Vos billets officiels au format professionnel sont "
+"joints à cet e-mail.\n"
+"\n"
+"Cordialement,\n"
+"L'équipe ThéâtrePlus."
+msgstr ""
+
 #: .\frontend\templates\about.html:4 .\frontend\templates\about.html:11
 #: .\frontend\views.py:151
 msgid "À propos de ThéâtrePlus"
@@ -1428,9 +1579,27 @@ msgstr "Ontdek onze missie en onze geschiedenis"
 msgid "Notre Mission"
 msgstr "Onze Missie"
 
+#: .\frontend\templates\about.html:22
+msgid ""
+"ThéâtrePlus a été créé dans le but de simplifier l'accès à la culture et aux "
+"arts de la scène. Notre objectif est de connecter les passionnés de théâtre, "
+"de danse, de musique et de tous les arts vivants avec les événements qui "
+"leur correspondent, en offrant une plateforme intuitive et fiable pour la "
+"découverte et la réservation."
+msgstr ""
+
 #: .\frontend\templates\about.html:25
 msgid "Notre Histoire"
 msgstr "Onze Geschiedenis"
+
+#: .\frontend\templates\about.html:27
+msgid ""
+"Né d'une passion commune pour le spectacle vivant, ThéâtrePlus est le fruit "
+"d'un projet étudiant visant à résoudre les difficultés rencontrées par les "
+"spectateurs pour trouver et réserver des places pour des événements. Nous "
+"aspirons à devenir la référence pour tous les amateurs de culture en "
+"Belgique."
+msgstr ""
 
 #: .\frontend\templates\base.html:7
 msgid "Réservez vos spectacles"
@@ -1473,8 +1642,16 @@ msgid "Déconnexion"
 msgstr "Uitloggen"
 
 #: .\frontend\templates\base.html:205 .\frontend\templates\base.html:270
+#: .\frontend\templates\registration\login.html:4
+#: .\frontend\templates\registration\login.html:9
 msgid "Connexion"
 msgstr "Inloggen"
+
+#: .\frontend\templates\base.html:247
+msgid ""
+"Votre plateforme de référence pour réserver les meilleurs spectacles en "
+"Belgique. Vivez des moments inoubliables avec nous."
+msgstr ""
 
 #: .\frontend\templates\base.html:250
 msgid "Navigation"
@@ -1485,6 +1662,7 @@ msgid "Compte"
 msgstr "Account"
 
 #: .\frontend\templates\base.html:271
+#: .\frontend\templates\registration\signup.html:4
 msgid "Inscription"
 msgstr "Registreren"
 
@@ -1738,6 +1916,59 @@ msgstr "op"
 msgid "Suivant"
 msgstr "Volgende"
 
+#: .\frontend\templates\registration\login.html:13
+msgid "Votre login et mot de passe ne correspondent pas."
+msgstr "Uw login en wachtwoord komen niet overeen."
+
+#: .\frontend\templates\registration\login.html:20
+msgid "Nom d'utilisateur"
+msgstr "Gebruikersnaam"
+
+#: .\frontend\templates\registration\login.html:28
+#: .\frontend\templates\registration\signup.html:34
+msgid "Se connecter"
+msgstr "Inloggen"
+
+#: .\frontend\templates\registration\login.html:33
+msgid "Mot de passe oublié ?"
+msgstr "Wachtwoord vergeten?"
+
+#: .\frontend\templates\registration\login.html:34
+msgid "Pas encore de compte ?"
+msgstr "Nog geen account?"
+
+#: .\frontend\templates\registration\login.html:34
+#: .\frontend\templates\registration\signup.html:30
+msgid "S'inscrire"
+msgstr "Inschrijven"
+
+#: .\frontend\templates\registration\password_change_form.html:4
+msgid "Modifier le mot de passe"
+msgstr "Wachtwoord wijzigen"
+
+#: .\frontend\templates\registration\password_change_form.html:9
+msgid "Modifier mon mot de passe"
+msgstr "Mijn wachtwoord wijzigen"
+
+#: .\frontend\templates\registration\password_change_form.html:29
+msgid "Changer le mot de passe"
+msgstr "Wachtwoord wijzigen"
+
+#: .\frontend\templates\registration\password_change_form.html:33
+#: .\frontend\templates\user\update.html:33
+msgid "Annuler et revenir au profil"
+msgstr "Annuleren en terug naar profiel"
+
+#: .\frontend\templates\registration\signup.html:9
+#, fuzzy
+#| msgid "Supprimer mon compte"
+msgid "Créer un compte"
+msgstr "Mijn account verwijderen"
+
+#: .\frontend\templates\registration\signup.html:34
+msgid "Déjà un compte ?"
+msgstr ""
+
 #: .\frontend\templates\show_detail.html:33
 msgid "Modifier dans le Dashboard Admin"
 msgstr "Bewerken in het Admin Dashboard"
@@ -1839,6 +2070,10 @@ msgstr "Ontdek de komende evenementen en reserveer uw tickets."
 msgid "<strong>%(count)s</strong> spectacles trouvés"
 msgstr "<strong>%(count)s</strong> voorstellingen gevonden"
 
+#: .\frontend\templates\user\update.html:9
+msgid "Modifier mon profil"
+msgstr "Mijn profiel bewerken"
+
 #: .\frontend\views.py:36
 msgid "Bienvenue à ThéâtrePlus"
 msgstr "Welkom bij ThéâtrePlus"
@@ -1879,6 +2114,17 @@ msgstr "U heeft ervoor gekozen om het betalingsproces te onderbreken."
 msgid "Besoin de plus de temps ?"
 msgstr "Meer tijd nodig?"
 
+#: .\payments\templates\payments\cancel.html:22
+msgid ""
+"Votre panier a été conservé. Vous pouvez reprendre votre commande quand vous "
+"le souhaitez."
+msgstr ""
+
+#: .\payments\templates\payments\cancel.html:23
+msgid ""
+"Si vous avez rencontré un problème technique, n'hésitez pas à nous contacter."
+msgstr ""
+
 #: .\payments\templates\payments\cancel.html:28
 msgid "Retourner au panier"
 msgstr "Terug naar winkelmandje"
@@ -1898,6 +2144,12 @@ msgstr "Uw transactie is geweigerd door de bank."
 #: .\payments\templates\payments\failed.html:20
 msgid "Un problème est survenu"
 msgstr "Er is een probleem opgetreden"
+
+#: .\payments\templates\payments\failed.html:22
+msgid ""
+"Nous n'avons pas pu prélever le montant de votre commande. Cela peut être dû "
+"à un plafond atteint ou à une erreur de saisie."
+msgstr ""
 
 #: .\payments\templates\payments\failed.html:23
 msgid "Veuillez vérifier vos informations bancaires et réessayer."
@@ -1923,6 +2175,12 @@ msgstr "Uw betaling is succesvol verwerkt."
 msgid "Merci pour votre réservation"
 msgstr "Bedankt voor uw reservering"
 
+#: .\payments\templates\payments\success.html:22
+msgid ""
+"Vos billets ont bien été générés. Vous pouvez les retrouver à tout moment "
+"dans votre espace personnel."
+msgstr ""
+
 #: .\payments\templates\payments\success.html:23
 msgid "Un e-mail récapitulatif vous a également été envoyé."
 msgstr "Er is ook een e-mail met een overzicht naar u verzonden."
@@ -1942,6 +2200,12 @@ msgstr "Uw API-abonnement is succesvol bijgewerkt."
 #: .\payments\templates\payments\success_api.html:21
 msgid "Bienvenue dans le plan"
 msgstr "Welkom bij het plan"
+
+#: .\payments\templates\payments\success_api.html:23
+msgid ""
+"Votre accès API a été instantanément mis à niveau. Vous pouvez désormais "
+"effectuer jusqu'à"
+msgstr ""
 
 #: .\payments\templates\payments\success_api.html:23
 msgid "appels par jour."

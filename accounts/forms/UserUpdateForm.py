@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 from catalogue.models import UserMeta
 from django.db import models
@@ -8,10 +9,10 @@ from django.db import models
 
 class UserUpdateForm(UserChangeForm):
     class Language(models.TextChoices):
-        NONE = "", "Choisissez votre langue"
-        FRENCH = "fr", "Français"
-        ENGLISH = "en", "English"
-        DUTCH = "nl", "Nederlands"
+        NONE = "", _("Choisissez votre langue")
+        FRENCH = "fr", _("Français")
+        ENGLISH = "en", _("English")
+        DUTCH = "nl", _("Nederlands")
 
     # Définir les types de champs
     username = forms.CharField(max_length=30)
@@ -25,9 +26,9 @@ class UserUpdateForm(UserChangeForm):
 
     def __init__(self, *args, **kwargs):
         super(UserUpdateForm, self).__init__(*args, **kwargs)
-        self.fields['username'].label = 'Login'
-        self.fields['first_name'].label = 'Prénom'
-        self.fields['last_name'].label = 'Nom'
+        self.fields['username'].label = _('Login')
+        self.fields['first_name'].label = _('Prénom')
+        self.fields['last_name'].label = _('Nom')
 
         self.fields['username'].help_text = None
 
@@ -38,7 +39,8 @@ class UserUpdateForm(UserChangeForm):
 
         # Récupérer les metadonnées de l'utilisateur
         user = kwargs.get('instance')
-        self.initial['langue'] = user.usermeta.langue
+        if user and hasattr(user, 'usermeta'):
+            self.initial['langue'] = user.usermeta.langue
 
     class Meta:
         model = User
