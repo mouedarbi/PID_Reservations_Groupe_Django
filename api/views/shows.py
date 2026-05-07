@@ -6,6 +6,8 @@ from catalogue.models import Show
 from api.serializers.shows import ShowSerializer
 from api.authentication import ApiKeyAuthentication
 
+from rest_framework.pagination import PageNumberPagination
+
 class ShowsView(APIView):
     """
     API view for listing and creating shows with Affiliate Plan support.
@@ -19,26 +21,38 @@ class ShowsView(APIView):
 
     def get(self, request, *args, **kwargs):
         """
-        Return a list of all shows with filtering/limiting based on affiliate tier.
+        Return a list of shows. 
+        - Public access: All published shows.
+        - Affiliate access: Limited number of published shows based on tier.
+        - Admin access: All shows.
         """
-        shows = Show.objects.all().order_by('id')
+        if request.user.is_staff:
+            shows_queryset = Show.objects.all().order_by('id')
+        else:
+            shows_queryset = Show.objects.filter(status='published').order_by('id')
 
         # 1. CAS : UTILISATEUR API (via X-Api-Key)
         if hasattr(request, 'affiliate'):
             tier = request.affiliate.tier.name if request.affiliate.tier else 'Free'
             
             if tier == 'Free':
-                shows = shows[:2]  # Limite à 2 spectacles
+                shows_queryset = shows_queryset[:2]  # Limite à 2 spectacles
             elif tier == 'Starter':
-                shows = shows[:10] # Limite à 10 spectacles
+                shows_queryset = shows_queryset[:10] # Limite à 10 spectacles
             # Premium : pas de limite
             
-        # 2. CAS : ACCÈS PUBLIC SANS CLÉ (ex: via navigateur ou bot tiers)
-        elif not request.user.is_authenticated:
-            # On peut décider de brider l'API publique si on veut forcer l'affiliation
-            shows = shows[:1] # Un seul spectacle pour les "anonymes" sans clé
+        # 2. CAS : ACCÈS PUBLIC SANS CLÉ (ex: via navigateur ou appel interne frontend)
+        # On ne bride pas l'accès public pour le site lui-même
+        # Mais on s'assure que seuls les spectacles publiés sont vus (fait plus haut)
 
-        serializer = ShowSerializer(shows, many=True, context={'request': request})
+        # Pagination
+        paginator = PageNumberPagination()
+        page = paginator.paginate_queryset(shows_queryset, request)
+        if page is not None:
+            serializer = ShowSerializer(page, many=True, context={'request': request})
+            return paginator.get_paginated_response(serializer.data)
+
+        serializer = ShowSerializer(shows_queryset, many=True, context={'request': request})
         return Response(serializer.data)
     
     def post(self, request, *args, **kwargs):

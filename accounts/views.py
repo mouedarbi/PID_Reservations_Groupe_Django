@@ -181,3 +181,37 @@ def become_producer(request):
         form = ProducerRequestForm(initial=initial_data)
 
     return render(request, 'user/become_producer.html', {'form': form, 'pending': False})
+
+@login_required
+def become_critic(request):
+    from catalogue.models import CriticRequest
+    from .forms.CriticRequestForm import CriticRequestForm
+
+    # Check if user is already a critic
+    if request.user.groups.filter(name='PRESS_CRITIC').exists() or request.user.is_superuser:
+        messages.info(request, _("Vous êtes déjà critique de presse."))
+        return redirect('frontend:home')
+        
+    # Check if a pending request exists
+    pending_request = CriticRequest.objects.filter(user=request.user, status='pending').first()
+    if pending_request:
+        messages.info(request, _("Vous avez déjà soumis une demande pour devenir critique. Elle est en cours d'examen."))
+        return render(request, 'user/become_critic.html', {'pending': True})
+
+    if request.method == 'POST':
+        form = CriticRequestForm(request.POST)
+        if form.is_valid():
+            critic_req = form.save(commit=False)
+            critic_req.user = request.user
+            critic_req.save()
+            messages.success(request, _("Votre demande pour devenir critique a été soumise avec succès. Elle est en attente d'approbation."))
+            return redirect('accounts:user-profile')
+    else:
+        # Pre-fill form with user info
+        initial_data = {
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+        }
+        form = CriticRequestForm(initial=initial_data)
+
+    return render(request, 'user/become_critic.html', {'form': form, 'pending': False})

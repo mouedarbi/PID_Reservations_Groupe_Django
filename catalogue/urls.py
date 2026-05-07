@@ -1,7 +1,7 @@
 """reservations.catalogue URL Configuration
 """
 from django.urls import path
-from .views import artist, type, price, locality, location, representation, review, ticket, producer_dashboard
+from .views import artist, type, price, locality, location, representation, review, ticket, producer_dashboard, critic_dashboard
 from .views.show_ import index as show_index, show as show_detail, create as show_create, edit as show_edit, delete as show_delete
 from .views.admin_dashboard import (
     admin_show_index, admin_representation_index,
@@ -59,6 +59,13 @@ urlpatterns = [
     path('prod-dashboard/edit-show/<int:pk>/', producer_dashboard.prod_edit_show, name='prod_edit_show'),
     path('prod-dashboard/moderate-reviews/', producer_dashboard.prod_moderate_reviews, name='prod_moderate_reviews'),
     path('prod-dashboard/pin-review/<int:review_id>/', producer_dashboard.pin_review, name='prod_pin_review'),
+    path('prod-dashboard/moderate-press-articles/', producer_dashboard.prod_moderate_press_articles, name='prod_moderate_press_articles'),
+    path('prod-dashboard/validate-press-article/<int:pk>/<str:action>/', producer_dashboard.prod_validate_press_article, name='prod_validate_press_article'),
+
+    # Critic Dashboard
+    path('critic-dashboard/', critic_dashboard.critic_dashboard, name='critic_dashboard'),
+    path('critic-dashboard/submit-article/', critic_dashboard.submit_press_article, name='submit_press_article'),
+    path('critic-dashboard/edit-article/<int:pk>/', critic_dashboard.submit_press_article, name='edit_press_article'),
 
     # Tickets
     path('ticket/<uuid:ticket_id>', ticket.ticket_detail, name='ticket-detail'),

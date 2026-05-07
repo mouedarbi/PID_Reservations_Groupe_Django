@@ -20,10 +20,20 @@
             observer.observe(card);
         });
 
-        // Search functionality placeholder
-        document.querySelector('.search-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                // Will redirect to search results page
-                console.log('Search for:', this.value);
-            }
-        });
+        // Dropdown Menu Interactivity
+        const dropdownTrigger = document.querySelector('.dropdown-trigger');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+
+        if (dropdownTrigger && dropdownMenu) {
+            dropdownTrigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('show');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!dropdownMenu.contains(e.target) && !dropdownTrigger.contains(e.target)) {
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+        }

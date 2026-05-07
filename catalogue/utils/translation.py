@@ -59,3 +59,19 @@ def translate_review(review_obj):
     
     # On sauvegarde sans déclencher à nouveau les signaux si possible
     review_obj.save()
+
+def translate_press_article(article_obj):
+    """
+    Traduit un objet PressArticle dans les 3 langues (FR, EN, NL) via LibreTranslate.
+    """
+    fields_to_translate = ['title', 'summary', 'content']
+    langs = ['fr', 'en', 'nl']
+    
+    for field in fields_to_translate:
+        original_text = getattr(article_obj, field)
+        if original_text:
+            for lang in langs:
+                translated_field = f"{field}_{lang}"
+                setattr(article_obj, translated_field, translate_text(original_text, lang))
+    
+    article_obj.save()

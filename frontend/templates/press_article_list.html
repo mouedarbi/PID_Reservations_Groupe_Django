@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<section class="hero compact" style="padding-top: 120px; background: #dc2626; color: white; padding-bottom: 3rem;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+                <h1 style="font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 0.5rem;">{% trans "Articles de Presse" %}</h1>
+                <p style="opacity: 0.9; font-size: 1.2rem;">{% trans "L'actualité et les critiques de la scène théâtrale." %}</p>
+            </div>
+            {% if user.is_authenticated and "PRESS_CRITIC" not in user.groups.all|join:"," and not user.is_superuser %}
+            <a href="{% url 'accounts:become_critic' %}" style="background: white; color: #dc2626; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s;">
+                <i class="ph ph-user-plus"></i> {% trans "Devenir Critique de Presse" %}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="press-blog-section" style="padding: 4rem 0; background: #f8fafc;">
+    <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 0 15px;">
+        
+        <div class="articles-container" style="display: flex; flex-direction: column; gap: 3rem;">
+            {% for article in articles %}
+            <article class="blog-post-card" style="background: white; border-radius: 16px; overflow: hidden; display: grid; grid-template-columns: 350px 1fr; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; transition: transform 0.3s ease;">
+                <div class="post-image" style="height: 100%; min-height: 250px; position: relative; overflow: hidden;">
+                    {% if article.show_poster %}
+                        <img src="{{ article.show_poster }}" alt="{{ article.show_title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                        <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&h=600&fit=crop" alt="Default" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% endif %}
+                    <div style="position: absolute; top: 15px; left: 15px; background: rgba(220, 38, 38, 0.9); color: white; padding: 5px 15px; border-radius: 50px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">
+                        {{ article.show_title }}
+                    </div>
+                </div>
+                
+                <div class="post-content" style="padding: 2rem; display: flex; flex-direction: column;">
+                    <div style="margin-bottom: 1rem; color: #64748b; font-size: 0.85rem; display: flex; align-items: center; gap: 1rem;">
+                        <span style="display: flex; align-items: center; gap: 0.3rem;"><i class="ph ph-calendar"></i> {{ article.created_at|date:"d F Y" }}</span>
+                        <span style="display: flex; align-items: center; gap: 0.3rem;"><i class="ph ph-user"></i> {{ article.user_name }}</span>
+                    </div>
+                    
+                    <h2 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 0 0 1rem 0; color: var(--secondary);">
+                        <a href="{% url 'frontend:press_article_detail' article.id %}" style="text-decoration: none; color: inherit;">{{ article.title }}</a>
+                    </h2>
+                    
+                    <p style="color: #475569; line-height: 1.7; margin-bottom: 1.5rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                        {{ article.summary }}
+                    </p>
+                    
+                    <div style="margin-top: auto;">
+                        <a href="{% url 'frontend:press_article_detail' article.id %}" style="color: #dc2626; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 0.5rem; transition: gap 0.2s;" class="read-more-link">
+                            {% trans "Lire la suite" %} <i class="ph ph-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <div style="text-align: center; padding: 5rem; background: white; border-radius: 16px; border: 2px dashed #cbd5e1;">
+                <i class="ph ph-newspaper" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 1.5rem;"></i>
+                <h3>{% trans "Aucun article pour le moment" %}</h3>
+                <p style="color: #64748b;">{% trans "Revenez bientôt pour découvrir nos dernières critiques de presse." %}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if pagination and pagination.count > 0 %}
+        <div class="pagination-info" style="text-align: center; margin-top: 3rem; color: #64748b; font-size: 0.9rem;">
+            {% blocktrans with count=pagination.count %}<strong>{{ count }}</strong> articles publiés{% endblocktrans %}
+        </div>
+        
+        <div class="pagination-container" style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 1rem; padding-bottom: 2rem;">
+            {% if pagination.previous %}
+                <a href="?page={{ pagination.current_page|add:'-1' }}" class="btn-pagination">
+                    <i class="ph ph-caret-left"></i> {% trans "Précédent" %}
+                </a>
+            {% else %}
+                <span class="btn-pagination disabled">
+                    <i class="ph ph-caret-left"></i> {% trans "Précédent" %}
+                </span>
+            {% endif %}
+
+            <span style="font-weight: 600; color: var(--secondary);">
+                {% trans "Page" %} {{ pagination.current_page }} {% trans "sur" %} {{ pagination.total_pages }}
+            </span>
+
+            {% if pagination.next %}
+                <a href="?page={{ pagination.current_page|add:'1' }}" class="btn-pagination">
+                    {% trans "Suivant" %} <i class="ph ph-caret-right"></i>
+                </a>
+            {% else %}
+                <span class="btn-pagination disabled">
+                    {% trans "Suivant" %} <i class="ph ph-caret-right"></i>
+                </span>
+            {% endif %}
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+<style>
+    .blog-post-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .read-more-link:hover {
+        gap: 0.8rem !important;
+    }
+    .btn-pagination {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1.5rem;
+        border-radius: 10px;
+        background: white;
+        border: 1px solid #e2e8f0;
+        color: var(--secondary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    .btn-pagination:hover:not(.disabled) {
+        border-color: #dc2626;
+        color: #dc2626;
+        background: #fffafa;
+    }
+    .btn-pagination.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    @media (max-width: 768px) {
+        .blog-post-card { grid-template-columns: 1fr; }
+        .post-image { height: 200px; min-height: 200px; }
+    }
+</style>
+{% endblock %}

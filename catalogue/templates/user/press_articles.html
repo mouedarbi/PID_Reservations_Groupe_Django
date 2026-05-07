@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Mes Articles de Presse" %} - ThéâtrePlus{% endblock %}
+
+{% block content %}
+<section class="hero compact" style="padding-top: 120px; background: #dc2626; color: white; padding-bottom: 3rem;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+                <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem;">{% trans "Mes Articles de Presse" %}</h1>
+                <p style="opacity: 0.9; font-size: 1.1rem;">{% trans "Gérez vos critiques et analyses de spectacles." %}</p>
+            </div>
+            <a href="{% url 'catalogue:submit_press_article' %}" class="btn-primary" style="background: white; color: #dc2626; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s;">
+                <i class="ph ph-plus-circle"></i> {% trans "Rédiger un article" %}
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="profile-section" style="padding: 4rem 0; background: var(--bg-light); min-height: 60vh;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        <div class="profile-grid" style="display: grid; grid-template-columns: 300px 1fr; gap: 2rem;">
+            
+            {% include 'user/_sidebar.html' %}
+
+            <main class="profile-main">
+                <div style="background: white; border-radius: 15px; padding: 2rem; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                    <h2 style="margin-top: 0; margin-bottom: 2rem; color: var(--secondary); border-bottom: 2px solid #dc2626; padding-bottom: 0.5rem; display: inline-block;">
+                        {% trans "Liste de mes articles" %}
+                    </h2>
+
+                    <div class="articles-list" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        {% for article in articles %}
+                        <div class="article-card" style="border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; display: grid; grid-template-columns: 150px 1fr; gap: 0;">
+                            <div style="background: #f8fafc; display: flex; align-items: center; justify-content: center; border-right: 1px solid var(--border-color);">
+                                {% if article.show.poster %}
+                                    <img src="{{ article.show.poster.url }}" alt="{{ article.show.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                {% else %}
+                                    <i class="ph ph-image" style="font-size: 3rem; color: #cbd5e1;"></i>
+                                {% endif %}
+                            </div>
+                            <div style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                                        <h3 style="margin: 0; font-size: 1.2rem; color: var(--secondary);">{{ article.title }}</h3>
+                                        <div>
+                                            {% if article.validated %}
+                                                <span style="background: #dcfce7; color: #166534; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;">{% trans "Publié" %}</span>
+                                            {% else %}
+                                                <span style="background: #fef3c7; color: #92400e; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;">{% trans "En attente" %}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <p style="color: var(--primary); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem;">
+                                        {{ article.show.title }}
+                                    </p>
+                                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                        {{ article.summary }}
+                                    </p>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; pt-3; mt-auto;">
+                                    <span style="font-size: 0.8rem; color: var(--text-muted);">
+                                        <i class="ph ph-calendar"></i> {{ article.created_at|date:"d/m/Y" }}
+                                    </span>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <a href="{% url 'catalogue:edit_press_article' article.id %}" style="text-decoration: none; color: #0284c7; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.3rem;">
+                                            <i class="ph ph-pencil-simple"></i> {% trans "Modifier" %}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div style="text-align: center; padding: 4rem 0;">
+                            <i class="ph ph-newspaper" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 1rem;"></i>
+                            <p style="color: var(--text-secondary);">{% trans "Vous n'avez pas encore rédigé d'article." %}</p>
+                            <a href="{% url 'catalogue:submit_press_article' %}" style="color: #dc2626; font-weight: 600;">{% trans "Commencer maintenant" %}</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

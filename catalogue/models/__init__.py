@@ -14,5 +14,7 @@ from .artist_type_show import *
 from .show_price import *
 from .ticket import *
 from .producer_request import *
+from .critic_request import *
+from .press_article import *
 from .affiliation import *
 from .notification import *

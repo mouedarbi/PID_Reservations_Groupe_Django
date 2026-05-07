@@ -34,11 +34,19 @@ from catalogue.views.admin_dashboard import (
     admin_group_index, admin_group_create, admin_group_edit, admin_group_detail,
     admin_generic_delete, admin_settings, admin_payment_index, admin_ticketmaster_sync,
     admin_ticketmaster_sync_live, admin_pending_shows, admin_approve_show,
-    admin_producer_requests, admin_producer_request_action, admin_mark_notification_read, admin_notifications, admin_mark_all_notifications_read
+    admin_producer_requests, admin_producer_request_action, admin_critic_requests, admin_critic_request_action,
+    admin_mark_notification_read, admin_notifications, admin_mark_all_notifications_read
 )
 
 
+from django.conf.urls.i18n import i18n_patterns
+
 urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),
+    path('tinymce/', include('tinymce.urls')),
+]
+
+urlpatterns += i18n_patterns(
     #path('', RedirectView.as_view(url='/artist/', permanent=False)),
     path('', include('frontend.urls')), # Added for frontend app
 
@@ -51,6 +59,10 @@ urlpatterns = [
     # Producer Requests
     path('admin-dashboard/producer-requests/', admin_producer_requests, name='admin_producer_requests'),
     path('admin-dashboard/producer-requests/<int:pk>/<str:action>/', admin_producer_request_action, name='admin_producer_request_action'),
+
+    # Critic Requests
+    path('admin-dashboard/critic-requests/', admin_critic_requests, name='admin_critic_requests'),
+    path('admin-dashboard/critic-requests/<int:pk>/<str:action>/', admin_critic_request_action, name='admin_critic_request_action'),
     
     # Shows
     path('admin-dashboard/shows/', admin_show_index, name='admin_show_index'),
@@ -143,8 +155,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('cart/', include('cart.urls', namespace='cart')),
     path('admin/', admin.site.urls),
-    path('i18n/', include('django.conf.urls.i18n')),
-]
+)
 
 from django.conf import settings
 from django.conf.urls.static import static

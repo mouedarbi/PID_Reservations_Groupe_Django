@@ -5,7 +5,20 @@
             {{ user.username|slice:":1"|upper }}
         </div>
         <h3 style="margin: 0; color: var(--secondary);">{{ user.username }}</h3>
-        <div style="margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 5px;">
+        
+        <div style="margin-top: 8px;">
+            {% if user.is_superuser or user.is_staff %}
+                <span style="background: #fee2e2; color: #991b1b; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;">{% trans "Administrateur" %}</span>
+            {% elif "PRODUCER" in user.groups.all|join:"," %}
+                <span style="background: #e0f2fe; color: #075985; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;">{% trans "Producteur" %}</span>
+            {% elif "PRESS_CRITIC" in user.groups.all|join:"," %}
+                <span style="background: #fef2f2; color: #dc2626; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;">{% trans "Critique de Presse" %}</span>
+            {% else %}
+                <span style="background: #f3f4f6; color: #4b5563; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;">{% trans "Membre" %}</span>
+            {% endif %}
+        </div>
+
+        <div style="margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 5px;">
             {% if affiliate.tier.name == 'Starter' %}
                 <i class="ph ph-crown" style="color: #ffc107; font-size: 1.1rem;"></i>
                 <span style="color: #ffc107; font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">Starter</span>
@@ -54,7 +67,18 @@
                         <i class="ph ph-storefront"></i> {% trans "Espace Producteur" %}
                     </a>
                 {% endif %}
+                {% if group.name == 'PRESS_CRITIC' %}
+                    <a href="{% url 'catalogue:critic_dashboard' %}" style="text-decoration: none; color: #dc2626; display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-top: 0.5rem; padding: 10px; background: #fef2f2; border-radius: 8px; border: 1px solid #fecaca;">
+                        <i class="ph ph-newspaper"></i> {% trans "Mes articles de presse" %}
+                    </a>
+                {% endif %}
             {% endfor %}
+            
+            {% if "PRESS_CRITIC" not in user.groups.all|join:"," and "PRODUCER" not in user.groups.all|join:"," %}
+                <a href="{% url 'accounts:become_critic' %}" style="text-decoration: none; color: #6b7280; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; margin-top: 1rem; border-top: 1px dashed #d1d5db; pt-3;">
+                    <i class="ph ph-user-plus"></i> {% trans "Devenir Critique de Presse ?" %}
+                </a>
+            {% endif %}
         {% endif %}
         
         <form method="post" action="{% url 'accounts:user-delete' request.user.id %}" onsubmit="return confirm('{% trans "Êtes-vous sûr ?" %}')" style="margin-top: 1rem;">

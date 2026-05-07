@@ -1,0 +1,34 @@
+[
+{
+    "model": "catalogue.usermeta",
+    "pk": 8,
+    "fields": {
+        "user": 1,
+        "langue": "fr"
+    }
+},
+{
+    "model": "catalogue.usermeta",
+    "pk": 9,
+    "fields": {
+        "user": 8,
+        "langue": "fr"
+    }
+},
+{
+    "model": "catalogue.usermeta",
+    "pk": 10,
+    "fields": {
+        "user": 9,
+        "langue": "fr"
+    }
+},
+{
+    "model": "catalogue.usermeta",
+    "pk": 11,
+    "fields": {
+        "user": 10,
+        "langue": "fr"
+    }
+}
+]
