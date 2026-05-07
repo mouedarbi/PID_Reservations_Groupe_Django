@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
-from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType, ShowPrice
+from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType, ShowPrice, Notification, CriticRequest
 from catalogue.utils.ticketmaster import run_ticketmaster_import, run_ticketmaster_import_gen
 from django.http import StreamingHttpResponse
 from payments.models import Payment
@@ -18,6 +18,7 @@ from catalogue.forms.ReservationForm import ReservationForm
 from catalogue.forms.SettingForm import AppSettingForm
 from catalogue.forms.ArtistTypeForm import ArtistTypeForm
 from django.contrib.auth.models import Group
+from django.contrib import messages
 from accounts.forms.UserUpdateForm import UserUpdateForm
 from accounts.forms.UserSignUpForm import UserSignUpForm
 from accounts.forms.AdminUserUpdateForm import AdminUserUpdateForm
@@ -352,7 +353,6 @@ def admin_review_validate(request, pk):
     review = get_object_or_404(Review, pk=pk)
     review.validated = True
     review.save()
-    from django.contrib import messages
     messages.success(request, f"L'avis de {review.user.username} a été validé avec succès.")
     return redirect('admin_review_index')
 
@@ -364,7 +364,6 @@ def admin_review_reject(request, pk):
     review = get_object_or_404(Review, pk=pk)
     review.validated = False
     review.save()
-    from django.contrib import messages
     messages.info(request, f"L'avis de {review.user.username} a été mis en attente.")
     return redirect('admin_review_index')
 
@@ -1168,11 +1167,9 @@ def admin_settings(request):
             form = AppSettingForm(request.POST, instance=s)
             if form.is_valid():
                 form.save()
-                from django.contrib import messages
                 messages.success(request, f"Le paramètre {s.key} a été mis à jour.")
                 return redirect('admin_settings')
             else:
-                from django.contrib import messages
                 messages.error(request, f"Erreur de validation pour {s.key}.")
                 setting_forms.append({'obj': s, 'form': form}) # On garde le form avec ses erreurs
         else:
@@ -1219,10 +1216,8 @@ def admin_ticketmaster_sync(request):
     """
     try:
         count_new, count_updated = run_ticketmaster_import()
-        from django.contrib import messages
         messages.success(request, f"Synchronisation terminée ! {count_new} nouveaux spectacles importés, {count_updated} mis à jour.")
     except Exception as e:
-        from django.contrib import messages
         messages.error(request, f"Erreur lors de la synchronisation : {str(e)}")
         
     return redirect('admin_show_index')
@@ -1259,9 +1254,6 @@ def admin_producer_request_action(request, pk, action):
     """
     Vue pour approuver ou rejeter une demande de producteur.
     """
-    from catalogue.models import ProducerRequest
-    from django.contrib.auth.models import Group
-    
     req = get_object_or_404(ProducerRequest, pk=pk)
     
     if action == 'approve':
@@ -1276,13 +1268,11 @@ def admin_producer_request_action(request, pk, action):
         if member_group:
             req.user.groups.remove(member_group)
             
-        from django.contrib import messages
-        messages.success(request, f"La demande de {req.first_name} {req.last_name} a été acceptée. L'utilisateur est maintenant Producteur.")
+            messages.success(request, f"La demande de {req.first_name} {req.last_name} a été acceptée. L'utilisateur est maintenant Producteur.")
     
     elif action == 'reject':
         req.status = 'rejected'
         req.save()
-        from django.contrib import messages
         messages.warning(request, f"La demande de {req.first_name} {req.last_name} a été rejetée.")
         
     return redirect('admin_producer_requests')
@@ -1307,9 +1297,6 @@ def admin_critic_request_action(request, pk, action):
     """
     Vue pour approuver ou rejeter une demande de critique.
     """
-    from catalogue.models import CriticRequest, Notification
-    from django.contrib.auth.models import Group
-    
     req = get_object_or_404(CriticRequest, pk=pk)
     
     if request.method == 'POST':
@@ -1398,16 +1385,13 @@ def admin_approve_show(request, pk):
             time_val = request.POST.get('time')
             
             if not all([show.title, show.duration, show.location_id, date_val, time_val]):
-                from django.contrib import messages
                 messages.error(request, "Impossible de publier : tous les champs (titre, durée, lieu, date, heure) doivent être remplis.")
             elif not show.prices.exists():
-                from django.contrib import messages
                 messages.error(request, "Impossible de publier : vous devez d'abord ajouter au moins un prix.")
             else:
                 show.status = 'published'
                 show.bookable = True
                 show.save()
-                from django.contrib import messages
                 messages.success(request, f"Le spectacle '{show.title}' a été publié avec succès.")
                 return redirect('admin_pending_shows')
         
@@ -1433,7 +1417,6 @@ def admin_approve_show(request, pk):
                     
                     rep.save()
                 except ValueError as e:
-                    from django.contrib import messages
                     messages.error(request, f"Format de date ou d'heure invalide : {e}")
 
         # 4. Ajout de prix (via ShowPrice)
@@ -1563,7 +1546,6 @@ def admin_mark_notification_read(request, pk):
     """
     Marque une notification comme lue et redirige vers son lien.
     """
-    from catalogue.models import Notification
     notification = get_object_or_404(Notification, pk=pk)
     notification.is_read = True
     notification.save()
@@ -1577,7 +1559,6 @@ def admin_notifications(request):
     """
     Affiche la liste complète des notifications.
     """
-    from catalogue.models import Notification
     from django.core.paginator import Paginator
 
     notifications_list = Notification.objects.all()
@@ -1595,8 +1576,6 @@ def admin_mark_all_notifications_read(request):
     """
     Marque toutes les notifications non lues comme lues.
     """
-    from catalogue.models import Notification
-    from django.contrib import messages
     Notification.objects.filter(is_read=False).update(is_read=True)
 
     messages.success(request, "Toutes les notifications ont été marquées comme lues.")

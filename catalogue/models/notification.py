@@ -5,9 +5,13 @@ class Notification(models.Model):
     NOTIFICATION_TYPES = (
         ('new_user', 'Nouvel Utilisateur'),
         ('producer_request', 'Demande Producteur'),
+        ('critic_request', 'Demande Critique'),
         ('new_show', 'Nouveau Spectacle'),
+        ('new_article', 'Nouvel Article'),
+        ('info', 'Information'),
     )
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications', null=True, blank=True)
     type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES)
     title = models.CharField(max_length=255)
     message = models.TextField()
