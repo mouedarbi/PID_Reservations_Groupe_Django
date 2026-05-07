@@ -5,6 +5,7 @@ from .models.location import Location
 from .models.price import Price
 from .models.locality import Locality
 from .models.review import Review
+from .models.press_article import PressArticle
 
 @register(Show)
 class ShowTranslationOptions(TranslationOptions):
@@ -29,3 +30,7 @@ class LocalityTranslationOptions(TranslationOptions):
 @register(Review)
 class ReviewTranslationOptions(TranslationOptions):
     fields = ('review',)
+
+@register(PressArticle)
+class PressArticleTranslationOptions(TranslationOptions):
+    fields = ('title', 'summary', 'content')

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from catalogue.models import PressArticle, Show
 from catalogue.forms.PressArticleForm import PressArticleForm
+from catalogue.utils.translation import translate_press_article
 
 def is_critic(user):
     return user.is_authenticated and (user.groups.filter(name='PRESS_CRITIC').exists() or user.is_superuser)
@@ -38,6 +39,12 @@ def submit_press_article(request, pk=None):
             new_article.user = request.user
             new_article.validated = False # Re-validation required on edit
             new_article.save()
+            
+            # Traduction automatique
+            try:
+                translate_press_article(new_article)
+            except Exception as e:
+                print(f"Échec de la traduction automatique de l'article : {e}")
             
             messages.success(request, "Votre article a été enregistré et est en attente de validation par le producteur du spectacle.")
             return redirect('catalogue:critic_dashboard')
