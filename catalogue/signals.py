@@ -48,12 +48,15 @@ def notify_new_show(sender, instance, created, **kwargs):
 @receiver(post_save, sender=PressArticle)
 def notify_new_press_article(sender, instance, created, **kwargs):
     if created:
-        # Note: Cette notification est pour l'admin, mais le producteur devrait aussi être notifié.
-        # Pour l'instant, on garde le système de notification admin existant.
-        critic_name = instance.user.username
-        Notification.objects.create(
-            type='new_article',
-            title='Nouvel Article de Presse',
-            message=f"<b>{critic_name}</b> a rédigé un article sur '<b>{instance.show.title}</b>'.",
-            link=reverse('admin_dashboard') # Placeholder admin link
-        )
+        critic_name = instance.user.get_full_name() or instance.user.username
+        
+        # On notifie le producteur du spectacle
+        if instance.show.producer:
+            Notification.objects.create(
+                user=instance.show.producer,
+                type='new_article',
+                title='Nouvel Article à Valider',
+                message=f"<b>{critic_name}</b> a rédigé un article sur votre spectacle '<b>{instance.show.title}</b>'.",
+                link=reverse('catalogue:prod_moderate_press_articles')
+            )
+

@@ -1,7 +1,10 @@
 from django import forms
 from catalogue.models import PressArticle, Show
+from tinymce.widgets import TinyMCE
 
 class PressArticleForm(forms.ModelForm):
+    content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
+    
     class Meta:
         model = PressArticle
         fields = ['show', 'title', 'summary', 'content']
@@ -9,7 +12,6 @@ class PressArticleForm(forms.ModelForm):
             'show': forms.Select(attrs={'class': 'form-control'}),
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Titre de votre article'}),
             'summary': forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Bref résumé captivant...'}),
-            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 10, 'placeholder': 'Rédigez votre critique ici...'}),
         }
         labels = {
             'show': 'Spectacle concerné',
@@ -20,6 +22,8 @@ class PressArticleForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # On ne propose que les spectacles publiés (ou tous ?)
-        # L'utilisateur demande des articles sur les spectacles
-        self.fields['show'].queryset = Show.objects.filter(status='published').order_by('title')
+        # On ne propose que les spectacles publiés ET ayant un producteur local
+        self.fields['show'].queryset = Show.objects.filter(
+            status='published', 
+            producer__isnull=False
+        ).order_by('title')
