@@ -33,7 +33,8 @@ from catalogue.views.admin_dashboard import (
     admin_user_create, admin_user_edit, admin_user_detail,
     admin_group_index, admin_group_create, admin_group_edit, admin_group_detail,
     admin_generic_delete, admin_settings, admin_payment_index, admin_ticketmaster_sync,
-    admin_ticketmaster_sync_live, admin_pending_shows, admin_approve_show,
+    admin_ticketmaster_sync_live, admin_opendata_sync, admin_opendata_sync_live,
+    admin_pending_shows, admin_approve_show,
     admin_producer_requests, admin_producer_request_action, admin_critic_requests, admin_critic_request_action,
     admin_mark_notification_read, admin_notifications, admin_mark_all_notifications_read
 )
@@ -106,6 +107,8 @@ urlpatterns += i18n_patterns(
     
     # Locations
     path('admin-dashboard/locations/', admin_location_index, name='admin_location_index'),
+    path('admin-dashboard/locations/sync-opendata/', admin_opendata_sync, name='admin_opendata_sync'),
+    path('admin-dashboard/locations/sync-opendata-live/', admin_opendata_sync_live, name='admin_opendata_sync_live'),
     path('admin-dashboard/locations/create/', admin_location_create, name='admin_location_create'),
     path('admin-dashboard/locations/<int:pk>/', admin_location_detail, name='admin_location_detail'),
     path('admin-dashboard/locations/<int:pk>/edit/', admin_location_edit, name='admin_location_edit'),

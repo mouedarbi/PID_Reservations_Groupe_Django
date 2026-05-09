@@ -4,6 +4,7 @@ from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
 from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType, ShowPrice, Notification, CriticRequest
 from catalogue.utils.ticketmaster import run_ticketmaster_import, run_ticketmaster_import_gen
+from catalogue.utils.opendata import run_opendata_import_gen
 from django.http import StreamingHttpResponse
 from payments.models import Payment
 from catalogue.forms.ArtistForm import ArtistForm
@@ -1580,3 +1581,32 @@ def admin_mark_all_notifications_read(request):
 
     messages.success(request, "Toutes les notifications ont été marquées comme lues.")
     return redirect('admin_notifications')
+
+@user_passes_test(is_admin)
+def admin_opendata_sync(request):
+    """
+    Vue pour déclencher la synchronisation avec l'API OpenData.
+    """
+    from catalogue.utils.opendata import run_opendata_import_gen
+    try:
+        # On consomme le générateur
+        for _ in run_opendata_import_gen():
+            pass
+        messages.success(request, "Synchronisation des lieux terminée !")
+    except Exception as e:
+        messages.error(request, f"Erreur lors de la synchronisation : {str(e)}")
+        
+    return redirect('admin_location_index')
+
+@user_passes_test(is_admin)
+def admin_opendata_sync_live(request):
+    """
+    Vue de streaming pour afficher les logs de synchronisation OpenData en temps réel.
+    """
+    from catalogue.utils.opendata import run_opendata_import_gen
+    def stream_logs():
+        for message in run_opendata_import_gen():
+            yield message
+            
+    return StreamingHttpResponse(stream_logs(), content_type='text/plain')
+
