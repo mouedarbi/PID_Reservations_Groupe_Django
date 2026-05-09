@@ -1393,6 +1393,12 @@ def admin_approve_show(request, pk):
                 show.status = 'published'
                 show.bookable = True
                 show.save()
+
+                # Activer le lieu s'il était inactif (soumis par producteur)
+                if show.location and not show.location.is_active:
+                    show.location.is_active = True
+                    show.location.save()
+
                 messages.success(request, f"Le spectacle '{show.title}' a été publié avec succès.")
                 return redirect('admin_pending_shows')
         
