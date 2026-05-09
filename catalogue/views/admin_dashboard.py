@@ -418,6 +418,125 @@ def admin_locality_index(request):
     return render(request, 'admin/locality/index.html', context)
 
 @user_passes_test(is_admin)
+def admin_export_localities_csv(request):
+    """
+    Exporte la liste des localités en format CSV avec les traductions.
+    """
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="localities_export.csv"'
+    response.write(u'\ufeff'.encode('utf8'))
+    
+    writer = csv.writer(response, delimiter=';')
+    writer.writerow(['Code Postal', 'Localité (FR)', 'Localité (EN)', 'Localité (NL)'])
+    
+    from catalogue.models import Locality
+    for loc in Locality.objects.all():
+        writer.writerow([
+            loc.postal_code, 
+            loc.locality_fr or loc.locality, 
+            loc.locality_en or '', 
+            loc.locality_nl or ''
+        ])
+    
+    return response
+
+@user_passes_test(is_admin)
+def admin_import_localities_csv(request):
+    """
+    Importe des localités à partir d'un fichier CSV multilingue.
+    Format attendu : Code Postal;Nom FR;[Nom EN];[Nom NL]
+    """
+    if request.method == 'POST' and request.FILES.get('csv_file'):
+        csv_file = request.FILES['csv_file']
+        auto_translate = request.POST.get('auto_translate') == 'on'
+        
+        if not csv_file.name.endswith('.csv'):
+            messages.error(request, "Le fichier doit être au format .csv")
+            return redirect('admin_locality_index')
+            
+        try:
+            from catalogue.models import Locality
+            from catalogue.utils.translation import translate_text
+            
+            data_set = csv_file.read().decode('UTF-8-sig')
+            io_string = io.StringIO(data_set)
+            
+            # Détection de l'en-tête
+            first_line = io_string.readline()
+            if not any(char.isdigit() for char in first_line.split(';')[0]):
+                pass
+            else:
+                io_string.seek(0)
+            
+            count_new = 0
+            count_updated = 0
+            seen_in_file = set() # Pour supprimer les doublons du CSV lui-même
+            
+            for column in csv.reader(io_string, delimiter=';'):
+                if len(column) < 2:
+                    continue
+                    
+                cp = column[0].strip()
+                
+                # 1. Dédoublonnage interne au fichier CSV
+                if cp in seen_in_file:
+                    continue # On ignore cette ligne car ce code postal a déjà été traité plus haut dans le fichier
+                seen_in_file.add(cp)
+                
+                name_fr = column[1].strip()
+                
+                # Gestion des traductions
+                name_en = column[2].strip() if len(column) > 2 and column[2].strip() else None
+                name_nl = column[3].strip() if len(column) > 3 and column[3].strip() else None
+                
+                if auto_translate:
+                    if not name_en:
+                        name_en = translate_text(name_fr, 'en')
+                    if not name_nl:
+                        name_nl = translate_text(name_fr, 'nl')
+                else:
+                    name_en = name_en or name_fr
+                    name_nl = name_nl or name_fr
+                
+                # 2. Gestion de la base de données : MISE À JOUR si existe, sinon CRÉATION
+                obj, created = Locality.objects.update_or_create(
+                    postal_code=cp,
+                    defaults={
+                        'locality_fr': name_fr,
+                        'locality_en': name_en,
+                        'locality_nl': name_nl,
+                        'locality': name_fr
+                    }
+                )
+                
+                if created:
+                    count_new += 1
+                else:
+                    count_updated += 1
+            
+            messages.success(request, f"Importation réussie : {count_new} créées, {count_updated} mises à jour. Les doublons du fichier ont été ignorés.")
+        except Exception as e:
+            messages.error(request, f"Erreur lors de l'importation : {str(e)}")
+            
+    return redirect('admin_locality_index')
+
+@user_passes_test(is_admin)
+def admin_download_locality_template(request):
+    """
+    Génère un fichier CSV vide avec les en-têtes corrects pour l'importation.
+    """
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="template_localites.csv"'
+    response.write(u'\ufeff'.encode('utf8'))
+    
+    writer = csv.writer(response, delimiter=';')
+    writer.writerow(['Code Postal', 'Localité (FR)', 'Localité (EN)', 'Localité (NL)'])
+    # Ligne d'exemple optionnelle
+    writer.writerow(['1000', 'Bruxelles', 'Brussels', 'Brussel'])
+    
+    return response
+
+@user_passes_test(is_admin)
 def admin_locality_detail(request, pk):
     """
     Vue pour afficher les détails d'une localité (incluant les lieux associés).

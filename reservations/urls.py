@@ -26,6 +26,7 @@ from catalogue.views.admin_dashboard import (
     admin_artist_detail, admin_show_create, admin_show_edit,
     admin_location_create, admin_location_edit, admin_location_detail,
     admin_locality_create, admin_locality_edit, admin_locality_detail,
+    admin_export_localities_csv, admin_import_localities_csv, admin_download_locality_template,
     admin_price_create, admin_price_edit, admin_price_detail,
     admin_type_create, admin_type_edit, admin_type_detail,
     admin_review_edit, admin_review_validate, admin_review_reject,
@@ -115,6 +116,9 @@ urlpatterns += i18n_patterns(
     
     # Localities
     path('admin-dashboard/localities/', admin_locality_index, name='admin_locality_index'),
+    path('admin-dashboard/localities/export-csv/', admin_export_localities_csv, name='admin_locality_export_csv'),
+    path('admin-dashboard/localities/import-csv/', admin_import_localities_csv, name='admin_locality_import_csv'),
+    path('admin-dashboard/localities/download-template/', admin_download_locality_template, name='admin_locality_download_template'),
     path('admin-dashboard/localities/create/', admin_locality_create, name='admin_locality_create'),
     path('admin-dashboard/localities/<int:pk>/', admin_locality_detail, name='admin_locality_detail'),
     path('admin-dashboard/localities/<int:pk>/edit/', admin_locality_edit, name='admin_locality_edit'),

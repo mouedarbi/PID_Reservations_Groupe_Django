@@ -11,27 +11,35 @@
 {% endblock %}
 
 {% block content %}
-<div class="dashboard-content">
-    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+<div class="container-fluid p-0">
+    <!-- Header Section with Bootstrap 5 -->
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
         <div>
-            <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
-            <p class="text-small mt-1">Gérez la liste de vos spectacles et leurs détails.</p>
+            <h2 class="display-6 fw-bold mb-1">{{ title }}</h2>
+            <p class="text-muted mb-0">Gérez le catalogue des spectacles et les synchronisations externes.</p>
         </div>
-        <div class="flex flex-wrap gap-2">
-            <button id="sync-tm-btn" class="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700 transition" style="background-color: #10b981 !important; border: none;">
-                <i class="ph ph-arrows-counter-clockwise" id="sync-icon"></i>
-                <span>Synchroniser Ticket Master</span>
-            </button>
-            <a href="{% url 'catalogue:admin_show_export_csv' %}" class="flex items-center gap-2 rounded-lg bg-gray-600 px-4 py-2 text-white hover:bg-gray-700 transition">
-                <i class="ph ph-download"></i>
-                <span>Exporter CSV</span>
-            </a>
-            <button onclick="document.getElementById('import-csv-form').classList.toggle('hidden')" class="flex items-center gap-2 rounded-lg bg-orange-600 px-4 py-2 text-white hover:bg-orange-700 transition">
-                <i class="ph ph-upload"></i>
-                <span>Importer CSV</span>
-            </button>
-            <a href="{% url 'admin_show_create' %}" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
-                <i class="ph ph-plus"></i>
+        
+        <div class="d-flex flex-wrap gap-2">
+            <!-- Sync & Tools Group -->
+            <div class="btn-group shadow-sm">
+                <button id="sync-tm-btn" class="btn btn-warning d-flex align-items-center gap-2">
+                    <i class="ph ph-arrows-counter-clockwise" id="sync-icon"></i>
+                    <span>Ticketmaster</span>
+                </button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="ph ph-file-csv"></i> CSV
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                        <li><a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'catalogue:admin_show_export_csv' %}"><i class="ph ph-download-simple"></i> Exporter</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><button class="dropdown-item d-flex align-items-center gap-2" onclick="document.getElementById('import-csv-form').classList.toggle('hidden')"><i class="ph ph-upload-simple"></i> Importer</button></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <a href="{% url 'admin_show_create' %}" class="btn btn-primary shadow-sm d-flex align-items-center gap-2">
+                <i class="ph ph-plus-circle"></i>
                 <span>Ajouter un spectacle</span>
             </a>
         </div>
