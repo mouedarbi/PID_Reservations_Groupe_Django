@@ -42,7 +42,7 @@ def notify_new_show(sender, instance, created, **kwargs):
             type='new_show',
             title='Nouveau Spectacle',
             message=f"<b>{producer_name}</b> a soumis le spectacle '<b>{instance.title}</b>' pour approbation.",
-            link=reverse('admin_approve_show', args=[instance.pk])
+            link=reverse('admin_pending_shows')
         )
 
 @receiver(post_save, sender=PressArticle)
