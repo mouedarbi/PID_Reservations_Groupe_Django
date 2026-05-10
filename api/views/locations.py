@@ -19,11 +19,20 @@ class LocationsView(APIView):
         return [IsAdminUser()]
 
     def get(self, request, format=None):
-        locations = Location.objects.all()
+        # Par défaut, on ne montre que les lieux actifs
+        locations = Location.objects.filter(is_active=True)
+
+        # Si l'utilisateur est admin, il peut potentiellement voir les lieux inactifs via un paramètre
+        if request.user.is_staff and request.query_params.get('include_inactive'):
+            locations = Location.objects.all()
 
         locality_id = request.query_params.get('locality_id')
         if locality_id:
             locations = locations.filter(locality_id=locality_id)
+
+        search = request.query_params.get('search')
+        if search:
+            locations = locations.filter(designation__icontains=search)
 
         serializer = LocationSerializer(locations, many=True)
         return Response(serializer.data)

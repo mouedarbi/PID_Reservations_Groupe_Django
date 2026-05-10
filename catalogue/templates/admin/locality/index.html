@@ -17,29 +17,155 @@
             <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
             <p class="text-small mt-1">Gérez les codes postaux et les villes de vos lieux de spectacles.</p>
         </div>
-        <div>
-            <a href="{% url 'admin_locality_create' %}" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
-                <i class="ph ph-plus"></i>
+        <div class="flex flex-wrap gap-2">
+            <div class="flex rounded-lg overflow-hidden shadow-md">
+                <a href="{% url 'admin_locality_export_csv' %}" class="bg-amber-500 px-4 py-2 text-white hover:bg-amber-600 transition flex items-center gap-2 border-r border-white/10">
+                    <i class="ph ph-download-simple"></i>
+                    <span>Exporter</span>
+                </a>
+                <button onclick="document.getElementById('import-csv-modal').classList.remove('hidden')" class="bg-emerald-500 px-4 py-2 text-white hover:bg-emerald-600 transition flex items-center gap-2">
+                    <i class="ph ph-upload-simple"></i>
+                    <span>Importer</span>
+                </button>
+            </div>
+            <a href="{% url 'admin_locality_create' %}" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition shadow-md">
+                <i class="ph ph-plus-circle"></i>
                 <span>Ajouter une localité</span>
             </a>
         </div>
     </div>
 
-    <!-- Filters & Search -->
-    <div class="border-border mb-6 rounded-lg border bg-bg p-4 dark:bg-[#040b1a]">
-        <form method="GET" class="flex flex-col gap-4 md:flex-row md:items-center">
-            <div class="relative flex-1">
-                <input type="text" name="q" value="{{ search_query|default:'' }}" placeholder="Rechercher par code postal ou ville..." class="border-border bg-input focus:ring-primary w-full rounded-md border py-2 pr-4 pl-10 transition-colors duration-200 focus:ring-2 focus:outline-none">
-                <i class="ph ph-magnifying-glass text-xl text-muted absolute top-1/2 left-3 -translate-y-1/2 transform"></i>
+    <!-- Modal Import CSV (Custom styled to match your design) -->
+    <div id="import-csv-modal" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div class="w-full max-w-md rounded-xl bg-white p-6 shadow-2xl dark:bg-[#040b1a] border border-border">
+            <div class="mb-4 flex items-center justify-between border-b border-border pb-3">
+                <h3 class="text-xl font-bold text-text">Importer des localités</h3>
+                <div class="flex items-center gap-3">
+                    <a href="{% url 'admin_locality_download_template' %}" class="text-blue-600 hover:underline text-sm font-medium flex items-center gap-1">
+                        <i class="ph ph-file-csv fs-5"></i> Modèle
+                    </a>
+                    <button onclick="document.getElementById('import-csv-modal').classList.add('hidden')" class="text-muted hover:text-text transition-colors">
+                        <i class="ph ph-x text-2xl"></i>
+                    </button>
+                </div>
             </div>
-            <button type="submit" class="rounded-lg bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300 transition dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700">
-                Filtrer
-            </button>
-            {% if search_query %}
-            <a href="{% url 'admin_locality_index' %}" class="text-blue-600 hover:underline text-sm">Réinitialiser</a>
-            {% endif %}
-        </form>
+            <form id="import-csv-form-el" action="{% url 'admin_locality_import_csv' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div id="import-fields">
+                    <div class="mb-4">
+                        <label class="mb-2 block text-sm font-semibold text-text">Fichier CSV</label>
+                        <input type="file" name="csv_file" id="csv_file_input" accept=".csv" required class="w-full rounded-lg border border-border bg-input p-2 text-text">
+                        <p class="mt-2 text-xs text-muted italic">Format : Code Postal;Nom FR;[Nom EN];[Nom NL]</p>
+                    </div>
+                    
+                    <div class="mb-6 flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-border">
+                        <input type="checkbox" name="auto_translate" id="auto_translate" class="h-4 w-4 rounded border-gray-300 text-blue-600">
+                        <label for="auto_translate" class="text-sm text-text cursor-pointer">
+                            Auto-traduire via LibreTranslate (plus lent)
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Logs Area -->
+                <div id="import-logs-container" class="hidden mb-4">
+                    <label class="mb-2 block text-sm font-semibold text-emerald-600">Progression de l'importation :</label>
+                    <pre id="import-logs" class="text-xs font-mono text-emerald-700 bg-emerald-50 dark:bg-emerald-900/10 p-3 rounded border border-emerald-200 overflow-y-auto max-h-40 whitespace-pre-wrap"></pre>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-border">
+                    <button type="button" id="import-cancel-btn" onclick="document.getElementById('import-csv-modal').classList.add('hidden')" class="rounded-lg border border-border px-4 py-2 text-text hover:bg-gray-100 transition">
+                        Annuler
+                    </button>
+                    <button type="submit" id="import-submit-btn" class="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 font-bold shadow-lg transition">
+                        Lancer l'importation
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const importForm = document.getElementById('import-csv-form-el');
+    
+    if (importForm) {
+        importForm.addEventListener('submit', function(e) {
+            // Bloquer absolument la redirection par défaut du navigateur
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const form = this;
+            const formData = new FormData(form);
+            const submitBtn = document.getElementById('import-submit-btn');
+            const fields = document.getElementById('import-fields');
+            const logsContainer = document.getElementById('import-logs-container');
+            const logsPre = document.getElementById('import-logs');
+            
+            // État visuel
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Importation en cours...';
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+            
+            if (fields) fields.classList.add('hidden');
+            if (logsContainer) logsContainer.classList.remove('hidden');
+            if (logsPre) logsPre.textContent = 'Connexion au flux de données...\n';
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Erreur serveur : ' + response.status);
+                
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+
+                function read() {
+                    return reader.read().then(({ done, value }) => {
+                        if (done) {
+                            if (logsPre) logsPre.textContent += '\n--- TERMINÉ AVEC SUCCÈS ---\n';
+                            if (submitBtn) {
+                                submitBtn.textContent = 'Terminé !';
+                                submitBtn.classList.remove('bg-blue-600');
+                                submitBtn.classList.add('bg-emerald-600');
+                            }
+                            // Rechargement automatique après succès
+                            setTimeout(() => {
+                                window.location.href = '{% url "admin_locality_index" %}';
+                            }, 2000);
+                            return;
+                        }
+
+                        const chunk = decoder.decode(value, { stream: true });
+                        if (logsPre) {
+                            logsPre.textContent += chunk;
+                            logsPre.scrollTop = logsPre.scrollHeight;
+                        }
+                        return read();
+                    });
+                }
+                return read();
+            })
+            .catch(error => {
+                console.error('Erreur Import:', error);
+                if (logsPre) logsPre.textContent += '\nERREUR : ' + error.message;
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Réessayer";
+                    submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            });
+            
+            return false; // Sécurité supplémentaire pour bloquer le submit
+        });
+    }
+});
+</script>
 
     <!-- Localities Table -->
     <div class="border-border overflow-hidden rounded-lg border bg-bg dark:bg-[#040b1a]">
@@ -85,6 +211,46 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Pagination Section -->
+        {% if localities.has_other_pages %}
+        <div class="px-6 py-4 border-t border-border flex items-center justify-between bg-gray-50/30 dark:bg-gray-900/20">
+            <div class="text-sm text-muted">
+                Affichage de {{ localities.start_index }} à {{ localities.end_index }} sur {{ localities.paginator.count }} localités
+            </div>
+            <div class="flex items-center gap-2">
+                {% if localities.has_previous %}
+                    <a href="?page={{ localities.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="flex items-center justify-center w-8 h-8 rounded border border-border bg-bg hover:bg-gray-100 transition text-sm">
+                        <i class="ph ph-caret-left"></i>
+                    </a>
+                {% endif %}
+
+                <div class="flex items-center gap-1">
+                    {% for i in custom_page_range %}
+                        {% if localities.number == i %}
+                            <span class="w-8 h-8 flex items-center justify-center rounded bg-blue-600 text-white text-sm font-bold shadow-sm">
+                                {{ i }}
+                            </span>
+                        {% else %}
+                            <a href="?page={{ i }}{% if search_query %}&q={{ search_query }}{% endif %}" class="w-8 h-8 flex items-center justify-center rounded border border-border bg-bg hover:bg-gray-100 transition text-sm text-text">
+                                {{ i }}
+                            </a>
+                        {% endif %}
+                        
+                        {% if not forloop.last %}
+                            <span class="text-muted mx-0.5">.</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                {% if localities.has_next %}
+                    <a href="?page={{ localities.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="flex items-center justify-center w-8 h-8 rounded border border-border bg-bg hover:bg-gray-100 transition text-sm">
+                        <i class="ph ph-caret-right"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -17,11 +17,31 @@
             <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
             <p class="text-small mt-1">Gérez les lieux où se déroulent vos spectacles.</p>
         </div>
-        <div>
+        <div class="flex flex-wrap gap-2">
+            <button id="sync-opendata-btn" class="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700 transition" style="background-color: #10b981 !important; border: none;">
+                <i class="ph ph-arrows-counter-clockwise" id="sync-icon"></i>
+                <span>Synchroniser OpenData</span>
+            </button>
             <a href="{% url 'admin_location_create' %}" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
                 <i class="ph ph-plus"></i>
                 <span>Ajouter un lieu</span>
             </a>
+        </div>
+    </div>
+
+    <!-- Zone de Logs Live -->
+    <div id="sync-logs-container" class="mb-6 hidden">
+        <div class="border-emerald-500/30 bg-emerald-500/5 rounded-lg border p-4">
+            <div class="flex items-center justify-between mb-2">
+                <h4 class="text-emerald-700 font-bold flex items-center gap-2">
+                    <i class="ph ph-terminal"></i>
+                    Synchronisation OpenData en cours...
+                </h4>
+                <button onclick="document.getElementById('sync-logs-container').classList.add('hidden')" class="text-emerald-700 hover:text-emerald-900">
+                    <i class="ph ph-x"></i>
+                </button>
+            </div>
+            <pre id="sync-logs" class="text-xs font-mono text-emerald-800 bg-white/50 p-3 rounded border border-emerald-200 overflow-y-auto max-h-60 whitespace-pre-wrap"></pre>
         </div>
     </div>
 
@@ -110,4 +130,60 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const syncBtn = document.getElementById('sync-opendata-btn');
+    const syncIcon = document.getElementById('sync-icon');
+    const logsContainer = document.getElementById('sync-logs-container');
+    const logsPre = document.getElementById('sync-logs');
+
+    if (syncBtn) {
+        syncBtn.addEventListener('click', function() {
+            if (!confirm('Voulez-vous synchroniser les lieux depuis OpenData Wallonie-Bruxelles ?')) return;
+
+            // Interface
+            syncBtn.disabled = true;
+            syncIcon.classList.add('ph-spin');
+            logsContainer.classList.remove('hidden');
+            logsPre.textContent = 'Connexion au serveur OpenData...\n';
+
+            // Démarrage du stream
+            fetch('{% url "admin_opendata_sync_live" %}')
+                .then(response => {
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+
+                    function read() {
+                        return reader.read().then(({ done, value }) => {
+                            if (done) {
+                                syncBtn.disabled = false;
+                                syncIcon.classList.remove('ph-spin');
+                                logsPre.textContent += '\n--- TERMINÉ ---\n';
+                                setTimeout(() => {
+                                    if(confirm('Synchronisation terminée. Recharger la page pour voir les nouveaux lieux ?')) {
+                                        window.location.reload();
+                                    }
+                                }, 1000);
+                                return;
+                            }
+
+                            const chunk = decoder.decode(value, { stream: true });
+                            logsPre.textContent += chunk;
+                            logsPre.scrollTop = logsPre.scrollHeight; // Auto-scroll
+                            return read();
+                        });
+                    }
+
+                    return read();
+                })
+                .catch(error => {
+                    logsPre.textContent += '\nERREUR : ' + error;
+                    syncBtn.disabled = false;
+                    syncIcon.classList.remove('ph-spin');
+                });
+        });
+    }
+});
+</script>
 {% endblock %}
