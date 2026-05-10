@@ -94,14 +94,14 @@
                                 
                                 <form action="{% url 'admin_critic_request_action' req.id 'reject' %}" method="post" style="display:inline;" onsubmit="return confirm('{% trans "Êtes-vous sûr de vouloir refuser cette candidature ?" %}')">
                                     {% csrf_token %}
-                                    <button type="submit" class="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 transition">
+                                    <button type="submit" class="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition">
                                         <i class="ph ph-x-circle mr-2"></i> {% trans "Refuser" %}
                                     </button>
                                 </form>
                                 
                                 <form action="{% url 'admin_critic_request_action' req.id 'approve' %}" method="post" style="display:inline;" onsubmit="return confirm('{% trans "Êtes-vous sûr de vouloir accepter ce critique ? Il pourra désormais soumettre des articles de presse." %}')">
                                     {% csrf_token %}
-                                    <button type="submit" class="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition">
+                                    <button type="submit" class="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 transition">
                                         <i class="ph ph-check-circle mr-2"></i> {% trans "Accepter" %}
                                     </button>
                                 </form>

@@ -1,131 +1,173 @@
 {% extends 'admin/admin.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Toutes les notifications - Administration{% endblock %}
-{% block page_title %}Toutes les notifications{% endblock %}
+{% block title %}Notifications - Administration{% endblock %}
+{% block page_title %}Notifications{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-main-style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-1.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-2.css' %}">
+<style>
+    .notification-card {
+        transition: all 0.2s ease-in-out;
+    }
+    .notification-card:hover {
+        transform: translateY(-2px);
+    }
+    .unread-indicator {
+        position: absolute;
+        top: 1.25rem;
+        right: 1.25rem;
+        width: 10px;
+        height: 10px;
+        background-color: #3b82f6;
+        border-radius: 9999px;
+    }
+    .type-icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        flex-shrink: 0;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-    <div>
-        <h2 class="text-text text-xl font-bold">Notifications</h2>
-        <p class="text-muted text-sm">Consultez l'historique complet de vos notifications.</p>
+<div class="dashboard-content">
+    <!-- Header Actions -->
+    <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h2 class="text-text text-2xl font-bold">Centre de Notifications</h2>
+            <p class="text-muted mt-1 text-sm">Gérez les alertes et les activités récentes du système.</p>
+        </div>
+        
+        <div class="flex items-center gap-3">
+            <a href="{% url 'admin_mark_all_notifications_read' %}" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-bold text-white transition-all hover:bg-blue-700 hover:shadow-lg active:scale-95">
+                <i class="ph ph-check-double text-xl"></i>
+                Tout marquer comme lu
+            </a>
+        </div>
     </div>
-    
-    <div class="flex items-center gap-3">
-        <a href="{% url 'admin_mark_all_notifications_read' %}" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700 flex items-center gap-2">
-            <i class="ph ph-check-double text-lg"></i>
-            Tout marquer comme lu
-        </a>
-    </div>
-</div>
 
-{% if messages %}
-    <div class="mb-6 space-y-2">
-        {% for message in messages %}
-            <div class="rounded-lg p-4 {% if message.tags == 'success' %}bg-green-100 text-green-800 border border-green-200{% elif message.tags == 'error' %}bg-red-100 text-red-800 border border-red-200{% else %}bg-blue-100 text-blue-800 border border-blue-200{% endif %} flex items-center gap-3">
-                {% if message.tags == 'success' %}
-                    <i class="ph ph-check-circle text-xl"></i>
-                {% elif message.tags == 'error' %}
-                    <i class="ph ph-warning-circle text-xl"></i>
-                {% else %}
-                    <i class="ph ph-info text-xl"></i>
+    <!-- Messages Django -->
+    {% if messages %}
+        <div class="mb-8 space-y-3">
+            {% for message in messages %}
+                <div class="flex items-center gap-3 rounded-xl border p-4 shadow-sm {% if message.tags == 'success' %}bg-green-50 border-green-200 text-green-800{% elif message.tags == 'error' %}bg-red-50 border-red-200 text-red-800{% else %}bg-blue-50 border-blue-200 text-blue-800{% endif %}">
+                    {% if message.tags == 'success' %}
+                        <i class="ph ph-check-circle text-2xl"></i>
+                    {% elif message.tags == 'error' %}
+                        <i class="ph ph-warning-circle text-2xl"></i>
+                    {% else %}
+                        <i class="ph ph-info text-2xl"></i>
+                    {% endif %}
+                    <p class="text-sm font-semibold">{{ message }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- List of Notifications -->
+    <div class="space-y-4">
+        {% for notification in page_obj %}
+            <div class="notification-card relative flex flex-col gap-4 rounded-xl border border-border bg-card p-5 shadow-sm sm:flex-row sm:items-center {% if not notification.is_read %}border-l-4 border-l-blue-600 bg-blue-50/10{% endif %}">
+                {% if not notification.is_read %}
+                    <div class="unread-indicator"></div>
                 {% endif %}
-                <p class="text-sm font-medium">{{ message }}</p>
+
+                <!-- Icon based on type -->
+                <div class="type-icon-wrapper {% if notification.type == 'new_user' %}bg-green-100 text-green-600{% elif notification.type == 'producer_request' %}bg-purple-100 text-purple-600{% elif notification.type == 'new_show' %}bg-orange-100 text-orange-600{% else %}bg-blue-100 text-blue-600{% endif %}">
+                    {% if notification.type == 'new_user' %}
+                        <i class="ph ph-user-plus text-2xl"></i>
+                    {% elif notification.type == 'producer_request' %}
+                        <i class="ph ph-graduation-cap text-2xl"></i>
+                    {% elif notification.type == 'new_show' %}
+                        <i class="ph ph-presentation-chart text-2xl"></i>
+                    {% else %}
+                        <i class="ph ph-bell text-2xl"></i>
+                    {% endif %}
+                </div>
+
+                <!-- Content -->
+                <div class="flex-1 space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider {% if notification.type == 'new_user' %}text-green-600{% elif notification.type == 'producer_request' %}text-purple-600{% elif notification.type == 'new_show' %}text-orange-600{% else %}text-blue-600{% endif %}">
+                            {{ notification.get_type_display }}
+                        </span>
+                        <span class="text-[10px] text-muted">•</span>
+                        <span class="text-[10px] text-muted">{{ notification.created_at|date:"d M Y, H:i" }} ({{ notification.created_at|timesince }})</span>
+                    </div>
+                    <h3 class="text-text font-bold">{{ notification.title }}</h3>
+                    <div class="text-muted text-sm leading-relaxed">
+                        {{ notification.message|safe }}
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="mt-4 flex items-center gap-2 sm:mt-0">
+                    {% if not notification.is_read %}
+                        <a href="{% url 'admin_mark_notification_read' notification.id %}?next={{ request.path }}?page={{ page_obj.number }}" class="flex h-10 items-center gap-2 rounded-lg bg-blue-100 px-4 text-xs font-bold text-blue-700 transition-colors hover:bg-blue-200" title="Marquer comme lu">
+                            <i class="ph ph-check text-base"></i>
+                            <span class="sm:hidden">Marquer comme lu</span>
+                        </a>
+                    {% endif %}
+                    
+                    {% if notification.link %}
+                        <a href="{{ notification.link }}" class="flex h-10 items-center gap-2 rounded-lg bg-gray-100 px-4 text-xs font-bold text-gray-700 transition-colors hover:bg-gray-200" title="Voir les détails">
+                            <i class="ph ph-arrow-square-out text-base"></i>
+                            <span>Détails</span>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <div class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card/50 py-20 text-center">
+                <div class="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-border/20">
+                    <i class="ph ph-bell-slash text-5xl text-muted opacity-30"></i>
+                </div>
+                <h3 class="text-text text-xl font-bold">Aucune notification</h3>
+                <p class="text-muted mt-2 max-w-xs text-sm">
+                    Tout est à jour ! Vous recevrez des alertes ici lors de nouvelles activités.
+                </p>
             </div>
         {% endfor %}
-    </div>
-{% endif %}
-
-<div class="bg-bg border-border rounded-xl border shadow-sm">
-    <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm">
-            <thead class="bg-border/50 text-muted uppercase">
-                <tr>
-                    <th class="px-6 py-4 font-semibold">Statut</th>
-                    <th class="px-6 py-4 font-semibold">Cible</th>
-                    <th class="px-6 py-4 font-semibold">Type</th>
-                    <th class="px-6 py-4 font-semibold">Message</th>
-                    <th class="px-6 py-4 font-semibold">Date</th>
-                    <th class="px-6 py-4 font-semibold text-right">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="divide-border divide-y">
-                {% for notification in page_obj %}
-                    <tr class="hover:bg-border/30 transition-colors {% if not notification.is_read %}bg-blue-50/10{% endif %}">
-                        <td class="px-6 py-4">
-                            {% if notification.is_read %}
-                                <span class="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
-                                    <i class="ph ph-check text-sm"></i> Lue
-                                </span>
-                            {% else %}
-                                <span class="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
-                                    <i class="ph ph-envelope text-sm"></i> Non lue
-                                </span>
-                            {% endif %}
-                        </td>
-                        <td class="px-6 py-4">
-                            {% if notification.user %}
-                                <span class="text-blue-600 font-medium">{{ notification.user.username }}</span>
-                            {% else %}
-                                <span class="text-muted">Système</span>
-                            {% endif %}
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="font-medium text-text">{{ notification.get_type_display }}</span>
-                        </td>
-                        <td class="px-6 py-4 max-w-md">
-                            <p class="text-text line-clamp-2" title="{{ notification.message|striptags }}">{{ notification.message|safe }}</p>
-                        </td>
-                        <td class="px-6 py-4 text-muted whitespace-nowrap">
-                            {{ notification.created_at|date:"d/m/Y H:i" }}
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                {% if not notification.is_read %}
-                                    <a href="{% url 'admin_mark_notification_read' notification.id %}" title="Marquer comme lu" class="text-blue-600 hover:text-blue-800 transition-colors bg-blue-100 p-2 rounded-lg hover:bg-blue-200">
-                                        <i class="ph ph-check text-lg"></i>
-                                    </a>
-                                {% endif %}
-                                {% if notification.link %}
-                                    <a href="{{ notification.link }}" title="Voir les détails" class="text-gray-600 hover:text-gray-800 transition-colors bg-gray-100 p-2 rounded-lg hover:bg-gray-200">
-                                        <i class="ph ph-arrow-square-out text-lg"></i>
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="5" class="px-6 py-12 text-center text-muted">
-                            <div class="flex flex-col items-center justify-center gap-2">
-                                <i class="ph ph-bell-slash text-4xl opacity-50"></i>
-                                <p>Aucune notification n'a été trouvée.</p>
-                            </div>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
 
     <!-- Pagination -->
     {% if page_obj.has_other_pages %}
-    <div class="border-border flex items-center justify-between border-t px-6 py-4">
+    <div class="mt-8 flex items-center justify-between rounded-xl border border-border bg-card px-6 py-4 shadow-sm">
         <p class="text-muted text-sm">
-            Affichage de <span class="font-medium text-text">{{ page_obj.start_index }}</span> à <span class="font-medium text-text">{{ page_obj.end_index }}</span> sur <span class="font-medium text-text">{{ page_obj.paginator.count }}</span> notifications
+            Affichage de <span class="font-bold text-text">{{ page_obj.start_index }}</span> à <span class="font-bold text-text">{{ page_obj.end_index }}</span> sur <span class="font-bold text-text">{{ page_obj.paginator.count }}</span> notifications
         </p>
         
         <div class="flex gap-2">
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}" class="border-border text-text hover:bg-border rounded-lg border px-3 py-1 transition-colors">Précédent</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="flex items-center gap-1 rounded-lg border border-border bg-bg px-4 py-2 text-sm font-bold text-text transition-colors hover:bg-border">
+                    <i class="ph ph-caret-left"></i>
+                    Précédent
+                </a>
             {% else %}
-                <span class="border-border text-muted cursor-not-allowed rounded-lg border px-3 py-1 opacity-50">Précédent</span>
+                <span class="flex items-center gap-1 cursor-not-allowed rounded-lg border border-border bg-bg/50 px-4 py-2 text-sm font-bold text-muted opacity-50">
+                    <i class="ph ph-caret-left"></i>
+                    Précédent
+                </span>
             {% endif %}
             
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" class="border-border text-text hover:bg-border rounded-lg border px-3 py-1 transition-colors">Suivant</a>
+                <a href="?page={{ page_obj.next_page_number }}" class="flex items-center gap-1 rounded-lg border border-border bg-bg px-4 py-2 text-sm font-bold text-text transition-colors hover:bg-border">
+                    Suivant
+                    <i class="ph ph-caret-right"></i>
+                </a>
             {% else %}
-                <span class="border-border text-muted cursor-not-allowed rounded-lg border px-3 py-1 opacity-50">Suivant</span>
+                <span class="flex items-center gap-1 cursor-not-allowed rounded-lg border border-border bg-bg/50 px-4 py-2 text-sm font-bold text-muted opacity-50">
+                    Suivant
+                    <i class="ph ph-caret-right"></i>
+                </span>
             {% endif %}
         </div>
     </div>

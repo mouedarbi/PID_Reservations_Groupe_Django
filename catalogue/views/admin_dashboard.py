@@ -1425,10 +1425,10 @@ def admin_producer_requests(request):
     """
     from catalogue.models import ProducerRequest
     pending_requests = ProducerRequest.objects.filter(status='pending').order_by('-created_at')
-    
+
     context = {
-        'page_title': 'Demandes Producteurs Juniors',
-        'title': 'Producteurs Juniors',
+        'page_title': 'Candidatures Producteurs',
+        'title': 'Candidatures Producteurs',
         'pending_requests': pending_requests,
     }
     return render(request, 'admin/producer_request/pending.html', context)
@@ -1439,26 +1439,42 @@ def admin_producer_request_action(request, pk, action):
     Vue pour approuver ou rejeter une demande de producteur.
     """
     req = get_object_or_404(ProducerRequest, pk=pk)
-    
+
     if action == 'approve':
         req.status = 'approved'
         req.save()
         # Add user to PRODUCER group
         producer_group, _ = Group.objects.get_or_create(name='PRODUCER')
         req.user.groups.add(producer_group)
-        
+
         # Remove user from MEMBER group if they are in it
         member_group = Group.objects.filter(name='MEMBER').first()
         if member_group:
             req.user.groups.remove(member_group)
-            
-            messages.success(request, f"La demande de {req.first_name} {req.last_name} a été acceptée. L'utilisateur est maintenant Producteur.")
-    
+
+        messages.success(request, f"La demande de {req.first_name} {req.last_name} a été acceptée. L'utilisateur est maintenant Producteur.")
+
+        # Notifier l'utilisateur
+        Notification.objects.create(
+            user=req.user,
+            type='info',
+            title='Candidature Producteur Acceptée',
+            message="Félicitations ! Votre demande pour devenir producteur a été acceptée. Vous pouvez maintenant soumettre des spectacles."
+        )
+
     elif action == 'reject':
         req.status = 'rejected'
         req.save()
         messages.warning(request, f"La demande de {req.first_name} {req.last_name} a été rejetée.")
-        
+
+        # Notifier l'utilisateur
+        Notification.objects.create(
+            user=req.user,
+            type='info',
+            title='Candidature Producteur Refusée',
+            message="Votre demande pour devenir producteur a été examinée et n'a pas été retenue pour le moment."
+        )
+
     return redirect('admin_producer_requests')
 
 @user_passes_test(is_admin)
@@ -1468,14 +1484,13 @@ def admin_critic_requests(request):
     """
     from catalogue.models import CriticRequest
     pending_requests = CriticRequest.objects.filter(status='pending').order_by('-created_at')
-    
+
     context = {
-        'page_title': 'Demandes Critiques de Presse',
-        'title': 'Critiques de Presse',
+        'page_title': 'Candidatures Critiques',
+        'title': 'Candidatures Critiques',
         'pending_requests': pending_requests,
     }
     return render(request, 'admin/critic_request/pending.html', context)
-
 @user_passes_test(is_admin)
 def admin_critic_request_action(request, pk, action):
     """
@@ -1532,8 +1547,8 @@ def admin_pending_shows(request):
     pending_shows = Show.objects.filter(status='pending').select_related('producer', 'location').order_by('-created_at')
     
     context = {
-        'page_title': 'Spectacles en attente',
-        'title': 'Modération des Spectacles',
+        'page_title': 'Approbation Spectacles',
+        'title': 'Approbation Spectacles',
         'pending_shows': pending_shows,
     }
     return render(request, 'admin/show/pending.html', context)
@@ -1740,6 +1755,11 @@ def admin_mark_notification_read(request, pk):
     notification.is_read = True
     notification.save()
 
+    # Si un paramètre 'next' est présent, on redirige vers cette URL
+    next_url = request.GET.get('next')
+    if next_url:
+        return redirect(next_url)
+
     if notification.link:
         return redirect(notification.link)
     return redirect("admin_dashboard")
@@ -1757,10 +1777,12 @@ def admin_notifications(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    pending_shows_count = Show.objects.filter(status='pending').count()
+
     return render(request, 'admin/notifications.html', {
         'page_obj': page_obj,
+        'pending_shows_count': pending_shows_count,
     })
-
 @user_passes_test(is_admin)
 def admin_mark_all_notifications_read(request):
     """
