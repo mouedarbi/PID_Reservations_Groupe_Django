@@ -82,7 +82,7 @@
                             <li class="parent-item">
                                 <a href="{% url 'admin_pending_shows' %}" class="flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
                                     <i class="ph ph-hand-pointing text-2xl text-red-600"></i>
-                                    <span class="nav-text">Demandes Producteurs</span>
+                                    <span class="nav-text">Approbation Spectacles</span>
                                     {% if pending_shows_count > 0 %}
                                         <span class="ml-auto bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ pending_shows_count }}</span>
                                     {% endif %}
@@ -90,17 +90,25 @@
                             </li>
 
                             <li class="parent-item">
-                                <a href="{% url 'admin_producer_requests' %}" class="flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
-                                    <i class="ph ph-graduation-cap text-2xl text-blue-600"></i>
-                                    <span class="nav-text">Producteurs Juniors</span>
-                                </a>
-                            </li>
-
-                            <li class="parent-item">
-                                <a href="{% url 'admin_critic_requests' %}" class="flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100">
-                                    <i class="ph ph-newspaper-clipping text-2xl text-red-600"></i>
-                                    <span class="nav-text">Candidatures Critiques</span>
-                                </a>
+                                <button class="nav-btn flex w-full items-center gap-2 rounded px-4 py-2 text-left hover:bg-gray-100" aria-expanded="false">
+                                    <i class="ph ph-identification-card text-2xl text-blue-600"></i>
+                                    <span class="nav-text">Candidatures</span>
+                                    <i class="ph ph-caret-down ml-auto transition-transform duration-300"></i>
+                                </button>
+                                <ul class="sub-nav mt-1 ml-6 max-h-0 space-y-1 overflow-hidden transition-all duration-300">
+                                    <li>
+                                        <a href="{% url 'admin_producer_requests' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                            <i class="ph ph-graduation-cap text-2xl"></i>
+                                            <span>Candidatures Producteurs</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'admin_critic_requests' %}" class="nav-item flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100">
+                                            <i class="ph ph-newspaper-clipping text-2xl"></i>
+                                            <span>Candidatures Critiques</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             
                             <li class="parent-item">
