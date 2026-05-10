@@ -1525,8 +1525,8 @@ def admin_pending_shows(request):
     pending_shows = Show.objects.filter(status='pending').select_related('producer', 'location').order_by('-created_at')
     
     context = {
-        'page_title': 'Spectacles en attente',
-        'title': 'Modération des Spectacles',
+        'page_title': 'Approbation Spectacles',
+        'title': 'Approbation Spectacles',
         'pending_shows': pending_shows,
     }
     return render(request, 'admin/show/pending.html', context)
