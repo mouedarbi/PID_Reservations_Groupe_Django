@@ -24,7 +24,24 @@
                     </ol>
                 </nav>
                 
-                <h1 class="show-title">{{ show.title }}</h1>
+                <div style="display: table; width: 100%; margin-bottom: 1rem;">
+                    <div style="display: table-cell; vertical-align: middle;">
+                        <h1 class="show-title" style="margin: 0;">{{ show.title }}</h1>
+                    </div>
+                    {% if user.is_authenticated %}
+                        <div style="display: table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 1px;">
+                            {% if user.is_staff or user.is_superuser %}
+                                <a href="{% url 'admin_show_edit' show.id %}" class="btn-edit-quick" title="{% trans 'Modifier dans le Dashboard Admin' %}">
+                                    <i class="ph ph-pencil-simple-line"></i> {% trans "Éditer (Admin)" %}
+                                </a>
+                            {% elif "PRODUCER" in user.groups.all|join:"," and show.producer.id == user.id %}
+                                <a href="{% url 'catalogue:prod_edit_show' show.id %}" class="btn-edit-quick" style="background: #0284c7; border-color: #0284c7;" title="{% trans 'Modifier dans mon Espace Producteur' %}">
+                                    <i class="ph ph-pencil-simple-line"></i> {% trans "Éditer" %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
                 
                 <div class="show-badges mb-4">
                     {% if show.bookable %}
@@ -125,12 +142,43 @@
             {% endif %}
         </div>
 
+        <!-- Press Articles Section -->
+        {% if show.press_articles %}
+        <div class="press-articles-section mt-5" id="presse">
+            <h3 style="border-bottom: 2px solid #dc2626; padding-bottom: 0.5rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph ph-newspaper-clipping" style="color: #dc2626;"></i> {% trans "Articles de Presse" %}
+            </h3>
+            <div style="display: grid; gap: 2rem;">
+                {% for article in show.press_articles %}
+                <article class="press-article" style="background: white; border-radius: 12px; border: 1px solid var(--border-color); padding: 2rem; position: relative; transition: box-shadow 0.3s; {% if article.is_pinned %}border-left: 5px solid #dc2626;{% endif %}">
+                    {% if article.is_pinned %}
+                    <div style="position: absolute; top: -10px; right: 20px; background: #dc2626; color: white; padding: 4px 12px; border-radius: 999px; font-size: 0.7rem; font-weight: bold; display: flex; align-items: center; gap: 4px; box-shadow: 0 4px 10px rgba(220,38,38,0.3);">
+                        <i class="ph-fill ph-push-pin"></i> {% trans "ÉPINGLÉ" %}
+                    </div>
+                    {% endif %}
+                    
+                    <h4 style="margin: 0 0 1rem 0; font-size: 1.5rem; font-family: 'Playfair Display', serif; color: var(--secondary);">{{ article.title }}</h4>
+                    <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 1.5rem;">
+                        {% trans "Par" %} <strong>{{ article.user_name }}</strong> • {{ article.created_at|date:"d F Y" }}
+                    </p>
+                    
+                    <div style="color: #4b5563; font-style: italic; font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem; background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                        {{ article.summary }}
+                    </div>
+                    
+                    <div class="article-content" style="color: #374151; line-height: 1.8; white-space: pre-wrap;">{{ article.content }}</div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
         <!-- Section Critiques & Avis -->
         <div class="reviews-section mt-5">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h3>{% trans "Critiques & Avis" %}</h3>
                 {% if user.is_authenticated %}
-                    {% if user.groups.all.0.name == 'PRESS_CRITIC' or user.is_superuser %}
+                    {% if "PRESS_CRITIC" in user.groups.all|join:"," or user.is_superuser %}
                         <a href="{% url 'catalogue:review-create' %}?show_id={{ show.id }}" class="btn-danger" style="background: #dc2626; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block;">{% trans "Soumettre une critique" %}</a>
                     {% endif %}
                 {% endif %}
@@ -209,6 +257,25 @@
     .bg-primary { background: #007bff; color: white; }
     .bg-secondary { background: #6c757d; color: white; }
     .btn-lg { padding: 1rem 2.5rem; font-size: 1.2rem; }
+
+    .btn-edit-quick {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #dc2626;
+        color: white;
+        padding: 6px 15px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.85rem;
+        border: 1px solid #dc2626;
+        transition: all 0.2s;
+    }
+    .btn-edit-quick:hover {
+        background: white;
+        color: #dc2626;
+    }
 
     .rep-grid { display: grid; gap: 1.5rem; }
     .rep-card { 

@@ -1,0 +1,123 @@
+{% extends "admin/admin.html" %}
+{% load static i18n %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-main-style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-1.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-2.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
+            <p class="text-small mt-1">{% trans "Gérez les candidatures pour devenir critique de presse." %}</p>
+        </div>
+    </div>
+
+    <div class="border-border overflow-hidden rounded-lg border bg-bg dark:bg-[#040b1a]">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 dark:bg-gray-900/50">
+                    <tr class="border-border border-b text-sm font-semibold text-muted">
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider">{% trans "Candidat" %}</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider">{% trans "Média / Journal" %}</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider">{% trans "Utilisateur" %}</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider">{% trans "Date Soumission" %}</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-right">{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+                    {% for req in pending_requests %}
+                    <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="flex h-10 w-10 items-center justify-center rounded bg-gray-100 dark:bg-gray-800">
+                                    <i class="ph ph-newspaper-clipping text-red-600 text-xl"></i>
+                                </div>
+                                <div>
+                                    <div class="text-text font-medium">{{ req.first_name }} {{ req.last_name }}</div>
+                                    <div class="text-xs text-muted">{{ req.profession }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-text text-sm font-semibold">{{ req.media_name }}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <img src="{% static 'admin/images/user-avatar.jpg' %}" alt="avatar" class="size-6 rounded-full object-cover">
+                                <span class="text-text text-sm">{{ req.user.username }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-muted text-sm">{{ req.created_at|date:"d/m/Y H:i" }}</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <button onclick="document.getElementById('modal-{{ req.id }}').style.display='flex'" class="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition">
+                                <i class="ph ph-eye"></i> {% trans "Examiner" %}
+                            </button>
+                        </td>
+                    </tr>
+                    
+                    <!-- Modal for details -->
+                    <div id="modal-{{ req.id }}" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.6); align-items: center; justify-content: center;">
+                        <div class="bg-bg text-text border-border" style="margin: auto; padding: 25px; border-width: 1px; border-style: solid; width: 90%; max-width: 650px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+                            <h3 class="text-2xl font-bold mb-5" style="border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">{% trans "Détails de la candidature" %}</h3>
+                            
+                            <div class="grid grid-cols-2 gap-5 mb-5 text-sm">
+                                <div><strong class="text-muted block mb-1">{% trans "Nom complet" %}:</strong> <span class="font-medium">{{ req.first_name }} {{ req.last_name }}</span></div>
+                                <div><strong class="text-muted block mb-1">{% trans "Profession" %}:</strong> <span class="font-medium">{{ req.profession }}</span></div>
+                                <div><strong class="text-muted block mb-1">{% trans "Média / Journal" %}:</strong> <span class="font-medium">{{ req.media_name }}</span></div>
+                                <div><strong class="text-muted block mb-1">{% trans "Site Web" %}:</strong> 
+                                    {% if req.website %}
+                                        <a href="{{ req.website }}" target="_blank" class="text-blue-500 hover:underline">{{ req.website }}</a>
+                                    {% else %}
+                                        <span class="text-muted">{% trans "Non fourni" %}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <strong class="text-muted block mb-2">{% trans "Motivation" %}:</strong>
+                                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 whitespace-pre-wrap text-sm leading-relaxed">{{ req.motivation }}</div>
+                            </div>
+                            
+                            <div class="flex justify-end gap-3 border-t border-border pt-5">
+                                <button type="button" onclick="document.getElementById('modal-{{ req.id }}').style.display='none'" class="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
+                                    {% trans "Fermer" %}
+                                </button>
+                                
+                                <form action="{% url 'admin_critic_request_action' req.id 'reject' %}" method="post" style="display:inline;" onsubmit="return confirm('{% trans "Êtes-vous sûr de vouloir refuser cette candidature ?" %}')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 transition">
+                                        <i class="ph ph-x-circle mr-2"></i> {% trans "Refuser" %}
+                                    </button>
+                                </form>
+                                
+                                <form action="{% url 'admin_critic_request_action' req.id 'approve' %}" method="post" style="display:inline;" onsubmit="return confirm('{% trans "Êtes-vous sûr de vouloir accepter ce critique ? Il pourra désormais soumettre des articles de presse." %}')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition">
+                                        <i class="ph ph-check-circle mr-2"></i> {% trans "Accepter" %}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-10 text-center text-muted italic">
+                            {% trans "Aucune candidature en attente." %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

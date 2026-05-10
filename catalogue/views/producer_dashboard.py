@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from catalogue.models import Show, Location, Representation, Review
+from catalogue.models import Show, Location, Representation, Review, PressArticle
 from catalogue.forms.ShowForm import ShowForm
 from catalogue.utils.stats import get_show_stats
 from django.utils.text import slugify
@@ -38,45 +38,58 @@ def prod_submit_show(request):
         date_str = request.POST.get('date')
         time_str = request.POST.get('time')
         location_id = request.POST.get('location')
-        ticket_count = int(request.POST.get('ticket_count', 0))
+        ticket_count_str = request.POST.get('ticket_count', '0')
 
-        location = get_object_or_404(Location, id=location_id)
+        try:
+            ticket_count = int(ticket_count_str) if ticket_count_str else 0
+            location = get_object_or_404(Location, id=location_id)
 
-        # Validation : tickets <= location capacity
-        if ticket_count > location.capacity:
-            messages.error(request, f"Le nombre de tickets ({ticket_count}) ne peut pas dépasser la capacité de la salle ({location.capacity}).")
-            locations = Location.objects.all()
-            return render(request, 'prod/submit_show.html', {'locations': locations})
+            # Validation : tickets <= location capacity
+            if ticket_count > location.capacity:
+                messages.error(request, f"Le nombre de tickets ({ticket_count}) ne peut pas dépasser la capacité de la salle ({location.capacity}).")
+                return render(request, 'prod/submit_show.html', {
+                    'locations': Location.objects.all(),
+                    'show': {'title': title, 'description': description, 'duration': duration, 'location_id': int(location_id)},
+                    'representation': {'total_seats': ticket_count, 'schedule': f"{date_str}T{time_str}"}
+                })
 
-        # Create Show (Pending)
-        slug = slugify(title)[:50] + "-" + str(int(time.time()))
-        show = Show.objects.create(
-            slug=slug,
-            title=title,
-            description=description,
-            poster=poster,
-            duration=duration,
-            location=location,
-            producer=request.user,
-            status='pending',
-            created_in=timezone.now().year,
-            bookable=False # Not bookable until admin adds prices and publishes
-        )
+            # Create Show (Pending)
+            slug = slugify(title)[:50] + "-" + str(int(time.time()))
+            show = Show.objects.create(
+                slug=slug,
+                title=title,
+                description=description,
+                poster=poster,
+                duration=duration,
+                location=location,
+                producer=request.user,
+                status='pending',
+                created_in=timezone.now().year,
+                bookable=False
+            )
 
-        # Create first Representation (Pending approval too)
-        schedule_str = f"{date_str} {time_str}"
-        schedule = timezone.make_aware(timezone.datetime.strptime(schedule_str, "%Y-%m-%d %H:%M"))
-        
-        Representation.objects.create(
-            show=show,
-            schedule=schedule,
-            location=location,
-            available_seats=ticket_count,
-            total_seats=ticket_count
-        )
+            # Create first Representation
+            schedule_str = f"{date_str} {time_str}"
+            schedule = timezone.make_aware(timezone.datetime.strptime(schedule_str, "%Y-%m-%d %H:%M"))
+            
+            Representation.objects.create(
+                show=show,
+                schedule=schedule,
+                location=location,
+                available_seats=ticket_count,
+                total_seats=ticket_count
+            )
 
-        messages.success(request, "Votre spectacle a été soumis avec succès et est en attente d'approbation par l'administrateur.")
-        return redirect('catalogue:prod_dashboard')
+            messages.success(request, "Votre spectacle a été soumis avec succès et est en attente d'approbation par l'administrateur.")
+            return redirect('catalogue:prod_dashboard')
+
+        except Exception as e:
+            messages.error(request, f"Une erreur est survenue lors de la soumission : {str(e)}")
+            return render(request, 'prod/submit_show.html', {
+                'locations': Location.objects.all(),
+                'show': {'title': title, 'description': description, 'duration': duration, 'location_id': int(location_id) if location_id else None},
+                'representation': {'total_seats': ticket_count_str, 'schedule': f"{date_str}T{time_str}" if date_str and time_str else None}
+            })
 
     locations = Location.objects.all()
     return render(request, 'prod/submit_show.html', {'locations': locations})
@@ -151,6 +164,46 @@ def prod_moderate_reviews(request):
         return redirect('catalogue:prod_moderate_reviews')
 
     return render(request, 'prod/moderate_reviews.html', {'reviews': reviews})
+
+@login_required
+@user_passes_test(is_producer)
+def prod_moderate_press_articles(request):
+    """
+    Vue permettant au producteur de modérer les articles de presse sur ses spectacles.
+    """
+    articles = PressArticle.objects.filter(show__producer=request.user).select_related('user', 'show').order_by('-created_at')
+    
+    context = {
+        'page_title': 'Gérer les Articles de Presse',
+        'articles': articles,
+    }
+    return render(request, 'prod/moderate_press_articles.html', context)
+
+@login_required
+@user_passes_test(is_producer)
+def prod_validate_press_article(request, pk, action):
+    """
+    Vue pour approuver, refuser ou épingler un article de presse.
+    """
+    article = get_object_or_404(PressArticle, pk=pk, show__producer=request.user)
+    
+    if action == 'approve':
+        article.validated = True
+        messages.success(request, f"L'article '{article.title}' a été approuvé.")
+    elif action == 'reject':
+        article.validated = False
+        messages.warning(request, f"L'article '{article.title}' a été mis en attente.")
+    elif action == 'pin':
+        article.is_pinned = not article.is_pinned
+        status = "épinglé" if article.is_pinned else "désépinglé"
+        messages.info(request, f"L'article a été {status}.")
+    elif action == 'delete':
+        article.delete()
+        messages.error(request, "L'article a été supprimé.")
+        return redirect('catalogue:prod_moderate_press_articles')
+        
+    article.save()
+    return redirect('catalogue:prod_moderate_press_articles')
 
 @login_required
 @user_passes_test(is_producer)

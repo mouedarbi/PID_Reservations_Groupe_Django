@@ -22,12 +22,38 @@
                 <i class="ph ph-arrows-counter-clockwise" id="sync-icon"></i>
                 <span>Synchroniser Ticket Master</span>
             </button>
+            <a href="{% url 'catalogue:admin_show_export_csv' %}" class="flex items-center gap-2 rounded-lg bg-gray-600 px-4 py-2 text-white hover:bg-gray-700 transition">
+                <i class="ph ph-download"></i>
+                <span>Exporter CSV</span>
+            </a>
+            <button onclick="document.getElementById('import-csv-form').classList.toggle('hidden')" class="flex items-center gap-2 rounded-lg bg-orange-600 px-4 py-2 text-white hover:bg-orange-700 transition">
+                <i class="ph ph-upload"></i>
+                <span>Importer CSV</span>
+            </button>
             <a href="{% url 'admin_show_create' %}" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
                 <i class="ph ph-plus"></i>
                 <span>Ajouter un spectacle</span>
             </a>
         </div>
+    </div>
+
+    <!-- Formulaire d'Importation CSV (Hidden by default) -->
+    <div id="import-csv-form" class="mb-6 hidden">
+        <div class="border-orange-500/30 bg-orange-500/5 rounded-lg border p-4">
+            <h4 class="text-orange-700 font-bold mb-3 flex items-center gap-2">
+                <i class="ph ph-upload"></i>
+                Importer des spectacles depuis CSV
+            </h4>
+            <form action="{% url 'catalogue:admin_show_import_csv' %}" method="POST" enctype="multipart/form-data" class="flex items-center gap-4">
+                {% csrf_token %}
+                <input type="file" name="csv_file" accept=".csv" required class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
+                <button type="submit" class="rounded-lg bg-orange-600 px-4 py-2 text-white hover:bg-orange-700 transition">
+                    Lancer l'importation
+                </button>
+            </form>
+            <p class="text-xs text-orange-800 mt-2">Format attendu : Slug; Titre; Description; Image URL; Lieu_ID; Réservable(True/False); Statut</p>
         </div>
+    </div>
 
     <!-- Zone de Logs Live -->
     <div id="sync-logs-container" class="mb-6 hidden">

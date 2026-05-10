@@ -10,4 +10,6 @@ urlpatterns = [
     path('locations/', views.location_list, name='location_list'),
     path('locations/<int:pk>/', views.location_detail, name='location_detail'),
     path('about/', views.about, name='about'),
+    path('press-articles/', views.press_article_list, name='press_article_list'),
+    path('press-articles/<int:pk>/', views.press_article_detail, name='press_article_detail'),
 ]

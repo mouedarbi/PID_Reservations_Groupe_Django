@@ -53,9 +53,12 @@ INSTALLED_APPS = [
     "payments",
     # ajout de rest_framework
     'rest_framework',
-    "rest_framework.authtoken",
-    "cart",
-]
+    'rest_framework.authtoken',
+    'cart',
+    'import_export',
+    'tinymce',
+    ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -83,6 +86,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
                 "cart.context_processors.cart",
+                "catalogue.context_processors.admin_notifications",
             ],
         },
     },
@@ -169,13 +173,13 @@ LOCALE_PATHS = [
 STATIC_URL = "static/"
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'catalogue/templates/static',
+    BASE_DIR / 'static',
 ]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'static/media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -200,6 +204,8 @@ REST_FRAMEWORK = {
         # Exige l'authentification pour toutes les requêtes
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 8,
 }
 
 
@@ -223,3 +229,13 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@theatreplus.be')
 
+
+# TinyMCE Configuration
+TINYMCE_DEFAULT_CONFIG = {
+    'menubar': 'file edit view insert format tools table help',
+    'plugins': 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount',
+    'toolbar': 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+    'language': 'fr_FR',
+    'height': 400,
+    'width': '100%',
+}
