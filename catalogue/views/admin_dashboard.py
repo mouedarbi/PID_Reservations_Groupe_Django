@@ -4,6 +4,7 @@ from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
 from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType, ShowPrice, Notification, CriticRequest
 from catalogue.utils.ticketmaster import run_ticketmaster_import, run_ticketmaster_import_gen
+from catalogue.utils.opendata import run_opendata_import_gen
 from django.http import StreamingHttpResponse
 from payments.models import Payment
 from catalogue.forms.ArtistForm import ArtistForm
@@ -145,17 +146,39 @@ def admin_show_index(request):
     """
     View to list shows in the custom admin dashboard.
     """
-    shows = Show.objects.all().select_related('location').order_by('-created_at')
+    from django.core.paginator import Paginator
+    
+    shows_list = Show.objects.all().select_related('location').order_by('-created_at')
 
     # Simple search
     search_query = request.GET.get('q')
     if search_query:
-        shows = shows.filter(title__icontains=search_query)
+        shows_list = shows_list.filter(title__icontains=search_query)
+
+    # Pagination : 20 par page
+    paginator = Paginator(shows_list, 20)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    # Calcul de la plage de 5 numéros (fenêtre coulissante)
+    total_pages = paginator.num_pages
+    current_page = page_obj.number
+
+    if total_pages <= 5:
+        custom_range = range(1, total_pages + 1)
+    else:
+        if current_page <= 3:
+            custom_range = range(1, 6)
+        elif current_page >= total_pages - 2:
+            custom_range = range(total_pages - 4, total_pages + 1)
+        else:
+            custom_range = range(current_page - 2, current_page + 3)
 
     context = {
         'page_title': 'Gestion des Spectacles',
         'title': 'Spectacles',
-        'shows': shows,
+        'shows': page_obj,
+        'custom_page_range': custom_range,
         'search_query': search_query,
     }
     return render(request, 'admin/show/index.html', context)
@@ -397,24 +420,185 @@ def admin_locality_index(request):
     Vue pour lister les localités dans le dashboard admin personnalisé.
     """
     from catalogue.models.locality import Locality
-    localities = Locality.objects.all().order_by('postal_code')
+    from django.core.paginator import Paginator
+    
+    localities_list = Locality.objects.all().order_by('postal_code')
 
     # Recherche simple par code postal ou nom de localité
     search_query = request.GET.get('q')
     if search_query:
         from django.db.models import Q
-        localities = localities.filter(
+        localities_list = localities_list.filter(
             Q(postal_code__icontains=search_query) | 
             Q(locality__icontains=search_query)
         )
 
+    # Pagination : 50 par page
+    paginator = Paginator(localities_list, 50)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    # Calcul de la plage de 5 numéros (fenêtre coulissante)
+    total_pages = paginator.num_pages
+    current_page = page_obj.number
+    
+    if total_pages <= 5:
+        custom_range = range(1, total_pages + 1)
+    else:
+        if current_page <= 3:
+            custom_range = range(1, 6)
+        elif current_page >= total_pages - 2:
+            custom_range = range(total_pages - 4, total_pages + 1)
+        else:
+            custom_range = range(current_page - 2, current_page + 3)
+
     context = {
         'page_title': 'Gestion des Localités',
         'title': 'Localités',
-        'localities': localities,
+        'localities': page_obj,
+        'custom_page_range': custom_range,
         'search_query': search_query,
     }
     return render(request, 'admin/locality/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_export_localities_csv(request):
+    """
+    Exporte la liste des localités en format CSV avec les traductions.
+    """
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="localities_export.csv"'
+    response.write(u'\ufeff'.encode('utf8'))
+    
+    writer = csv.writer(response, delimiter=';')
+    writer.writerow(['Code Postal', 'Localité (FR)', 'Localité (EN)', 'Localité (NL)'])
+    
+    from catalogue.models import Locality
+    for loc in Locality.objects.all():
+        writer.writerow([
+            loc.postal_code, 
+            loc.locality_fr or loc.locality, 
+            loc.locality_en or '', 
+            loc.locality_nl or ''
+        ])
+    
+    return response
+
+@user_passes_test(is_admin)
+def admin_import_localities_csv(request):
+    """
+    Importe des localités en mode streaming pour éviter les timeouts.
+    Affiche les logs en temps réel.
+    """
+    if request.method == 'POST' and request.FILES.get('csv_file'):
+        csv_file = request.FILES['csv_file']
+        auto_translate = request.POST.get('auto_translate') == 'on'
+        
+        def stream_import():
+            from catalogue.models import Locality
+            from catalogue.utils.translation import translate_text
+            import csv, io, time
+
+            yield "Démarrage de l'importation...\n"
+            
+            try:
+                data_set = csv_file.read().decode('UTF-8-sig')
+                io_string = io.StringIO(data_set)
+                
+                # Détection du séparateur
+                content_sample = io_string.read(2048)
+                io_string.seek(0)
+                dialect = csv.Sniffer().sniff(content_sample, delimiters=';,')
+                reader = csv.reader(io_string, dialect=dialect)
+                
+                yield f"Fichier lu avec succès. Séparateur détecté : '{dialect.delimiter}'\n"
+                if auto_translate:
+                    yield "Option Auto-traduction ACTIVÉE (cela peut prendre du temps).\n"
+
+                count_new = 0
+                count_updated = 0
+                count_total = 0
+                seen_in_file = set()
+
+                for row in reader:
+                    if len(row) < 2:
+                        continue
+                    
+                    cp = row[0].strip()
+                    name_fr = row[1].strip()
+                    
+                    # Ignorer l'en-tête
+                    if not any(char.isdigit() for char in cp):
+                        continue
+
+                    count_total += 1
+                    file_key = f"{cp}-{name_fr.lower()}"
+                    
+                    if file_key in seen_in_file:
+                        continue
+                    seen_in_file.add(file_key)
+
+                    # Log tous les 100 paquets
+                    if count_total % 100 == 0:
+                        yield f"--- Paquet de {count_total} localités atteint ---\n"
+
+                    try:
+                        name_en = row[2].strip() if len(row) > 2 and row[2].strip() else None
+                        name_nl = row[3].strip() if len(row) > 3 and row[3].strip() else None
+                        
+                        if auto_translate:
+                            if not name_en: name_en = translate_text(name_fr, 'en')
+                            if not name_nl: name_nl = translate_text(name_fr, 'nl')
+                        else:
+                            name_en = name_en or name_fr
+                            name_nl = name_nl or name_fr
+
+                        obj, created = Locality.objects.update_or_create(
+                            postal_code=cp,
+                            locality_fr=name_fr,
+                            defaults={
+                                'locality_en': name_en,
+                                'locality_nl': name_nl,
+                                'locality': name_fr
+                            }
+                        )
+                        
+                        if created:
+                            count_new += 1
+                        else:
+                            count_updated += 1
+                            
+                        if count_total % 10 == 0: # Log de progression légère
+                            yield f"Progression : {count_total} traités...\n"
+
+                    except Exception as line_error:
+                        yield f"ERREUR Ligne {count_total} ({name_fr}) : {str(line_error)}\n"
+
+                yield f"\nTERMINÉ !\nTotal traités : {count_total}\nCréés : {count_new}\nMises à jour : {count_updated}\n"
+                yield "Rechargement de la page dans 3 secondes..."
+
+            except Exception as e:
+                yield f"\nERREUR CRITIQUE : {str(e)}\n"
+
+        return StreamingHttpResponse(stream_import(), content_type='text/plain')
+            
+    return redirect('admin_locality_index')
+
+@user_passes_test(is_admin)
+def admin_download_locality_template(request):
+    """
+    Génère un fichier CSV vide avec les en-têtes corrects pour l'importation.
+    """
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="template_localites.csv"'
+    response.write(u'\ufeff'.encode('utf8'))
+    
+    writer = csv.writer(response, delimiter=';')
+    writer.writerow(['Code Postal', 'Localité (FR)', 'Localité (EN)', 'Localité (NL)'])
+    # Ligne d'exemple optionnelle
+    writer.writerow(['1000', 'Bruxelles', 'Brussels', 'Brussel'])
+    
+    return response
 
 @user_passes_test(is_admin)
 def admin_locality_detail(request, pk):
@@ -1392,6 +1576,12 @@ def admin_approve_show(request, pk):
                 show.status = 'published'
                 show.bookable = True
                 show.save()
+
+                # Activer le lieu s'il était inactif (soumis par producteur)
+                if show.location and not show.location.is_active:
+                    show.location.is_active = True
+                    show.location.save()
+
                 messages.success(request, f"Le spectacle '{show.title}' a été publié avec succès.")
                 return redirect('admin_pending_shows')
         
@@ -1580,3 +1770,32 @@ def admin_mark_all_notifications_read(request):
 
     messages.success(request, "Toutes les notifications ont été marquées comme lues.")
     return redirect('admin_notifications')
+
+@user_passes_test(is_admin)
+def admin_opendata_sync(request):
+    """
+    Vue pour déclencher la synchronisation avec l'API OpenData.
+    """
+    from catalogue.utils.opendata import run_opendata_import_gen
+    try:
+        # On consomme le générateur
+        for _ in run_opendata_import_gen():
+            pass
+        messages.success(request, "Synchronisation des lieux terminée !")
+    except Exception as e:
+        messages.error(request, f"Erreur lors de la synchronisation : {str(e)}")
+        
+    return redirect('admin_location_index')
+
+@user_passes_test(is_admin)
+def admin_opendata_sync_live(request):
+    """
+    Vue de streaming pour afficher les logs de synchronisation OpenData en temps réel.
+    """
+    from catalogue.utils.opendata import run_opendata_import_gen
+    def stream_logs():
+        for message in run_opendata_import_gen():
+            yield message
+            
+    return StreamingHttpResponse(stream_logs(), content_type='text/plain')
+

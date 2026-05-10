@@ -37,15 +37,53 @@ def prod_submit_show(request):
         duration = request.POST.get('duration')
         date_str = request.POST.get('date')
         time_str = request.POST.get('time')
-        location_id = request.POST.get('location')
+        
+        # Location logic: Existing ID or new data
+        location_id = request.POST.get('location_id') # From autocomplete hidden field
+        loc_name = request.POST.get('loc_name') # From autocomplete input
+        loc_address = request.POST.get('loc_address')
+        loc_postal = request.POST.get('loc_postal')
+        loc_city = request.POST.get('loc_city')
+        loc_website = request.POST.get('loc_website')
+        loc_phone = request.POST.get('loc_phone')
+        loc_capacity = request.POST.get('loc_capacity', '0')
+        
         ticket_count_str = request.POST.get('ticket_count', '0')
 
         try:
             ticket_count = int(ticket_count_str) if ticket_count_str else 0
-            location = get_object_or_404(Location, id=location_id)
+            
+            # 1. Resolve Location
+            location = None
+            if location_id:
+                location = get_object_or_404(Location, id=location_id)
+            elif loc_name:
+                # Create a new Location (marked as pending or directly if trusted)
+                # First, ensure Locality exists
+                from catalogue.models import Locality
+                locality, _ = Locality.objects.get_or_create(
+                    postal_code=loc_postal,
+                    defaults={'locality': loc_city, 'locality_fr': loc_city}
+                )
+                
+                slug_loc = slugify(loc_name)[:50] + "-" + str(int(time.time()))
+                location = Location.objects.create(
+                    slug=slug_loc,
+                    designation=loc_name,
+                    address=loc_address,
+                    locality=locality,
+                    website=loc_website,
+                    phone=loc_phone,
+                    capacity=int(loc_capacity) if loc_capacity else 0,
+                    is_active=False # Inactif jusqu'à validation admin
+                )
+            
+            if not location:
+                messages.error(request, "Veuillez sélectionner ou créer une salle.")
+                return redirect('catalogue:prod_submit_show')
 
             # Validation : tickets <= location capacity
-            if ticket_count > location.capacity:
+            if ticket_count > location.capacity and location.capacity > 0:
                 messages.error(request, f"Le nombre de tickets ({ticket_count}) ne peut pas dépasser la capacité de la salle ({location.capacity}).")
                 return render(request, 'prod/submit_show.html', {
                     'locations': Location.objects.all(),

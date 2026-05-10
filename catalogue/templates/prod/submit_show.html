@@ -3,6 +3,47 @@
 
 {% block title %}{% if is_edit %}{% trans "Modifier le spectacle" %}{% else %}{% trans "Partager un spectacle" %}{% endif %} - ThéâtrePlus{% endblock %}
 
+{% block extra_css %}
+<style>
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d1d5db;
+        border-top: none;
+        z-index: 99;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #fff;
+        border-radius: 0 0 6px 6px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    .autocomplete-item {
+        padding: 10px;
+        cursor: pointer;
+    }
+    .autocomplete-item:hover {
+        background-color: #f3f4f6;
+    }
+    .hr-label {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #6b7280;
+        font-size: 0.85rem;
+        margin: 2rem 0 1.5rem;
+    }
+    .hr-label::before, .hr-label::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .hr-label:not(:empty)::before { margin-right: .5em; }
+    .hr-label:not(:empty)::after { margin-left: .5em; }
+</style>
+{% endblock %}
+
 {% block content %}
 <section class="hero compact" style="padding-top: 120px; background: #0284c7; color: white; padding-bottom: 3rem;">
     <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
@@ -16,12 +57,16 @@
 </section>
 
 <section class="submit-show" style="padding: 4rem 0;">
-    <div class="container" style="max-width: 800px; margin: 0 auto; padding: 0 15px;">
+    <div class="container" style="max-width: 850px; margin: 0 auto; padding: 0 15px;">
         
         <div style="background: white; border-radius: 12px; border: 1px solid #e5e7eb; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
             <form method="post" id="submitShowForm" enctype="multipart/form-data">
                 {% csrf_token %}
                 
+                <h3 style="color: #0284c7; border-bottom: 2px solid #0284c7; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+                    <i class="ph ph-info"></i> {% trans "Informations sur le spectacle" %}
+                </h3>
+
                 <div style="margin-bottom: 1.5rem;">
                     <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Titre du spectacle" %}</label>
                     <input type="text" name="title" value="{{ show.title|default:'' }}" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
@@ -32,57 +77,104 @@
                     <textarea name="description" rows="4" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">{{ show.description|default:'' }}</textarea>
                 </div>
 
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Image du spectacle" %}</label>
-                    {% if show.poster %}
-                        <div style="margin-bottom: 10px;">
-                            <img src="{{ show.poster.url }}" alt="poster" style="max-height: 100px; border-radius: 4px;">
-                            <p style="font-size: 0.8rem; color: #6b7280;">{% trans "Image actuelle" %}</p>
-                        </div>
-                    {% endif %}
-                    <input type="file" name="poster" accept="image/*" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
-                    <p style="font-size: 0.8rem; color: #6b7280; margin-top: 5px;">{% trans "Sélectionnez une photo depuis votre ordinateur." %}</p>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Image du spectacle" %}</label>
+                        {% if show.poster %}
+                            <div style="margin-bottom: 10px;">
+                                <img src="{{ show.poster.url }}" alt="poster" style="max-height: 100px; border-radius: 4px;">
+                            </div>
+                        {% endif %}
+                        <input type="file" name="poster" accept="image/*" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                    </div>
                     <div>
                         <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Durée (minutes)" %}</label>
                         <input type="number" name="duration" value="{{ show.duration|default:'' }}" required min="1" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
                     </div>
-                    <div>
-                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Salle / Lieu" %}</label>
-                        <select name="location" id="locationSelect" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;" {% if is_edit and show.status != 'pending' %}disabled{% endif %}>
-                            <option value="">-- {% trans "Choisir une salle" %} --</option>
-                            {% for loc in locations %}
-                                <option value="{{ loc.id }}" data-capacity="{{ loc.capacity|default:0 }}" {% if show.location_id == loc.id %}selected{% endif %}>{{ loc.designation }}</option>
-                            {% endfor %}
-                        </select>
-                        <div id="capacityInfo" style="margin-top: 5px; font-size: 0.85rem; color: #6b7280; font-weight: 500;"></div>
+                </div>
+
+                <div class="hr-label">{% trans "Où se déroule le spectacle ?" %}</div>
+                
+                <div id="location-section" style="background: #f9fafb; padding: 1.5rem; border-radius: 8px; border: 1px solid #e5e7eb; margin-bottom: 2rem; position: relative;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h4 style="font-weight: 700; color: #374151;">{% trans "Détails de la salle" %}</h4>
+                        <button type="button" id="reset-location" style="font-size: 0.8rem; background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; padding: 4px 10px; border-radius: 4px; cursor: pointer;">
+                            <i class="ph ph-arrow-counter-clockwise"></i> {% trans "Réinitialiser la salle" %}
+                        </button>
+                    </div>
+
+                    <!-- Hidden ID to know if we use an existing location -->
+                    <input type="hidden" name="location_id" id="location_id" value="{{ show.location.id|default:'' }}">
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="position: relative;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem;">{% trans "Nom de la salle" %}</label>
+                            <div style="position: relative;">
+                                <input type="text" name="loc_name" id="loc_name" value="{{ show.location.designation|default:'' }}" required autocomplete="off" placeholder="{% trans 'Cherchez une salle...' %}" style="width: 100%; padding: 10px; padding-right: 35px; border: 1px solid #d1d5db; border-radius: 6px;">
+                                <div style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #6b7280; pointer-events: none;">
+                                    <i class="ph ph-caret-down"></i>
+                                </div>
+                            </div>
+                            <div id="autocomplete-results" class="autocomplete-items" style="display: none; border: 1px solid #0284c7; border-top: none;"></div>
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem;">{% trans "Adresse" %}</label>
+                            <input type="text" name="loc_address" id="loc_address" value="{{ show.location.address|default:'' }}" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem;">{% trans "Code Postal" %}</label>
+                            <input type="text" name="loc_postal" id="loc_postal" value="{{ show.location.locality.postal_code|default:'' }}" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem;">{% trans "Ville" %}</label>
+                            <input type="text" name="loc_city" id="loc_city" value="{{ show.location.locality.locality|default:'' }}" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem;">{% trans "Téléphone" %}</label>
+                            <input type="text" name="loc_phone" id="loc_phone" value="{{ show.location.phone|default:'' }}" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem;">{% trans "Capacité" %}</label>
+                            <input type="number" name="loc_capacity" id="loc_capacity" value="{{ show.location.capacity|default:'' }}" required min="1" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem;">{% trans "Site Web" %}</label>
+                            <input type="url" name="loc_website" id="loc_website" value="{{ show.location.website|default:'' }}" placeholder="https://..." style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                        </div>
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                <h3 style="color: #0284c7; border-bottom: 2px solid #0284c7; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+                    <i class="ph ph-calendar"></i> {% trans "Programmation" %}
+                </h3>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
                     <div>
                         <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Date" %}</label>
-                        <input type="date" name="date" value="{{ representation.schedule|date:'Y-m-d' }}" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;" {% if is_edit and show.status != 'pending' %}disabled{% endif %}>
+                        <input type="date" name="date" value="{{ representation.schedule|date:'Y-m-d' }}" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
                     </div>
                     <div>
                         <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Heure" %}</label>
-                        <input type="time" name="time" value="{{ representation.schedule|time:'H:i' }}" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;" {% if is_edit and show.status != 'pending' %}disabled{% endif %}>
+                        <input type="time" name="time" value="{{ representation.schedule|time:'H:i' }}" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
                     </div>
-                </div>
-
-                <div style="margin-bottom: 2rem;">
-                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Nombre de tickets" %}</label>
-                    <input type="number" name="ticket_count" id="ticketCountInput" value="{{ representation.total_seats|default:'' }}" required min="1" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;" {% if is_edit and show.status != 'pending' %}disabled{% endif %}>
-                    <p id="ticketError" style="color: #dc2626; font-size: 0.85rem; margin-top: 5px; display: none;">
-                        {% trans "Le nombre de tickets ne peut pas dépasser la capacité de la salle." %}
-                    </p>
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{% trans "Places à vendre" %}</label>
+                        <input type="number" name="ticket_count" id="ticket_count" value="{{ representation.total_seats|default:'' }}" required min="1" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px;">
+                        <p id="ticketError" style="color: #dc2626; font-size: 0.75rem; margin-top: 5px; display: none;">
+                            {% trans "Ne peut pas dépasser la capacité." %}
+                        </p>
+                    </div>
                 </div>
 
                 <div style="display: flex; gap: 1rem;">
                     <button type="submit" id="submitBtn" style="flex: 1; background: #0284c7; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
-                        {% if is_edit %}{% trans "Enregistrer" %}{% else %}{% trans "Publier le Spectacle" %}{% endif %}
+                        {% if is_edit %}{% trans "Enregistrer" %}{% else %}{% trans "Soumettre pour validation" %}{% endif %}
                     </button>
                     <a href="{% url 'catalogue:prod_dashboard' %}" style="flex: 1; text-align: center; background: #f3f4f6; color: #374151; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 600; border: 1px solid #d1d5db;">
                         {% trans "Annuler" %}
@@ -95,60 +187,109 @@
 </section>
 
 <script>
-    const locationSelect = document.getElementById('locationSelect');
-    const capacityInfo = document.getElementById('capacityInfo');
-    const ticketCountInput = document.getElementById('ticketCountInput');
+    const locNameInput = document.getElementById('loc_name');
+    const locIdInput = document.getElementById('location_id');
+    const autocompleteResults = document.getElementById('autocomplete-results');
+    const resetBtn = document.getElementById('reset-location');
+    
+    const fields = {
+        address: document.getElementById('loc_address'),
+        postal: document.getElementById('loc_postal'),
+        city: document.getElementById('loc_city'),
+        phone: document.getElementById('loc_phone'),
+        capacity: document.getElementById('loc_capacity'),
+        website: document.getElementById('loc_website')
+    };
+
+    const ticketCountInput = document.getElementById('ticket_count');
     const ticketError = document.getElementById('ticketError');
     const submitBtn = document.getElementById('submitBtn');
-    const form = document.getElementById('submitShowForm');
 
-    let currentCapacity = 0;
+    // Autocomplete logic
+    let timeout = null;
+    locNameInput.addEventListener('input', function() {
+        const query = this.value;
+        clearTimeout(timeout);
+        
+        if (query.length < 2) {
+            autocompleteResults.style.display = 'none';
+            return;
+        }
 
-    locationSelect.addEventListener('change', function() {
-        const selectedOption = this.options[this.selectedIndex];
-        if (selectedOption.value) {
-            currentCapacity = parseInt(selectedOption.getAttribute('data-capacity') || 0);
-            capacityInfo.innerText = `{% trans "Capacité de la salle :" %} ${currentCapacity} {% trans "places" %}`;
-            validateTickets();
-        } else {
-            capacityInfo.innerText = "";
-            currentCapacity = 0;
+        timeout = setTimeout(() => {
+            fetch(`/api/locations/?search=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        autocompleteResults.innerHTML = '';
+                        data.forEach(loc => {
+                            const div = document.createElement('div');
+                            div.classList.add('autocomplete-item');
+                            div.innerHTML = `<strong>${loc.designation}</strong> <br> <small>${loc.address}, ${loc.locality_details ? loc.locality_details.postal_code : ''}</small>`;
+                            div.addEventListener('click', () => selectLocation(loc));
+                            autocompleteResults.appendChild(div);
+                        });
+                        autocompleteResults.style.display = 'block';
+                    } else {
+                        autocompleteResults.style.display = 'none';
+                    }
+                });
+        }, 300);
+    });
+
+    function selectLocation(loc) {
+        locNameInput.value = loc.designation;
+        locIdInput.value = loc.id;
+        fields.address.value = loc.address;
+        fields.postal.value = loc.locality_details ? loc.locality_details.postal_code : '';
+        fields.city.value = loc.locality_details ? (loc.locality_details.locality_fr || loc.locality_details.locality) : '';
+        fields.phone.value = loc.phone || '';
+        fields.capacity.value = loc.capacity || '';
+        fields.website.value = loc.website || '';
+        
+        // Lock fields for existing location
+        Object.values(fields).forEach(f => f.readOnly = true);
+        autocompleteResults.style.display = 'none';
+        validateCapacity();
+    }
+
+    resetBtn.addEventListener('click', () => {
+        locIdInput.value = '';
+        locNameInput.value = '';
+        Object.values(fields).forEach(f => {
+            f.value = '';
+            f.readOnly = false;
+        });
+        validateCapacity();
+    });
+
+    // Close autocomplete when clicking outside
+    document.addEventListener('click', (e) => {
+        if (e.target !== locNameInput) {
+            autocompleteResults.style.display = 'none';
         }
     });
 
-    function validateTickets() {
-        const ticketCount = parseInt(ticketCountInput.value || 0);
-        if (currentCapacity > 0 && ticketCount > currentCapacity) {
-            ticketError.style.display = "block";
-            ticketCountInput.style.borderColor = "#dc2626";
+    // Validation logic
+    function validateCapacity() {
+        const capacity = parseInt(fields.capacity.value || 0);
+        const tickets = parseInt(ticketCountInput.value || 0);
+        
+        if (capacity > 0 && tickets > capacity) {
+            ticketError.style.display = 'block';
+            ticketCountInput.style.borderColor = '#dc2626';
             submitBtn.disabled = true;
-            submitBtn.style.opacity = "0.5";
-            return false;
+            submitBtn.style.opacity = '0.5';
         } else {
-            ticketError.style.display = "none";
-            ticketCountInput.style.borderColor = "#d1d5db";
+            ticketError.style.display = 'none';
+            ticketCountInput.style.borderColor = '#d1d5db';
             submitBtn.disabled = false;
-            submitBtn.style.opacity = "1";
-            return true;
+            submitBtn.style.opacity = '1';
         }
     }
 
-    ticketCountInput.addEventListener('input', validateTickets);
+    fields.capacity.addEventListener('input', validateCapacity);
+    ticketCountInput.addEventListener('input', validateCapacity);
 
-    // Initial check on page load
-    window.addEventListener('DOMContentLoaded', function() {
-        const selectedOption = locationSelect.options[locationSelect.selectedIndex];
-        if (selectedOption && selectedOption.value) {
-            currentCapacity = parseInt(selectedOption.getAttribute('data-capacity') || 0);
-            capacityInfo.innerText = `{% trans "Capacité de la salle :" %} ${currentCapacity} {% trans "places" %}`;
-            validateTickets();
-        }
-    });
-
-    form.addEventListener('submit', function(e) {
-        if (!validateTickets()) {
-            e.preventDefault();
-        }
-    });
 </script>
 {% endblock %}

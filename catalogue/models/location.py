@@ -16,6 +16,7 @@ class Location(models.Model):
     website = models.CharField(max_length=255, null=True)
     phone = models.CharField(max_length=30, null=True)
     capacity = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True, help_text="Si faux, la salle n'apparaîtra pas dans les listes publiques (utile pour modération).")
 
     objects = LocationManager()
 
