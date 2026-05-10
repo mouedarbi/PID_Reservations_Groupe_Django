@@ -361,5 +361,8 @@ Cette session a été consacrée à l'optimisation de l'expérience utilisateur 
 - Suivi rigoureux avec des commits granulaires pour chaque modification fonctionnelle.
 - Vérification globale de l'intégrité des liens et de la responsivité de l'interface.
 
+#### 6. Correctifs UI de Dernière Minute
+- **Boutons d'Action** : Correction des couleurs de fond pour les boutons de modération des candidatures critiques (Passage du gris au rouge pour "Refuser" et du rouge au vert pour "Accepter") afin d'assurer une sémantique visuelle correcte.
+
 
 
