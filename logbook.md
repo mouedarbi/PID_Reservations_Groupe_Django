@@ -330,4 +330,36 @@ Cette session a été focalisée sur la réorganisation structurelle des fichier
 - **Versionning local** : Synchronisation forcée de la branche locale avec la branche distante `dev_ghiles` pour garantir l'intégrité du code source sur tous les postes de travail.
 - **Commits structurés** : Enregistrement des changements par modules fonctionnels pour faciliter le suivi des révisions.
 
+## Date: mercredi 14 mai 2026
+
+### Progress Summary - Améliorations UI/UX & Refonte de la Navigation Admin
+
+Cette session a été consacrée à l'optimisation de l'expérience utilisateur (UX) sur le dashboard d'administration et à l'amélioration de la cohérence visuelle sur l'ensemble de la plateforme.
+
+#### 1. Optimisation du Système de Notifications
+- **Intelligence du Routage** : Mise à jour des liens générés par les notifications pour rediriger précisément vers les pages d'action adéquates (ex: la fiche spécifique du spectacle pour une approbation, ou la liste filtrée des candidatures).
+- **Refonte Visuelle** : Redesign complet de la page `admin-dashboard/notifications/` pour adopter une mise en page moderne sous forme de cartes colorées, alignée sur le design du reste du dashboard.
+- **Amélioration du Workflow** : L'action "Marquer comme lu" sur la page dédiée conserve désormais la position de l'utilisateur (pagination et page actuelle) grâce à un paramètre de redirection intelligent.
+
+#### 2. Restructuration de la Navigation (Sidebar)
+- **Clarification des Libellés** : Renommage stratégique des menus pour plus de clarté :
+    - "Demandes Producteurs" devient **"Approbation Spectacles"**.
+    - "Producteurs Juniors" devient **"Candidatures Producteurs"**.
+- **Regroupement Logique** : Création d'un nouveau groupe de menu parent **"Candidatures"** rassemblant de manière cohérente les candidatures des Producteurs et des Critiques de Presse.
+- **Cohérence Visuelle** : Mise à jour des icônes Phosphor pour une identification visuelle instantanée des sections.
+
+#### 3. Modernisation de l'Interface (UI)
+- **Page Spectacles** : Alignement du design du bandeau d'actions (Ticketmaster, CSV, Ajouter) sur celui de la page des Lieux, incluant des menus déroulants élégants pour les imports/exports.
+- **Personnalisation de la Topbar** : 
+    - Côté public (Frontend) : Remplacement du lien générique "Mon compte" par le **nom d'utilisateur** réel pour une expérience plus personnalisée.
+    - Côté administration : Affichage du nom de l'administrateur à côté de son avatar dans la barre de navigation supérieure.
+
+#### 4. Automatisation des Retours Utilisateurs
+- **Notifications de Candidatures** : Implémentation de notifications système automatiques pour informer les utilisateurs du statut (accepté/refusé) de leurs demandes de grade (Producteur ou Critique).
+
+#### 5. Maintenance Git
+- Suivi rigoureux avec des commits granulaires pour chaque modification fonctionnelle.
+- Vérification globale de l'intégrité des liens et de la responsivité de l'interface.
+
+
 
