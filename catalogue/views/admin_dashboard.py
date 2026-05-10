@@ -146,17 +146,39 @@ def admin_show_index(request):
     """
     View to list shows in the custom admin dashboard.
     """
-    shows = Show.objects.all().select_related('location').order_by('-created_at')
+    from django.core.paginator import Paginator
+    
+    shows_list = Show.objects.all().select_related('location').order_by('-created_at')
 
     # Simple search
     search_query = request.GET.get('q')
     if search_query:
-        shows = shows.filter(title__icontains=search_query)
+        shows_list = shows_list.filter(title__icontains=search_query)
+
+    # Pagination : 20 par page
+    paginator = Paginator(shows_list, 20)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    # Calcul de la plage de 5 numéros (fenêtre coulissante)
+    total_pages = paginator.num_pages
+    current_page = page_obj.number
+
+    if total_pages <= 5:
+        custom_range = range(1, total_pages + 1)
+    else:
+        if current_page <= 3:
+            custom_range = range(1, 6)
+        elif current_page >= total_pages - 2:
+            custom_range = range(total_pages - 4, total_pages + 1)
+        else:
+            custom_range = range(current_page - 2, current_page + 3)
 
     context = {
         'page_title': 'Gestion des Spectacles',
         'title': 'Spectacles',
-        'shows': shows,
+        'shows': page_obj,
+        'custom_page_range': custom_range,
         'search_query': search_query,
     }
     return render(request, 'admin/show/index.html', context)

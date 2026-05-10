@@ -7,19 +7,25 @@ class TicketmasterAPI:
     def __init__(self):
         self.api_key = AppSetting.get_value('TICKETMASTER_API_KEY')
 
-    def get_events(self, city="Brussels", classification="Theatre", size=20):
+    def get_events(self, city=None, classification="Theatre", size=100, state_code=None):
         if not self.api_key:
             return None, "Erreur: Clé API Ticketmaster manquante."
 
         url = f"{self.ROOT_URL}events.json"
         params = {
             'apikey': self.api_key,
-            'city': city,
             'classificationName': classification,
             'size': size,
             'countryCode': 'BE',
-            'locale': 'fr-be,*'
+            'locale': 'fr-be,*',
+            'sort': 'date,asc'
         }
+        
+        if city:
+            params['city'] = city
+        if state_code:
+            # Ticketmaster utilise parfois stateCode pour les provinces/régions
+            params['stateCode'] = state_code
 
         try:
             response = requests.get(url, params=params)
@@ -50,39 +56,100 @@ def run_ticketmaster_import_gen():
     import requests
     import os
 
-    yield "Initialisation de la connexion à Ticketmaster...\n"
+    yield "Recherche étendue des événements (Bruxelles, Forest, Laeken, Brabant Wallon)...\n"
     
     api = TicketmasterAPI()
-    events, error = api.get_events()
     
-    if error:
-        yield f"ERREUR : {error}\n"
-        return
+    # Liste des zones à scanner pour maximiser les résultats
+    zones = [
+        {'city': 'Brussels'},
+        {'city': 'Forest'},
+        {'city': 'Laeken'},
+        # Brabant Wallon
+        {'city': 'Wavre'}, 
+        {'city': 'Ottignies-Louvain-la-Neuve'}, 
+        {'city': 'Waterloo'},
+        # Flandre (Grandes villes)
+        {'city': 'Antwerpen'}, # Anvers
+        {'city': 'Gent'},      # Gand
+        {'city': 'Brugge'},    # Bruges
+        {'city': 'Leuven'},    # Louvain
+        {'city': 'Mechelen'},  # Malines
+        {'city': 'Hasselt'},
+        {'city': 'Oostende'},  # Ostende
+        {'city': 'Kortrijk'},  # Courtrai
+        {'city': 'Aalst'},     # Alost
+    ]
+    
+    all_events = []
+    seen_ids = set()
+    
+    import time
+    
+    for zone in zones:
+        yield f"Scan de la zone : {zone.get('city')}..."
+        events, error = api.get_events(city=zone.get('city'), size=50)
+        
+        # Pause pour éviter l'erreur 429 (Rate Limit)
+        time.sleep(0.5)
+        
+        if error:
+            yield f" (Erreur : {error})\n"
+            continue
+            
+        if events:
+            new_in_zone = 0
+            for e in events:
+                if e['id'] not in seen_ids:
+                    all_events.append(e)
+                    seen_ids.add(e['id'])
+                    new_in_zone += 1
+            yield f" {new_in_zone} nouveaux événements trouvés.\n"
+        else:
+            yield " aucun résultat.\n"
 
-    if not events:
+    if not all_events:
         yield "Aucun événement trouvé pour les critères sélectionnés.\n"
         return
 
-    yield f"Récupération de {len(events)} événements réussie.\n\n"
+    yield f"\nTotal à traiter : {len(all_events)} événements.\n\n"
     
     count_new = 0
     count_updated = 0
 
-    for event in events:
+    for event in all_events:
         name = event.get('name')
         yield f"Traitement de : {name}..."
         
         try:
-            # 1. Localité
+            # 1. Localité - Sécurisation contre les doublons de CP
             venue_data = event.get('_embedded', {}).get('venues', [{}])[0]
             city_name = venue_data.get('city', {}).get('name', 'Bruxelles')
             postal_code = venue_data.get('postalCode', '1000')
-            locality, _ = Locality.objects.get_or_create(postal_code=postal_code, defaults={'locality': city_name, 'locality_fr': city_name})
+            
+            # On cherche d'abord s'il existe une localité avec ce CP et ce nom
+            locality = Locality.objects.filter(postal_code=postal_code, locality__icontains=city_name).first()
+            if not locality:
+                # Sinon on prend juste par CP
+                locality = Locality.objects.filter(postal_code=postal_code).first()
+            
+            if not locality:
+                # Si vraiment rien, on crée
+                locality = Locality.objects.create(postal_code=postal_code, locality=city_name, locality_fr=city_name)
 
-            # 2. Lieu
+            # 2. Lieu - Sécurisation du slug
             location_name = venue_data.get('name', 'Lieu inconnu')
             location_slug = slugify(location_name)[:60]
-            location, _ = Location.objects.get_or_create(slug=location_slug, defaults={'designation': location_name, 'designation_fr': location_name, 'address': venue_data.get('address', {}).get('line1', ''), 'locality': locality})
+            
+            location = Location.objects.filter(slug=location_slug).first()
+            if not location:
+                location = Location.objects.create(
+                    slug=location_slug, 
+                    designation=location_name, 
+                    designation_fr=location_name, 
+                    address=venue_data.get('address', {}).get('line1', ''), 
+                    locality=locality
+                )
 
             # 3. Spectacle
             show_slug = slugify(name)[:60]

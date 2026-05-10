@@ -11,65 +11,74 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid p-0">
-    <!-- Header Section with Bootstrap 5 -->
-    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+<div class="dashboard-content">
+    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <h2 class="display-6 fw-bold mb-1">{{ title }}</h2>
-            <p class="text-muted mb-0">Gérez le catalogue des spectacles et les synchronisations externes.</p>
+            <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
+            <p class="text-small mt-1">Gérez le catalogue des spectacles et les synchronisations externes.</p>
         </div>
         
-        <div class="d-flex flex-wrap gap-2">
-            <!-- Sync & Tools Group -->
-            <div class="btn-group shadow-sm">
-                <button id="sync-tm-btn" class="btn btn-warning d-flex align-items-center gap-2">
-                    <i class="ph ph-arrows-counter-clockwise" id="sync-icon"></i>
-                    <span>Ticketmaster</span>
+        <div class="flex flex-wrap gap-2">
+            <!-- Sync Ticketmaster Button -->
+            <button id="sync-tm-btn" class="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700 transition shadow-md font-bold">
+                <i class="ph ph-arrows-counter-clockwise" id="sync-icon"></i>
+                <span>Ticketmaster</span>
+            </button>
+
+            <!-- Import/Export Group -->
+            <div class="flex rounded-lg overflow-hidden shadow-md">
+                <a href="{% url 'catalogue:admin_show_export_csv' %}" class="bg-amber-500 px-4 py-2 text-white hover:bg-amber-600 transition flex items-center gap-2 border-r border-white/10">
+                    <i class="ph ph-download-simple"></i>
+                    <span>Exporter</span>
+                </a>
+                <button onclick="document.getElementById('import-csv-modal').classList.remove('hidden')" class="bg-emerald-500 px-4 py-2 text-white hover:bg-emerald-600 transition flex items-center gap-2">
+                    <i class="ph ph-upload-simple"></i>
+                    <span>Importer</span>
                 </button>
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="ph ph-file-csv"></i> CSV
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-                        <li><a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'catalogue:admin_show_export_csv' %}"><i class="ph ph-download-simple"></i> Exporter</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><button class="dropdown-item d-flex align-items-center gap-2" onclick="document.getElementById('import-csv-form').classList.toggle('hidden')"><i class="ph ph-upload-simple"></i> Importer</button></li>
-                    </ul>
-                </div>
             </div>
             
-            <a href="{% url 'admin_show_create' %}" class="btn btn-primary shadow-sm d-flex align-items-center gap-2">
+            <a href="{% url 'admin_show_create' %}" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition shadow-md">
                 <i class="ph ph-plus-circle"></i>
                 <span>Ajouter un spectacle</span>
             </a>
         </div>
     </div>
 
-    <!-- Formulaire d'Importation CSV (Hidden by default) -->
-    <div id="import-csv-form" class="mb-6 hidden">
-        <div class="border-orange-500/30 bg-orange-500/5 rounded-lg border p-4">
-            <h4 class="text-orange-700 font-bold mb-3 flex items-center gap-2">
-                <i class="ph ph-upload"></i>
-                Importer des spectacles depuis CSV
-            </h4>
-            <form action="{% url 'catalogue:admin_show_import_csv' %}" method="POST" enctype="multipart/form-data" class="flex items-center gap-4">
-                {% csrf_token %}
-                <input type="file" name="csv_file" accept=".csv" required class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
-                <button type="submit" class="rounded-lg bg-orange-600 px-4 py-2 text-white hover:bg-orange-700 transition">
-                    Lancer l'importation
+    <!-- Modal Import CSV -->
+    <div id="import-csv-modal" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div class="w-full max-w-md rounded-xl bg-white p-6 shadow-2xl dark:bg-[#040b1a] border border-border">
+            <div class="mb-4 flex items-center justify-between border-b border-border pb-3">
+                <h3 class="text-xl font-bold text-text">Importer des spectacles</h3>
+                <button onclick="document.getElementById('import-csv-modal').classList.add('hidden')" class="text-muted hover:text-text transition-colors">
+                    <i class="ph ph-x text-2xl"></i>
                 </button>
+            </div>
+            <form action="{% url 'catalogue:admin_show_import_csv' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label class="mb-2 block text-sm font-semibold text-text">Fichier CSV</label>
+                    <input type="file" name="csv_file" accept=".csv" required class="w-full rounded-lg border border-border bg-input p-2 text-text">
+                    <p class="mt-2 text-xs text-muted italic">Format : Slug; Titre; Description; Image URL; Lieu_ID; Réservable; Statut</p>
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t border-border">
+                    <button type="button" onclick="document.getElementById('import-csv-modal').classList.add('hidden')" class="rounded-lg border border-border px-4 py-2 text-text hover:bg-gray-100 transition">
+                        Annuler
+                    </button>
+                    <button type="submit" class="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 font-bold shadow-lg transition">
+                        Lancer l'importation
+                    </button>
+                </div>
             </form>
-            <p class="text-xs text-orange-800 mt-2">Format attendu : Slug; Titre; Description; Image URL; Lieu_ID; Réservable(True/False); Statut</p>
         </div>
     </div>
 
-    <!-- Zone de Logs Live -->
+    <!-- Zone de Logs Live pour Ticketmaster -->
     <div id="sync-logs-container" class="mb-6 hidden">
         <div class="border-emerald-500/30 bg-emerald-500/5 rounded-lg border p-4">
             <div class="flex items-center justify-between mb-2">
                 <h4 class="text-emerald-700 font-bold flex items-center gap-2">
                     <i class="ph ph-terminal"></i>
-                    Synchronisation en cours...
+                    Synchronisation Ticketmaster en cours...
                 </h4>
                 <button onclick="document.getElementById('sync-logs-container').classList.add('hidden')" class="text-emerald-700 hover:text-emerald-900">
                     <i class="ph ph-x"></i>
@@ -183,6 +192,46 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Pagination Section -->
+        {% if shows.has_other_pages %}
+        <div class="px-6 py-4 border-t border-border flex items-center justify-between bg-gray-50/30 dark:bg-gray-900/20">
+            <div class="text-sm text-muted">
+                Affichage de {{ shows.start_index }} à {{ shows.end_index }} sur {{ shows.paginator.count }} spectacles
+            </div>
+            <div class="flex items-center gap-2">
+                {% if shows.has_previous %}
+                    <a href="?page={{ shows.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="flex items-center justify-center w-8 h-8 rounded border border-border bg-bg hover:bg-gray-100 transition text-sm">
+                        <i class="ph ph-caret-left"></i>
+                    </a>
+                {% endif %}
+
+                <div class="flex items-center gap-1">
+                    {% for i in custom_page_range %}
+                        {% if shows.number == i %}
+                            <span class="w-8 h-8 flex items-center justify-center rounded bg-blue-600 text-white text-sm font-bold shadow-sm">
+                                {{ i }}
+                            </span>
+                        {% else %}
+                            <a href="?page={{ i }}{% if search_query %}&q={{ search_query }}{% endif %}" class="w-8 h-8 flex items-center justify-center rounded border border-border bg-bg hover:bg-gray-100 transition text-sm text-text">
+                                {{ i }}
+                            </a>
+                        {% endif %}
+                        
+                        {% if not forloop.last %}
+                            <span class="text-muted mx-0.5">.</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                {% if shows.has_next %}
+                    <a href="?page={{ shows.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="flex items-center justify-center w-8 h-8 rounded border border-border bg-bg hover:bg-gray-100 transition text-sm">
+                        <i class="ph ph-caret-right"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 
