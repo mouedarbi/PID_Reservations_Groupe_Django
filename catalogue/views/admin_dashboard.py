@@ -1,3 +1,4 @@
+from django.db.models.deletion import RestrictedError, ProtectedError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
@@ -1320,21 +1321,26 @@ def admin_generic_delete(request, model_name, pk):
         'user': User,
         'group': Group,
     }
-    
+
     model = model_map.get(model_name)
     if not model:
         return redirect('admin_dashboard')
-        
+
     obj = get_object_or_404(model, pk=pk)
-    
-    # Check if model has is_deleted field
-    if hasattr(obj, 'is_deleted'):
-        obj.is_deleted = True
-        obj.save()
-    else:
-        # For now, if no is_deleted field, just delete (to be changed when Soft Delete is implemented)
-        obj.delete()
-        
+
+    try:
+        # Check if model has is_deleted field
+        if hasattr(obj, 'is_deleted'):
+            obj.is_deleted = True
+            obj.save()
+            messages.success(request, f"{model_name.capitalize()} a été archivé avec succès.")
+        else:
+            # For now, if no is_deleted field, just delete (to be changed when Soft Delete is implemented)
+            obj.delete()
+            messages.success(request, f"{model_name.capitalize()} a été supprimé avec succès.")
+    except (RestrictedError, ProtectedError):
+        messages.error(request, f"Impossible de supprimer cet élément ({obj}) car il est lié à d'autres données (ex: réservations, représentations). Veuillez d'abord supprimer ou modifier les éléments dépendants.")
+
     return redirect(f'admin_{model_name}_index')
 
 @user_passes_test(is_admin)
