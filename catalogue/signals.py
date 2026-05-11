@@ -6,6 +6,8 @@ from django.urls import reverse
 
 @receiver(post_save, sender=User)
 def notify_new_user(sender, instance, created, **kwargs):
+    if kwargs.get('raw'):
+        return
     if created:
         Notification.objects.create(
             type='new_user',
@@ -16,6 +18,8 @@ def notify_new_user(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=ProducerRequest)
 def notify_producer_request(sender, instance, created, **kwargs):
+    if kwargs.get('raw'):
+        return
     if created:
         Notification.objects.create(
             type='producer_request',
@@ -26,6 +30,8 @@ def notify_producer_request(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=CriticRequest)
 def notify_critic_request(sender, instance, created, **kwargs):
+    if kwargs.get('raw'):
+        return
     if created:
         Notification.objects.create(
             type='critic_request',
@@ -36,6 +42,8 @@ def notify_critic_request(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=Show)
 def notify_new_show(sender, instance, created, **kwargs):
+    if kwargs.get('raw'):
+        return
     if created and instance.status == 'pending':
         producer_name = instance.producer.username if instance.producer else "Un producteur"
         Notification.objects.create(
@@ -47,6 +55,8 @@ def notify_new_show(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=PressArticle)
 def notify_new_press_article(sender, instance, created, **kwargs):
+    if kwargs.get('raw'):
+        return
     if created:
         critic_name = instance.user.get_full_name() or instance.user.username
         
