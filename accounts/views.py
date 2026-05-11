@@ -74,12 +74,30 @@ def delete(request, pk):
         method = request.POST.get('_method', '').upper()
 
         if method == 'DELETE':
-            if request.user and request.user.id == pk:
-                user = User.objects.get(id=request.user.id)
-                user.delete()
+            if request.user and (request.user.id == pk or request.user.is_superuser):
+                user = User.objects.get(id=pk)
+                
+                # Soft Delete & Anonymisation
+                user.is_active = False
+                user.username = f"user_{user.id}_deleted"
+                user.first_name = "Utilisateur"
+                user.last_name = "Supprimé"
+                user.email = f"deleted_{user.id}@example.com"
+                user.groups.clear()
+                user.user_permissions.clear()
+                user.set_unusable_password()
+                user.save()
 
-                messages.success(request, _("Utilisateur supprimé avec succès."))
-                logout(request)
+                # Optionnel : Supprimer les métadonnées privées
+                from catalogue.models import UserMeta
+                UserMeta.objects.filter(user=user).delete()
+
+                messages.success(request, _("Votre compte a été supprimé et vos données personnelles anonymisées."))
+                if request.user.id == pk:
+                    logout(request)
+                    return redirect('frontend:home')
+                else:
+                    return redirect('catalogue:admin-dashboard') # Si c'est un admin qui supprime
             else:
                 messages.error(request,
                                _("Suppression d'un autre compte interdite!"))

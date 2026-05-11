@@ -3,8 +3,8 @@ from .show import *
 from django.contrib.auth.models import User
 
 class Review(models.Model):
-    user = models.ForeignKey(User, on_delete=models.RESTRICT,
-        null=False, related_name='user')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL,
+        null=True, related_name='user')
     show = models.ForeignKey(Show, on_delete=models.RESTRICT, 
 		null=False, related_name='reviews')
     review = models.TextField()
@@ -15,7 +15,8 @@ class Review(models.Model):
     updated_at = models.DateTimeField(null=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.show.title} : {self.stars}"
+        username = self.user.username if self.user else "Utilisateur supprimé"
+        return f"{username} - {self.show.title} : {self.stars}"
     
     class Meta:
         db_table = "reviews"

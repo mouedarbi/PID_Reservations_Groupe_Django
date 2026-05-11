@@ -678,24 +678,54 @@ def admin_user_index(request):
     """
     Vue pour lister les utilisateurs dans le dashboard admin personnalisé.
     """
-    users = User.objects.all().order_by('-date_joined')
+    from django.core.paginator import Paginator
+    
+    users_list = User.objects.all().order_by('-date_joined')
+
+    # Filtre par statut (actif/inactif)
+    status_filter = request.GET.get('status')
+    if status_filter == 'active':
+        users_list = users_list.filter(is_active=True)
+    elif status_filter == 'inactive':
+        users_list = users_list.filter(is_active=False)
 
     # Recherche par nom d'utilisateur ou email
     search_query = request.GET.get('q')
     if search_query:
         from django.db.models import Q
-        users = users.filter(
+        users_list = users_list.filter(
             Q(username__icontains=search_query) | 
             Q(email__icontains=search_query) |
             Q(first_name__icontains=search_query) |
             Q(last_name__icontains=search_query)
         )
 
+    # Pagination : 20 par page
+    paginator = Paginator(users_list, 20)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    # Calcul de la plage de 5 numéros (fenêtre coulissante)
+    total_pages = paginator.num_pages
+    current_page = page_obj.number
+
+    if total_pages <= 5:
+        custom_range = range(1, total_pages + 1)
+    else:
+        if current_page <= 3:
+            custom_range = range(1, 6)
+        elif current_page >= total_pages - 2:
+            custom_range = range(total_pages - 4, total_pages + 1)
+        else:
+            custom_range = range(current_page - 2, current_page + 3)
+
     context = {
         'page_title': 'Gestion des Utilisateurs',
         'title': 'Utilisateurs',
-        'users': users,
+        'users': page_obj,
+        'custom_page_range': custom_range,
         'search_query': search_query,
+        'status_filter': status_filter,
     }
     return render(request, 'admin/user/index.html', context)
 

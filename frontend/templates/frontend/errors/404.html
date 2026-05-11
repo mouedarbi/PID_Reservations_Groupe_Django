@@ -1,0 +1,13 @@
+{% extends "frontend/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Page non trouvée" %}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-4 text-center">
+    <h1 class="text-4xl font-bold text-red-600 mb-4">404 - {% trans "Page Non Trouvée" %}</h1>
+    <p class="text-lg text-gray-700 mb-4">{% trans "Désolé, la page que vous recherchez n'existe pas." %}</p>
+    <p class="text-md text-gray-600">{% trans "Veuillez vérifier l'URL ou retourner à la page d'accueil." %}</p>
+    <a href="{% url 'frontend:home' %}" class="mt-6 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">{% trans "Retour à l'accueil" %}</a>
+</div>
+{% endblock %}
