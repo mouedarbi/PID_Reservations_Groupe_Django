@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+
 import os
 import sys
 from pathlib import Path
@@ -39,7 +40,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "modeltranslation",
     # ajout de api
-    "frontend", # Ajout de l'application frontend - Déplacé ici pour la priorité des templates
+    "frontend",  # Ajout de l'application frontend - Déplacé ici pour la priorité des templates
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -48,16 +49,16 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "api",
     "accounts",
-    #ajout de catalogue
+    # ajout de catalogue
     "catalogue",
     "payments",
     # ajout de rest_framework
-    'rest_framework',
-    'rest_framework.authtoken',
-    'cart',
-    'import_export',
-    'tinymce',
-    ]
+    "rest_framework",
+    "rest_framework.authtoken",
+    "cart",
+    "import_export",
+    "tinymce",
+]
 
 
 MIDDLEWARE = [
@@ -99,28 +100,28 @@ WSGI_APPLICATION = "reservations.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST", "127.0.0.1"),
+        "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
 
 # Configuration spécifique pour les tests
-if 'test' in sys.argv:
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test_db',
-        'USER': os.getenv('DB_USER', 'root'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'mysecretpassword'),
-        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
-        'PORT': os.getenv('DB_PORT', '3306'),
-        'TEST': {
-            'NAME': 'test_db', # Utiliser la base de données créée par le service MySQL du workflow
-        }
+if "test" in sys.argv:
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "test_db",
+        "USER": os.getenv("DB_USER", "postgres"),
+        "PASSWORD": os.getenv("DB_PASSWORD", ""),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
+        "TEST": {
+            "NAME": "test_db",
+        },
     }
 
 
@@ -157,13 +158,13 @@ USE_L10N = True
 USE_TZ = True
 
 LANGUAGES = [
-    ('fr', _('French')),
-    ('en', _('English')),
-    ('nl', _('Dutch')),
+    ("fr", _("French")),
+    ("en", _("English")),
+    ("nl", _("Dutch")),
 ]
 
 LOCALE_PATHS = [
-    BASE_DIR / 'locale/',
+    BASE_DIR / "locale/",
 ]
 
 
@@ -173,13 +174,13 @@ LOCALE_PATHS = [
 STATIC_URL = "static/"
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / "static",
 ]
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'static/media'
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "static/media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -187,55 +188,57 @@ MEDIA_ROOT = BASE_DIR / 'static/media'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Panier
-CART_SESSION_ID = 'cart'
+CART_SESSION_ID = "cart"
 
 # REST Framework authentications & parmissions
 # https://www.django-rest-framework.org/api-guide/authentication/
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    "DEFAULT_AUTHENTICATION_CLASSES": [
         # Pour l'authentification basée sur la session
-        'rest_framework.authentication.SessionAuthentication',
+        "rest_framework.authentication.SessionAuthentication",
         # Pour l'authentification de base (utile pour Postman/cURL)
-        'rest_framework.authentication.BasicAuthentication',
+        "rest_framework.authentication.BasicAuthentication",
         # Pour l'authentification via Token
-        'rest_framework.authentication.TokenAuthentication',
+        "rest_framework.authentication.TokenAuthentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
+    "DEFAULT_PERMISSION_CLASSES": [
         # Exige l'authentification pour toutes les requêtes
-        'rest_framework.permissions.IsAuthenticated',
+        "rest_framework.permissions.IsAuthenticated",
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 8,
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 8,
 }
 
 
-LOGIN_REDIRECT_URL = 'frontend:home'
-LOGOUT_REDIRECT_URL = 'frontend:home'
+LOGIN_REDIRECT_URL = "frontend:home"
+LOGOUT_REDIRECT_URL = "frontend:home"
 
-PASSWORD_CHANGE_REDIRECT_URL = 'accounts:user-profile'
+PASSWORD_CHANGE_REDIRECT_URL = "accounts:user-profile"
 
 # Modeltranslation configuration
-MODELTRANSLATION_DEFAULT_LANGUAGE = 'fr'
-MODELTRANSLATION_FALLBACK_LANGUAGES = ('fr', 'en', 'nl')
+MODELTRANSLATION_DEFAULT_LANGUAGE = "fr"
+MODELTRANSLATION_FALLBACK_LANGUAGES = ("fr", "en", "nl")
 
 # Configuration des E-mails
 # Par défaut, les mails s'affichent dans la console pour le développement.
 # Pour envoyer de vrais mails, changez EMAIL_BACKEND dans le .env
-EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
-EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@theatreplus.be')
+EMAIL_BACKEND = os.getenv(
+    "EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend"
+)
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@theatreplus.be")
 
 
 # TinyMCE Configuration
 TINYMCE_DEFAULT_CONFIG = {
-    'menubar': 'file edit view insert format tools table help',
-    'plugins': 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount',
-    'toolbar': 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-    'language': 'fr_FR',
-    'height': 400,
-    'width': '100%',
+    "menubar": "file edit view insert format tools table help",
+    "plugins": "advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount",
+    "toolbar": "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
+    "language": "fr_FR",
+    "height": 400,
+    "width": "100%",
 }

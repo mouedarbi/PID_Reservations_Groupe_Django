@@ -2,6 +2,8 @@ from rest_framework import serializers
 from catalogue.models import Show, Review, PressArticle
 from catalogue.models.show_price import ShowPrice
 from api.serializers.representations import RepresentationSerializer
+from api.serializers.prices import PriceSerializer
+from api.serializers.artist_types import ArtistTypeSerializer
 
 class ReviewSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='user.username', read_only=True)
@@ -21,6 +23,8 @@ class PressArticleSerializer(serializers.ModelSerializer):
 
 class ShowSerializer(serializers.ModelSerializer):
     price = serializers.SerializerMethodField()
+    prices = PriceSerializer(many=True, read_only=True)
+    artist_types = ArtistTypeSerializer(many=True, read_only=True)
     has_multiple_prices = serializers.ReadOnlyField()
     next_representation_date = serializers.ReadOnlyField()
     formatted_next_date = serializers.SerializerMethodField()

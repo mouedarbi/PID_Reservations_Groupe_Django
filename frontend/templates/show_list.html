@@ -59,9 +59,10 @@
                     <div class="show-card">
                         <div class="show-image">
                             {% if show.poster %}
-                                <img src="{{ show.poster }}" alt="{{ show.title }}">
+                                <img src="{{ show.poster }}" alt="{{ show.title }}" onerror="this.src='https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&h=400&fit=crop';">
                             {% else %}
-                                <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&h=400&fit=crop" alt="{{ show.title }}">
+                                <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&h=400&fit=crop" 
+                                     alt="{{ show.title }}">
                             {% endif %}
                             {% if show.bookable %}
 
@@ -73,8 +74,8 @@
                         <div class="show-info">
                             <div class="show-category">
                                 {% if show.artist_types %}
-                                    {% for artist_type in show.artist_types %}
-                                        {{ artist_type.name }}{% if not forloop.last %}, {% endif %}
+                                    {% for at in show.artist_types %}
+                                        {{ at.type.type }}{% if not forloop.last %}, {% endif %}
                                     {% endfor %}
                                 {% else %}
                                     {% trans "Non catégorisé" %}
@@ -97,6 +98,17 @@
                                 </div>
                                 <div class="show-price">
                                     {% if show.has_multiple_prices %}{% trans "à partir de" %} {% endif %}{{ show.price|default:'N/A' }}€
+                                </div>
+                                <div class="show-price-types" style="text-align: right;">
+                                    {% if show.prices %}
+                                        <div style="font-size: 0.75rem; color: #666; line-height: 1.2;">
+                                            {% for p in show.prices %}
+                                                <div style="white-space: nowrap;">{{ p.type|title }}: <strong>{{ p.price }}€</strong></div>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <div class="show-price">{{ show.price|default:'N/A' }}€</div>
+                                    {% endif %}
                                 </div>
                             </div>
 
@@ -150,6 +162,26 @@
         }
         .show-card-link:hover {
             transform: translateY(-5px);
+        }
+        .show-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .show-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .show-title {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: auto;
+        }
+        .show-meta {
+            margin-top: 1rem;
         }
         .btn-pagination {
             display: inline-flex;

@@ -101,6 +101,15 @@ def affiliate_dashboard(request):
     # Récupérer ou créer le profil d'affilié
     affiliate, created = Affiliate.objects.get_or_create(user=request.user)
     
+    # Génération de la clé API si demandée via POST
+    if request.method == 'POST':
+        if not affiliate.api_key:
+            import uuid
+            affiliate.api_key = str(uuid.uuid4()).replace('-', '')
+            affiliate.save()
+            messages.success(request, _("Votre clé API a été générée avec succès !"))
+        return redirect('accounts:user-api')
+
     # Assigner le plan Free par défaut si aucun plan n'est défini
     if not affiliate.tier:
         free_tier = AffiliateTier.objects.filter(name='Free').first()
