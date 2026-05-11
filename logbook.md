@@ -361,8 +361,48 @@ Cette session a été consacrée à l'optimisation de l'expérience utilisateur 
 - Suivi rigoureux avec des commits granulaires pour chaque modification fonctionnelle.
 - Vérification globale de l'intégrité des liens et de la responsivité de l'interface.
 
-#### 6. Correctifs UI de Dernière Minute
-- **Boutons d'Action** : Correction des couleurs de fond pour les boutons de modération des candidatures critiques (Passage du gris au rouge pour "Refuser" et du rouge au vert pour "Accepter") afin d'assurer une sémantique visuelle correcte.
+## Date: dimanche 10 mai 2026
+
+### Progress Summary - Nettoyage Projet, Expansion Ticketmaster & Harmonisation UI
+
+Cette session a été consacrée au nettoyage structurel du projet, à l'élargissement significatif des capacités d'importation de l'API Ticketmaster pour atteindre les quotas académiques, et à l'harmonisation visuelle finale de l'administration.
+
+#### 1. Maintenance et Nettoyage de la Racine
+- **Archivage des outils de développement** : Tous les scripts de traduction personnalisés (`.py` et `.txt`) ont été déplacés dans un dossier dédié `scripts/translations/` pour désencombrer la racine du projet.
+- **Suppression des fichiers temporaires** : Suppression des binaires de test (`stripe.exe`) et des logs de débogage (`stripe_debug.log`) pour maintenir un dépôt propre.
+- **Fichiers conservés** : Seuls les fichiers essentiels (`manage.py`, `requirements.txt`, `.env.example`, `Procfile`, etc.) ont été maintenus à la racine.
+
+#### 2. Expansion Massive de l'Importation Ticketmaster
+- **Objectif 100 Spectacles** : Modification profonde du script `catalogue/utils/ticketmaster.py` pour garantir l'importation de plus de 100 spectacles réels.
+- **Élargissement Géographique** : Extension des scans à l'ensemble de la Belgique, incluant :
+    - **Bruxelles** (19 communes).
+    - **Zones Spécifiques** : Forest National, Laeken (Brussels Expo).
+    - **Brabant Wallon** : Wavre, Ottignies-Louvain-la-Neuve, Waterloo.
+    - **Flandre** : Anvers, Gand, Bruges, Louvain, Malines, Hasselt, Ostende, Courtrai, Alost.
+- **Optimisation et Stabilité** :
+    - Mise en place d'un **Rate Limiter** (pause de 0.5s entre les appels) pour éviter les erreurs `429 Spike Arrest` de l'API Ticketmaster.
+    - Sécurisation de la récupération des localités et des lieux via `filter().first()` pour résoudre les erreurs `MultipleObjectsReturned` dues aux doublons de codes postaux.
+
+#### 3. Harmonisation Visuelle de l'Administration des Spectacles
+- **Refonte UI du Dashboard Shows** : Alignement complet du design de la page de gestion des spectacles sur celui des localités.
+- **Bouton Ticketmaster** : Restauration de l'aspect visuel (couleur rouge `bg-red-600`) et de l'interactivité du bouton de synchronisation.
+- **Système de Modale** : Remplacement des anciens formulaires d'import par une modale moderne (`import-csv-modal`) avec retour de log en temps réel.
+- **Boutons d'Action** : Intégration du groupe de boutons stylisés pour l'exportation (ambre) et l'importation (émeraude).
+
+#### 4. Pagination et Navigation
+- **Pagination Admin** : Implémentation de la pagination sur la liste des spectacles dans le dashboard admin.
+- **Limitation** : Affichage limité à **20 spectacles par page** pour une meilleure lisibilité.
+- **Cohérence** : Utilisation de la même logique de "fenêtre coulissante" (5 pages visibles) que pour les localités, assurant une navigation fluide.
+
+#### 5. Collaboration et Fusion (Git Merge)
+- **Merge dev_ghiles** : Fusion réussie de la branche de Ghiles intégrant :
+    - Le nouveau centre de notifications stylisé.
+    - Les menus déroulants dans la sidebar.
+    - L'affichage dynamique du nom d'utilisateur dans la topbar.
+- **Résolution de Conflits** : Arbitrage manuel sur le template de l'index des spectacles pour conserver le nouveau design harmonisé tout en intégrant les fonctionnalités de Ghiles.
+
+### État de la Base de Données
+- Plus de **105 spectacles** réels sont désormais présents en base de données, couvrant tout le territoire belge avec leurs affiches respectives et leurs lieux de représentations.
 
 
 
