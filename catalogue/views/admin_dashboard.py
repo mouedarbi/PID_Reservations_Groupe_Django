@@ -889,6 +889,9 @@ def admin_show_detail(request, pk):
     # Récupérer les prix associés à ce spectacle via le modèle ShowPrice
     show_prices = show.showprice_set.select_related('price').all()
 
+    # Récupérer les artistes participants
+    artists_participating = show.artistTypeShows.all().select_related('artist_type__artist', 'artist_type__type')
+
     # Récupérer tous les prix qui ne sont pas encore associés à ce spectacle
     existing_price_ids = [sp.price.id for sp in show_prices]
     available_prices = Price.objects.exclude(id__in=existing_price_ids)
@@ -900,6 +903,7 @@ def admin_show_detail(request, pk):
         'show_prices': show_prices,
         'available_prices': available_prices,
         'representations': representations,
+        'artists': artists_participating,
     }
     return render(request, 'admin/show/detail.html', context)
 @user_passes_test(is_admin)
@@ -912,11 +916,16 @@ def admin_artist_detail(request, pk):
     # Récupérer les types associés à cet artiste via ArtistType
     artist_types = artist.a_artistTypes.all().select_related('type')
     
+    # Récupérer les spectacles auxquels cet artiste participe
+    # On passe par ArtistTypeShow -> Show
+    shows = Show.objects.filter(artistTypeShows__artist_type__artist=artist).distinct()
+    
     context = {
         'page_title': f'Détails Artiste : {artist.firstname} {artist.lastname}',
         'title': f'{artist.firstname} {artist.lastname}',
         'artist': artist,
         'artist_types': artist_types,
+        'shows': shows,
     }
     return render(request, 'admin/artist/detail.html', context)
 
