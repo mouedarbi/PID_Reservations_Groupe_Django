@@ -270,13 +270,17 @@ def admin_genre_index(request):
 @user_passes_test(is_admin)
 def admin_genre_create(request):
     """
-    Vue pour créer un nouveau genre.
+    Vue pour créer un nouveau genre avec traduction automatique.
     """
+    from catalogue.utils.translation import translate_genre
     if request.method == 'POST':
         form = GenreForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Genre créé avec succès.")
+            genre = form.save()
+            # Traduction automatique si les champs sont vides
+            if not genre.name_en or not genre.name_nl:
+                translate_genre(genre)
+            messages.success(request, "Genre créé et traduit avec succès.")
             return redirect('admin_genre_index')
     else:
         form = GenreForm()
@@ -998,23 +1002,48 @@ def admin_show_create(request):
 @user_passes_test(is_admin)
 def admin_show_edit(request, pk):
     """
-    View to edit an existing show in the custom admin dashboard.
+    View to edit an existing show and manage its artists via existing ArtistType mappings.
     """
     show = get_object_or_404(Show, pk=pk)
     
     if request.method == 'POST':
-        form = ShowForm(request.POST, instance=show)
+        # 1. Gérer l'ajout d'un artiste via son ArtistType (Déjà défini dans l'admin)
+        artist_type_id = request.POST.get('artist_type_id')
+        if artist_type_id:
+            artist_type = get_object_or_404(ArtistType, id=artist_type_id)
+            ArtistTypeShow.objects.get_or_create(show=show, artist_type=artist_type)
+            messages.success(request, f"Artiste ajouté au spectacle avec succès.")
+            return redirect('admin_show_edit', pk=show.id)
+
+        # 2. Gérer la suppression d'un artiste
+        remove_ats_id = request.POST.get('remove_ats_id')
+        if remove_ats_id:
+            ats = get_object_or_404(ArtistTypeShow, id=remove_ats_id)
+            if ats.show == show:
+                ats.delete()
+                messages.info(request, "Artiste retiré du spectacle.")
+                return redirect('admin_show_edit', pk=show.id)
+
+        # 3. Formulaire standard
+        form = ShowForm(request.POST, request.FILES, instance=show)
         if form.is_valid():
             form.save()
-            return redirect('admin_show_index')
+            messages.success(request, "Spectacle mis à jour.")
+            return redirect('admin_show_detail', pk=show.id)
     else:
         form = ShowForm(instance=show)
+
+    # Données pour l'interface de gestion des artistes
+    current_artists = show.artistTypeShows.all().select_related('artist_type__artist', 'artist_type__type')
+    all_roles_artists = ArtistType.objects.all().select_related('artist', 'type').order_by('artist__lastname')
 
     context = {
         'page_title': f'Modifier Spectacle : {show.title}',
         'title': 'Modifier le Spectacle',
         'show': show,
         'form': form,
+        'current_artists': current_artists,
+        'all_roles_artists': all_roles_artists,
     }
     return render(request, 'admin/show/edit.html', context)
 
