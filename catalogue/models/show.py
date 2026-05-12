@@ -26,6 +26,7 @@ class Show(models.Model):
     producer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='submitted_shows')
     status = models.CharField(max_length=20, choices=SHOW_STATUS, default='pending')
     external_url = models.URLField(max_length=255, null=True, blank=True)
+    genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, blank=True, related_name='shows')
 
     artist_types = models.ManyToManyField(
         "ArtistType",

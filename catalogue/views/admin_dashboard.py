@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
-from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType, ShowPrice, Notification, CriticRequest
+from catalogue.models import Reservation, Show, Genre, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType, ShowPrice, Notification, CriticRequest
 from catalogue.utils.ticketmaster import run_ticketmaster_import, run_ticketmaster_import_gen
 from catalogue.utils.opendata import run_opendata_import_gen
 from django.http import StreamingHttpResponse
@@ -14,6 +14,7 @@ from catalogue.forms.LocationForm import LocationForm
 from catalogue.forms.LocalityForm import LocalityForm
 from catalogue.forms.PriceForm import PriceForm
 from catalogue.forms.TypeForm import TypeForm
+from catalogue.forms.GenreForm import GenreForm
 from catalogue.forms.ReviewForm import ReviewForm
 from catalogue.forms.RepresentationForm import RepresentationForm
 from catalogue.forms.ReservationForm import ReservationForm
@@ -245,6 +246,70 @@ def admin_artist_index(request):
         'search_query': search_query,
     }
     return render(request, 'admin/artist/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_genre_index(request):
+    """
+    Vue pour lister les genres de spectacles dans le dashboard admin.
+    """
+    from catalogue.models.genre import Genre
+    genres = Genre.objects.all().order_by('name')
+
+    search_query = request.GET.get('q')
+    if search_query:
+        genres = genres.filter(name__icontains=search_query)
+
+    context = {
+        'page_title': 'Gestion des Genres',
+        'title': 'Genres de Spectacles',
+        'genres': genres,
+        'search_query': search_query,
+    }
+    return render(request, 'admin/genre/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_genre_create(request):
+    """
+    Vue pour créer un nouveau genre.
+    """
+    if request.method == 'POST':
+        form = GenreForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Genre créé avec succès.")
+            return redirect('admin_genre_index')
+    else:
+        form = GenreForm()
+
+    context = {
+        'page_title': 'Ajouter un Genre',
+        'title': 'Nouveau Genre',
+        'form': form,
+    }
+    return render(request, 'admin/genre/create.html', context)
+
+@user_passes_test(is_admin)
+def admin_genre_edit(request, pk):
+    """
+    Vue pour modifier un genre existant.
+    """
+    genre = get_object_or_404(Genre, pk=pk)
+    if request.method == 'POST':
+        form = GenreForm(request.POST, instance=genre)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Genre '{genre.name}' mis à jour.")
+            return redirect('admin_genre_index')
+    else:
+        form = GenreForm(instance=genre)
+
+    context = {
+        'page_title': f'Modifier Genre : {genre.name}',
+        'title': 'Modifier le Genre',
+        'genre': genre,
+        'form': form,
+    }
+    return render(request, 'admin/genre/edit.html', context)
 
 @user_passes_test(is_admin)
 def admin_type_index(request):
@@ -1311,6 +1376,7 @@ def admin_generic_delete(request, model_name, pk):
     model_map = {
         'artist': Artist,
         'show': Show,
+        'genre': Genre,
         'representation': Representation,
         'location': Location,
         'locality': Locality,
