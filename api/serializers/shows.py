@@ -22,6 +22,8 @@ class PressArticleSerializer(serializers.ModelSerializer):
 class ShowSerializer(serializers.ModelSerializer):
     price = serializers.SerializerMethodField()
     has_multiple_prices = serializers.ReadOnlyField()
+    is_bookable = serializers.ReadOnlyField()
+    has_upcoming_representations = serializers.ReadOnlyField()
     next_representation_date = serializers.ReadOnlyField()
     formatted_next_date = serializers.SerializerMethodField()
     poster = serializers.ImageField(use_url=True, required=False, allow_null=True)

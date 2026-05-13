@@ -73,6 +73,29 @@ class Show(models.Model):
         return self.prices.count() > 1
 
     @property
+    def has_upcoming_representations(self):
+        """
+        Return True if there is at least one upcoming representation.
+        """
+        from django.utils import timezone
+        return self.representations.filter(schedule__gte=timezone.now()).exists()
+
+    @property
+    def is_bookable(self):
+        """
+        Return True if there is at least one upcoming representation with available seats.
+        If bookable field is False, it overrides everything.
+        """
+        if not self.bookable:
+            return False
+            
+        from django.utils import timezone
+        return self.representations.filter(
+            schedule__gte=timezone.now(),
+            available_seats__gt=0
+        ).exists()
+
+    @property
     def next_representation_date(self):
         """
         Return the date of the next upcoming representation.

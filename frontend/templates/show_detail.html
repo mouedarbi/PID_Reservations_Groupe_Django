@@ -40,10 +40,12 @@
 
                 <!-- Badges Statut, Genre et Artistes -->
                 <div class="badge-row">
-                    {% if show.bookable %}
-                        <span class="badge badge-green">{% trans "Réservable" %}</span>
-                    {% else %}
-                        <span class="badge badge-gray">{% trans "Complet" %}</span>
+                    {% if show.has_upcoming_representations %}
+                        {% if show.is_bookable %}
+                            <span class="badge badge-green">{% trans "Réservable" %}</span>
+                        {% else %}
+                            <span class="badge badge-gray">{% trans "Complet" %}</span>
+                        {% endif %}
                     {% endif %}
 
                     {% if show.genre_name %}
@@ -105,10 +107,10 @@
 
                 <!-- Bouton d'action -->
                 <div>
-                    {% if show.bookable %}
+                    {% if show.is_bookable %}
                         <a href="#seances" class="cta-btn">
                             <i class="ph ph-armchair" aria-hidden="true"></i>
-                            {% trans "Réserver mes places" %}
+                            {% trans "Réservez mes places" %}
                         </a>
                     {% else %}
                         <button class="cta-btn disabled" disabled>

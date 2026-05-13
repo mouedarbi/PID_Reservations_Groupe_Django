@@ -14,35 +14,21 @@
         </div>
     </section>
 
-    <!-- Categories - Quick Filters (optional, for visual consistency) -->
-    <section class="categories-section">
-        <div class="categories-container">
-            <div class="categories-grid">
-                <div class="category-pill active">
-                    <span>🎫</span>
-                    <span>{% trans "Tous les événements" %}</span>
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-container">
+            <form method="GET" action="{% url 'frontend:show_list' %}" class="search-box">
+                <input type="text" name="q" class="search-input" placeholder="{% trans 'Rechercher un spectacle, artiste ou lieu...' %}" value="{{ search_query }}">
+                <div class="search-filters">
+                    <select name="genre" class="filter-select">
+                        <option value="">{% trans "Tous les genres" %}</option>
+                        {% for genre in genres %}
+                            <option value="{{ genre.id }}" {% if selected_genre == genre.id|stringformat:"s" %}selected{% endif %}>{{ genre.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn-primary">{% trans "Rechercher" %}</button>
                 </div>
-                <div class="category-pill">
-                    <span>🎸</span>
-                    <span>{% trans "Concerts" %}</span>
-                </div>
-                <div class="category-pill">
-                    <span>🎭</span>
-                    <span>{% trans "Théâtre" %}</span>
-                </div>
-                <div class="category-pill">
-                    <span>💃</span>
-                    <span>{% trans "Danse" %}</span>
-                </div>
-                <div class="category-pill">
-                    <span>😂</span>
-                    <span>{% trans "Comédie" %}</span>
-                </div>
-                <div class="category-pill">
-                    <span>🎪</span>
-                    <span>{% trans "Festivals" %}</span>
-                </div>
-            </div>
+            </form>
         </div>
     </section>
 
@@ -63,11 +49,12 @@
                             {% else %}
                                 <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&h=400&fit=crop" alt="{{ show.title }}">
                             {% endif %}
-                            {% if show.bookable %}
-
-                            <span class="show-badge">{% trans "Disponible" %}</span>
-                            {% else %}
-                            <span class="show-badge" style="background: #666;">{% trans "Complet" %}</span>
+                            {% if show.has_upcoming_representations %}
+                                {% if show.is_bookable %}
+                                <span class="show-badge">{% trans "Disponible" %}</span>
+                                {% else %}
+                                <span class="show-badge" style="background: #666;">{% trans "Complet" %}</span>
+                                {% endif %}
                             {% endif %}
                         </div>
                         <div class="show-info">
@@ -116,7 +103,7 @@
         
         <div class="pagination-container" style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 1rem; padding-bottom: 2rem;">
             {% if pagination.previous %}
-                <a href="?page={{ pagination.current_page|add:'-1' }}" class="btn-pagination">
+                <a href="?page={{ pagination.current_page|add:'-1' }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_genre %}&genre={{ selected_genre }}{% endif %}" class="btn-pagination">
                     <i class="ph ph-caret-left"></i> {% trans "Précédent" %}
                 </a>
             {% else %}
@@ -130,7 +117,7 @@
             </span>
 
             {% if pagination.next %}
-                <a href="?page={{ pagination.current_page|add:'1' }}" class="btn-pagination">
+                <a href="?page={{ pagination.current_page|add:'1' }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_genre %}&genre={{ selected_genre }}{% endif %}" class="btn-pagination">
                     {% trans "Suivant" %} <i class="ph ph-caret-right"></i>
                 </a>
             {% else %}

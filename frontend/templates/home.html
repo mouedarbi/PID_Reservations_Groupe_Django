@@ -12,63 +12,6 @@
         </div>
     </section>
 
-    <!-- Search Section -->
-    <section class="search-section">
-        <div class="search-container">
-            <div class="search-box">
-                <input type="text" class="search-input" placeholder="{% trans 'Rechercher un spectacle, artiste ou lieu...' %}">
-                <div class="search-filters">
-                    <select class="filter-select">
-                        <option>{% trans "Tous les genres" %}</option>
-                        <option>{% trans "Concert" %}</option>
-                        <option>{% trans "Théâtre" %}</option>
-                        <option>{% trans "Danse" %}</option>
-                        <option>{% trans "Comédie" %}</option>
-                    </select>
-                    <select class="filter-select">
-                        <option>{% trans "Toutes les dates" %}</option>
-                        <option>{% trans "Ce week-end" %}</option>
-                        <option>{% trans "Cette semaine" %}</option>
-                        <option>{% trans "Ce mois-ci" %}</option>
-                    </select>
-                    <button class="btn-primary">{% trans "Rechercher" %}</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Categories - Quick Filters -->
-    <section class="categories-section">
-        <div class="categories-container">
-            <div class="categories-grid">
-                <div class="category-pill active">
-                    <span>🎫</span>
-                    <span>{% trans "Tous les événements" %}</span>
-                </div>
-                <div class="category-pill">
-                    <span>🎸</span>
-                    <span>{% trans "Concerts" %}</span>
-                </div>
-                <div class="category-pill">
-                    <span>🎭</span>
-                    <span>{% trans "Théâtre" %}</span>
-                </div>
-                <div class="category-pill">
-                    <span>💃</span>
-                    <span>{% trans "Danse" %}</span>
-                </div>
-                <div class="category-pill">
-                    <span>😂</span>
-                    <span>{% trans "Comédie" %}</span>
-                </div>
-                <div class="category-pill">
-                    <span>🎪</span>
-                    <span>{% trans "Festivals" %}</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Shows Grid - DYNAMIC CONTENT -->
     <section class="shows-section">
         <div class="section-header">
@@ -86,10 +29,12 @@
                                     {% else %}
                                         <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&h=400&fit=crop" alt="{{ show.title }}">
                                     {% endif %}
-                                    {% if show.bookable %}
-                                    <span class="show-badge">{% trans "Disponible" %}</span>
-                                    {% else %}
-                                    <span class="show-badge" style="background: #666;">{% trans "Complet" %}</span>
+                                    {% if show.has_upcoming_representations %}
+                                        {% if show.is_bookable %}
+                                        <span class="show-badge">{% trans "Disponible" %}</span>
+                                        {% else %}
+                                        <span class="show-badge" style="background: #666;">{% trans "Complet" %}</span>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                                 <div class="show-info">
@@ -129,8 +74,53 @@
                         <p>{% trans "Aucun spectacle disponible pour le moment." %}</p>
                     {% endif %}
                 </div>
+            <!-- Press Articles Section -->
+            <section class="press-section" style="padding: 4rem 2rem; background: var(--bg-light);">
+                <div class="section-header" style="max-width: 1400px; margin: 0 auto 2rem;">
+                    <h2>{% trans "Articles de presse récents" %}</h2>
+                    <p>{% trans "L'actualité et les critiques de nos spectacles" %}</p>
+                </div>
+                <div class="articles-grid" style="max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+                    {% if press_articles %}
+                        {% for article in press_articles %}
+                        <a href="{% url 'frontend:press_article_detail' article.id %}" class="article-card-link" style="text-decoration: none; color: inherit;">
+                            <article class="article-card" style="background: white; border-radius: 15px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: all 0.3s; height: 100%; display: flex; flex-direction: column;">
+                                <div class="article-image" style="height: 200px; position: relative; overflow: hidden;">
+                                    {% if article.show_poster %}
+                                        <img src="{{ article.show_poster }}" alt="{{ article.show_title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    {% else %}
+                                        <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&h=400&fit=crop" alt="Default" style="width: 100%; height: 100%; object-fit: cover;">
+                                    {% endif %}
+                                    <div style="position: absolute; top: 1rem; left: 1rem; background: var(--primary); color: white; padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase;">
+                                        {{ article.show_title }}
+                                    </div>
+                                </div>
+                                <div class="article-info" style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column;">
+                                    <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                                        {{ article.created_at|date:"d M Y" }} • {% trans "Par" %} {{ article.user_name }}
+                                    </div>
+                                    <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.8rem; color: var(--text-primary); font-family: 'Playfair Display', serif;">{{ article.title }}</h3>
+                                    <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.5rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                        {{ article.summary }}
+                                    </p>
+                                    <div style="margin-top: auto; color: var(--primary); font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        {% trans "Lire l'article" %} <i class="ph ph-arrow-right"></i>
+                                    </div>
+                                </div>
+                            </article>
+                        </a>
+                        {% endfor %}
+                    {% else %}
+                        <p style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--text-secondary);">{% trans "Aucun article récent disponible." %}</p>
+                    {% endif %}
+                </div>
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="{% url 'frontend:press_article_list' %}" class="btn-primary" style="background: transparent; color: var(--primary); border: 2px solid var(--primary);">
+                        {% trans "Voir tous les articles" %}
+                    </a>
+                </div>
             </section>
-        
+
             <style>
                 .show-card-link {
                     text-decoration: none;
@@ -141,5 +131,10 @@
                 .show-card-link:hover {
                     transform: translateY(-5px);
                 }
+                .article-card-link:hover .article-card {
+                    transform: translateY(-5px);
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                    border-color: var(--primary);
+                }
             </style>
-        {% endblock %}
+            {% endblock %}
