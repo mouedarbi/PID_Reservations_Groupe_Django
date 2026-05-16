@@ -172,6 +172,54 @@
                     </div>
                 </div>
 
+                {% if is_edit %}
+                <div class="hr-label">{% trans "Gestion des Tarifs" %}</div>
+                <div style="background: #fdf2f8; padding: 1.5rem; border-radius: 8px; border: 1px solid #fbcfe8; margin-bottom: 2rem;">
+                    <h4 style="font-weight: 700; color: #9d174d; margin-bottom: 1rem;">{% trans "Tarifs actuels" %}</h4>
+                    
+                    <div style="margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        {% for sp in show_prices %}
+                        <div style="background: white; border: 1px solid #fbcfe8; padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 8px; font-size: 0.85rem;">
+                            <span style="font-weight: 600;">{{ sp.price.type }}</span>
+                            <span style="color: #db2777;">{{ sp.price.price }} €</span>
+                            <button type="submit" name="delete_price_id" value="{{ sp.id }}" style="background: none; border: none; color: #9d174d; cursor: pointer; padding: 0; display: flex; align-items: center;">
+                                <i class="ph ph-x-circle" style="font-size: 1.1rem;"></i>
+                            </button>
+                        </div>
+                        {% empty %}
+                        <p style="font-size: 0.85rem; color: #6b7280; font-style: italic;">{% trans "Aucun tarif défini. Vous devez en ajouter un pour que le spectacle soit réservable." %}</p>
+                        {% endfor %}
+                    </div>
+
+                    <div style="background: white; padding: 1rem; border-radius: 6px; border: 1px solid #fbcfe8;">
+                        <h5 style="font-size: 0.8rem; font-weight: 700; color: #9d174d; text-transform: uppercase; margin-bottom: 1rem;">{% trans "Ajouter un nouveau tarif" %}</h5>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.3rem;">{% trans "Nom du tarif" %}</label>
+                                <input type="text" name="type" placeholder="Ex: Adulte, Enfant..." style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.85rem;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.3rem;">{% trans "Prix (€)" %}</label>
+                                <input type="number" name="price" step="0.01" placeholder="0.00" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.85rem;">
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.3rem;">{% trans "Valide du" %}</label>
+                                <input type="date" name="start_date" value="{% now 'Y-m-d' %}" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.85rem;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.3rem;">{% trans "Au" %}</label>
+                                <input type="date" name="end_date" value="2026-12-31" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.85rem;">
+                            </div>
+                        </div>
+                        <button type="submit" name="create_price" value="1" style="width: 100%; background: #db2777; color: white; border: none; padding: 10px; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.9rem;">
+                            <i class="ph ph-plus-circle"></i> {% trans "Créer et ajouter ce tarif" %}
+                        </button>
+                    </div>
+                </div>
+                {% endif %}
+
                 <div style="display: flex; gap: 1rem;">
                     <button type="submit" id="submitBtn" style="flex: 1; background: #0284c7; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
                         {% if is_edit %}{% trans "Enregistrer" %}{% else %}{% trans "Soumettre pour validation" %}{% endif %}
