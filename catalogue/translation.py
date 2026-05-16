@@ -1,6 +1,7 @@
 from modeltranslation.translator import register, TranslationOptions
 from .models.show import Show
 from .models.type import Type
+from .models.genre import Genre
 from .models.location import Location
 from .models.price import Price
 from .models.locality import Locality
@@ -14,6 +15,10 @@ class ShowTranslationOptions(TranslationOptions):
 @register(Type)
 class TypeTranslationOptions(TranslationOptions):
     fields = ('type',)
+
+@register(Genre)
+class GenreTranslationOptions(TranslationOptions):
+    fields = ('name',)
 
 @register(Location)
 class LocationTranslationOptions(TranslationOptions):

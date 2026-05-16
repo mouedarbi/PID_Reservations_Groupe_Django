@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     auth, users, artists, types, artist_types, localities, locations, shows,
     representations, prices, cart, checkout, reservations, tickets, reviews,
-    producer, admin_api, affiliate, rss, public_api, press_articles
+    producer, admin_api, affiliate, rss, public_api, press_articles, genres
 )
 from .feeds import LatestRepresentationsFeed
 
@@ -24,6 +24,8 @@ urlpatterns = [
     # ARTISTS & CATEGORIES
     path('artists/', artists.ArtistsView.as_view(), name='artists-list-create'),
     path('artists/<int:pk>/', artists.ArtistsDetailView.as_view(), name='artists-detail'),
+
+    path('genres/', genres.GenresView.as_view(), name='genres-list'),
 
     path('types/', types.TypesView.as_view(), name='types-list-create'),
     path('types/<int:pk>/', types.TypesDetailView.as_view(), name='types-detail'),

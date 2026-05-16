@@ -1,0 +1,54 @@
+{% extends "admin/admin.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
+            <p class="text-small mt-1">Modifiez les informations du genre : <strong>{{ genre.name }}</strong></p>
+        </div>
+        <div>
+            <a href="{% url 'admin_genre_index' %}" class="flex items-center gap-2 rounded-lg bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300 transition dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700">
+                <i class="ph ph-arrow-left"></i>
+                <span>Retour à la liste</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="max-w-2xl border-border overflow-hidden rounded-lg border bg-bg p-6 dark:bg-[#040b1a]">
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            
+            {% for field in form %}
+            <div class="flex flex-col gap-1">
+                <label for="{{ field.id_for_label }}" class="text-text text-sm font-semibold">
+                    {{ field.label }}
+                </label>
+                {{ field }}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <p class="text-xs text-red-500">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div class="pt-4 flex gap-3">
+                <button type="submit" class="flex-1 rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700 transition">
+                    Mettre à jour le genre
+                </button>
+                <a href="{% url 'admin_generic_delete' 'genre' genre.id %}" class="rounded-lg bg-red-600 px-6 py-2 text-white hover:bg-red-700 transition" onclick="return confirm('Supprimer ce genre ?');">
+                    Supprimer
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

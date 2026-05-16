@@ -24,6 +24,7 @@ from catalogue.views.admin_dashboard import (
     admin_price_index, admin_show_detail, admin_artist_create, admin_artist_edit,
     artist_type_list, artist_type_create, artist_type_edit, artist_type_delete,
     admin_artist_detail, admin_show_create, admin_show_edit,
+    admin_genre_index, admin_genre_create, admin_genre_edit,
     admin_location_create, admin_location_edit, admin_location_detail,
     admin_locality_create, admin_locality_edit, admin_locality_detail,
     admin_export_localities_csv, admin_import_localities_csv, admin_download_locality_template,
@@ -94,8 +95,11 @@ urlpatterns += i18n_patterns(
     path('admin-dashboard/artist-types/<int:pk>/edit/', artist_type_edit, name='artist_type_edit'),
     path('admin-dashboard/artist-types/<int:pk>/delete/', artist_type_delete, name='artist_type_delete'),
 
-    # Types
+    # Types et Genres
     path('admin-dashboard/types/', admin_type_index, name='admin_type_index'),
+    path('admin-dashboard/genres/', admin_genre_index, name='admin_genre_index'),
+    path('admin-dashboard/genres/create/', admin_genre_create, name='admin_genre_create'),
+    path('admin-dashboard/genres/<int:pk>/edit/', admin_genre_edit, name='admin_genre_edit'),
     path('admin-dashboard/types/create/', admin_type_create, name='admin_type_create'),
     path('admin-dashboard/types/<int:pk>/', admin_type_detail, name='admin_type_detail'),
     path('admin-dashboard/types/<int:pk>/edit/', admin_type_edit, name='admin_type_edit'),

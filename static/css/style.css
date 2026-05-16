@@ -380,6 +380,80 @@
             font-size: 0.9rem;
         }
 
+        /* --- Custom Show Card & Pagination Styles (from home/show_list) --- */
+        .show-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .show-card-link:hover {
+            transform: translateY(-5px);
+        }
+        .btn-pagination {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            background: white;
+            border: 1px solid var(--border-color);
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .btn-pagination:hover:not(.disabled) {
+            background: var(--bg-light);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .btn-pagination.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f9fafb;
+        }
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-bottom: 2rem;
+        }
+        .pagination-info {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .hero-small {
+            background: var(--bg-dark);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        .hero-small h1 {
+            font-size: 2.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem 0;
+            background: var(--bg-light);
+            border-radius: 12px;
+        }
+        .no-results h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .no-results p {
+            color: var(--text-secondary);
+            margin: 0.5rem 0 1.5rem;
+        }
+
         /* Footer */
         .footer {
             background: var(--bg-light);

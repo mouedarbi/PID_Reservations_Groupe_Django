@@ -26,6 +26,7 @@ class Show(models.Model):
     producer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='submitted_shows')
     status = models.CharField(max_length=20, choices=SHOW_STATUS, default='pending')
     external_url = models.URLField(max_length=255, null=True, blank=True)
+    genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, blank=True, related_name='shows')
 
     artist_types = models.ManyToManyField(
         "ArtistType",
@@ -70,6 +71,29 @@ class Show(models.Model):
         Return True if the show has more than one price associated.
         """
         return self.prices.count() > 1
+
+    @property
+    def has_upcoming_representations(self):
+        """
+        Return True if there is at least one upcoming representation.
+        """
+        from django.utils import timezone
+        return self.representations.filter(schedule__gte=timezone.now()).exists()
+
+    @property
+    def is_bookable(self):
+        """
+        Return True if there is at least one upcoming representation with available seats.
+        If bookable field is False, it overrides everything.
+        """
+        if not self.bookable:
+            return False
+            
+        from django.utils import timezone
+        return self.representations.filter(
+            schedule__gte=timezone.now(),
+            available_seats__gt=0
+        ).exists()
 
     @property
     def next_representation_date(self):

@@ -6,8 +6,6 @@
 {% block extra_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-main-style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-1.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-2.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -41,13 +39,11 @@
                     <p class="text-muted text-sm mt-1">ID: #{{ artist.id }}</p>
                 </div>
             </div>
-        </div>
 
-        <!-- Détails et Relations -->
-        <div class="md:col-span-2 space-y-6">
+            <!-- Rôles -->
             <div class="border-border overflow-hidden rounded-lg border bg-bg dark:bg-[#040b1a]">
                 <div class="border-b border-border bg-gray-50/50 px-6 py-4 dark:bg-gray-900/50">
-                    <h4 class="font-bold text-text">Rôles / Types d'artiste</h4>
+                    <h4 class="font-bold text-text text-sm uppercase tracking-wider">Rôles habituels</h4>
                 </div>
                 <div class="p-6">
                     {% if artist_types %}
@@ -59,7 +55,63 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                        <p class="text-muted italic text-sm">Aucun rôle défini pour cet artiste.</p>
+                        <p class="text-muted italic text-sm">Aucun rôle défini.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Spectacles auxquels participe l'artiste -->
+        <div class="md:col-span-2 space-y-6">
+            <div class="border-border overflow-hidden rounded-lg border bg-bg dark:bg-[#040b1a]">
+                <div class="border-b border-border bg-gray-50/50 px-6 py-4 dark:bg-gray-900/50 flex items-center justify-between">
+                    <h4 class="font-bold text-text">Spectacles associés</h4>
+                    <span class="bg-blue-100 text-blue-600 text-xs font-bold px-2.5 py-0.5 rounded-full dark:bg-blue-900/30 dark:text-blue-400">
+                        {{ shows|length }}
+                    </span>
+                </div>
+                <div class="p-6">
+                    {% if shows %}
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {% for show in shows %}
+                            <div class="group border-border relative overflow-hidden rounded-xl border bg-bg transition hover:shadow-md dark:bg-[#081225]">
+                                <div class="aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
+                                    {% if show.poster %}
+                                        <img src="{{ show.poster.url }}" alt="{{ show.title }}" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+                                    {% else %}
+                                        <div class="flex h-full w-full items-center justify-center text-muted">
+                                            <i class="ph ph-image text-4xl opacity-20"></i>
+                                        </div>
+                                    {% endif %}
+                                    
+                                    <!-- Badge Genre -->
+                                    {% if show.genre %}
+                                    <div class="absolute top-2 left-2">
+                                        <span class="rounded-md bg-black/60 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm uppercase">
+                                            {{ show.genre.name_fr|default:show.genre.name }}
+                                        </span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="p-4">
+                                    <h5 class="text-text line-clamp-1 font-bold">{{ show.title }}</h5>
+                                    <div class="mt-2 flex items-center justify-between">
+                                        <span class="text-muted text-xs">
+                                            <i class="ph ph-map-pin mr-1"></i>{{ show.location.designation|truncatechars:20|default:"Lieu inconnu" }}
+                                        </span>
+                                        <a href="{% url 'admin_show_detail' show.id %}" class="text-blue-600 hover:text-blue-800 transition">
+                                            <i class="ph ph-arrow-square-out text-xl"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="flex flex-col items-center py-10 text-center">
+                            <i class="ph ph-ticket text-5xl text-muted opacity-20 mb-3"></i>
+                            <p class="text-muted italic">Cet artiste ne participe à aucun spectacle pour le moment.</p>
+                        </div>
                     {% endif %}
                 </div>
             </div>

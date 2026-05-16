@@ -31,6 +31,37 @@ class ShowsView(APIView):
         else:
             shows_queryset = Show.objects.filter(status='published').order_by('id')
 
+        # Filtering
+        search_query = request.query_params.get('search')
+        if search_query:
+            from django.db.models import Q
+            shows_queryset = shows_queryset.filter(
+                Q(title__icontains=search_query) |
+                Q(description__icontains=search_query) |
+                Q(location__designation__icontains=search_query) |
+                Q(artist_types__artist__firstname__icontains=search_query) |
+                Q(artist_types__artist__lastname__icontains=search_query)
+            ).distinct()
+
+        genre_id = request.query_params.get('genre')
+        if genre_id and genre_id.isdigit():
+            shows_queryset = shows_queryset.filter(genre_id=genre_id)
+
+        # Ordering
+        ordering = request.query_params.get('ordering')
+        if ordering == 'next_date':
+            from django.db.models import Min, Q
+            from django.utils import timezone
+            shows_queryset = shows_queryset.annotate(
+                next_date=Min('representations__schedule', filter=Q(representations__schedule__gte=timezone.now()))
+            ).order_by('next_date', 'id')
+        elif ordering == '-next_date':
+            from django.db.models import Min, Q
+            from django.utils import timezone
+            shows_queryset = shows_queryset.annotate(
+                next_date=Min('representations__schedule', filter=Q(representations__schedule__gte=timezone.now()))
+            ).order_by('-next_date', 'id')
+
         # 1. CAS : UTILISATEUR API (via X-Api-Key)
         if hasattr(request, 'affiliate'):
             tier = request.affiliate.tier.name if request.affiliate.tier else 'Free'

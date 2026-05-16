@@ -5,7 +5,7 @@ class TypeManager(models.Manager):
         return self.get(type=type,)
 
 class Type(models.Model):
-    type =  models.CharField(max_length=60)
+    type =  models.CharField(max_length=60, unique=True)
 
     objects = TypeManager()
 

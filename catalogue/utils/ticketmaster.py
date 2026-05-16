@@ -51,7 +51,8 @@ def run_ticketmaster_import_gen():
     from django.utils.text import slugify
     from django.utils.dateparse import parse_datetime
     from django.core.files.base import ContentFile
-    from catalogue.models import Show, Location, Locality, Representation
+    from catalogue.models import Show, Location, Locality, Representation, Artist, Type, Genre, ArtistType, ArtistTypeShow
+    from catalogue.utils.translation import translate_type, translate_genre, translate_text
     import datetime
     import requests
     import os
@@ -202,6 +203,64 @@ def run_ticketmaster_import_gen():
                     _, rep_created = Representation.objects.get_or_create(show=show, schedule=schedule, defaults={'location': location, 'available_seats': 100})
                     if rep_created:
                         yield f"   -> Nouvelle date ajoutée : {local_date}\n"
+
+            # 5. Artistes et Genres
+            try:
+                classifications = event.get('classifications', [])
+                genre_tm_name = "Theatre"
+                if classifications:
+                    genre_tm_name = classifications[0].get('genre', {}).get('name', 'Theatre')
+                
+                # A. Gestion du Genre (Spectacle)
+                translated_genre_fr = translate_text(genre_tm_name, 'fr')
+                genre_obj = Genre.objects.filter(name__iexact=genre_tm_name).first()
+                if not genre_obj:
+                    genre_obj = Genre.objects.filter(name__iexact=translated_genre_fr).first()
+                
+                if not genre_obj:
+                    genre_obj = Genre.objects.create(name=genre_tm_name)
+                    translate_genre(genre_obj)
+                
+                # Affectation du genre au spectacle
+                if show.genre != genre_obj:
+                    show.genre = genre_obj
+                    show.save()
+
+                # B. Gestion du Type (Rôle Artiste) - Par défaut 'comédien'
+                role_name = "comédien"
+                type_obj, t_created = Type.objects.get_or_create(type=role_name)
+                if t_created:
+                    translate_type(type_obj)
+                
+                # C. Récupération des attractions (artistes)
+                attractions = event.get('_embedded', {}).get('attractions', [])
+                if not attractions:
+                    attractions = [{'name': name, 'type': 'attraction'}]
+
+                for attraction in attractions:
+                    if attraction.get('type') == 'attraction':
+                        full_name = attraction.get('name')
+                        if full_name:
+                            parts = full_name.split()
+                            if len(parts) > 1:
+                                firstname = " ".join(parts[:-1])
+                                lastname = parts[-1]
+                            else:
+                                firstname = ""
+                                lastname = full_name
+                            
+                            artist, _ = Artist.objects.get_or_create(firstname=firstname, lastname=lastname)
+                            
+                            # Lien Artist-Type (Haroun en tant que comédien)
+                            artist_type, _ = ArtistType.objects.get_or_create(artist=artist, type=type_obj)
+                            
+                            # Lien Show-ArtistType (Casting du spectacle)
+                            ArtistTypeShow.objects.get_or_create(show=show, artist_type=artist_type)
+                
+                yield f"   -> Genre: {genre_obj.name_fr} | Artistes: {len(attractions)}\n"
+
+            except Exception as art_err:
+                yield f"   -> [Erreur artistes : {art_err}]\n"
 
         except Exception as e:
             yield f" [ERREUR : {str(e)}]\n"

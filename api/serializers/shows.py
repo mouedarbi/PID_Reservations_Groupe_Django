@@ -22,17 +22,34 @@ class PressArticleSerializer(serializers.ModelSerializer):
 class ShowSerializer(serializers.ModelSerializer):
     price = serializers.SerializerMethodField()
     has_multiple_prices = serializers.ReadOnlyField()
+    is_bookable = serializers.ReadOnlyField()
+    has_upcoming_representations = serializers.ReadOnlyField()
     next_representation_date = serializers.ReadOnlyField()
     formatted_next_date = serializers.SerializerMethodField()
     poster = serializers.ImageField(use_url=True, required=False, allow_null=True)
     representations = RepresentationSerializer(many=True, read_only=True)
     reviews = serializers.SerializerMethodField()
     press_articles = serializers.SerializerMethodField()
+    
+    # Nouveaux champs pour Genre et Artistes
+    genre_name = serializers.CharField(source='genre.name_fr', read_only=True, default='')
+    artists_list = serializers.SerializerMethodField()
 
     class Meta:
         model = Show
         fields = '__all__'
         depth = 1
+
+    def get_artists_list(self, obj):
+        """Retourne la liste des noms complets des artistes participants."""
+        # On passe par ArtistTypeShow -> ArtistType -> Artist
+        artist_names = []
+        for ats in obj.artistTypeShows.all().select_related('artist_type__artist'):
+            artist = ats.artist_type.artist
+            name = f"{artist.firstname} {artist.lastname}".strip()
+            if name and name not in artist_names:
+                artist_names.append(name)
+        return artist_names
 
     def to_representation(self, instance):
         """

@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
 from django.contrib.auth.models import User
-from catalogue.models import Reservation, Show, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType, ShowPrice, Notification, CriticRequest
+from catalogue.models import Reservation, Show, Genre, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType, ShowPrice, Notification, CriticRequest
 from catalogue.utils.ticketmaster import run_ticketmaster_import, run_ticketmaster_import_gen
 from catalogue.utils.opendata import run_opendata_import_gen
 from django.http import StreamingHttpResponse
@@ -14,6 +14,7 @@ from catalogue.forms.LocationForm import LocationForm
 from catalogue.forms.LocalityForm import LocalityForm
 from catalogue.forms.PriceForm import PriceForm
 from catalogue.forms.TypeForm import TypeForm
+from catalogue.forms.GenreForm import GenreForm
 from catalogue.forms.ReviewForm import ReviewForm
 from catalogue.forms.RepresentationForm import RepresentationForm
 from catalogue.forms.ReservationForm import ReservationForm
@@ -245,6 +246,74 @@ def admin_artist_index(request):
         'search_query': search_query,
     }
     return render(request, 'admin/artist/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_genre_index(request):
+    """
+    Vue pour lister les genres de spectacles dans le dashboard admin.
+    """
+    from catalogue.models.genre import Genre
+    genres = Genre.objects.all().order_by('name')
+
+    search_query = request.GET.get('q')
+    if search_query:
+        genres = genres.filter(name__icontains=search_query)
+
+    context = {
+        'page_title': 'Gestion des Genres',
+        'title': 'Genres de Spectacles',
+        'genres': genres,
+        'search_query': search_query,
+    }
+    return render(request, 'admin/genre/index.html', context)
+
+@user_passes_test(is_admin)
+def admin_genre_create(request):
+    """
+    Vue pour créer un nouveau genre avec traduction automatique.
+    """
+    from catalogue.utils.translation import translate_genre
+    if request.method == 'POST':
+        form = GenreForm(request.POST)
+        if form.is_valid():
+            genre = form.save()
+            # Traduction automatique si les champs sont vides
+            if not genre.name_en or not genre.name_nl:
+                translate_genre(genre)
+            messages.success(request, "Genre créé et traduit avec succès.")
+            return redirect('admin_genre_index')
+    else:
+        form = GenreForm()
+
+    context = {
+        'page_title': 'Ajouter un Genre',
+        'title': 'Nouveau Genre',
+        'form': form,
+    }
+    return render(request, 'admin/genre/create.html', context)
+
+@user_passes_test(is_admin)
+def admin_genre_edit(request, pk):
+    """
+    Vue pour modifier un genre existant.
+    """
+    genre = get_object_or_404(Genre, pk=pk)
+    if request.method == 'POST':
+        form = GenreForm(request.POST, instance=genre)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Genre '{genre.name}' mis à jour.")
+            return redirect('admin_genre_index')
+    else:
+        form = GenreForm(instance=genre)
+
+    context = {
+        'page_title': f'Modifier Genre : {genre.name}',
+        'title': 'Modifier le Genre',
+        'genre': genre,
+        'form': form,
+    }
+    return render(request, 'admin/genre/edit.html', context)
 
 @user_passes_test(is_admin)
 def admin_type_index(request):
@@ -824,6 +893,9 @@ def admin_show_detail(request, pk):
     # Récupérer les prix associés à ce spectacle via le modèle ShowPrice
     show_prices = show.showprice_set.select_related('price').all()
 
+    # Récupérer les artistes participants
+    artists_participating = show.artistTypeShows.all().select_related('artist_type__artist', 'artist_type__type')
+
     # Récupérer tous les prix qui ne sont pas encore associés à ce spectacle
     existing_price_ids = [sp.price.id for sp in show_prices]
     available_prices = Price.objects.exclude(id__in=existing_price_ids)
@@ -835,6 +907,7 @@ def admin_show_detail(request, pk):
         'show_prices': show_prices,
         'available_prices': available_prices,
         'representations': representations,
+        'artists': artists_participating,
     }
     return render(request, 'admin/show/detail.html', context)
 @user_passes_test(is_admin)
@@ -847,11 +920,16 @@ def admin_artist_detail(request, pk):
     # Récupérer les types associés à cet artiste via ArtistType
     artist_types = artist.a_artistTypes.all().select_related('type')
     
+    # Récupérer les spectacles auxquels cet artiste participe
+    # On passe par ArtistTypeShow -> Show
+    shows = Show.objects.filter(artistTypeShows__artist_type__artist=artist).distinct()
+    
     context = {
         'page_title': f'Détails Artiste : {artist.firstname} {artist.lastname}',
         'title': f'{artist.firstname} {artist.lastname}',
         'artist': artist,
         'artist_types': artist_types,
+        'shows': shows,
     }
     return render(request, 'admin/artist/detail.html', context)
 
@@ -924,23 +1002,48 @@ def admin_show_create(request):
 @user_passes_test(is_admin)
 def admin_show_edit(request, pk):
     """
-    View to edit an existing show in the custom admin dashboard.
+    View to edit an existing show and manage its artists via existing ArtistType mappings.
     """
     show = get_object_or_404(Show, pk=pk)
     
     if request.method == 'POST':
-        form = ShowForm(request.POST, instance=show)
+        # 1. Gérer l'ajout d'un artiste via son ArtistType (Déjà défini dans l'admin)
+        artist_type_id = request.POST.get('artist_type_id')
+        if artist_type_id:
+            artist_type = get_object_or_404(ArtistType, id=artist_type_id)
+            ArtistTypeShow.objects.get_or_create(show=show, artist_type=artist_type)
+            messages.success(request, f"Artiste ajouté au spectacle avec succès.")
+            return redirect('admin_show_edit', pk=show.id)
+
+        # 2. Gérer la suppression d'un artiste
+        remove_ats_id = request.POST.get('remove_ats_id')
+        if remove_ats_id:
+            ats = get_object_or_404(ArtistTypeShow, id=remove_ats_id)
+            if ats.show == show:
+                ats.delete()
+                messages.info(request, "Artiste retiré du spectacle.")
+                return redirect('admin_show_edit', pk=show.id)
+
+        # 3. Formulaire standard
+        form = ShowForm(request.POST, request.FILES, instance=show)
         if form.is_valid():
             form.save()
-            return redirect('admin_show_index')
+            messages.success(request, "Spectacle mis à jour.")
+            return redirect('admin_show_detail', pk=show.id)
     else:
         form = ShowForm(instance=show)
+
+    # Données pour l'interface de gestion des artistes
+    current_artists = show.artistTypeShows.all().select_related('artist_type__artist', 'artist_type__type')
+    all_roles_artists = ArtistType.objects.all().select_related('artist', 'type').order_by('artist__lastname')
 
     context = {
         'page_title': f'Modifier Spectacle : {show.title}',
         'title': 'Modifier le Spectacle',
         'show': show,
         'form': form,
+        'current_artists': current_artists,
+        'all_roles_artists': all_roles_artists,
     }
     return render(request, 'admin/show/edit.html', context)
 
@@ -1311,6 +1414,7 @@ def admin_generic_delete(request, model_name, pk):
     model_map = {
         'artist': Artist,
         'show': Show,
+        'genre': Genre,
         'representation': Representation,
         'location': Location,
         'locality': Locality,

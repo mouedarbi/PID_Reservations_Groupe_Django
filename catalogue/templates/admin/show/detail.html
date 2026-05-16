@@ -56,9 +56,55 @@
                         <p class="font-medium">{{ show.location.designation }}</p>
                     </div>
                     <div>
+                        <p class="text-xs text-muted uppercase tracking-wider">Genre</p>
+                        <p class="font-medium text-blue-600">
+                            {% if show.genre %}
+                                {{ show.genre.name_fr|default:show.genre.name }}
+                            {% else %}
+                                <span class="text-muted italic">Non défini</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div>
                         <p class="text-xs text-muted uppercase tracking-wider">Réservable</p>
                         <p class="font-medium">{% if show.bookable %}Oui{% else %}Non{% endif %}</p>
                     </div>
+                </div>
+            </div>
+
+            <!-- Carte Artistes -->
+            <div class="border-border rounded-xl border bg-bg dark:bg-[#040b1a]">
+                <div class="p-6 border-b border-border bg-gray-50/50 dark:bg-gray-900/50">
+                    <h3 class="text-lg font-bold flex items-center gap-2">
+                        <i class="ph ph-users text-blue-500"></i>
+                        Artistes
+                    </h3>
+                </div>
+                <div class="p-6">
+                    {% if artists %}
+                        <div class="space-y-4">
+                            {% for ats in artists %}
+                                <div class="flex items-center justify-between group">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 font-bold">
+                                            {{ ats.artist_type.artist.firstname|slice:":1" }}{{ ats.artist_type.artist.lastname|slice:":1" }}
+                                        </div>
+                                        <div>
+                                            <a href="{% url 'admin_artist_detail' ats.artist_type.artist.id %}" class="font-bold text-text hover:text-blue-600 transition">
+                                                {{ ats.artist_type.artist.firstname }} {{ ats.artist_type.artist.lastname }}
+                                            </a>
+                                            <p class="text-xs text-muted">{{ ats.artist_type.type.type }}</p>
+                                        </div>
+                                    </div>
+                                    <a href="{% url 'admin_artist_detail' ats.artist_type.artist.id %}" class="opacity-0 group-hover:opacity-100 transition text-blue-600">
+                                        <i class="ph ph-arrow-square-out text-xl"></i>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted italic text-center py-4">Aucun artiste associé.</p>
+                    {% endif %}
                 </div>
             </div>
         </div>

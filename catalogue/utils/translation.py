@@ -52,13 +52,62 @@ def translate_review(review_obj):
         return
 
     # Traduction vers les 3 langues cibles
-    # Note: 'auto' détectera si le texte est déjà dans la langue cible.
     review_obj.review_fr = translate_text(original_text, 'fr')
     review_obj.review_en = translate_text(original_text, 'en')
     review_obj.review_nl = translate_text(original_text, 'nl')
     
-    # On sauvegarde sans déclencher à nouveau les signaux si possible
     review_obj.save()
+
+def translate_type(type_obj):
+    """
+    Traduit un objet Type dans les 3 langues (FR, EN, NL) via LibreTranslate.
+    Gère les conflits d'unicité si la traduction existe déjà.
+    """
+    from django.db import IntegrityError
+    original_text = type_obj.type
+    if not original_text:
+        return
+
+    # Traduire vers les langues cibles
+    translated_fr = translate_text(original_text, 'fr')
+    translated_en = translate_text(original_text, 'en')
+    translated_nl = translate_text(original_text, 'nl')
+    
+    try:
+        type_obj.type_fr = translated_fr
+        type_obj.type_en = translated_en
+        type_obj.type_nl = translated_nl
+        type_obj.save()
+    except IntegrityError:
+        # Si la traduction FR (qui est souvent le champ 'type' principal) existe déjà
+        # On ne peut pas mettre à jour cet objet car il créerait un doublon.
+        print(f"Conflit de traduction pour '{original_text}' -> '{translated_fr}' existe déjà.")
+        return False
+    return True
+
+def translate_genre(genre_obj):
+    """
+    Traduit un objet Genre dans les 3 langues (FR, EN, NL) via LibreTranslate.
+    """
+    from django.db import IntegrityError
+    original_text = genre_obj.name
+    if not original_text:
+        return
+
+    # Traduire vers les langues cibles
+    translated_fr = translate_text(original_text, 'fr')
+    translated_en = translate_text(original_text, 'en')
+    translated_nl = translate_text(original_text, 'nl')
+    
+    try:
+        genre_obj.name_fr = translated_fr
+        genre_obj.name_en = translated_en
+        genre_obj.name_nl = translated_nl
+        genre_obj.save()
+    except IntegrityError:
+        print(f"Conflit de traduction pour le genre '{original_text}' -> '{translated_fr}' existe déjà.")
+        return False
+    return True
 
 def translate_press_article(article_obj):
     """

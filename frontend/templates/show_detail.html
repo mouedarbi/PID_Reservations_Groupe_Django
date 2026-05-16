@@ -7,87 +7,116 @@
 <section class="show-detail-section">
     <div class="container">
         {% if show %}
-        <div class="show-detail-grid">
-            <div class="show-detail-image">
+        <div class="show-wrap">
+            <!-- Poster du spectacle -->
+            <div class="show-poster">
                 {% if show.poster %}
                     <img src="{{ show.poster }}" alt="{{ show.title }}">
                 {% else %}
                     <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&h=1200&fit=crop" alt="{{ show.title }}">
                 {% endif %}
             </div>
-            <div class="show-detail-content">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url 'frontend:show_list' %}">{% trans "Spectacles" %}</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ show.title }}</li>
-                    </ol>
+
+            <!-- Contenu du spectacle -->
+            <div class="show-content">
+                <!-- Fil d'Ariane -->
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="{% url 'frontend:show_list' %}">{% trans "Spectacles" %}</a>
+                    <i class="ph ph-caret-right" aria-hidden="true"></i>
+                    <span>{{ show.title }}</span>
                 </nav>
-                
-                <div style="display: table; width: 100%; margin-bottom: 1rem;">
-                    <div style="display: table-cell; vertical-align: middle;">
-                        <h1 class="show-title" style="margin: 0;">{{ show.title }}</h1>
-                    </div>
+
+                <!-- Titre et Bouton Edition Rapide -->
+                <div class="flex-between">
+                    <h1 class="show-title">{{ show.title }}</h1>
                     {% if user.is_authenticated %}
-                        <div style="display: table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 1px;">
-                            {% if user.is_staff or user.is_superuser %}
-                                <a href="{% url 'admin_show_edit' show.id %}" class="btn-edit-quick" title="{% trans 'Modifier dans le Dashboard Admin' %}">
-                                    <i class="ph ph-pencil-simple-line"></i> {% trans "Éditer (Admin)" %}
-                                </a>
-                            {% elif "PRODUCER" in user.groups.all|join:"," and show.producer.id == user.id %}
-                                <a href="{% url 'catalogue:prod_edit_show' show.id %}" class="btn-edit-quick" style="background: #0284c7; border-color: #0284c7;" title="{% trans 'Modifier dans mon Espace Producteur' %}">
-                                    <i class="ph ph-pencil-simple-line"></i> {% trans "Éditer" %}
-                                </a>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <div class="show-badges mb-4">
-                    {% if show.bookable %}
-                    <span class="badge bg-success">{% trans "Réservable" %}</span>
-                    {% else %}
-                    <span class="badge bg-secondary">{% trans "Non réservable" %}</span>
-                    {% endif %}
-                    
-                    {% if show.artist_types %}
-                        {% for artist_type in show.artist_types %}
-                            <span class="badge bg-primary">{{ artist_type.name }}</span>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-
-                <div class="show-description mb-4">
-                    <h3>{% trans "Description" %}</h3>
-                    <p>{{ show.description|default:_("Aucune description disponible.") }}</p>
-                </div>
-
-                <div class="show-info-list mb-4">
-                    <div class="info-item">
-                        <strong>📍 {% trans "Lieu :" %}</strong> 
-                        {% if show.location %}
-                            {{ show.location.designation }} ({{ show.location.locality.postal_code }} {{ show.location.locality.locality }})
-                        {% else %}
-                            {% trans "Lieu non défini" %}
+                        {% if user.is_staff or user.is_superuser %}
+                            <a href="{% url 'admin_show_edit' show.id %}" class="btn-edit-small" title="{% trans 'Modifier dans le Dashboard Admin' %}">
+                                <i class="ph ph-pencil-simple"></i>
+                            </a>
                         {% endif %}
+                    {% endif %}
+                </div>
+
+                <!-- Badges Statut, Genre et Artistes -->
+                <div class="badge-row">
+                    {% if show.has_upcoming_representations %}
+                        {% if show.is_bookable %}
+                            <span class="badge badge-green">{% trans "Réservable" %}</span>
+                        {% else %}
+                            <span class="badge badge-gray">{% trans "Complet" %}</span>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if show.genre_name %}
+                        <span class="badge badge-genre">{{ show.genre_name|upper }}</span>
+                    {% endif %}
+
+                    {% for artist_name in show.artists_list %}
+                        <span class="badge badge-artist">{{ artist_name }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Description -->
+                <p class="show-description">
+                    {{ show.description|default:_("Aucune description disponible pour ce spectacle.") }}
+                </p>
+
+                <!-- Grille d'informations -->
+                <div class="info-grid">
+                    <div class="info-card">
+                        <i class="ph ph-map-pin" aria-hidden="true"></i>
+                        <div class="info-card-text">
+                            <span class="info-label">{% trans "Lieu" %}</span>
+                            <span class="info-value">
+                                {% if show.location %}
+                                    {{ show.location.designation }}
+                                {% else %}
+                                    {% trans "Lieu non défini" %}
+                                {% endif %}
+                            </span>
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <strong>⏱ {% trans "Durée :" %}</strong> {{ show.duration|default:"N/A" }} {% trans "minutes" %}
+                    <div class="info-card">
+                        <i class="ph ph-clock" aria-hidden="true"></i>
+                        <div class="info-card-text">
+                            <span class="info-label">{% trans "Durée" %}</span>
+                            <span class="info-value">{{ show.duration|default:"N/A" }} {% trans "minutes" %}</span>
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <strong>📅 {% trans "Année de création :" %}</strong> {{ show.created_in }}
+                    <div class="info-card">
+                        <i class="ph ph-calendar-blank" aria-hidden="true"></i>
+                        <div class="info-card-text">
+                            <span class="info-label">{% trans "Création" %}</span>
+                            <span class="info-value">{{ show.created_in }}</span>
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <strong>💰 {% trans "Prix :" %}</strong> 
-                        {% if show.has_multiple_prices %}{% trans "à partir de" %} {% endif %}
-                        {{ show.price|default:"25.00" }}€
+                    <div class="info-card">
+                        <i class="ph ph-ticket" aria-hidden="true"></i>
+                        <div class="info-card-text">
+                            <span class="info-label">{% trans "Tarif" %}</span>
+                            <span class="price-highlight">
+                                {% if show.has_multiple_prices %}{% trans "à partir de" %} {% endif %}
+                                {{ show.price|default:"25.00" }}€
+                            </span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="show-actions mt-5">
-                    {% if show.bookable %}
-                        <a href="#seances" class="btn-primary btn-lg">{% trans "Réserver mes places" %}</a>
+                <!-- Bouton d'action -->
+                <div>
+                    {% if show.is_bookable %}
+                        <a href="#seances" class="cta-btn">
+                            <i class="ph ph-armchair" aria-hidden="true"></i>
+                            {% trans "Réservez mes places" %}
+                        </a>
                     {% else %}
-                        <button class="btn btn-secondary btn-lg" disabled>{% trans "Complet" %}</button>
+                        <button class="cta-btn disabled" disabled>
+                            <i class="ph ph-warning-circle" aria-hidden="true"></i>
+                            {% trans "Plus de places" %}
+                        </button>
                     {% endif %}
                 </div>
             </div>
@@ -95,7 +124,7 @@
         
         <!-- Section Représentations -->
         <div class="representations-list mt-5" id="seances">
-            <h3>{% trans "Prochaines représentations" %}</h3>
+            <h3 class="section-title">{% trans "Prochaines représentations" %}</h3>
             {% if show.representations %}
                 <div class="rep-grid mt-4">
                     {% for rep in show.representations %}
@@ -128,7 +157,7 @@
                             {% if rep.available_seats > 0 %}
                                 <a href="{% url 'catalogue:representation-show' rep.id %}" class="btn-book">{% trans "Réserver" %}</a>
                             {% else %}
-                                <button class="btn-book" style="background: #ccc; cursor: not-allowed;" disabled>{% trans "Complet" %}</button>
+                                <button class="btn-book disabled-btn" disabled>{% trans "Complet" %}</button>
                             {% endif %}
                         </div>
                     </div>
@@ -144,14 +173,14 @@
         <!-- Press Articles Section -->
         {% if show.press_articles %}
         <div class="press-articles-section mt-5" id="presse">
-            <h3 style="border-bottom: 2px solid #dc2626; padding-bottom: 0.5rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
-                <i class="ph ph-newspaper-clipping" style="color: #dc2626;"></i> {% trans "Articles de Presse" %}
+            <h3 class="section-title" style="border-bottom: 2px solid var(--primary);">
+                <i class="ph ph-newspaper-clipping" style="color: var(--primary);"></i> {% trans "Articles de Presse" %}
             </h3>
             <div style="display: grid; gap: 2rem;">
                 {% for article in show.press_articles %}
-                <article class="press-article" style="background: white; border-radius: 12px; border: 1px solid var(--border-color); padding: 2rem; position: relative; transition: box-shadow 0.3s; {% if article.is_pinned %}border-left: 5px solid #dc2626;{% endif %}">
+                <article class="press-article" style="background: white; border-radius: 12px; border: 1px solid var(--border-color); padding: 2rem; position: relative; transition: box-shadow 0.3s; {% if article.is_pinned %}border-left: 5px solid var(--primary);{% endif %}">
                     {% if article.is_pinned %}
-                    <div style="position: absolute; top: -10px; right: 20px; background: #dc2626; color: white; padding: 4px 12px; border-radius: 999px; font-size: 0.7rem; font-weight: bold; display: flex; align-items: center; gap: 4px; box-shadow: 0 4px 10px rgba(220,38,38,0.3);">
+                    <div style="position: absolute; top: -10px; right: 20px; background: var(--primary); color: white; padding: 4px 12px; border-radius: 999px; font-size: 0.7rem; font-weight: bold; display: flex; align-items: center; gap: 4px; box-shadow: 0 4px 10px rgba(230,57,70,0.3);">
                         <i class="ph-fill ph-push-pin"></i> {% trans "ÉPINGLÉ" %}
                     </div>
                     {% endif %}
@@ -175,10 +204,10 @@
         <!-- Section Critiques & Avis -->
         <div class="reviews-section mt-5">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3>{% trans "Critiques & Avis" %}</h3>
+                <h3 class="section-title">{% trans "Critiques & Avis" %}</h3>
                 {% if user.is_authenticated %}
                     {% if "PRESS_CRITIC" in user.groups.all|join:"," or user.is_superuser %}
-                        <a href="{% url 'catalogue:review-create' %}?show_id={{ show.id }}" class="btn-danger" style="background: #dc2626; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block;">{% trans "Soumettre une critique" %}</a>
+                        <a href="{% url 'catalogue:review-create' %}?show_id={{ show.id }}" class="btn-danger-custom">{% trans "Soumettre une critique" %}</a>
                     {% endif %}
                 {% endif %}
             </div>
@@ -187,7 +216,7 @@
                 <div class="reviews-list">
                 {% with show.reviews|dictsortreversed:"is_pinned" as sorted_reviews %}
                     {% for review in sorted_reviews %}
-                        <div class="review-card mb-3 p-3" style="border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); background: {% if review.is_pinned %}#fffbeb{% else %}#fdfdfd{% endif %}; border-left: 4px solid {% if review.is_pinned %}#f59e0b{% else %}#dc2626{% endif %};">
+                        <div class="review-card mb-3 p-3" style="border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); background: {% if review.is_pinned %}#fffbeb{% else %}#fdfdfd{% endif %}; border-left: 4px solid {% if review.is_pinned %}#f59e0b{% else %}var(--primary){% endif %};">
                             <div class="review-header d-flex justify-content-between">
                                 <div>
                                     <strong>{{ review.user_name }}</strong>
@@ -210,14 +239,11 @@
                                 
                                 <div class="review-actions">
                                     {% if user.is_authenticated %}
-                                        {# Seul l'auteur peut éditer #}
                                         {% if user.username == review.user_name %}
-                                            <a href="{% url 'catalogue:review-edit' review.id %}" class="btn-sm text-danger" title="{% trans 'Modifier' %}" style="color: #dc2626;"><i class="ph ph-note-pencil"></i></a>
+                                            <a href="{% url 'catalogue:review-edit' review.id %}" class="btn-sm-action" title="{% trans 'Modifier' %}"><i class="ph ph-note-pencil"></i></a>
                                         {% endif %}
-                                        
-                                        {# L'auteur ou un modérateur peut supprimer #}
                                         {% if user.username == review.user_name or user.is_superuser or user.groups.all.0.name == 'PRODUCER' or user.groups.all.0.name == 'ADMINISTRATOR' %}
-                                            <a href="{% url 'catalogue:review-delete' review.id %}" class="btn-sm text-danger ms-2" title="{% trans 'Supprimer' %}" style="color: #dc2626;"><i class="ph ph-trash"></i></a>
+                                            <a href="{% url 'catalogue:review-delete' review.id %}" class="btn-sm-action ms-2" title="{% trans 'Supprimer' %}"><i class="ph ph-trash"></i></a>
                                         {% endif %}
                                     {% endif %}
                                 </div>
@@ -242,68 +268,163 @@
 </section>
 
 <style>
-    .show-detail-section { padding: 4rem 0; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-    .show-detail-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem; align-items: start; }
-    .show-detail-image img { width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-    .breadcrumb { display: flex; list-style: none; padding: 0; margin-bottom: 1rem; color: #666; font-size: 0.9rem; }
-    .breadcrumb-item + .breadcrumb-item::before { content: "/"; padding: 0 0.5rem; }
-    .breadcrumb a { color: var(--primary-color, #ff4d4d); text-decoration: none; }
-    .show-title { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 1rem; }
-    .info-item { margin-bottom: 0.8rem; font-size: 1.1rem; }
-    .badge { display: inline-block; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-right: 0.5rem; }
-    .bg-success { background: #28a745; color: white; }
-    .bg-primary { background: #007bff; color: white; }
-    .bg-secondary { background: #6c757d; color: white; }
-    .btn-lg { padding: 1rem 2.5rem; font-size: 1.2rem; }
+    :root {
+        --border-radius-lg: 16px;
+        --border-radius-md: 12px;
+        --color-background-secondary: var(--bg-light);
+        --color-border-tertiary: var(--border-color);
+        --color-text-primary: var(--text-primary);
+        --color-text-secondary: var(--text-secondary);
+        --color-text-tertiary: #9ca3af;
+    }
 
-    .btn-edit-quick {
-        display: inline-flex;
+    .show-detail-section { padding: 4rem 0; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* NOUVEAU DESIGN HEADER */
+    .show-wrap { display: grid; grid-template-columns: 320px 1fr; gap: 3.5rem; align-items: start; padding: 1.5rem 0; }
+    .show-poster { 
+        width: 100%; 
+        border-radius: var(--border-radius-lg); 
+        overflow: hidden; 
+        background: var(--color-background-secondary); 
+        aspect-ratio: 2/3; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        border: 1px solid var(--color-border-tertiary);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    }
+    .show-poster img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .show-poster:hover img { transform: scale(1.03); }
+
+    .show-content { display: flex; flex-direction: column; gap: 1.5rem; }
+    
+    .breadcrumb { font-size: 13px; color: var(--color-text-secondary); display: flex; align-items: center; gap: 8px; margin-bottom: 0.5rem; }
+    .breadcrumb a { color: var(--color-text-secondary); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--primary); }
+    .breadcrumb i { font-size: 12px; opacity: 0.6; }
+
+    .flex-between { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+    .show-title { font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 700; color: var(--secondary); margin: 0; line-height: 1.1; }
+    
+    .badge-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .badge { font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 999px; letter-spacing: 0.02em; }
+    .badge-green { background: #EAF3DE; color: #3B6D11; }
+    .badge-artist { background: #E6F1FB; color: #185FA5; }
+    .badge-genre { background: #fee2e2; color: #991b1b; }
+    .badge-gray { background: #f3f4f6; color: #4b5563; }
+
+    .divider { height: 1px; background: var(--color-border-tertiary); width: 100%; }
+
+    .show-description { font-size: 1.05rem; color: var(--color-text-secondary); line-height: 1.8; text-align: justify; }
+
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+    .info-card { 
+        background: var(--bg-main); 
+        border-radius: var(--border-radius-md); 
+        padding: 14px 18px; 
+        display: flex; 
+        align-items: flex-start; 
+        gap: 12px; 
+        border: 1px solid var(--color-border-tertiary);
+        transition: all 0.2s ease;
+    }
+    .info-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .info-card i { font-size: 22px; color: var(--primary); margin-top: 2px; }
+    .info-card-text { display: flex; flex-direction: column; gap: 3px; }
+    .info-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--color-text-tertiary); letter-spacing: 0.05em; }
+    .info-value { font-size: 14px; font-weight: 600; color: var(--secondary); }
+    .price-highlight { font-size: 16px; color: var(--primary); font-weight: 700; }
+
+    .cta-btn { 
+        display: inline-flex; 
+        align-items: center; 
+        gap: 10px; 
+        background: var(--secondary); 
+        color: white; 
+        padding: 16px 36px; 
+        border-radius: var(--border-radius-md); 
+        font-size: 16px; 
+        font-weight: 600; 
+        text-decoration: none; 
+        border: none; 
+        cursor: pointer; 
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 20px rgba(29,53,87,0.15);
+    }
+    .cta-btn:hover { background: var(--primary); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(230,57,70,0.25); color: white; }
+    .cta-btn.disabled { background: #9ca3af; cursor: not-allowed; box-shadow: none; }
+
+    .btn-edit-small {
+        display: flex;
         align-items: center;
-        gap: 0.5rem;
-        background: #dc2626;
-        color: white;
-        padding: 6px 15px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 0.85rem;
-        border: 1px solid #dc2626;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #f3f4f6;
+        color: #4b5563;
         transition: all 0.2s;
     }
-    .btn-edit-quick:hover {
-        background: white;
-        color: #dc2626;
+    .btn-edit-small:hover { background: var(--primary); color: white; }
+
+    /* SECTIONS SUIVANTES */
+    .section-title { 
+        font-family: 'Playfair Display', serif; 
+        font-size: 2rem; 
+        margin-bottom: 2rem; 
+        color: var(--secondary);
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 
-    .rep-grid { display: grid; gap: 1.5rem; }
+    .rep-grid { display: grid; gap: 1rem; }
     .rep-card { 
         display: flex; 
         justify-content: space-between; 
         align-items: center; 
-        padding: 1.5rem; 
-        background: #f8f9fa; 
-        border-radius: 10px; 
-        border: 1px solid #e9ecef;
+        padding: 1.5rem 2rem; 
+        background: white; 
+        border-radius: 12px; 
+        border: 1px solid var(--border-color);
         transition: all 0.3s;
     }
-    .rep-card:hover { border-color: #007bff; background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-    .rep-date { font-weight: bold; font-size: 1.1rem; color: #333; margin-bottom: 0.3rem; }
-    .rep-location, .rep-seats { font-size: 0.95rem; color: #666; }
+    .rep-card:hover { border-color: var(--primary); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+    .rep-date { font-weight: bold; font-size: 1.2rem; color: var(--secondary); }
+    .rep-location { color: var(--text-secondary); font-size: 1rem; }
     .btn-book { 
-        background: #28a745; 
+        background: var(--primary); 
         color: white; 
-        padding: 0.8rem 2rem; 
-        border-radius: 5px; 
+        padding: 10px 24px; 
+        border-radius: 8px; 
         text-decoration: none; 
-        font-weight: bold;
-        transition: background 0.2s;
+        font-weight: 700;
+        transition: all 0.2s;
     }
-    .btn-book:hover { background: #218838; }
-    
+    .btn-book:hover { transform: scale(1.05); color: white; }
+    .disabled-btn { background: #e5e7eb; color: #9ca3af; cursor: not-allowed; }
+
+    .btn-danger-custom {
+        background: var(--primary);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 700;
+        transition: all 0.2s;
+    }
+    .btn-danger-custom:hover { background: var(--primary-dark); color: white; }
+
+    .btn-sm-action { color: var(--primary); font-size: 1.2rem; transition: transform 0.2s; display: inline-block; }
+    .btn-sm-action:hover { transform: scale(1.2); }
+
     @media (max-width: 992px) {
-        .show-detail-grid { grid-template-columns: 1fr; gap: 2rem; }
-        .show-detail-image { max-width: 500px; margin: 0 auto; }
+        .show-wrap { grid-template-columns: 1fr; gap: 2.5rem; }
+        .show-poster { max-width: 400px; margin: 0 auto; }
+        .show-title { font-size: 2.5rem; }
+        .rep-card { flex-direction: column; text-align: center; gap: 1rem; }
     }
 </style>
 {% endblock %}

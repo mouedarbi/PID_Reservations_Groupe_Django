@@ -9,7 +9,7 @@ class ShowForm(ModelForm):
             'title_fr', 'title_en', 'title_nl', 
             'description_fr', 'description_en', 'description_nl', 
             'poster', 'duration', 'created_in', 
-            'location', 'bookable'
+            'location', 'genre', 'bookable'
         ]
         widgets = {
             'description_fr': Textarea(attrs={'rows': 4}),

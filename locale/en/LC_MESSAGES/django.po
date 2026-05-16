@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-07 12:19+0200\n"
+"POT-Creation-Date: 2026-05-13 13:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,8 +27,9 @@ msgstr "First name"
 #: .\accounts\forms\ProducerRequestForm.py:11
 #: .\accounts\forms\UserUpdateForm.py:31
 #: .\catalogue\templates\admin\producer_request\pending.html:71
+#: .\frontend\forms.py:6
 msgid "Nom"
-msgstr ""
+msgstr "Name"
 
 #: .\accounts\forms\ProducerRequestForm.py:12
 #: .\catalogue\templates\admin\producer_request\pending.html:29
@@ -38,11 +39,14 @@ msgstr "Email"
 
 #: .\accounts\forms\ProducerRequestForm.py:13
 #: .\catalogue\templates\admin\producer_request\pending.html:73
+#: .\catalogue\templates\prod\submit_show.html:139
+#: .\frontend\templates\contact.html:44
 msgid "Téléphone"
 msgstr "Phone"
 
 #: .\accounts\forms\ProducerRequestForm.py:14
 #: .\catalogue\templates\admin\producer_request\pending.html:74
+#: .\catalogue\templates\prod\submit_show.html:121
 msgid "Adresse"
 msgstr "Address"
 
@@ -71,7 +75,7 @@ msgid "Français"
 msgstr "French"
 
 #: .\accounts\forms\UserUpdateForm.py:14 .\accounts\views.py:43
-#: .\reservations\settings.py:160
+#: .\reservations\settings.py:161
 msgid "English"
 msgstr "English"
 
@@ -134,7 +138,7 @@ msgstr "Administration"
 #: .\accounts\templates\user\_sidebar.html:67
 #: .\catalogue\templates\prod\prod_dashboard.html:4
 #: .\catalogue\templates\prod\prod_dashboard.html:9
-#: .\frontend\templates\base.html:172
+#: .\frontend\templates\base.html:173
 msgid "Espace Producteur"
 msgstr "Producer Space"
 
@@ -272,7 +276,7 @@ msgstr "Recent history"
 
 #: .\accounts\templates\user\api_usage.html:62
 #: .\catalogue\templates\admin\show\approve.html:69
-#: .\catalogue\templates\prod\submit_show.html:70
+#: .\catalogue\templates\prod\submit_show.html:163
 msgid "Heure"
 msgstr "Time"
 
@@ -315,6 +319,9 @@ msgstr ""
 
 #: .\accounts\templates\user\become_critic.html:27
 #: .\accounts\templates\user\become_producer.html:27
+#: .\frontend\templates\frontend\errors\403.html:11
+#: .\frontend\templates\frontend\errors\404.html:11
+#: .\frontend\templates\frontend\errors\500.html:11
 #: .\frontend\templates\location_list.html:45
 #: .\payments\templates\payments\cancel.html:31
 #: .\payments\templates\payments\failed.html:31
@@ -338,7 +345,7 @@ msgstr "Send my application"
 
 #: .\accounts\templates\user\become_producer.html:4
 #: .\accounts\templates\user\become_producer.html:9
-#: .\frontend\templates\base.html:188
+#: .\frontend\templates\base.html:189
 msgid "Devenir Producteur"
 msgstr "Become a Producer"
 
@@ -393,7 +400,7 @@ msgstr "ID"
 #: .\accounts\templates\user\profile.html:33
 #: .\catalogue\templates\admin\payment\index.html:36
 #: .\catalogue\templates\admin\show\approve.html:65
-#: .\catalogue\templates\prod\submit_show.html:66
+#: .\catalogue\templates\prod\submit_show.html:159
 msgid "Date"
 msgstr "Date"
 
@@ -462,29 +469,29 @@ msgstr "You are already registered!"
 msgid "Non définie"
 msgstr "Not defined"
 
-#: .\accounts\views.py:81
-msgid "Utilisateur supprimé avec succès."
-msgstr "User deleted successfully."
+#: .\accounts\views.py:95
+msgid "Votre compte a été supprimé et vos données personnelles anonymisées."
+msgstr ""
 
-#: .\accounts\views.py:85
+#: .\accounts\views.py:103
 msgid "Suppression d'un autre compte interdite!"
 msgstr "Deletion of another account forbidden!"
 
-#: .\accounts\views.py:89
+#: .\accounts\views.py:107
 msgid "Suppression interdite (méthode incorrecte)!"
 msgstr "Deletion forbidden (incorrect method)!"
 
-#: .\accounts\views.py:157
+#: .\accounts\views.py:175
 msgid "Vous êtes déjà producteur."
 msgstr "You are already a producer."
 
-#: .\accounts\views.py:163
+#: .\accounts\views.py:181
 msgid ""
 "Vous avez déjà soumis une demande pour devenir producteur. Elle est en cours "
 "d'examen."
 msgstr ""
 
-#: .\accounts\views.py:172
+#: .\accounts\views.py:190
 #, fuzzy
 #| msgid "Votre avis a été soumis avec succès et sera publié après validation."
 msgid ""
@@ -492,17 +499,17 @@ msgid ""
 "attente d'approbation."
 msgstr "Your review has been submitted and will be published after validation."
 
-#: .\accounts\views.py:192
+#: .\accounts\views.py:210
 msgid "Vous êtes déjà critique de presse."
 msgstr "You are already a press critic."
 
-#: .\accounts\views.py:198
+#: .\accounts\views.py:216
 msgid ""
 "Vous avez déjà soumis une demande pour devenir critique. Elle est en cours "
 "d'examen."
 msgstr ""
 
-#: .\accounts\views.py:207
+#: .\accounts\views.py:225
 #, fuzzy
 #| msgid "Votre avis a été soumis avec succès et sera publié après validation."
 msgid ""
@@ -557,6 +564,7 @@ msgid "Événement"
 msgstr "Event"
 
 #: .\cart\templates\cart\detail.html:26
+#: .\frontend\templates\show_detail.html:99
 msgid "Tarif"
 msgstr "Rate"
 
@@ -576,7 +584,7 @@ msgstr "at"
 
 #: .\cart\templates\cart\detail.html:52
 #: .\catalogue\templates\prod\moderate_press_articles.html:80
-#: .\frontend\templates\show_detail.html:220
+#: .\frontend\templates\show_detail.html:246
 msgid "Supprimer"
 msgstr "Delete"
 
@@ -787,6 +795,7 @@ msgid "Profession"
 msgstr "Profession"
 
 #: .\catalogue\templates\admin\critic_request\pending.html:76
+#: .\catalogue\templates\prod\submit_show.html:147
 msgid "Site Web"
 msgstr "Website"
 
@@ -883,7 +892,7 @@ msgid "Aucune demande en attente."
 msgstr "No pending requests."
 
 #: .\catalogue\templates\admin\show\approve.html:17
-#: .\frontend\templates\show_detail.html:238
+#: .\frontend\templates\show_detail.html:264
 msgid "Retour à la liste"
 msgstr "Back to list"
 
@@ -900,7 +909,7 @@ msgid "Durée (min)"
 msgstr "Duration (min)"
 
 #: .\catalogue\templates\admin\show\approve.html:40
-#: .\catalogue\templates\prod\submit_show.html:36
+#: .\catalogue\templates\prod\submit_show.html:82
 msgid "Image du spectacle"
 msgstr "Show image"
 
@@ -911,6 +920,7 @@ msgstr "No image provided."
 #: .\catalogue\templates\admin\show\approve.html:51
 #: .\catalogue\templates\admin\show\pending.html:30
 #: .\catalogue\templates\catalogue\ticket_detail.html:37
+#: .\frontend\templates\show_detail.html:72
 msgid "Lieu"
 msgstr "Venue"
 
@@ -924,7 +934,7 @@ msgstr "Allowed tickets"
 
 #: .\catalogue\templates\admin\show\approve.html:81
 #: .\catalogue\templates\review\edit.html:50
-#: .\catalogue\templates\user\submit_press_article.html:51
+#: .\catalogue\templates\user\submit_press_article.html:52
 #: .\frontend\templates\user\update.html:29
 msgid "Enregistrer les modifications"
 msgstr "Save changes"
@@ -1041,7 +1051,7 @@ msgstr "Manage Press Articles"
 #: .\catalogue\templates\prod\moderate_press_articles.html:9
 #: .\frontend\templates\press_article_detail.html:11
 #: .\frontend\templates\press_article_list.html:11
-#: .\frontend\templates\show_detail.html:148 .\frontend\views.py:194
+#: .\frontend\templates\show_detail.html:177 .\frontend\views.py:231
 msgid "Articles de Presse"
 msgstr "Press Articles"
 
@@ -1055,7 +1065,7 @@ msgid "Retour au tableau de bord"
 msgstr "Back to dashboard"
 
 #: .\catalogue\templates\prod\moderate_press_articles.html:34
-#: .\frontend\templates\show_detail.html:161
+#: .\frontend\templates\home.html:100 .\frontend\templates\show_detail.html:190
 msgid "Par"
 msgstr "By"
 
@@ -1064,7 +1074,7 @@ msgid "PUBLIÉ"
 msgstr "PUBLISHED"
 
 #: .\catalogue\templates\prod\moderate_press_articles.html:45
-#: .\frontend\templates\show_detail.html:155
+#: .\frontend\templates\show_detail.html:184
 msgid "ÉPINGLÉ"
 msgstr "PINNED"
 
@@ -1140,13 +1150,13 @@ msgid "Mes Spectacles"
 msgstr "My Shows"
 
 #: .\catalogue\templates\prod\prod_dashboard.html:24
-#: .\frontend\templates\base.html:136
+#: .\frontend\templates\base.html:137
 msgid "Articles de presse"
 msgstr "Press Articles"
 
 #: .\catalogue\templates\prod\prod_dashboard.html:27
 #: .\catalogue\templates\prod\submit_show.html:4
-#: .\catalogue\templates\prod\submit_show.html:10
+#: .\catalogue\templates\prod\submit_show.html:51
 msgid "Partager un spectacle"
 msgstr "Share a show"
 
@@ -1178,7 +1188,7 @@ msgstr "View on site"
 
 #: .\catalogue\templates\prod\prod_dashboard.html:69
 #: .\catalogue\templates\user\press_articles.html:68
-#: .\frontend\templates\show_detail.html:215
+#: .\frontend\templates\show_detail.html:243
 msgid "Modifier"
 msgstr "Edit"
 
@@ -1187,77 +1197,110 @@ msgid "Vous n'avez pas encore partagé de spectacle."
 msgstr "You haven't shared any shows yet."
 
 #: .\catalogue\templates\prod\submit_show.html:4
-#: .\catalogue\templates\prod\submit_show.html:10
+#: .\catalogue\templates\prod\submit_show.html:51
 msgid "Modifier le spectacle"
 msgstr "Edit show"
 
-#: .\catalogue\templates\prod\submit_show.html:13
+#: .\catalogue\templates\prod\submit_show.html:54
 msgid "Mettez à jour les informations de votre spectacle."
 msgstr "Update your show information."
 
-#: .\catalogue\templates\prod\submit_show.html:13
+#: .\catalogue\templates\prod\submit_show.html:54
 msgid "Proposez votre spectacle à l'administration."
 msgstr "Submit your show to administration."
 
-#: .\catalogue\templates\prod\submit_show.html:26
+#: .\catalogue\templates\prod\submit_show.html:67
+#, fuzzy
+#| msgid "Informations du Spectacle"
+msgid "Informations sur le spectacle"
+msgstr "Show Information"
+
+#: .\catalogue\templates\prod\submit_show.html:71
 msgid "Titre du spectacle"
 msgstr "Show title"
 
-#: .\catalogue\templates\prod\submit_show.html:31
-#: .\frontend\templates\show_detail.html:60
+#: .\catalogue\templates\prod\submit_show.html:76
 msgid "Description"
 msgstr "Description"
 
-#: .\catalogue\templates\prod\submit_show.html:40
-msgid "Image actuelle"
-msgstr "Current image"
-
-#: .\catalogue\templates\prod\submit_show.html:44
-msgid "Sélectionnez une photo depuis votre ordinateur."
-msgstr "Select a photo from your computer."
-
-#: .\catalogue\templates\prod\submit_show.html:49
+#: .\catalogue\templates\prod\submit_show.html:91
 msgid "Durée (minutes)"
 msgstr "Duration (minutes)"
 
-#: .\catalogue\templates\prod\submit_show.html:53
-msgid "Salle / Lieu"
-msgstr "Hall / Venue"
+#: .\catalogue\templates\prod\submit_show.html:96
+#, fuzzy
+#| msgid "Liste des lieux de spectacle"
+msgid "Où se déroule le spectacle ?"
+msgstr "List of venues"
 
-#: .\catalogue\templates\prod\submit_show.html:55
-msgid "Choisir une salle"
+#: .\catalogue\templates\prod\submit_show.html:100
+#, fuzzy
+#| msgid "Détails de la demande"
+msgid "Détails de la salle"
+msgstr "Request details"
+
+#: .\catalogue\templates\prod\submit_show.html:102
+msgid "Réinitialiser la salle"
+msgstr ""
+
+#: .\catalogue\templates\prod\submit_show.html:111
+#, fuzzy
+#| msgid "Capacité de la salle :"
+msgid "Nom de la salle"
+msgstr "Room capacity:"
+
+#: .\catalogue\templates\prod\submit_show.html:113
+#, fuzzy
+#| msgid "Choisir une salle"
+msgid "Cherchez une salle..."
 msgstr "Choose a room"
 
-#: .\catalogue\templates\prod\submit_show.html:76
-msgid "Nombre de tickets"
-msgstr "Number of tickets"
+#: .\catalogue\templates\prod\submit_show.html:128
+msgid "Code Postal"
+msgstr ""
 
-#: .\catalogue\templates\prod\submit_show.html:79
-msgid "Le nombre de tickets ne peut pas dépasser la capacité de la salle."
+#: .\catalogue\templates\prod\submit_show.html:132
+#, fuzzy
+#| msgid "Billet"
+msgid "Ville"
+msgstr "Ticket"
+
+#: .\catalogue\templates\prod\submit_show.html:143
+msgid "Capacité"
+msgstr ""
+
+#: .\catalogue\templates\prod\submit_show.html:154
+#, fuzzy
+#| msgid "Informations"
+msgid "Programmation"
+msgstr "Information"
+
+#: .\catalogue\templates\prod\submit_show.html:167
+#, fuzzy
+#| msgid "Places restantes"
+msgid "Places à vendre"
+msgstr "Remaining seats"
+
+#: .\catalogue\templates\prod\submit_show.html:170
+#, fuzzy
+#| msgid "Le nombre de tickets ne peut pas dépasser la capacité de la salle."
+msgid "Ne peut pas dépasser la capacité."
 msgstr "Ticket count cannot exceed room capacity."
 
-#: .\catalogue\templates\prod\submit_show.html:85
+#: .\catalogue\templates\prod\submit_show.html:177
 msgid "Enregistrer"
 msgstr "Save"
 
-#: .\catalogue\templates\prod\submit_show.html:85
-msgid "Publier le Spectacle"
-msgstr "Publish show"
+#: .\catalogue\templates\prod\submit_show.html:177
+#, fuzzy
+#| msgid "Soumettre votre candidature"
+msgid "Soumettre pour validation"
+msgstr "Submit your application"
 
-#: .\catalogue\templates\prod\submit_show.html:88
-#: .\catalogue\templates\user\submit_press_article.html:54
+#: .\catalogue\templates\prod\submit_show.html:180
+#: .\catalogue\templates\user\submit_press_article.html:55
 msgid "Annuler"
 msgstr "Cancel"
-
-#: .\catalogue\templates\prod\submit_show.html:111
-#: .\catalogue\templates\prod\submit_show.html:143
-msgid "Capacité de la salle :"
-msgstr "Room capacity:"
-
-#: .\catalogue\templates\prod\submit_show.html:111
-#: .\catalogue\templates\prod\submit_show.html:143
-msgid "places"
-msgstr "seats"
 
 #: .\catalogue\templates\representation\show.html:15
 msgid "VOIR LE PANIER"
@@ -1268,7 +1311,7 @@ msgid "Sélectionnez vos places"
 msgstr "Select your seats"
 
 #: .\catalogue\templates\representation\show.html:42
-#: .\frontend\templates\show_detail.html:121
+#: .\frontend\templates\show_detail.html:150
 msgid "COMPLET"
 msgstr "SOLD OUT"
 
@@ -1277,12 +1320,12 @@ msgid "DERNIÈRES PLACES :"
 msgstr "LAST SEATS:"
 
 #: .\catalogue\templates\representation\show.html:49
-#: .\frontend\templates\show_detail.html:123
+#: .\frontend\templates\show_detail.html:152
 msgid "places disponibles"
 msgstr "available seats"
 
 #: .\catalogue\templates\representation\show.html:81
-#: .\frontend\templates\show_detail.html:129
+#: .\frontend\templates\show_detail.html:158
 msgid "Réserver"
 msgstr "Book"
 
@@ -1308,13 +1351,13 @@ msgid "Voir mon panier"
 msgstr "View my cart"
 
 #: .\catalogue\templates\review\create.html:4
-#: .\frontend\templates\show_detail.html:181
+#: .\frontend\templates\show_detail.html:210
 msgid "Soumettre une critique"
 msgstr "Submit a review"
 
 #: .\catalogue\templates\review\create.html:13
-#: .\catalogue\templates\review\edit.html:13 .\frontend\templates\base.html:135
-#: .\frontend\templates\base.html:253 .\frontend\templates\show_detail.html:21
+#: .\catalogue\templates\review\edit.html:13 .\frontend\templates\base.html:136
+#: .\frontend\templates\base.html:254 .\frontend\templates\show_detail.html:24
 msgid "Spectacles"
 msgstr "Shows"
 
@@ -1422,24 +1465,24 @@ msgstr "You haven't written any articles yet."
 msgid "Commencer maintenant"
 msgstr "Start now"
 
-#: .\catalogue\templates\user\submit_press_article.html:10
+#: .\catalogue\templates\user\submit_press_article.html:11
 msgid ""
 "Utilisez cet espace pour rédiger une critique détaillée et professionnelle."
 msgstr ""
 
-#: .\catalogue\templates\user\submit_press_article.html:25
+#: .\catalogue\templates\user\submit_press_article.html:26
 msgid "Sélectionnez le spectacle sur lequel porte votre article."
 msgstr "Select the show your article is about."
 
-#: .\catalogue\templates\user\submit_press_article.html:38
+#: .\catalogue\templates\user\submit_press_article.html:39
 msgid "Un court texte d'accroche qui sera visible dans les listes."
 msgstr "A short intro text that will be visible in lists."
 
-#: .\catalogue\templates\user\submit_press_article.html:45
+#: .\catalogue\templates\user\submit_press_article.html:46
 msgid "Le corps de votre article. Soyez précis et constructif."
 msgstr "Your article body. Be precise and constructive."
 
-#: .\catalogue\templates\user\submit_press_article.html:51
+#: .\catalogue\templates\user\submit_press_article.html:52
 msgid "Publier l'article"
 msgstr "Publish article"
 
@@ -1557,8 +1600,36 @@ msgid ""
 "L'équipe ThéâtrePlus."
 msgstr ""
 
+#: .\frontend\forms.py:8
+msgid "Votre nom complet"
+msgstr "Your full name"
+
+#: .\frontend\forms.py:11 .\frontend\templates\contact.html:34
+msgid "E-mail"
+msgstr "Email"
+
+#: .\frontend\forms.py:12
+msgid "votre@email.com"
+msgstr "your@email.com"
+
+#: .\frontend\forms.py:15
+msgid "Sujet"
+msgstr "Subject"
+
+#: .\frontend\forms.py:17
+msgid "Le sujet de votre message"
+msgstr "The subject of your message"
+
+#: .\frontend\forms.py:20
+msgid "Message"
+msgstr "Message"
+
+#: .\frontend\forms.py:21
+msgid "Comment pouvons-nous vous aider ?"
+msgstr "How can we help you?"
+
 #: .\frontend\templates\about.html:4 .\frontend\templates\about.html:11
-#: .\frontend\views.py:151
+#: .\frontend\views.py:188
 msgid "À propos de ThéâtrePlus"
 msgstr "About ThéâtrePlus"
 
@@ -1596,90 +1667,154 @@ msgstr ""
 msgid "Réservez vos spectacles"
 msgstr "Book your shows"
 
-#: .\frontend\templates\base.html:134 .\frontend\templates\base.html:252
+#: .\frontend\templates\base.html:135 .\frontend\templates\base.html:253
 msgid "Accueil"
 msgstr "Home"
 
-#: .\frontend\templates\base.html:137 .\frontend\templates\base.html:254
+#: .\frontend\templates\base.html:138 .\frontend\templates\base.html:255
 msgid "Lieux"
 msgstr "Venues"
 
-#: .\frontend\templates\base.html:138 .\frontend\templates\base.html:255
+#: .\frontend\templates\base.html:139 .\frontend\templates\base.html:256
 msgid "À propos"
 msgstr "About"
 
-#: .\frontend\templates\base.html:140
+#: .\frontend\templates\base.html:141
 msgid "Mon Panier"
 msgstr "My Cart"
 
-#: .\frontend\templates\base.html:151
-msgid "Mon compte"
-msgstr "My account"
-
-#: .\frontend\templates\base.html:157 .\frontend\templates\base.html:262
+#: .\frontend\templates\base.html:158 .\frontend\templates\base.html:264
 msgid "Mon profil"
 msgstr "My profile"
 
-#: .\frontend\templates\base.html:164
+#: .\frontend\templates\base.html:165
 msgid "Dashboard Admin"
 msgstr "Admin Dashboard"
 
-#: .\frontend\templates\base.html:180
+#: .\frontend\templates\base.html:181
 msgid "Mes articles"
 msgstr "My articles"
 
-#: .\frontend\templates\base.html:199 .\frontend\templates\base.html:267
+#: .\frontend\templates\base.html:200 .\frontend\templates\base.html:269
 msgid "Déconnexion"
 msgstr "Logout"
 
-#: .\frontend\templates\base.html:205 .\frontend\templates\base.html:270
+#: .\frontend\templates\base.html:206 .\frontend\templates\base.html:272
 #: .\frontend\templates\registration\login.html:4
 #: .\frontend\templates\registration\login.html:9
 msgid "Connexion"
 msgstr "Login"
 
-#: .\frontend\templates\base.html:247
+#: .\frontend\templates\base.html:248
 msgid ""
 "Votre plateforme de référence pour réserver les meilleurs spectacles en "
 "Belgique. Vivez des moments inoubliables avec nous."
 msgstr ""
 
-#: .\frontend\templates\base.html:250
+#: .\frontend\templates\base.html:251
 msgid "Navigation"
 msgstr "Navigation"
 
-#: .\frontend\templates\base.html:259
+#: .\frontend\templates\base.html:257
+msgid "Flux RSS"
+msgstr ""
+
+#: .\frontend\templates\base.html:261
 msgid "Compte"
 msgstr "Account"
 
-#: .\frontend\templates\base.html:271
+#: .\frontend\templates\base.html:273
 #: .\frontend\templates\registration\signup.html:4
 msgid "Inscription"
 msgstr "Sign Up"
 
-#: .\frontend\templates\base.html:276
+#: .\frontend\templates\base.html:278
 msgid "Aide"
 msgstr "Help"
 
-#: .\frontend\templates\base.html:278
+#: .\frontend\templates\base.html:280
 msgid "FAQ"
 msgstr "FAQ"
 
-#: .\frontend\templates\base.html:279
+#: .\frontend\templates\base.html:281
 msgid "Contact"
 msgstr "Contact"
 
-#: .\frontend\templates\base.html:280
+#: .\frontend\templates\base.html:282
 msgid "Conditions"
 msgstr "Terms"
 
-#: .\frontend\templates\base.html:281
+#: .\frontend\templates\base.html:283
 msgid "Confidentialité"
 msgstr "Privacy"
 
-#: .\frontend\templates\base.html:286
+#: .\frontend\templates\base.html:288
 msgid "Tous droits réservés. | Projet PID - Version Alpha"
 msgstr "All rights reserved. | PID Project - Alpha Version"
+
+#: .\frontend\templates\contact.html:9 .\frontend\views.py:289
+msgid "Contactez-nous"
+msgstr "Contact Us"
+
+#: .\frontend\templates\contact.html:10
+msgid "Une question ? Une suggestion ? Notre équipe est à votre écoute."
+msgstr "A question? A suggestion? Our team is listening to you."
+
+#: .\frontend\templates\contact.html:24
+msgid "Notre Bureau"
+msgstr "Our Office"
+
+#: .\frontend\templates\contact.html:89
+msgid "Envoyer le message"
+msgstr "Send Message"
+
+#: .\frontend\templates\frontend\errors\403.html:4
+#: .\frontend\templates\frontend\errors\403.html:8
+msgid "Accès Refusé"
+msgstr ""
+
+#: .\frontend\templates\frontend\errors\403.html:9
+#, fuzzy
+#| msgid "Vous n'avez pas l'autorisation d'accéder à cette page!"
+msgid "Vous n'avez pas la permission d'accéder à cette ressource."
+msgstr "You are not authorized to access this page!"
+
+#: .\frontend\templates\frontend\errors\403.html:10
+msgid ""
+"Si vous pensez que c'est une erreur, veuillez contacter l'administrateur."
+msgstr ""
+
+#: .\frontend\templates\frontend\errors\404.html:4
+msgid "Page non trouvée"
+msgstr ""
+
+#: .\frontend\templates\frontend\errors\404.html:8
+msgid "Page Non Trouvée"
+msgstr ""
+
+#: .\frontend\templates\frontend\errors\404.html:9
+msgid "Désolé, la page que vous recherchez n'existe pas."
+msgstr ""
+
+#: .\frontend\templates\frontend\errors\404.html:10
+msgid "Veuillez vérifier l'URL ou retourner à la page d'accueil."
+msgstr ""
+
+#: .\frontend\templates\frontend\errors\500.html:4
+msgid "Erreur Serveur"
+msgstr ""
+
+#: .\frontend\templates\frontend\errors\500.html:8
+msgid "Erreur Serveur Interne"
+msgstr ""
+
+#: .\frontend\templates\frontend\errors\500.html:9
+msgid "Désolé, une erreur inattendue s'est produite sur le serveur."
+msgstr ""
+
+#: .\frontend\templates\frontend\errors\500.html:10
+msgid "Nous travaillons à résoudre ce problème. Veuillez réessayer plus tard."
+msgstr ""
 
 #: .\frontend\templates\home.html:9
 msgid "Réservez vos billets pour les meilleurs événements"
@@ -1689,103 +1824,64 @@ msgstr "Book your tickets for the best events"
 msgid "Concerts, théâtre, spectacles et bien plus encore"
 msgstr "Concerts, theater, shows and much more"
 
-#: .\frontend\templates\home.html:19
-msgid "Rechercher un spectacle, artiste ou lieu..."
-msgstr "Search for a show, artist or venue..."
-
-#: .\frontend\templates\home.html:22
-msgid "Tous les genres"
-msgstr "All genres"
-
-#: .\frontend\templates\home.html:23
-msgid "Concert"
-msgstr "Concert"
-
-#: .\frontend\templates\home.html:24 .\frontend\templates\home.html:54
-#: .\frontend\templates\show_list.html:31
-msgid "Théâtre"
-msgstr "Theater"
-
-#: .\frontend\templates\home.html:25 .\frontend\templates\home.html:58
-#: .\frontend\templates\show_list.html:35
-msgid "Danse"
-msgstr "Dance"
-
-#: .\frontend\templates\home.html:26 .\frontend\templates\home.html:62
-#: .\frontend\templates\show_list.html:39
-msgid "Comédie"
-msgstr "Comedy"
-
-#: .\frontend\templates\home.html:29
-msgid "Toutes les dates"
-msgstr "All dates"
-
-#: .\frontend\templates\home.html:30
-msgid "Ce week-end"
-msgstr "This weekend"
-
-#: .\frontend\templates\home.html:31
-msgid "Cette semaine"
-msgstr "This week"
-
-#: .\frontend\templates\home.html:32
-msgid "Ce mois-ci"
-msgstr "This month"
-
-#: .\frontend\templates\home.html:34
-msgid "Rechercher"
-msgstr "Search"
-
-#: .\frontend\templates\home.html:46 .\frontend\templates\show_list.html:23
-msgid "Tous les événements"
-msgstr "All events"
-
-#: .\frontend\templates\home.html:50 .\frontend\templates\show_list.html:27
-msgid "Concerts"
-msgstr "Concerts"
-
-#: .\frontend\templates\home.html:66 .\frontend\templates\show_list.html:43
-msgid "Festivals"
-msgstr "Festivals"
-
-#: .\frontend\templates\home.html:75
+#: .\frontend\templates\home.html:18
 msgid "Événements à venir"
 msgstr "Upcoming events"
 
-#: .\frontend\templates\home.html:76
+#: .\frontend\templates\home.html:19
 msgid "Réservez vos billets dès maintenant"
 msgstr "Book your tickets now"
 
-#: .\frontend\templates\home.html:90 .\frontend\templates\show_list.html:68
+#: .\frontend\templates\home.html:34 .\frontend\templates\show_list.html:54
 msgid "Disponible"
 msgstr "Available"
 
-#: .\frontend\templates\home.html:92 .\frontend\templates\show_detail.html:90
-#: .\frontend\templates\show_detail.html:131
-#: .\frontend\templates\show_list.html:70
+#: .\frontend\templates\home.html:36 .\frontend\templates\show_detail.html:47
+#: .\frontend\templates\show_detail.html:160
+#: .\frontend\templates\show_list.html:56
 msgid "Complet"
 msgstr "Sold out"
 
-#: .\frontend\templates\home.html:102 .\frontend\templates\show_list.html:80
+#: .\frontend\templates\home.html:47 .\frontend\templates\show_list.html:67
 msgid "Non catégorisé"
 msgstr "Uncategorized"
 
-#: .\frontend\templates\home.html:112 .\frontend\templates\show_list.html:90
+#: .\frontend\templates\home.html:57 .\frontend\templates\show_list.html:77
 msgid "Lieu inconnu"
 msgstr "Unknown venue"
 
-#: .\frontend\templates\home.html:118 .\frontend\templates\show_list.html:96
+#: .\frontend\templates\home.html:63 .\frontend\templates\show_list.html:83
 msgid "Date inconnue"
 msgstr "Unknown date"
 
-#: .\frontend\templates\home.html:121 .\frontend\templates\show_detail.html:81
-#: .\frontend\templates\show_list.html:99
+#: .\frontend\templates\home.html:66 .\frontend\templates\show_detail.html:101
+#: .\frontend\templates\show_list.html:86
 msgid "à partir de"
 msgstr "from"
 
-#: .\frontend\templates\home.html:129 .\frontend\templates\show_list.html:108
+#: .\frontend\templates\home.html:74 .\frontend\templates\show_list.html:95
 msgid "Aucun spectacle disponible pour le moment."
 msgstr "No shows available yet."
+
+#: .\frontend\templates\home.html:80
+msgid "Articles de presse récents"
+msgstr "Recent Press Articles"
+
+#: .\frontend\templates\home.html:81
+msgid "L'actualité et les critiques de nos spectacles"
+msgstr "Latest news and reviews from our shows"
+
+#: .\frontend\templates\home.html:107
+msgid "Lire l'article"
+msgstr "Read article"
+
+#: .\frontend\templates\home.html:114
+msgid "Aucun article récent disponible."
+msgstr "No recent articles available."
+
+#: .\frontend\templates\home.html:119
+msgid "Voir tous les articles"
+msgstr "See all articles"
 
 #: .\frontend\templates\location_detail.html:13
 msgid "Détails et informations pratiques du lieu"
@@ -1820,12 +1916,10 @@ msgid "Date :"
 msgstr "Date:"
 
 #: .\frontend\templates\location_detail.html:66
-#: .\frontend\templates\show_detail.html:66
 msgid "Lieu :"
 msgstr "Venue:"
 
 #: .\frontend\templates\location_detail.html:69
-#: .\frontend\templates\show_detail.html:80
 msgid "Prix :"
 msgstr "Price:"
 
@@ -1885,25 +1979,25 @@ msgstr "<strong>%(count)s</strong> articles published"
 
 #: .\frontend\templates\press_article_list.html:78
 #: .\frontend\templates\press_article_list.html:82
-#: .\frontend\templates\show_list.html:120
-#: .\frontend\templates\show_list.html:124
+#: .\frontend\templates\show_list.html:107
+#: .\frontend\templates\show_list.html:111
 msgid "Précédent"
 msgstr "Previous"
 
 #: .\frontend\templates\press_article_list.html:87
-#: .\frontend\templates\show_list.html:129
+#: .\frontend\templates\show_list.html:116
 msgid "Page"
 msgstr "Page"
 
 #: .\frontend\templates\press_article_list.html:87
-#: .\frontend\templates\show_list.html:129
+#: .\frontend\templates\show_list.html:116
 msgid "sur"
 msgstr "on"
 
 #: .\frontend\templates\press_article_list.html:92
 #: .\frontend\templates\press_article_list.html:96
-#: .\frontend\templates\show_list.html:134
-#: .\frontend\templates\show_list.html:138
+#: .\frontend\templates\show_list.html:121
+#: .\frontend\templates\show_list.html:125
 msgid "Suivant"
 msgstr "Next"
 
@@ -1958,87 +2052,85 @@ msgstr "Create an account"
 msgid "Déjà un compte ?"
 msgstr "Already have an account?"
 
-#: .\frontend\templates\show_detail.html:33
+#: .\frontend\templates\show_detail.html:34
 msgid "Modifier dans le Dashboard Admin"
 msgstr "Edit in Admin Dashboard"
 
-#: .\frontend\templates\show_detail.html:34
-msgid "Éditer (Admin)"
-msgstr "Edit (Admin)"
-
-#: .\frontend\templates\show_detail.html:37
-msgid "Modifier dans mon Espace Producteur"
-msgstr "Edit in my Producer Space"
-
-#: .\frontend\templates\show_detail.html:38
-msgid "Éditer"
-msgstr "Edit"
-
-#: .\frontend\templates\show_detail.html:47
+#: .\frontend\templates\show_detail.html:45
 msgid "Réservable"
 msgstr "Bookable"
 
-#: .\frontend\templates\show_detail.html:49
-msgid "Non réservable"
-msgstr "Not bookable"
+#: .\frontend\templates\show_detail.html:64
+#, fuzzy
+#| msgid "Aucun tarif n'est disponible pour ce spectacle."
+msgid "Aucune description disponible pour ce spectacle."
+msgstr "No rates available for this show."
 
-#: .\frontend\templates\show_detail.html:61
-msgid "Aucune description disponible."
-msgstr "No description available."
-
-#: .\frontend\templates\show_detail.html:70
+#: .\frontend\templates\show_detail.html:77
 msgid "Lieu non défini"
 msgstr "Venue not defined"
 
-#: .\frontend\templates\show_detail.html:74
-msgid "Durée :"
+#: .\frontend\templates\show_detail.html:85
+#, fuzzy
+#| msgid "Durée :"
+msgid "Durée"
 msgstr "Duration:"
 
-#: .\frontend\templates\show_detail.html:74
+#: .\frontend\templates\show_detail.html:86
 msgid "minutes"
 msgstr "minutes"
 
-#: .\frontend\templates\show_detail.html:77
-msgid "Année de création :"
-msgstr "Creation year:"
+#: .\frontend\templates\show_detail.html:92
+#, fuzzy
+#| msgid "Présentation"
+msgid "Création"
+msgstr "Presentation"
 
-#: .\frontend\templates\show_detail.html:88
-msgid "Réserver mes places"
+#: .\frontend\templates\show_detail.html:113
+#, fuzzy
+#| msgid "Réserver mes places"
+msgid "Réservez mes places"
 msgstr "Book my seats"
 
-#: .\frontend\templates\show_detail.html:98
+#: .\frontend\templates\show_detail.html:118
+#, fuzzy
+#| msgid "Type de place"
+msgid "Plus de places"
+msgstr "Seat type"
+
+#: .\frontend\templates\show_detail.html:127
 msgid "Prochaines représentations"
 msgstr "Next representations"
 
-#: .\frontend\templates\show_detail.html:118
+#: .\frontend\templates\show_detail.html:147
 msgid "Dernières places :"
 msgstr "Last seats:"
 
-#: .\frontend\templates\show_detail.html:139
+#: .\frontend\templates\show_detail.html:168
 msgid "Aucune représentation n'est prévue pour le moment."
 msgstr "No representations scheduled yet."
 
-#: .\frontend\templates\show_detail.html:178
+#: .\frontend\templates\show_detail.html:207
 msgid "Critiques & Avis"
 msgstr "Reviews & Feedback"
 
-#: .\frontend\templates\show_detail.html:195
+#: .\frontend\templates\show_detail.html:224
 msgid "Avis épinglé"
 msgstr "Pinned review"
 
-#: .\frontend\templates\show_detail.html:196
+#: .\frontend\templates\show_detail.html:225
 msgid "Épinglé"
 msgstr "Pinned"
 
-#: .\frontend\templates\show_detail.html:230
+#: .\frontend\templates\show_detail.html:256
 msgid "Aucun avis pour le moment. Soyez le premier à partager votre critique !"
 msgstr "No reviews yet. Be the first to share yours!"
 
-#: .\frontend\templates\show_detail.html:236 .\frontend\views.py:102
+#: .\frontend\templates\show_detail.html:262 .\frontend\views.py:139
 msgid "Spectacle introuvable"
 msgstr "Show not found"
 
-#: .\frontend\templates\show_detail.html:237
+#: .\frontend\templates\show_detail.html:263
 msgid "Désolé, nous n'avons pas pu trouver les détails de ce spectacle."
 msgstr "Sorry, we could not find details for this show."
 
@@ -2046,15 +2138,27 @@ msgstr "Sorry, we could not find details for this show."
 msgid "Découvrez tous nos événements passionnants."
 msgstr "Discover all our exciting events."
 
-#: .\frontend\templates\show_list.html:52
+#: .\frontend\templates\show_list.html:21
+msgid "Rechercher un spectacle, artiste ou lieu..."
+msgstr "Search for a show, artist or venue..."
+
+#: .\frontend\templates\show_list.html:24
+msgid "Tous les genres"
+msgstr "All genres"
+
+#: .\frontend\templates\show_list.html:29
+msgid "Rechercher"
+msgstr "Search"
+
+#: .\frontend\templates\show_list.html:38
 msgid "Nos Spectacles"
 msgstr "Our Shows"
 
-#: .\frontend\templates\show_list.html:53
+#: .\frontend\templates\show_list.html:39
 msgid "Explorez les événements à venir et réservez vos billets."
 msgstr "Explore upcoming events and book your tickets."
 
-#: .\frontend\templates\show_list.html:114
+#: .\frontend\templates\show_list.html:101
 #, python-format
 msgid "<strong>%(count)s</strong> spectacles trouvés"
 msgstr "<strong>%(count)s</strong> shows found"
@@ -2063,29 +2167,41 @@ msgstr "<strong>%(count)s</strong> shows found"
 msgid "Modifier mon profil"
 msgstr "Edit my profile"
 
-#: .\frontend\views.py:36
+#: .\frontend\views.py:51
 msgid "Bienvenue à ThéâtrePlus"
 msgstr "Welcome to ThéâtrePlus"
 
-#: .\frontend\views.py:79
+#: .\frontend\views.py:116
 msgid "Catalogue des Spectacles"
 msgstr "Show Catalogue"
 
-#: .\frontend\views.py:102
+#: .\frontend\views.py:139
 msgid "Détails du Spectacle"
 msgstr "Show Details"
 
-#: .\frontend\views.py:123
+#: .\frontend\views.py:160
 msgid "Nos Lieux de Spectacles"
 msgstr "Our Performance Venues"
 
-#: .\frontend\views.py:215
+#: .\frontend\views.py:252
 msgid "Article de Presse"
 msgstr "Press Article"
 
-#: .\frontend\views.py:215
+#: .\frontend\views.py:252
 msgid "Article introuvable"
 msgstr "Article not found"
+
+#: .\frontend\views.py:279
+msgid ""
+"Votre message a été envoyé avec succès. Nous vous répondrons dès que "
+"possible."
+msgstr "Your message has been sent successfully. We will respond as soon as possible."
+
+#: .\frontend\views.py:283
+msgid ""
+"Une erreur est survenue lors de l'envoi de votre message. Veuillez réessayer "
+"plus tard."
+msgstr "An error occurred while sending your message. Please try again later."
 
 #: .\payments\templates\payments\cancel.html:4
 msgid "Commande annulée - ThéâtrePlus"
@@ -2097,7 +2213,7 @@ msgstr "Order cancelled"
 
 #: .\payments\templates\payments\cancel.html:13
 msgid "Vous avez choisi d'interrompre le processus de paiement."
-msgstr "You chose to interrupt the payment process."
+msgstr "You have chosen to interrupt the payment process."
 
 #: .\payments\templates\payments\cancel.html:20
 msgid "Besoin de plus de temps ?"
@@ -2107,12 +2223,24 @@ msgstr "Need more time?"
 msgid ""
 "Votre panier a été conservé. Vous pouvez reprendre votre commande quand vous "
 "le souhaitez."
-msgstr ""
+msgstr "Your cart has been saved. You can resume your order whenever you wish."
 
 #: .\payments\templates\payments\cancel.html:23
 msgid ""
 "Si vous avez rencontré un problème technique, n'hésitez pas à nous contacter."
-msgstr ""
+msgstr "If you have encountered a technical problem, do not hesitate to contact us."
+
+#: .\frontend\templates\contact.html:26
+msgid "Rue de l'Enseignement 10,"
+msgstr "10 Enseignement Street,"
+
+#: .\frontend\templates\contact.html:26
+msgid "1000 Bruxelles, Belgique"
+msgstr "1000 Brussels, Belgium"
+
+#: .\frontend\templates\contact.html:46
+msgid "Lun - Ven, 9h00 - 18h00"
+msgstr "Mon - Fri, 9:00 AM - 6:00 PM"
 
 #: .\payments\templates\payments\cancel.html:28
 msgid "Retourner au panier"
@@ -2220,10 +2348,82 @@ msgstr "Priority technical support"
 msgid "Retourner à l'Espace API"
 msgstr "Return to API Space"
 
-#: .\reservations\settings.py:159
+#: .\reservations\settings.py:160
 msgid "French"
 msgstr "French"
 
-#: .\reservations\settings.py:161
+#: .\reservations\settings.py:162
 msgid "Dutch"
 msgstr "Dutch"
+
+#~ msgid "Utilisateur supprimé avec succès."
+#~ msgstr "User deleted successfully."
+
+#~ msgid "Image actuelle"
+#~ msgstr "Current image"
+
+#~ msgid "Sélectionnez une photo depuis votre ordinateur."
+#~ msgstr "Select a photo from your computer."
+
+#~ msgid "Salle / Lieu"
+#~ msgstr "Hall / Venue"
+
+#~ msgid "Nombre de tickets"
+#~ msgstr "Number of tickets"
+
+#~ msgid "Publier le Spectacle"
+#~ msgstr "Publish show"
+
+#~ msgid "places"
+#~ msgstr "seats"
+
+#~ msgid "Mon compte"
+#~ msgstr "My account"
+
+#~ msgid "Concert"
+#~ msgstr "Concert"
+
+#~ msgid "Théâtre"
+#~ msgstr "Theater"
+
+#~ msgid "Danse"
+#~ msgstr "Dance"
+
+#~ msgid "Comédie"
+#~ msgstr "Comedy"
+
+#~ msgid "Toutes les dates"
+#~ msgstr "All dates"
+
+#~ msgid "Ce week-end"
+#~ msgstr "This weekend"
+
+#~ msgid "Cette semaine"
+#~ msgstr "This week"
+
+#~ msgid "Ce mois-ci"
+#~ msgstr "This month"
+
+#~ msgid "Tous les événements"
+#~ msgstr "All events"
+
+#~ msgid "Concerts"
+#~ msgstr "Concerts"
+
+#~ msgid "Festivals"
+#~ msgstr "Festivals"
+
+#~ msgid "Éditer (Admin)"
+#~ msgstr "Edit (Admin)"
+
+#~ msgid "Modifier dans mon Espace Producteur"
+#~ msgstr "Edit in my Producer Space"
+
+#~ msgid "Éditer"
+#~ msgstr "Edit"
+
+#~ msgid "Non réservable"
+#~ msgstr "Not bookable"
+
+#~ msgid "Année de création :"
+#~ msgstr "Creation year:"
