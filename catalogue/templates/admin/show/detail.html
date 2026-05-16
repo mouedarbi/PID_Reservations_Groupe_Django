@@ -149,23 +149,52 @@
                 <div class="p-6 border-b border-border bg-gray-50/50 dark:bg-gray-900/50">
                     <h3 class="text-lg font-bold flex items-center gap-2">
                         <i class="ph ph-plus-circle text-blue-500"></i>
-                        Ajouter un tarif
+                        Gestion des Tarifs
                     </h3>
                 </div>
-                <form method="POST" action="">
-                    {% csrf_token %}
-                    <div class="p-6 space-y-4">
-                        <select name="price_id" class="border-border bg-input focus:ring-primary w-full rounded-md border py-2 px-3 transition-colors duration-200 focus:ring-2 focus:outline-none">
-                            <option value="">Sélectionner un tarif à ajouter...</option>
-                            {% for price in available_prices %}
-                            <option value="{{ price.id }}">{{ price.type }} - {{ price.price }} €</option>
-                            {% endfor %}
-                        </select>
-                        <button type="submit" class="w-full rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
-                            Associer ce tarif
-                        </button>
+                
+                <div class="p-6">
+                    <!-- Créer un nouveau tarif spécifique -->
+                    <div>
+                        <h4 class="text-sm font-bold mb-3 text-muted uppercase tracking-wider">Nouveau tarif pour ce spectacle</h4>
+                        <form method="POST" action="" class="space-y-4">
+                            {% csrf_token %}
+                            <input type="hidden" name="create_price" value="1">
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-xs font-semibold text-text">Nom du tarif (ex: Adulte, Senior...)</label>
+                                    <input type="text" name="type" required placeholder="Type" class="rounded-md border border-border bg-input p-2 text-sm">
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-xs font-semibold text-text">Prix (€)</label>
+                                    <input type="number" name="price" step="0.01" required placeholder="0.00" class="rounded-md border border-border bg-input p-2 text-sm">
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs font-semibold text-text">Description courte</label>
+                                <input type="text" name="description" placeholder="Description du tarif" class="rounded-md border border-border bg-input p-2 text-sm">
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-xs font-semibold text-text">Date de début</label>
+                                    <input type="date" name="start_date" required value="{% now 'Y-m-d' %}" class="rounded-md border border-border bg-input p-2 text-sm">
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-xs font-semibold text-text">Date de fin</label>
+                                    <input type="date" name="end_date" required value="2026-12-31" class="rounded-md border border-border bg-input p-2 text-sm">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition font-bold">
+                                <i class="ph ph-plus-circle"></i>
+                                Créer et Ajouter le tarif
+                            </button>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
 

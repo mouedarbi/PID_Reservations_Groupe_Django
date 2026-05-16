@@ -20,7 +20,7 @@ class Reservation(models.Model):
 
 
 class RepresentationReservation(models.Model):
-    representation = models.ForeignKey(Representation, on_delete=models.RESTRICT)
+    representation = models.ForeignKey(Representation, on_delete=models.RESTRICT, related_name='representation_reservations')
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE, related_name='representation_reservations')
     price = models.ForeignKey(Price, on_delete=models.RESTRICT)
     quantity = models.PositiveIntegerField(default=1)

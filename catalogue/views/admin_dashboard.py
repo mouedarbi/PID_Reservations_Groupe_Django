@@ -35,111 +35,189 @@ def is_admin(user):
 @user_passes_test(is_admin)
 def admin_dashboard(request):
     """
-    View for the custom admin dashboard.
+    View for the custom admin dashboard with real dynamic data.
     """
+    from django.db.models import Sum, Count, Q
+    from django.utils import timezone
+    import datetime
+
+    now = timezone.now()
+    today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
     
-    # 1. Basic Counts
-    total_reservations = Reservation.objects.count()
-    total_customers = User.objects.count()
-    active_shows = Show.objects.filter(bookable=True).count()
-    pending_shows_count = Show.objects.filter(status='pending').count()
+    # 1. KPIs de base
+    total_reservations_today = Reservation.objects.filter(booking_date__gte=today_start).count()
     
-    # 2. Revenue & Tickets Sold
-    # On calcule le revenu réel basé sur les paiements Stripe réussis
+    # Revenu total (tous temps)
     total_revenue = Payment.objects.filter(status='succeeded').aggregate(total=Sum('amount'))['total'] or 0
     
-    # Pour les tickets, on garde le calcul basé sur les réservations payées
+    # Revenu aujourd'hui
+    revenue_today = Payment.objects.filter(status='succeeded', created_at__gte=today_start).aggregate(total=Sum('amount'))['total'] or 0
+    
+    # Billets vendus (tous temps)
     total_tickets_sold = RepresentationReservation.objects.filter(reservation__status='PAID').aggregate(total=Sum('quantity'))['total'] or 0
     
-    # 3. Upcoming Shows (Representations)
-    now = timezone.now()
-    upcoming_reps_count = Representation.objects.filter(schedule__gte=now).count()
+    # Billets vendus aujourd'hui
+    tickets_today = RepresentationReservation.objects.filter(reservation__status='PAID', reservation__booking_date__gte=today_start).aggregate(total=Sum('quantity'))['total'] or 0
     
-    # 4. Mock Data for Charts & Lists (to ensure template renders beautiful UI)
-    # We'll fetch some real representations and format them
-    upcoming_reps = Representation.objects.filter(schedule__gte=now).select_related('show').order_by('schedule')[:5]
+    active_shows_count = Show.objects.filter(bookable=True).count()
+    pending_shows_count = Show.objects.filter(status='pending').count()
+    total_customers = User.objects.count()
+    
+    # 2. Calcul de croissance (M vs M-1)
+    thirty_days_ago = now - datetime.timedelta(days=30)
+    sixty_days_ago = now - datetime.timedelta(days=60)
+    
+    rev_this_month = Payment.objects.filter(status='succeeded', created_at__gte=thirty_days_ago).aggregate(total=Sum('amount'))['total'] or 0
+    rev_last_month = Payment.objects.filter(status='succeeded', created_at__range=(sixty_days_ago, thirty_days_ago)).aggregate(total=Sum('amount'))['total'] or 0
+    
+    revenue_growth = 100 if rev_last_month == 0 else round(((rev_this_month - rev_last_month) / rev_last_month) * 100, 1)
+    
+    # 3. Graphique d'activité (7 derniers jours)
+    activity_data = []
+    for i in range(6, -1, -1):
+        day = today_start - datetime.timedelta(days=i)
+        next_day = day + datetime.timedelta(days=1)
+        count = Reservation.objects.filter(booking_date__range=(day, next_day)).count()
+        activity_data.append(count)
+        
+    # 4. Graphique des ventes (4 dernières semaines)
+    revenue_data = []
+    tickets_data = []
+    for i in range(3, -1, -1):
+        week_start = today_start - datetime.timedelta(weeks=i+1)
+        week_end = today_start - datetime.timedelta(weeks=i)
+        
+        rev = Payment.objects.filter(status='succeeded', created_at__range=(week_start, week_end)).aggregate(total=Sum('amount'))['total'] or 0
+        tix = RepresentationReservation.objects.filter(reservation__status='PAID', reservation__booking_date__range=(week_start, week_end)).aggregate(total=Sum('quantity'))['total'] or 0
+        
+        revenue_data.append(float(rev))
+        tickets_data.append(tix)
+
+    # 4.5 Taux de Conversion Réel
+    total_res_count = Reservation.objects.count()
+    paid_res_count = Reservation.objects.filter(status='PAID').count()
+    
+    if total_res_count > 0:
+        conversion_rate = round((paid_res_count / total_res_count) * 100, 1)
+    else:
+        conversion_rate = 0
+    
+    remaining_conversion = max(0, 100 - conversion_rate)
+
+    # Calcul croissance conversion (M vs M-1)
+    res_this_month = Reservation.objects.filter(booking_date__gte=thirty_days_ago).count()
+    paid_this_month = Reservation.objects.filter(status='PAID', booking_date__gte=thirty_days_ago).count()
+    
+    res_last_month = Reservation.objects.filter(booking_date__range=(sixty_days_ago, thirty_days_ago)).count()
+    paid_last_month = Reservation.objects.filter(status='PAID', booking_date__range=(sixty_days_ago, thirty_days_ago)).count()
+    
+    conv_this_month = (paid_this_month / res_this_month * 100) if res_this_month > 0 else 0
+    conv_last_month = (paid_last_month / res_last_month * 100) if res_last_month > 0 else 0
+    conversion_growth = round(conv_this_month - conv_last_month, 1)
+
+    # Croissance Billets
+    tickets_this_month = RepresentationReservation.objects.filter(reservation__status='PAID', reservation__booking_date__gte=thirty_days_ago).aggregate(total=Sum('quantity'))['total'] or 0
+    tickets_last_month = RepresentationReservation.objects.filter(reservation__status='PAID', reservation__booking_date__range=(sixty_days_ago, thirty_days_ago)).aggregate(total=Sum('quantity'))['total'] or 0
+    tickets_growth = 100 if tickets_last_month == 0 else round(((tickets_this_month - tickets_last_month) / tickets_last_month) * 100, 1)
+
+    # Croissance Clients
+    customers_this_month = User.objects.filter(date_joined__gte=thirty_days_ago).count()
+    customers_last_month = User.objects.filter(date_joined__range=(sixty_days_ago, thirty_days_ago)).count()
+    customers_growth = 100 if customers_last_month == 0 else round(((customers_this_month - customers_last_month) / customers_last_month) * 100, 1)
+
+    # 5. Meilleurs Spectacles (Top 5 par revenus)
+    top_shows_query = Show.objects.annotate(
+        tickets_sold=Sum('representations__representation_reservations__quantity', filter=Q(representations__representation_reservations__reservation__status='PAID')),
+        revenue=Sum(F('representations__representation_reservations__price__price') * F('representations__representation_reservations__quantity'), filter=Q(representations__representation_reservations__reservation__status='PAID')),
+        capacity=Sum('representations__total_seats')
+    ).filter(revenue__gt=0).order_by('-revenue')[:5]
+    
+    top_shows = []
+    for s in top_shows_query:
+        top_shows.append({
+            'title': s.title,
+            'tickets_sold': s.tickets_sold or 0,
+            'capacity': s.capacity or 0,
+            'revenue': s.revenue or 0
+        })
+
+    # 6. Activités Récentes (Paiements et Avis)
+    recent_activities = []
+    
+    # Derniers paiements
+    recent_payments = Payment.objects.select_related('reservation__user').order_by('-created_at')[:5]
+    for p in recent_payments:
+        recent_activities.append({
+            'title': 'Paiement Reçu',
+            'description': f'{p.reservation.user.username} a payé {p.amount}€',
+            'timestamp': p.created_at,
+            'status': 'success'
+        })
+        
+    # Derniers avis
+    recent_reviews = Review.objects.select_related('user', 'show').order_by('-created_at')[:3]
+    for r in recent_reviews:
+        recent_activities.append({
+            'title': 'Nouvel Avis',
+            'description': f'{r.user.username} sur "{r.show.title}"',
+            'timestamp': r.created_at,
+            'status': 'info'
+        })
+    
+    recent_activities = sorted(recent_activities, key=lambda x: x['timestamp'], reverse=True)[:5]
+
+    # 7. Spectacles à Venir (Vraies représentations)
+    all_upcoming_reps = Representation.objects.filter(schedule__gte=now)
+    upcoming_shows_total = all_upcoming_reps.count()
+    upcoming_reps = all_upcoming_reps.select_related('show').order_by('schedule')[:4]
     
     upcoming_shows_list = []
     for rep in upcoming_reps:
-        # Mock capacity logic
-        capacity = rep.available_seats + 20 # Assume 20 sold for demo
-        sold = 20
-        percentage = (sold / capacity) * 100 if capacity > 0 else 0
-        
+        sold = rep.total_seats - rep.available_seats
+        percentage = (sold / rep.total_seats) * 100 if rep.total_seats > 0 else 0
         upcoming_shows_list.append({
             'title': rep.show.title,
             'date': rep.schedule,
             'time': rep.schedule,
             'tickets_sold': sold,
-            'capacity': capacity,
+            'capacity': rep.total_seats,
             'sold_percentage': round(percentage),
         })
-        
-    # If no real data, add dummy
-    if not upcoming_shows_list:
-        upcoming_shows_list = [
-            {'title': 'Concert de Jazz', 'date': now + datetime.timedelta(days=2), 'time': now, 'tickets_sold': 45, 'capacity': 100, 'sold_percentage': 45},
-            {'title': 'Théâtre Classique', 'date': now + datetime.timedelta(days=5), 'time': now, 'tickets_sold': 90, 'capacity': 100, 'sold_percentage': 90},
-        ]
-
-    # On récupère les 5 derniers paiements réels pour les activités
-    recent_payments = Payment.objects.select_related('reservation__user').order_by('-created_at')[:5]
-    
-    recent_activities = []
-    for payment in recent_payments:
-        recent_activities.append({
-            'title': 'Paiement Stripe',
-            'description': f'{payment.reservation.user.username} a payé {payment.amount} {payment.currency}',
-            'timestamp': payment.created_at,
-            'status': 'success' if payment.status == 'succeeded' else 'warning'
-        })
-    
-    # Si pas de paiements réels, on garde les mocks originaux
-    if not recent_activities:
-        recent_activities = [
-            {'title': 'Nouvelle réservation', 'description': 'Jean Dupont a réservé 2 places', 'timestamp': now - datetime.timedelta(minutes=15), 'status': 'success'},
-            {'title': 'Nouveau commentaire', 'description': 'Marie a commenté "Super spectacle!"', 'timestamp': now - datetime.timedelta(hours=2), 'status': 'info'},
-        ]
-    
-    # Mocking 'top_shows'
-    top_shows = [
-        {'title': 'Le Roi Lion', 'tickets_sold': 1200, 'capacity': 1500, 'revenue': 45000},
-        {'title': 'Hamlet', 'tickets_sold': 800, 'capacity': 800, 'revenue': 24000},
-        {'title': 'Starmania', 'tickets_sold': 650, 'capacity': 1000, 'revenue': 32500},
-    ]
 
     context = {
         'page_title': 'Tableau de bord administration',
         'title': 'Tableau de bord',
 
         # Stats
-        'total_reservations': total_reservations,
+        'total_reservations': total_reservations_today,
         'total_revenue': round(total_revenue, 2),
+        'revenue_today': round(revenue_today, 2),
         'total_tickets_sold': total_tickets_sold,
-        'active_shows': active_shows,
+        'tickets_today': tickets_today,
+        'active_shows': active_shows_count,
         'pending_shows_count': pending_shows_count,
-        'upcoming_shows': upcoming_reps_count,
+        'upcoming_shows': upcoming_shows_total, # Total réel ici
         'total_customers': total_customers,
 
-        # Growth (Mocked)
-        'revenue_growth': 12.5,
-        'tickets_growth': 8.2,
-        'tickets_today': 15,
-        'customers_growth': 5.4,
-        'new_customers_month': 24,
-        'conversion_rate': 3.2,
-        'remaining_conversion': 96.8,
-        'conversion_growth': 0.5,
+        # Croissance & Métriques
+        'revenue_growth': revenue_growth,
+        'tickets_growth': tickets_growth, 
+        'new_customers_month': customers_this_month,
+        'customers_growth': customers_growth,
+        
+        'conversion_rate': conversion_rate,
+        'remaining_conversion': remaining_conversion,
+        'conversion_growth': conversion_growth,
 
-        # Lists
+        # Listes dynamiques
         'upcoming_shows_list': upcoming_shows_list,
         'recent_activities': recent_activities,
         'top_shows': top_shows,
 
-        # Charts Data (Lists for JS)
-        'activity_data': [12, 19, 3, 5, 2, 3, 15],
-        'revenue_data': [12000, 19000, 15000, 22000],
-        'tickets_data': [400, 600, 500, 750],
+        # Données Graphiques
+        'activity_data': activity_data,
+        'revenue_data': revenue_data,
+        'tickets_data': tickets_data,
     }
     return render(request, 'admin/dashboard.html', context)
 
@@ -875,7 +953,32 @@ def admin_show_detail(request, pk):
     representations = show.representations.all().order_by('schedule')
 
     if request.method == 'POST':
-        # Gérer l'ajout d'un prix
+        # Gérer la création et l'ajout d'un nouveau prix
+        if 'create_price' in request.POST:
+            p_type = request.POST.get('type')
+            p_price = request.POST.get('price')
+            p_desc = request.POST.get('description', '')
+            p_start = request.POST.get('start_date')
+            p_end = request.POST.get('end_date')
+
+            if p_type and p_price and p_start and p_end:
+                try:
+                    new_price = Price.objects.create(
+                        type=p_type,
+                        price=p_price,
+                        description=p_desc,
+                        start_date=p_start,
+                        end_date=p_end
+                    )
+                    ShowPrice.objects.create(show=show, price=new_price)
+                    messages.success(request, f"Nouveau tarif '{p_type}' créé et associé avec succès.")
+                except Exception as e:
+                    messages.error(request, f"Erreur lors de la création du tarif : {str(e)}")
+            else:
+                messages.error(request, "Veuillez remplir tous les champs obligatoires (Type, Prix, Dates) pour le nouveau tarif.")
+            return redirect('admin_show_detail', pk=show.id)
+
+        # Gérer l'ajout d'un prix existant
         price_id = request.POST.get('price_id')
         if price_id:
             price = get_object_or_404(Price, id=price_id)
@@ -1764,12 +1867,40 @@ def admin_approve_show(request, pk):
                 except ValueError as e:
                     messages.error(request, f"Format de date ou d'heure invalide : {e}")
 
-        # 4. Ajout de prix (via ShowPrice)
-        price_id = request.POST.get('price_id')
-        if price_id:
-            price = get_object_or_404(Price, id=price_id)
+        # 4. Gérer la création et l'ajout d'un nouveau prix (Logique unifiée)
+        if 'create_price' in request.POST:
+            p_type = request.POST.get('type')
+            p_price = request.POST.get('price')
+            p_desc = request.POST.get('description', '')
+            p_start = request.POST.get('start_date')
+            p_end = request.POST.get('end_date')
+
+            if p_type and p_price and p_start and p_end:
+                try:
+                    from catalogue.models import ShowPrice
+                    new_price = Price.objects.create(
+                        type=p_type,
+                        price=p_price,
+                        description=p_desc,
+                        start_date=p_start,
+                        end_date=p_end
+                    )
+                    ShowPrice.objects.get_or_create(show=show, price=new_price)
+                    messages.success(request, f"Nouveau tarif '{p_type}' créé et associé avec succès.")
+                except Exception as e:
+                    messages.error(request, f"Erreur lors de la création du tarif : {str(e)}")
+            else:
+                messages.error(request, "Veuillez remplir tous les champs obligatoires (Type, Prix, Dates) pour le nouveau tarif.")
+            return redirect('admin_approve_show', pk=show.id)
+
+        # 5. Gérer la suppression d'un prix
+        delete_price_id = request.POST.get('delete_price_id')
+        if delete_price_id:
             from catalogue.models import ShowPrice
-            ShowPrice.objects.get_or_create(show=show, price=price)
+            show_price_to_delete = get_object_or_404(ShowPrice, pk=delete_price_id)
+            if show_price_to_delete.show == show:
+                show_price_to_delete.delete()
+                messages.info(request, "Tarif retiré du spectacle.")
 
         return redirect('admin_approve_show', pk=show.id)
 

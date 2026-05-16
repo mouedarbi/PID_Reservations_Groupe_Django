@@ -96,35 +96,59 @@
                     {% for sp in show_prices %}
                     <div class="flex items-center justify-between rounded-md bg-muted/10 p-2 text-sm">
                         <span>{{ sp.price.type|title }} - {{ sp.price.price }} €</span>
-                        <span class="text-green-600 font-bold"><i class="ph ph-check-circle"></i></span>
+                        <form method="POST" action="" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_price_id" value="{{ sp.id }}">
+                            <button type="submit" class="text-red-500 hover:text-red-700" title="Retirer">
+                                <i class="ph ph-trash"></i>
+                            </button>
+                        </form>
                     </div>
                     {% empty %}
                     <p class="text-muted text-sm italic">{% trans "Aucun tarif associé." %}</p>
                     {% endfor %}
                 </div>
 
-                <form method="post" class="border-t border-border mt-4 pt-4">
-                    {% csrf_token %}
-                    <label class="text-muted block text-sm font-medium">{% trans "Affecter un nouveau prix" %}</label>
-                    <div class="mt-2 space-y-2">
-                        <select name="price_id" class="bg-muted/20 border-border block w-full rounded-md border p-2 text-sm text-text" required>
-                            <option value="">-- {% trans "Choisir un type de prix" %} --</option>
-                            {% for p in available_prices %}
-                                <option value="{{ p.id }}">{{ p.type|title }} ({{ p.price }} €)</option>
-                            {% endfor %}
-                        </select>
-                        <button type="submit" class="btn w-full bg-purple-600 text-white hover:bg-purple-700">
-                            <i class="ph ph-plus-circle"></i> {% trans "Ajouter ce tarif" %}
+                <div class="border-t border-border mt-4 pt-4">
+                    <h4 class="text-xs font-bold mb-3 text-muted uppercase tracking-wider">Créer un nouveau tarif spécifique</h4>
+                    <form method="POST" action="" class="space-y-3">
+                        {% csrf_token %}
+                        <input type="hidden" name="create_price" value="1">
+                        
+                        <div>
+                            <label class="text-[10px] font-semibold text-text uppercase">{% trans "Nom du tarif" %}</label>
+                            <input type="text" name="type" required placeholder="Ex: Adulte, Senior..." class="bg-muted/20 border-border block w-full rounded-md border p-2 text-sm text-text">
+                        </div>
+                        
+                        <div>
+                            <label class="text-[10px] font-semibold text-text uppercase">{% trans "Prix (€)" %}</label>
+                            <input type="number" name="price" step="0.01" required placeholder="0.00" class="bg-muted/20 border-border block w-full rounded-md border p-2 text-sm text-text">
+                        </div>
+
+                        <div>
+                            <label class="text-[10px] font-semibold text-text uppercase">{% trans "Description" %}</label>
+                            <input type="text" name="description" placeholder="Optionnel" class="bg-muted/20 border-border block w-full rounded-md border p-2 text-sm text-text">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-[10px] font-semibold text-text uppercase">{% trans "Début" %}</label>
+                                <input type="date" name="start_date" required value="{% now 'Y-m-d' %}" class="bg-muted/20 border-border block w-full rounded-md border p-1 text-xs text-text">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-semibold text-text uppercase">{% trans "Fin" %}</label>
+                                <input type="date" name="end_date" required value="2026-12-31" class="bg-muted/20 border-border block w-full rounded-md border p-1 text-xs text-text">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn w-full bg-purple-600 text-white hover:bg-purple-700 font-bold">
+                            <i class="ph ph-plus-circle"></i> {% trans "Créer et Associer" %}
                         </button>
-                    </div>
-                </form>
-                <div class="mt-4">
-                    <a href="{% url 'admin_price_create' %}" class="text-xs text-blue-500 hover:underline">
-                        <i class="ph ph-plus"></i> {% trans "Créer un nouveau type de prix" %}
-                    </a>
+                    </form>
                 </div>
+                
                 <p class="text-small mt-4">
-                    <i class="ph ph-info"></i> {% trans "Un spectacle doit avoir au moins un tarif pour être publié." %}
+                    <i class="ph ph-info text-blue-500"></i> {% trans "Un spectacle doit avoir au moins un tarif pour être publié." %}
                 </p>
             </div>
 
