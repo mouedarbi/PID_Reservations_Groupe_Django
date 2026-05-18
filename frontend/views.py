@@ -290,3 +290,21 @@ def contact(request):
     }
     return render(request, 'contact.html', context)
 
+def about(request):
+    """
+    View for the about page.
+    """
+    return render(request, 'about.html')
+
+def terms(request):
+    """
+    View for the general terms and conditions page.
+    """
+    return render(request, 'terms.html')
+
+def faq(request):
+    """
+    View for the FAQ page.
+    """
+    return render(request, 'faq.html')
+

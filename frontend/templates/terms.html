@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Conditions Générales - ThéâtrePlus" %}{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 style="display: flex; align-items: center; justify-content: center;">
+                    <img src="{% static 'favicon.png' %}" alt="T" style="height: 1.1em; width: auto; margin-right: 10px;">héâtrePlus - {% trans "Conditions" %}
+                </h1>
+                <p>{% trans "Mentions légales, CGV et Protection des données" %}</p>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 60px 0;">
+        <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 0 20px;">
+            <div style="background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; padding: 40px; color: #4b5563; line-height: 1.8;">
+                
+                <h2 style="color: #1f2937; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 20px;">1. {% trans "Mentions Légales" %}</h2>
+                <p><strong>{% trans "Éditeur du site" %} :</strong> ThéâtrePlus ASBL<br>
+                <strong>{% trans "Siège social" %} :</strong> Bruxelles, Belgique<br>
+                <strong>{% trans "Contact" %} :</strong> contact@theatreplus.be</p>
+
+                <h2 style="color: #1f2937; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-top: 40px; margin-bottom: 20px;">2. {% trans "Vente de Tickets en Ligne" %}</h2>
+                <p>{% trans "Conformément au Code de droit économique belge :" %}</p>
+                <ul>
+                    <li><strong>{% trans "Absence de droit de rétractation" %} :</strong> {% trans "En vertu de l'article VI.53, 12° du Code de droit économique, le droit de rétractation de 14 jours ne s'applique pas aux prestations de services de loisirs devant être fournies à une date déterminée." %}</li>
+                    <li><strong>{% trans "Validité" %} :</strong> {% trans "Les tickets ne sont valables que pour la représentation, la date et l'heure indiquées." %}</li>
+                    <li><strong>{% trans "Remboursement" %} :</strong> {% trans "Sauf en cas d'annulation ou de report par l'organisateur, les tickets ne sont ni échangés ni remboursés." %}</li>
+                </ul>
+
+                <h2 style="color: #1f2937; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-top: 40px; margin-bottom: 20px;">3. {% trans "Protection des Données (GDPR)" %}</h2>
+                <p>{% trans "Conformément au Règlement Général sur la Protection des Données (UE 2016/679) :" %}</p>
+                <ul>
+                    <li><strong>{% trans "Finalité" %} :</strong> {% trans "Vos données sont collectées pour la gestion des réservations et l'accès aux services de l'API." %}</li>
+                    <li><strong>{% trans "Rétention des données" %} :</strong> {% trans "Les données relatives à votre compte sont conservées tant que votre compte est actif. En cas d'inactivité prolongée de 3 ans, vos données personnelles seront anonymisées ou supprimées." %}</li>
+                    <li><strong>{% trans "Vos droits" %} :</strong> {% trans "Vous disposez d'un droit d'accès, de rectification et de suppression ('droit à l'oubli') de vos données." %}</li>
+                    <li><strong>{% trans "Suppression de compte" %} :</strong> {% trans "Vous pouvez demander la suppression de votre compte à tout moment via votre profil ou par e-mail. Cette action est irréversible et entraîne la suppression de vos données personnelles, sauf obligation légale de conservation (ex: facturation)." %}</li>
+                </ul>
+
+                <h2 style="color: #1f2937; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-top: 40px; margin-bottom: 20px;">4. {% trans "Responsabilité" %}</h2>
+                <p>{% trans "ThéâtrePlus agit en tant qu'intermédiaire entre les producteurs de spectacles et les spectateurs. La responsabilité de la tenue du spectacle incombe exclusivement au producteur mentionné sur la fiche du spectacle." %}</p>
+
+                <div style="margin-top: 50px; padding: 20px; background: #f8f9fa; border-radius: 8px; font-size: 0.9rem; text-align: center;">
+                    {% trans "Dernière mise à jour" %} : 18 mai 2026
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

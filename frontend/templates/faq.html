@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "FAQ - Foire Aux Questions - ThéâtrePlus" %}{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 style="display: flex; align-items: center; justify-content: center;">
+                    <img src="{% static 'favicon.png' %}" alt="T" style="height: 1.1em; width: auto; margin-right: 10px;">héâtrePlus - {% trans "FAQ" %}
+                </h1>
+                <p>{% trans "Réponses à vos questions les plus fréquentes" %}</p>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 60px 0;">
+        <div class="container" style="max-width: 900px; margin: 0 auto; padding: 0 20px;">
+            
+            <!-- Site -->
+            <div style="margin-bottom: 40px;">
+                <h2 style="color: var(--secondary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <i class="ph ph-globe"></i> {% trans "Le Site" %}
+                </h2>
+                <div class="faq-item" style="background: white; border-radius: 10px; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                    <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 10px;">{% trans "Qu'est-ce que ThéâtrePlus ?" %}</h3>
+                    <p style="color: var(--text-secondary);">{% trans "ThéâtrePlus est une plateforme de réservation en ligne dédiée aux arts de la scène en Belgique, permettant de découvrir des spectacles et de réserver vos places facilement." %}</p>
+                </div>
+                <div class="faq-item" style="background: white; border-radius: 10px; border: 1px solid var(--border-color); padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                    <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 10px;">{% trans "Comment créer un compte ?" %}</h3>
+                    <p style="color: var(--text-secondary);">{% trans "Cliquez sur le bouton 'Connexion' en haut à droite, puis sélectionnez 'Créer un compte'. Remplissez le formulaire et vous pourrez commencer à réserver." %}</p>
+                </div>
+            </div>
+
+            <!-- Réservations -->
+            <div style="margin-bottom: 40px;">
+                <h2 style="color: var(--secondary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <i class="ph ph-ticket"></i> {% trans "Réservations" %}
+                </h2>
+                <div class="faq-item" style="background: white; border-radius: 10px; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                    <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 10px;">{% trans "Comment réserver un ticket ?" %}</h3>
+                    <p style="color: var(--text-secondary);">{% trans "Choisissez un spectacle, sélectionnez une représentation disponible, ajoutez les places au panier et procédez au paiement sécurisé via Stripe." %}</p>
+                </div>
+                <div class="faq-item" style="background: white; border-radius: 10px; border: 1px solid var(--border-color); padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                    <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 10px;">{% trans "Puis-je annuler ma réservation ?" %}</h3>
+                    <p style="color: var(--text-secondary);">{% trans "Conformément à nos conditions générales, les tickets pour des événements à date fixe ne sont pas remboursables, sauf en cas d'annulation de l'organisateur." %}</p>
+                </div>
+            </div>
+
+            <!-- Paiement & Support -->
+            <div>
+                <h2 style="color: var(--secondary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <i class="ph ph-info"></i> {% trans "Paiement & Support" %}
+                </h2>
+                <div class="faq-item" style="background: white; border-radius: 10px; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                    <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 10px;">{% trans "Quels sont les modes de paiement acceptés ?" %}</h3>
+                    <p style="color: var(--text-secondary);">{% trans "Nous acceptons les paiements par carte bancaire (Visa, Mastercard, Bancontact) via la plateforme sécurisée Stripe." %}</p>
+                </div>
+                <div class="faq-item" style="background: white; border-radius: 10px; border: 1px solid var(--border-color); padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                    <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 10px;">{% trans "Que faire si je ne reçois pas mon ticket par e-mail ?" %}</h3>
+                    <p style="color: var(--text-secondary);">{% trans "Vérifiez d'abord votre dossier 'Indésirables'. Vous pouvez également retrouver tous vos tickets à tout moment dans votre espace profil sur le site." %}</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+{% endblock %}

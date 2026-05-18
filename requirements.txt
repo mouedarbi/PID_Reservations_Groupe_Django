@@ -22,6 +22,8 @@ django-import-export==4.1.1
 django-modeltranslation==0.18.11
 django-tinymce==5.0.0
 djangorestframework==3.15.2
+drf-spectacular==0.29.0
+drf-spectacular-sidecar==2026.5.1
 expiringdict==1.2.2
 filelock==3.25.2
 Flask==2.2.5
