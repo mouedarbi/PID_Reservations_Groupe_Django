@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-13 13:50+0200\n"
+"POT-Creation-Date: 2026-05-18 10:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -75,7 +75,7 @@ msgid "Français"
 msgstr "French"
 
 #: .\accounts\forms\UserUpdateForm.py:14 .\accounts\views.py:43
-#: .\reservations\settings.py:161
+#: .\reservations\settings.py:163
 msgid "English"
 msgstr "English"
 
@@ -138,7 +138,7 @@ msgstr "Administration"
 #: .\accounts\templates\user\_sidebar.html:67
 #: .\catalogue\templates\prod\prod_dashboard.html:4
 #: .\catalogue\templates\prod\prod_dashboard.html:9
-#: .\frontend\templates\base.html:173
+#: .\frontend\templates\base.html:176
 msgid "Espace Producteur"
 msgstr "Producer Space"
 
@@ -345,7 +345,7 @@ msgstr "Send my application"
 
 #: .\accounts\templates\user\become_producer.html:4
 #: .\accounts\templates\user\become_producer.html:9
-#: .\frontend\templates\base.html:189
+#: .\frontend\templates\base.html:192
 msgid "Devenir Producteur"
 msgstr "Become a Producer"
 
@@ -944,47 +944,63 @@ msgid "Publier maintenant"
 msgstr "Publish now"
 
 #: .\catalogue\templates\admin\show\approve.html:93
+#: .\catalogue\templates\prod\submit_show.html:176
 msgid "Gestion des Tarifs"
 msgstr "Price Management"
 
-#: .\catalogue\templates\admin\show\approve.html:102
+#: .\catalogue\templates\admin\show\approve.html:108
 msgid "Aucun tarif associé."
 msgstr "No rate associated."
 
-#: .\catalogue\templates\admin\show\approve.html:108
-msgid "Affecter un nouveau prix"
-msgstr "Assign a new price"
+#: .\catalogue\templates\admin\show\approve.html:119
+#: .\catalogue\templates\prod\submit_show.html:198
+#, fuzzy
+#| msgid "Nom d'utilisateur"
+msgid "Nom du tarif"
+msgstr "Username"
 
-#: .\catalogue\templates\admin\show\approve.html:111
-msgid "Choisir un type de prix"
-msgstr "Choose a price type"
+#: .\catalogue\templates\admin\show\approve.html:124
+#: .\catalogue\templates\prod\submit_show.html:202
+#, fuzzy
+#| msgid "Prix :"
+msgid "Prix (€)"
+msgstr "Price:"
 
-#: .\catalogue\templates\admin\show\approve.html:117
-msgid "Ajouter ce tarif"
-msgstr "Add this rate"
+#: .\catalogue\templates\admin\show\approve.html:129
+#: .\catalogue\templates\prod\submit_show.html:76
+msgid "Description"
+msgstr "Description"
 
-#: .\catalogue\templates\admin\show\approve.html:123
-msgid "Créer un nouveau type de prix"
-msgstr "Create a new price type"
+#: .\catalogue\templates\admin\show\approve.html:135
+msgid "Début"
+msgstr ""
 
-#: .\catalogue\templates\admin\show\approve.html:127
+#: .\catalogue\templates\admin\show\approve.html:139
+msgid "Fin"
+msgstr ""
+
+#: .\catalogue\templates\admin\show\approve.html:145
+msgid "Créer et Associer"
+msgstr ""
+
+#: .\catalogue\templates\admin\show\approve.html:151
 msgid "Un spectacle doit avoir au moins un tarif pour être publié."
 msgstr "A show must have at least one rate to be published."
 
-#: .\catalogue\templates\admin\show\approve.html:132
+#: .\catalogue\templates\admin\show\approve.html:156
 msgid "Note du Producteur"
 msgstr "Producer Note"
 
-#: .\catalogue\templates\admin\show\approve.html:138
+#: .\catalogue\templates\admin\show\approve.html:162
 msgid "Lien Ticketmaster"
 msgstr "Ticketmaster Link"
 
-#: .\catalogue\templates\admin\show\approve.html:140
+#: .\catalogue\templates\admin\show\approve.html:164
 msgid ""
 "Vérifiez les tarifs officiels sur Ticketmaster avant de valider ce spectacle."
 msgstr ""
 
-#: .\catalogue\templates\admin\show\approve.html:144
+#: .\catalogue\templates\admin\show\approve.html:168
 msgid "Ouvrir Ticketmaster"
 msgstr "Open Ticketmaster"
 
@@ -1150,7 +1166,7 @@ msgid "Mes Spectacles"
 msgstr "My Shows"
 
 #: .\catalogue\templates\prod\prod_dashboard.html:24
-#: .\frontend\templates\base.html:137
+#: .\frontend\templates\base.html:140
 msgid "Articles de presse"
 msgstr "Press Articles"
 
@@ -1219,10 +1235,6 @@ msgstr "Show Information"
 msgid "Titre du spectacle"
 msgstr "Show title"
 
-#: .\catalogue\templates\prod\submit_show.html:76
-msgid "Description"
-msgstr "Description"
-
 #: .\catalogue\templates\prod\submit_show.html:91
 msgid "Durée (minutes)"
 msgstr "Duration (minutes)"
@@ -1287,17 +1299,47 @@ msgstr "Remaining seats"
 msgid "Ne peut pas dépasser la capacité."
 msgstr "Ticket count cannot exceed room capacity."
 
-#: .\catalogue\templates\prod\submit_show.html:177
+#: .\catalogue\templates\prod\submit_show.html:178
+msgid "Tarifs actuels"
+msgstr ""
+
+#: .\catalogue\templates\prod\submit_show.html:190
+msgid ""
+"Aucun tarif défini. Vous devez en ajouter un pour que le spectacle soit "
+"réservable."
+msgstr ""
+
+#: .\catalogue\templates\prod\submit_show.html:195
+#, fuzzy
+#| msgid "Affecter un nouveau prix"
+msgid "Ajouter un nouveau tarif"
+msgstr "Assign a new price"
+
+#: .\catalogue\templates\prod\submit_show.html:208
+msgid "Valide du"
+msgstr ""
+
+#: .\catalogue\templates\prod\submit_show.html:212
+msgid "Au"
+msgstr ""
+
+#: .\catalogue\templates\prod\submit_show.html:217
+#, fuzzy
+#| msgid "Ajouter ce tarif"
+msgid "Créer et ajouter ce tarif"
+msgstr "Add this rate"
+
+#: .\catalogue\templates\prod\submit_show.html:225
 msgid "Enregistrer"
 msgstr "Save"
 
-#: .\catalogue\templates\prod\submit_show.html:177
+#: .\catalogue\templates\prod\submit_show.html:225
 #, fuzzy
 #| msgid "Soumettre votre candidature"
 msgid "Soumettre pour validation"
 msgstr "Submit your application"
 
-#: .\catalogue\templates\prod\submit_show.html:180
+#: .\catalogue\templates\prod\submit_show.html:228
 #: .\catalogue\templates\user\submit_press_article.html:55
 msgid "Annuler"
 msgstr "Cancel"
@@ -1356,8 +1398,8 @@ msgid "Soumettre une critique"
 msgstr "Submit a review"
 
 #: .\catalogue\templates\review\create.html:13
-#: .\catalogue\templates\review\edit.html:13 .\frontend\templates\base.html:136
-#: .\frontend\templates\base.html:254 .\frontend\templates\show_detail.html:24
+#: .\catalogue\templates\review\edit.html:13 .\frontend\templates\base.html:139
+#: .\frontend\templates\base.html:259 .\frontend\templates\show_detail.html:24
 msgid "Spectacles"
 msgstr "Shows"
 
@@ -1628,20 +1670,25 @@ msgstr "Message"
 msgid "Comment pouvons-nous vous aider ?"
 msgstr "How can we help you?"
 
-#: .\frontend\templates\about.html:4 .\frontend\templates\about.html:11
-#: .\frontend\views.py:188
+#: .\frontend\templates\about.html:4 .\frontend\views.py:188
 msgid "À propos de ThéâtrePlus"
 msgstr "About ThéâtrePlus"
 
 #: .\frontend\templates\about.html:12
+#, fuzzy
+#| msgid "À propos"
+msgid "À propos de"
+msgstr "About"
+
+#: .\frontend\templates\about.html:15
 msgid "Découvrez notre mission et notre histoire"
 msgstr "Discover our mission and history"
 
-#: .\frontend\templates\about.html:20
+#: .\frontend\templates\about.html:23
 msgid "Notre Mission"
 msgstr "Our Mission"
 
-#: .\frontend\templates\about.html:22
+#: .\frontend\templates\about.html:25
 msgid ""
 "ThéâtrePlus a été créé dans le but de simplifier l'accès à la culture et aux "
 "arts de la scène. Notre objectif est de connecter les passionnés de théâtre, "
@@ -1650,11 +1697,11 @@ msgid ""
 "découverte et la réservation."
 msgstr ""
 
-#: .\frontend\templates\about.html:25
+#: .\frontend\templates\about.html:28
 msgid "Notre Histoire"
 msgstr "Our History"
 
-#: .\frontend\templates\about.html:27
+#: .\frontend\templates\about.html:30
 msgid ""
 "Né d'une passion commune pour le spectacle vivant, ThéâtrePlus est le fruit "
 "d'un projet étudiant visant à résoudre les difficultés rencontrées par les "
@@ -1667,88 +1714,84 @@ msgstr ""
 msgid "Réservez vos spectacles"
 msgstr "Book your shows"
 
-#: .\frontend\templates\base.html:135 .\frontend\templates\base.html:253
+#: .\frontend\templates\base.html:138 .\frontend\templates\base.html:258
 msgid "Accueil"
 msgstr "Home"
 
-#: .\frontend\templates\base.html:138 .\frontend\templates\base.html:255
+#: .\frontend\templates\base.html:141 .\frontend\templates\base.html:260
 msgid "Lieux"
 msgstr "Venues"
 
-#: .\frontend\templates\base.html:139 .\frontend\templates\base.html:256
+#: .\frontend\templates\base.html:142 .\frontend\templates\base.html:261
 msgid "À propos"
 msgstr "About"
 
-#: .\frontend\templates\base.html:141
+#: .\frontend\templates\base.html:144
 msgid "Mon Panier"
 msgstr "My Cart"
 
-#: .\frontend\templates\base.html:158 .\frontend\templates\base.html:264
+#: .\frontend\templates\base.html:161 .\frontend\templates\base.html:269
 msgid "Mon profil"
 msgstr "My profile"
 
-#: .\frontend\templates\base.html:165
+#: .\frontend\templates\base.html:168
 msgid "Dashboard Admin"
 msgstr "Admin Dashboard"
 
-#: .\frontend\templates\base.html:181
+#: .\frontend\templates\base.html:184
 msgid "Mes articles"
 msgstr "My articles"
 
-#: .\frontend\templates\base.html:200 .\frontend\templates\base.html:269
+#: .\frontend\templates\base.html:203 .\frontend\templates\base.html:274
 msgid "Déconnexion"
 msgstr "Logout"
 
-#: .\frontend\templates\base.html:206 .\frontend\templates\base.html:272
+#: .\frontend\templates\base.html:209 .\frontend\templates\base.html:277
 #: .\frontend\templates\registration\login.html:4
 #: .\frontend\templates\registration\login.html:9
 msgid "Connexion"
 msgstr "Login"
 
-#: .\frontend\templates\base.html:248
+#: .\frontend\templates\base.html:253
 msgid ""
 "Votre plateforme de référence pour réserver les meilleurs spectacles en "
 "Belgique. Vivez des moments inoubliables avec nous."
 msgstr ""
 
-#: .\frontend\templates\base.html:251
+#: .\frontend\templates\base.html:256
 msgid "Navigation"
 msgstr "Navigation"
 
-#: .\frontend\templates\base.html:257
+#: .\frontend\templates\base.html:262
 msgid "Flux RSS"
 msgstr ""
 
-#: .\frontend\templates\base.html:261
+#: .\frontend\templates\base.html:266
 msgid "Compte"
 msgstr "Account"
 
-#: .\frontend\templates\base.html:273
+#: .\frontend\templates\base.html:278
 #: .\frontend\templates\registration\signup.html:4
 msgid "Inscription"
 msgstr "Sign Up"
 
-#: .\frontend\templates\base.html:278
+#: .\frontend\templates\base.html:283
 msgid "Aide"
 msgstr "Help"
 
-#: .\frontend\templates\base.html:280
+#: .\frontend\templates\base.html:285 .\frontend\templates\faq.html:12
 msgid "FAQ"
 msgstr "FAQ"
 
-#: .\frontend\templates\base.html:281
+#: .\frontend\templates\base.html:286 .\frontend\templates\terms.html:26
 msgid "Contact"
 msgstr "Contact"
 
-#: .\frontend\templates\base.html:282
+#: .\frontend\templates\base.html:287 .\frontend\templates\terms.html:12
 msgid "Conditions"
 msgstr "Terms"
 
-#: .\frontend\templates\base.html:283
-msgid "Confidentialité"
-msgstr "Privacy"
-
-#: .\frontend\templates\base.html:288
+#: .\frontend\templates\base.html:292
 msgid "Tous droits réservés. | Projet PID - Version Alpha"
 msgstr "All rights reserved. | PID Project - Alpha Version"
 
@@ -1764,9 +1807,104 @@ msgstr "A question? A suggestion? Our team is listening to you."
 msgid "Notre Bureau"
 msgstr "Our Office"
 
+#: .\frontend\templates\contact.html:25
+msgid "Rue de l'Enseignement 10,"
+msgstr "10 Enseignement Street,"
+
+#: .\frontend\templates\contact.html:25
+msgid "1000 Bruxelles, Belgique"
+msgstr "1000 Brussels, Belgium"
+
+#: .\frontend\templates\contact.html:45
+msgid "Lun - Ven, 9h00 - 18h00"
+msgstr "Mon - Fri, 9:00 AM - 6:00 PM"
+
 #: .\frontend\templates\contact.html:89
 msgid "Envoyer le message"
 msgstr "Send Message"
+
+#: .\frontend\templates\faq.html:4
+msgid "FAQ - Foire Aux Questions - ThéâtrePlus"
+msgstr "FAQ - Frequently Asked Questions - ThéâtrePlus"
+
+#: .\frontend\templates\faq.html:14
+msgid "Réponses à vos questions les plus fréquentes"
+msgstr "Answers to your most frequently asked questions"
+
+#: .\frontend\templates\faq.html:25
+msgid "Le Site"
+msgstr "The Site"
+
+#: .\frontend\templates\faq.html:28
+msgid "Qu'est-ce que ThéâtrePlus ?"
+msgstr "What is ThéâtrePlus?"
+
+#: .\frontend\templates\faq.html:29
+msgid ""
+"ThéâtrePlus est une plateforme de réservation en ligne dédiée aux arts de la "
+"scène en Belgique, permettant de découvrir des spectacles et de réserver vos "
+"places facilement."
+msgstr ""
+
+#: .\frontend\templates\faq.html:32
+msgid "Comment créer un compte ?"
+msgstr "How to create an account?"
+
+#: .\frontend\templates\faq.html:33
+msgid ""
+"Cliquez sur le bouton 'Connexion' en haut à droite, puis sélectionnez 'Créer "
+"un compte'. Remplissez le formulaire et vous pourrez commencer à réserver."
+msgstr ""
+
+#: .\frontend\templates\faq.html:40
+msgid "Réservations"
+msgstr "Bookings"
+
+#: .\frontend\templates\faq.html:43
+msgid "Comment réserver un ticket ?"
+msgstr "How to book a ticket?"
+
+#: .\frontend\templates\faq.html:44
+msgid ""
+"Choisissez un spectacle, sélectionnez une représentation disponible, ajoutez "
+"les places au panier et procédez au paiement sécurisé via Stripe."
+msgstr ""
+
+#: .\frontend\templates\faq.html:47
+msgid "Puis-je annuler ma réservation ?"
+msgstr "Can I cancel my reservation?"
+
+#: .\frontend\templates\faq.html:48
+msgid ""
+"Conformément à nos conditions générales, les tickets pour des événements à "
+"date fixe ne sont pas remboursables, sauf en cas d'annulation de "
+"l'organisateur."
+msgstr ""
+
+#: .\frontend\templates\faq.html:55
+msgid "Paiement & Support"
+msgstr "Payment & Support"
+
+#: .\frontend\templates\faq.html:58
+msgid "Quels sont les modes de paiement acceptés ?"
+msgstr "What payment methods are accepted?"
+
+#: .\frontend\templates\faq.html:59
+msgid ""
+"Nous acceptons les paiements par carte bancaire (Visa, Mastercard, "
+"Bancontact) via la plateforme sécurisée Stripe."
+msgstr ""
+
+#: .\frontend\templates\faq.html:62
+msgid "Que faire si je ne reçois pas mon ticket par e-mail ?"
+msgstr "What if I don't receive my ticket by email?"
+
+#: .\frontend\templates\faq.html:63
+msgid ""
+"Vérifiez d'abord votre dossier 'Indésirables'. Vous pouvez également "
+"retrouver tous vos tickets à tout moment dans votre espace profil sur le "
+"site."
+msgstr ""
 
 #: .\frontend\templates\frontend\errors\403.html:4
 #: .\frontend\templates\frontend\errors\403.html:8
@@ -2163,6 +2301,133 @@ msgstr "Explore upcoming events and book your tickets."
 msgid "<strong>%(count)s</strong> spectacles trouvés"
 msgstr "<strong>%(count)s</strong> shows found"
 
+#: .\frontend\templates\terms.html:4
+msgid "Conditions Générales - ThéâtrePlus"
+msgstr "General Terms and Conditions - ThéâtrePlus"
+
+#: .\frontend\templates\terms.html:14
+msgid "Mentions légales, CGV et Protection des données"
+msgstr "Legal notice, T&C and Data Protection"
+
+#: .\frontend\templates\terms.html:23
+msgid "Mentions Légales"
+msgstr "Legal Notice"
+
+#: .\frontend\templates\terms.html:24
+msgid "Éditeur du site"
+msgstr "Site Publisher"
+
+#: .\frontend\templates\terms.html:25
+msgid "Siège social"
+msgstr "Registered Office"
+
+#: .\frontend\templates\terms.html:28
+msgid "Vente de Tickets en Ligne"
+msgstr "Online Ticket Sales"
+
+#: .\frontend\templates\terms.html:29
+msgid "Conformément au Code de droit économique belge :"
+msgstr "In accordance with the Belgian Code of Economic Law:"
+
+#: .\frontend\templates\terms.html:31
+msgid "Absence de droit de rétractation"
+msgstr "No right of withdrawal"
+
+#: .\frontend\templates\terms.html:31
+msgid ""
+"En vertu de l'article VI.53, 12° du Code de droit économique, le droit de "
+"rétractation de 14 jours ne s'applique pas aux prestations de services de "
+"loisirs devant être fournies à une date déterminée."
+msgstr ""
+
+#: .\frontend\templates\terms.html:32
+msgid "Validité"
+msgstr "Validity"
+
+#: .\frontend\templates\terms.html:32
+msgid ""
+"Les tickets ne sont valables que pour la représentation, la date et l'heure "
+"indiquées."
+msgstr ""
+
+#: .\frontend\templates\terms.html:33
+msgid "Remboursement"
+msgstr "Refund"
+
+#: .\frontend\templates\terms.html:33
+msgid ""
+"Sauf en cas d'annulation ou de report par l'organisateur, les tickets ne "
+"sont ni échangés ni remboursés."
+msgstr ""
+
+#: .\frontend\templates\terms.html:36
+msgid "Protection des Données (GDPR)"
+msgstr "Data Protection (GDPR)"
+
+#: .\frontend\templates\terms.html:37
+msgid ""
+"Conformément au Règlement Général sur la Protection des Données (UE "
+"2016/679) :"
+msgstr ""
+
+#: .\frontend\templates\terms.html:39
+msgid "Finalité"
+msgstr "Purpose"
+
+#: .\frontend\templates\terms.html:39
+msgid ""
+"Vos données sont collectées pour la gestion des réservations et l'accès aux "
+"services de l'API."
+msgstr ""
+
+#: .\frontend\templates\terms.html:40
+msgid "Rétention des données"
+msgstr "Data retention"
+
+#: .\frontend\templates\terms.html:40
+msgid ""
+"Les données relatives à votre compte sont conservées tant que votre compte "
+"est actif. En cas d'inactivité prolongée de 3 ans, vos données personnelles "
+"seront anonymisées ou supprimées."
+msgstr ""
+
+#: .\frontend\templates\terms.html:41
+msgid "Vos droits"
+msgstr "Your rights"
+
+#: .\frontend\templates\terms.html:41
+msgid ""
+"Vous disposez d'un droit d'accès, de rectification et de suppression ('droit "
+"à l'oubli') de vos données."
+msgstr ""
+
+#: .\frontend\templates\terms.html:42
+msgid "Suppression de compte"
+msgstr "Account deletion"
+
+#: .\frontend\templates\terms.html:42
+msgid ""
+"Vous pouvez demander la suppression de votre compte à tout moment via votre "
+"profil ou par e-mail. Cette action est irréversible et entraîne la "
+"suppression de vos données personnelles, sauf obligation légale de "
+"conservation (ex: facturation)."
+msgstr ""
+
+#: .\frontend\templates\terms.html:45
+msgid "Responsabilité"
+msgstr "Liability"
+
+#: .\frontend\templates\terms.html:46
+msgid ""
+"ThéâtrePlus agit en tant qu'intermédiaire entre les producteurs de "
+"spectacles et les spectateurs. La responsabilité de la tenue du spectacle "
+"incombe exclusivement au producteur mentionné sur la fiche du spectacle."
+msgstr ""
+
+#: .\frontend\templates\terms.html:49
+msgid "Dernière mise à jour"
+msgstr "Last updated"
+
 #: .\frontend\templates\user\update.html:9
 msgid "Modifier mon profil"
 msgstr "Edit my profile"
@@ -2195,7 +2460,8 @@ msgstr "Article not found"
 msgid ""
 "Votre message a été envoyé avec succès. Nous vous répondrons dès que "
 "possible."
-msgstr "Your message has been sent successfully. We will respond as soon as possible."
+msgstr ""
+"Your message has been sent successfully. We will respond as soon as possible."
 
 #: .\frontend\views.py:283
 msgid ""
@@ -2228,19 +2494,8 @@ msgstr "Your cart has been saved. You can resume your order whenever you wish."
 #: .\payments\templates\payments\cancel.html:23
 msgid ""
 "Si vous avez rencontré un problème technique, n'hésitez pas à nous contacter."
-msgstr "If you have encountered a technical problem, do not hesitate to contact us."
-
-#: .\frontend\templates\contact.html:26
-msgid "Rue de l'Enseignement 10,"
-msgstr "10 Enseignement Street,"
-
-#: .\frontend\templates\contact.html:26
-msgid "1000 Bruxelles, Belgique"
-msgstr "1000 Brussels, Belgium"
-
-#: .\frontend\templates\contact.html:46
-msgid "Lun - Ven, 9h00 - 18h00"
-msgstr "Mon - Fri, 9:00 AM - 6:00 PM"
+msgstr ""
+"If you have encountered a technical problem, do not hesitate to contact us."
 
 #: .\payments\templates\payments\cancel.html:28
 msgid "Retourner au panier"
@@ -2348,13 +2603,22 @@ msgstr "Priority technical support"
 msgid "Retourner à l'Espace API"
 msgstr "Return to API Space"
 
-#: .\reservations\settings.py:160
+#: .\reservations\settings.py:162
 msgid "French"
 msgstr "French"
 
-#: .\reservations\settings.py:162
+#: .\reservations\settings.py:164
 msgid "Dutch"
 msgstr "Dutch"
+
+#~ msgid "Confidentialité"
+#~ msgstr "Privacy"
+
+#~ msgid "Choisir un type de prix"
+#~ msgstr "Choose a price type"
+
+#~ msgid "Créer un nouveau type de prix"
+#~ msgstr "Create a new price type"
 
 #~ msgid "Utilisateur supprimé avec succès."
 #~ msgstr "User deleted successfully."
@@ -2412,9 +2676,6 @@ msgstr "Dutch"
 
 #~ msgid "Festivals"
 #~ msgstr "Festivals"
-
-#~ msgid "Éditer (Admin)"
-#~ msgstr "Edit (Admin)"
 
 #~ msgid "Modifier dans mon Espace Producteur"
 #~ msgstr "Edit in my Producer Space"

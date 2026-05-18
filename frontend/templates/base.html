@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="alternate" type="application/rss+xml" title="RSS" href="{% url 'api:rss-next-representations' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
     <style>
         .cart-nav-item {
             position: relative;
@@ -130,7 +131,9 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="{% url 'frontend:home' %}" class="logo" style="text-decoration: none; color: inherit;">ThéâtrePlus</a>
+            <a href="{% url 'frontend:home' %}" class="logo" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                <img src="{% static 'favicon.png' %}" alt="T" style="height: 38px; width: auto; margin-right: 2px;">héâtrePlus
+            </a>
             <ul class="nav-links">
                 <li><a href="{% url 'frontend:home' %}">{% trans "Accueil" %}</a></li>
                 <li><a href="{% url 'frontend:show_list' %}">{% trans "Spectacles" %}</a></li> 
@@ -244,7 +247,9 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-about">
-                <h3>ThéâtrePlus</h3>
+                <h3 style="display: flex; align-items: center;">
+                    <img src="{% static 'favicon.png' %}" alt="T" style="height: 1.2em; width: auto; margin-right: 4px;">héâtrePlus
+                </h3>
                 <p>{% trans "Votre plateforme de référence pour réserver les meilleurs spectacles en Belgique. Vivez des moments inoubliables avec nous." %}</p>
             </div>
             <div class="footer-links">
@@ -277,10 +282,9 @@
             <div class="footer-links">
                 <h4>{% trans "Aide" %}</h4>
                 <ul>
-                    <li><a href="#">{% trans "FAQ" %}</a></li>
+                    <li><a href="{% url 'frontend:faq' %}">{% trans "FAQ" %}</a></li>
                     <li><a href="{% url 'frontend:contact' %}">{% trans "Contact" %}</a></li>
-                    <li><a href="#">{% trans "Conditions" %}</a></li>
-                    <li><a href="#">{% trans "Confidentialité" %}</a></li>
+                    <li><a href="{% url 'frontend:terms' %}">{% trans "Conditions" %}</a></li>
                 </ul>
             </div>
         </div>

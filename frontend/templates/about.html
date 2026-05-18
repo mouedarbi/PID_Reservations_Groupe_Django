@@ -8,7 +8,10 @@
     <section class="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1>{% trans "À propos de ThéâtrePlus" %}</h1>
+                <h1 style="display: flex; align-items: center; justify-content: center;">
+                    {% trans "À propos de" %} 
+                    <img src="{% static 'favicon.png' %}" alt="T" style="height: 1.1em; width: auto; margin-left: 10px; margin-right: 2px;">héâtrePlus
+                </h1>
                 <p>{% trans "Découvrez notre mission et notre histoire" %}</p>
             </div>
         </div>

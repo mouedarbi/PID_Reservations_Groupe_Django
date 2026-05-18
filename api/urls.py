@@ -5,10 +5,16 @@ from .views import (
     producer, admin_api, affiliate, rss, public_api, press_articles, genres
 )
 from .feeds import LatestRepresentationsFeed
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 app_name = 'api'
 
 urlpatterns = [
+    # DOCUMENTATION
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('docs/', SpectacularSwaggerView.as_view(url_name='api:schema'), name='swagger-ui'),
+    path('redoc/', SpectacularRedocView.as_view(url_name='api:schema'), name='redoc'),
+
     # AUTH
     path('auth/signup/', auth.AuthSignupView.as_view(), name='auth-signup'),
     path('auth/login/', auth.AuthLoginView.as_view(), name='auth-login'),
