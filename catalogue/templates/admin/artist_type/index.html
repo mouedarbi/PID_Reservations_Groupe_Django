@@ -1,0 +1,70 @@
+{% extends "admin/admin.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-main-style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-1.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/original-style-2.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h2 class="text-text text-2xl font-bold md:text-3xl">{{ title }}</h2>
+            <p class="text-small mt-1">Gérez les associations entre artistes et types de métiers/rôles.</p>
+        </div>
+        <div>
+            <a href="{% url 'artist_type_create' %}" class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
+                <i class="ph ph-plus"></i>
+                <span>Ajouter une association</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="border-border overflow-hidden rounded-lg border bg-bg dark:bg-[#040b1a]">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 dark:bg-gray-900/50">
+                    <tr>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Artiste</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Type / Métier</th>
+                        <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-muted">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+                    {% for mapping in mappings %}
+                    <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition">
+                        <td class="px-6 py-4">
+                            <div class="text-text font-medium">{{ mapping.artist.firstname }} {{ mapping.artist.lastname }}</div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-text">
+                            {{ mapping.type.type }}
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <a href="{% url 'artist_type_edit' mapping.id %}" class="text-amber-600 hover:text-amber-800 transition" title="Modifier">
+                                    <i class="ph ph-pencil-simple text-xl"></i>
+                                </a>
+                                <a href="{% url 'artist_type_delete' mapping.id %}" class="text-red-600 hover:text-red-800 transition" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette association ?');">
+                                    <i class="ph ph-trash text-xl"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="px-6 py-10 text-center text-muted italic">
+                            Aucune association trouvée.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

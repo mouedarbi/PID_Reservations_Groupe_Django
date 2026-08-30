@@ -57,7 +57,11 @@
 
                         <div class="d-grid mt-5" style="display: grid; gap: 1rem;">
                             <button type="submit" class="btn-primary" style="padding: 15px; font-weight: bold; font-size: 1.1rem; cursor: pointer; border: none; border-radius: 8px; background: #dc2626; color: white;">{% trans "Publier ma critique" %}</button>
+                            {% if show %}
                             <a href="{% url 'frontend:show_detail' pk=show.id %}" class="text-center" style="color: #666; text-decoration: none; font-size: 0.9rem; padding: 10px;">{% trans "Annuler et revenir au spectacle" %}</a>
+                            {% else %}
+                            <a href="{% url 'frontend:show_list' %}" class="text-center" style="color: #666; text-decoration: none; font-size: 0.9rem; padding: 10px;">{% trans "Annuler" %}</a>
+                            {% endif %}
                         </div>
                     </form>
                 </div>

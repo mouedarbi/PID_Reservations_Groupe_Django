@@ -34,6 +34,9 @@ urlpatterns = [
     # Location
     path('location/', location.index, name='location-index'),
     path('location/<int:location_id>', location.show, name='location-show'),
+    path('location/create/', location.create, name='location-create'),
+    path('location/edit/<int:location_id>', location.edit, name='location-edit'),
+    path('location/delete/<int:location_id>', location.delete, name='location-delete'),
 
     # Show
     path('show/', show_index, name='show-index'),
@@ -45,6 +48,9 @@ urlpatterns = [
     # Representation
     path('representation/', representation.index, name='representation-index'),
     path('representation/<int:representation_id>', representation.show, name='representation-show'),
+    path('representation/create/', representation.create, name='representation-create'),
+    path('representation/edit/<int:representation_id>', representation.edit, name='representation-edit'),
+    path('representation/delete/<int:representation_id>', representation.delete, name='representation-delete'),
 
     # Review
     path('review/', review.index, name='review-index'),
