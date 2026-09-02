@@ -1943,9 +1943,9 @@ def admin_export_shows_csv(request):
             show.id, 
             show.slug, 
             show.title, 
-            show.description, 
-            show.poster_url, 
-            show.location.designation if show.location else '', 
+            show.description,
+            show.poster.url if show.poster else '',
+            show.location.designation if show.location else '',
             show.bookable, 
             show.status
         ])
