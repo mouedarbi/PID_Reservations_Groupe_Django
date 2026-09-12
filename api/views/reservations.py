@@ -1,7 +1,4 @@
-from rest_framework import generics, permissions, status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from django.shortcuts import get_object_or_404
+from rest_framework import generics, permissions
 from catalogue.models.reservation import Reservation
 from api.serializers.reservations import ReservationSerializer
 
@@ -28,7 +25,7 @@ class ReservationsView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         # Auto-assign user
-        serializer.save(user=self.request.user, status="Confirmed")
+        serializer.save(user=self.request.user, status="PAID")
 
 class ReservationsDetailView(generics.RetrieveDestroyAPIView):
     queryset = Reservation.objects.all()
@@ -37,10 +34,13 @@ class ReservationsDetailView(generics.RetrieveDestroyAPIView):
     lookup_field = 'id'
 
     def perform_destroy(self, instance):
-        # Restore seats
-        representation = instance.representation
-        representation.available_seats += instance.quantity
-        representation.save()
+        for line in instance.representation_reservations.select_related('representation'):
+            representation = line.representation
+            representation.available_seats = min(
+                representation.total_seats,
+                representation.available_seats + line.quantity,
+            )
+            representation.save(update_fields=['available_seats'])
         instance.delete()
 
 class MyReservationsView(generics.ListAPIView):

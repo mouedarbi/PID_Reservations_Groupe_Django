@@ -1,4 +1,6 @@
 import stripe
+from django.conf import settings
+from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
@@ -6,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from catalogue.models import Affiliate, AffiliateTier, AffiliatePayment, AppSetting
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 class CreateAffiliateSessionView(View):
     def post(self, request):
@@ -13,7 +16,7 @@ class CreateAffiliateSessionView(View):
             return redirect('accounts:login')
 
         tier_id = request.POST.get('tier_id')
-        tier = AffiliateTier.objects.get(id=tier_id)
+        tier = get_object_or_404(AffiliateTier, id=tier_id)
 
         if tier.price <= 0:
             affiliate, _ = Affiliate.objects.get_or_create(user=request.user)
@@ -42,18 +45,23 @@ class CreateAffiliateSessionView(View):
         return redirect(checkout_session.url, status=303)
 
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
-import json
 
 @csrf_exempt
 def stripe_affiliate_webhook(request):
     """
     Webhook dédié uniquement à l'affiliation.
     """
-    payload = request.body
+    signature = request.META.get('HTTP_STRIPE_SIGNATURE')
+    if not settings.STRIPE_WEBHOOK_SECRET:
+        return HttpResponse(status=503)
+
     try:
-        event = json.loads(payload)
-    except Exception:
+        event = stripe.Webhook.construct_event(
+            request.body,
+            signature,
+            settings.STRIPE_WEBHOOK_SECRET,
+        )
+    except (ValueError, stripe.error.SignatureVerificationError):
         return HttpResponse(status=400)
 
     if event.get('type') == 'checkout.session.completed':
@@ -62,55 +70,68 @@ def stripe_affiliate_webhook(request):
         
         # On ne traite QUE si c'est un upgrade d'affiliation
         if 'tier_id' in metadata:
-            tier_id = metadata['tier_id']
-            user_id = metadata['user_id']
+            tier_id = metadata.get('tier_id')
+            user_id = metadata.get('user_id')
+            if not tier_id or not user_id or session.get('payment_status') != 'paid':
+                return HttpResponse(status=400)
             
             try:
-                user = User.objects.get(id=user_id)
-                tier = AffiliateTier.objects.get(id=tier_id)
-                
-                affiliate, _ = Affiliate.objects.get_or_create(user=user)
-                affiliate.tier = tier
-                affiliate.save()
-                
-                # Trace du paiement dans AffiliatePayment
-                AffiliatePayment.objects.get_or_create(
-                    stripe_session_id=session.get('id'),
-                    defaults={
-                        'affiliate': affiliate,
-                        'stripe_payment_intent_id': session.get('payment_intent'),
-                        'amount': session.get('amount_total', 0) / 100.0,
-                        'currency': session.get('currency', 'EUR').upper(),
-                    }
-                )
-                print(f"WEBHOOK SUCCESS: Plan {tier.name} activé pour {user.username}")
-            except Exception as e:
-                print(f"WEBHOOK ERROR: {str(e)}")
+                with transaction.atomic():
+                    user = User.objects.get(id=user_id)
+                    tier = AffiliateTier.objects.get(id=tier_id)
+                    if session.get('amount_total') != int(tier.price * 100):
+                        return HttpResponse(status=400)
+
+                    affiliate, _ = Affiliate.objects.get_or_create(user=user)
+                    affiliate.tier = tier
+                    affiliate.save()
+
+                    AffiliatePayment.objects.get_or_create(
+                        stripe_session_id=session.get('id'),
+                        defaults={
+                            'affiliate': affiliate,
+                            'stripe_payment_intent_id': session.get('payment_intent'),
+                            'amount': (session.get('amount_total') or 0) / 100.0,
+                            'currency': (session.get('currency') or 'EUR').upper(),
+                        }
+                    )
+            except (User.DoesNotExist, AffiliateTier.DoesNotExist):
+                return HttpResponse(status=400)
 
     return HttpResponse(status=200)
 
 @login_required
 def affiliate_success(request):
     session_id = request.GET.get('session_id')
+    if not session_id:
+        return redirect('accounts:user-api')
+
     stripe.api_key = AppSetting.get_value('STRIPE_SECRET_KEY')
     session = stripe.checkout.Session.retrieve(session_id)
-    
-    tier_id = session.metadata.tier_id
-    tier = AffiliateTier.objects.get(id=tier_id)
-    
-    affiliate, _ = Affiliate.objects.get_or_create(user=request.user)
-    affiliate.tier = tier
-    affiliate.save()
+    metadata = session.get('metadata', {})
+    if (
+        session.get('payment_status') != 'paid'
+        or str(metadata.get('user_id')) != str(request.user.id)
+        or not metadata.get('tier_id')
+    ):
+        return redirect('accounts:user-api')
 
-    # On enregistre dans NOTRE nouveau modèle séparé
-    AffiliatePayment.objects.get_or_create(
-        stripe_session_id=session_id,
-        defaults={
-            'affiliate': affiliate,
-            'stripe_payment_intent_id': session.payment_intent,
-            'amount': session.amount_total / 100.0,
-            'currency': session.currency.upper(),
-        }
-    )
+    tier = get_object_or_404(AffiliateTier, id=metadata['tier_id'])
+    if session.get('amount_total') != int(tier.price * 100):
+        return redirect('accounts:user-api')
+
+    with transaction.atomic():
+        affiliate, _ = Affiliate.objects.get_or_create(user=request.user)
+        affiliate.tier = tier
+        affiliate.save(update_fields=['tier', 'updated_at'])
+        AffiliatePayment.objects.get_or_create(
+            stripe_session_id=session_id,
+            defaults={
+                'affiliate': affiliate,
+                'stripe_payment_intent_id': session.get('payment_intent'),
+                'amount': (session.get('amount_total') or 0) / 100.0,
+                'currency': (session.get('currency') or 'EUR').upper(),
+            }
+        )
 
     return render(request, 'payments/success_api.html', {'tier': tier})

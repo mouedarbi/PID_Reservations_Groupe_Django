@@ -404,5 +404,51 @@ Cette session a été consacrée au nettoyage structurel du projet, à l'élargi
 ### État de la Base de Données
 - Plus de **105 spectacles** réels sont désormais présents en base de données, couvrant tout le territoire belge avec leurs affiches respectives et leurs lieux de représentations.
 
+## 2026-09-12 — Étape 1 : sécurisation de la configuration et de Stripe
 
+- Remplacement de la clé secrète Django codée en dur par une configuration via `DJANGO_SECRET_KEY`.
+- Ajout des variables `DJANGO_DEBUG`, `DJANGO_ALLOWED_HOSTS` et `STRIPE_WEBHOOK_SECRET` dans `.env.example`.
+- Conservation d’un mode de développement explicite par défaut, avec des hôtes locaux autorisés.
+- Ajout de la vérification de signature Stripe avec `stripe.Webhook.construct_event`.
+- Refus du webhook d’affiliation si le secret Stripe n’est pas configuré, si la signature est invalide ou si le paiement n’est pas confirmé.
+- Vérification de l’utilisateur associé aux métadonnées lors du retour de paiement d’affiliation.
+- Protection transactionnelle de l’activation d’un abonnement affilié et de l’enregistrement du paiement.
+- Ajout de contrôles sur les identifiants de niveau et de session Stripe.
+- Encadrement transactionnel du paiement principal, verrouillage des représentations avec `select_for_update()` et création groupée des billets.
+- Harmonisation du statut de réservation créé après paiement avec `PAID`.
 
+## 2026-09-12 — Étape 2 : correction des blocages de tests et fixtures
+
+- Conversion de 25 fixtures JSON encodées en UTF-16 vers UTF-8 sans BOM afin de les rendre compatibles avec `loaddata`.
+- Ajout de l’import explicite de `ProducerRequest` dans le back-office administrateur.
+- Correction de la soumission producteur pour accepter les champs `location_id` et `location`.
+- Préservation de la redirection attendue vers le dashboard producteur après une soumission valide.
+
+## 2026-09-12 — Étape 3 : réalignement de l’API de réservation
+
+- Réécriture de `ReservationSerializer` pour utiliser les champs réels du modèle intermédiaire `RepresentationReservation`.
+- Ajout de la validation de la représentation, du tarif associé au spectacle et de la quantité.
+- Création atomique d’une réservation et de sa ligne de représentation.
+- Ajout d’un verrouillage `select_for_update()` lors de la réservation des places.
+- Correction de la suppression d’une réservation afin de restaurer les places de toutes ses lignes.
+- Correction du checkout API pour lire les clés réelles du panier (`representation_id` et `price_id`).
+- Création d’une seule réservation parent contenant plusieurs lignes lors d’un checkout multi-articles.
+- Suppression du traitement générique silencieux qui masquait les erreurs inattendues.
+
+## 2026-09-12 — Étape 4 : tests de régression et CI
+
+- Ajout de tests API couvrant la création d’une réservation via `RepresentationReservation`.
+- Ajout d’un test vérifiant le refus d’une quantité supérieure aux places disponibles.
+- Modification de la CI pour vérifier l’absence de migrations manquantes.
+- Ajout de l’exécution de `python manage.py check` dans la CI.
+- Remplacement du périmètre limité `api.tests` par l’exécution de toute la suite Django.
+- Conservation de l’installation MySQL et du workflow de migrations existant.
+
+## 2026-09-12 - Validation finale et preparation du commit
+
+- Correction de la gestion des doublons dans `admin_locality_create` avec une transaction imbriquee afin de preserver la transaction principale lors d'une `IntegrityError`.
+- Verification de la compilation et de la configuration Django avec `python manage.py check`.
+- Verification de l'absence de migrations manquantes avec `python manage.py makemigrations --check --dry-run`.
+- Execution de la suite complete Django : 70 tests executes, tous reussis.
+- Verification du diff Git et de l'absence d'erreur de whitespace avec `git diff --check`.
+- Branche de travail confirmee : `dev_ghiles`; remote confirme : `origin`.

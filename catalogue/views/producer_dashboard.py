@@ -39,7 +39,7 @@ def prod_submit_show(request):
         time_str = request.POST.get('time')
         
         # Location logic: Existing ID or new data
-        location_id = request.POST.get('location_id') # From autocomplete hidden field
+        location_id = request.POST.get('location_id') or request.POST.get('location')
         loc_name = request.POST.get('loc_name') # From autocomplete input
         loc_address = request.POST.get('loc_address')
         loc_postal = request.POST.get('loc_postal')

@@ -2,8 +2,9 @@ from django.db.models.deletion import RestrictedError, ProtectedError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum, F, Count
+from django.db import IntegrityError, transaction
 from django.contrib.auth.models import User
-from catalogue.models import Reservation, Show, Genre, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType, ShowPrice, Notification, CriticRequest
+from catalogue.models import Reservation, Show, Genre, RepresentationReservation, Representation, Artist, Type, Review, Location, Price, Locality, AppSetting, ArtistType, ShowPrice, Notification, CriticRequest, ProducerRequest
 from catalogue.utils.ticketmaster import run_ticketmaster_import, run_ticketmaster_import_gen
 from catalogue.utils.opendata import run_opendata_import_gen
 from django.http import StreamingHttpResponse
@@ -1203,8 +1204,15 @@ def admin_locality_create(request):
     if request.method == 'POST':
         form = LocalityForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('admin_locality_index')
+            try:
+                with transaction.atomic():
+                    form.save()
+                return redirect('admin_locality_index')
+            except IntegrityError:
+                form.add_error(
+                    'postal_code',
+                    'Cette combinaison de code postal et de localité existe déjà.',
+                )
     else:
         form = LocalityForm()
     context = {
@@ -2091,4 +2099,3 @@ def admin_opendata_sync_live(request):
             yield message
             
     return StreamingHttpResponse(stream_logs(), content_type='text/plain')
-

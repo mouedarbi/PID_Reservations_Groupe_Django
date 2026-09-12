@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework import status, permissions
 from django.db import transaction
 
-from catalogue.models import Representation, Reservation
+from catalogue.models import Price, Representation, RepresentationReservation, Reservation
 from api.serializers.reservations import ReservationSerializer
 
 class CheckoutView(APIView):
@@ -20,47 +20,45 @@ class CheckoutView(APIView):
         if not cart:
             return Response({"error": "Votre panier est vide."}, status=status.HTTP_400_BAD_REQUEST)
 
-        created_reservations = []
-
         try:
-            # First pass: Validate all items in cart before making changes
-            for rep_id, item_data in cart.items():
-                quantity = item_data.get('quantity')
-                try:
-                    representation = Representation.objects.get(pk=rep_id)
-                    if representation.available_seats < quantity:
-                        raise ValueError(f"Pas assez de places pour '{representation}'.")
-                except Representation.DoesNotExist:
-                    raise ValueError(f"La représentation avec l'ID {rep_id} n'existe pas.")
+            reservation = Reservation.objects.create(
+                user=request.user,
+                status='PAID',
+            )
 
-            # Second pass: Create reservations and update seats
-            for rep_id, item_data in cart.items():
+            for item_data in cart.values():
+                representation_id = item_data.get('representation_id')
+                price_id = item_data.get('price_id')
                 quantity = item_data.get('quantity')
-                representation = Representation.objects.get(pk=rep_id)
-                
-                # Create reservation
-                reservation = Reservation.objects.create(
-                    user=request.user,
-                    representation=representation,
-                    quantity=quantity,
-                    status='Confirmed'
+                representation = Representation.objects.select_for_update().get(
+                    pk=representation_id
                 )
-                created_reservations.append(reservation)
+                price = Price.objects.get(pk=price_id)
+                if quantity is None or quantity < 1:
+                    raise ValueError('La quantité doit être supérieure à zéro.')
+                if not representation.show.prices.filter(pk=price.pk).exists():
+                    raise ValueError('Le tarif ne correspond pas au spectacle.')
+                if representation.available_seats < quantity:
+                    raise ValueError(f"Pas assez de places pour '{representation}'.")
 
-                # Decrement available seats
+                RepresentationReservation.objects.create(
+                    reservation=reservation,
+                    representation=representation,
+                    price=price,
+                    quantity=quantity,
+                )
                 representation.available_seats -= quantity
-                representation.save()
+                representation.save(update_fields=['available_seats'])
             
-            # Clear the cart
             request.session['cart'] = {}
-
-            # Serialize the created reservations to return them in the response
-            serializer = ReservationSerializer(created_reservations, many=True)
+            serializer = ReservationSerializer(reservation)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         except ValueError as e:
             # This will catch validation errors from the first pass
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            # Generic error for any other issue
-            return Response({"error": "Une erreur inattendue est survenue lors du paiement.", "detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except (Price.DoesNotExist, Representation.DoesNotExist):
+            return Response(
+                {"error": "Un article du panier n'existe plus."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )

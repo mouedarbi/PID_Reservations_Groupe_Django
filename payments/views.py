@@ -11,6 +11,7 @@ from catalogue.models.setting import AppSetting
 
 from django.shortcuts import redirect
 from django.views import View
+from django.db import transaction
 
 class CreateCheckoutSessionView(View):
     def post(self, request):
@@ -45,6 +46,7 @@ class CreateCheckoutSessionView(View):
                     'quantity': 1,
                 }],
                 mode='payment',
+                client_reference_id=str(request.user.id),
                 success_url=base_url + reverse('payments:success') + "?session_id={CHECKOUT_SESSION_ID}",
                 cancel_url=base_url + reverse('payments:cancel'),
             )
@@ -78,54 +80,53 @@ def payment_success(request):
                 # On récupère les détails de la session depuis Stripe
                 stripe.api_key = AppSetting.get_value('STRIPE_SECRET_KEY')
                 session = stripe.checkout.Session.retrieve(session_id)
+                if (
+                    session.get('payment_status') != 'paid'
+                    or str(session.get('client_reference_id') or request.user.id)
+                    != str(request.user.id)
+                ):
+                    raise ValueError("Le paiement Stripe n'est pas valide pour cet utilisateur.")
                 
-                # 1. Création de la réservation parente
-                reservation = Reservation.objects.create(
-                    user=request.user,
-                    status="paid"  # Statut de la réservation
-                )
-                
-                # 2. Création de la trace du paiement
-                Payment.objects.create(
-                    reservation=reservation,
-                    stripe_session_id=session_id,
-                    stripe_payment_intent_id=session.payment_intent,
-                    amount=session.amount_total / 100.0,
-                    currency=session.currency.upper(),
-                    status="succeeded"
-                )
-                
-                # 3. Création du détail pour chaque article du panier
-                for item in cart:
-                    # Vérification de sécurité pour le stock (double check au cas où)
-                    representation = item['representation']
-                    requested_quantity = item['quantity']
-                    
-                    if representation.available_seats < requested_quantity:
-                        # Cas critique : plus assez de places au moment du paiement
-                        # Normalement géré par Stripe/Panier mais sécurité ici
-                        raise ValueError(f"Plus assez de places pour {representation.show.title}")
-
-                    rep_res = RepresentationReservation.objects.create(
-                        reservation=reservation,
-                        representation=representation,
-                        price=item['price_obj'],
-                        quantity=requested_quantity
+                with transaction.atomic():
+                    reservation = Reservation.objects.create(
+                        user=request.user,
+                        status="PAID"
                     )
-                    
-                    # 4. Création des billets individuels
-                    for _ in range(requested_quantity):
-                        Ticket.objects.create(representation_reservation=rep_res)
 
-                    # MISE À JOUR DU STOCK (Places disponibles)
-                    representation.available_seats -= requested_quantity
-                    representation.save()
-                    
-                # 5. On vide le panier une fois payé et enregistré
-                cart.clear()
+                    Payment.objects.create(
+                        reservation=reservation,
+                        stripe_session_id=session_id,
+                        stripe_payment_intent_id=session.get('payment_intent'),
+                        amount=(session.get('amount_total') or 0) / 100.0,
+                        currency=(session.get('currency') or 'EUR').upper(),
+                        status="succeeded"
+                    )
 
-                # 6. ENVOI DE L'EMAIL DE CONFIRMATION AVEC PDF
-                send_reservation_email(reservation)
+                    for item in cart:
+                        representation = Representation.objects.select_for_update().get(
+                            pk=item['representation'].pk
+                        )
+                        requested_quantity = item['quantity']
+                        if representation.available_seats < requested_quantity:
+                            raise ValueError(
+                                f"Plus assez de places pour {representation.show.title}"
+                            )
+
+                        rep_res = RepresentationReservation.objects.create(
+                            reservation=reservation,
+                            representation=representation,
+                            price=item['price_obj'],
+                            quantity=requested_quantity
+                        )
+                        Ticket.objects.bulk_create([
+                            Ticket(representation_reservation=rep_res)
+                            for _ in range(requested_quantity)
+                        ])
+                        representation.available_seats -= requested_quantity
+                        representation.save(update_fields=['available_seats'])
+
+                    cart.clear()
+                    send_reservation_email(reservation)
         except Exception as e:
             # En cas d'erreur lors du traitement de la session Stripe
             print(f"Erreur lors de la validation du paiement: {e}")
